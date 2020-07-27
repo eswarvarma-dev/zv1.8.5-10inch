@@ -6403,7 +6403,7 @@ class _CheckPageState extends State<Dashboard> {
                   _setValuesonClick = false;
                 });
                 if (modeWriteList.isNotEmpty) {
-                  lockEnabled ? playOnEnabled ? "" : CommonClick("PEEP") : "";
+                  lockEnabled ? playOnEnabled ? "" :operatinModeR == 21?CommonClick("APEEP") :CommonClick("PEEP") : "";
                 }
               },
               child: Center(
@@ -29379,6 +29379,7 @@ class _CheckPageState extends State<Dashboard> {
 
   sendDataUsbConnection(List<int> samplemodeWriteList, checkValue) async {
     var modeNumber = samplemodeWriteList[3];
+    print(samplemodeWriteList);
 
     List<int> listCrcData = [];
     listCrcData.addAll(samplemodeWriteList);
@@ -29390,7 +29391,7 @@ class _CheckPageState extends State<Dashboard> {
         modeNumber == 5 ||
         modeNumber == 6 ||
         modeNumber == 7 ||
-        modeNumber == 14) {
+        modeNumber == 14|| modeNumber == 21) {
       setState(() {
         playpauseButtonEnabled = true;
       });
@@ -31851,7 +31852,8 @@ class _CheckPageState extends State<Dashboard> {
                 presentCode.toString(), this.globalCounterNo.toString());
             dbHelpera.saveAlarm(data);
             // alarmPrevCounter = alarmCounter;
-            if (presentCode == 24 && vhighPriorityAlarm == 0) {
+            if ((presentCode == 24  ||
+                      presentCode == 17) && vhighPriorityAlarm == 0) {
               setState(() {
                 vhighPriorityAlarm = 1;
                 highPriorityAlarm = 0;
@@ -31865,8 +31867,7 @@ class _CheckPageState extends State<Dashboard> {
             } else if ((presentCode == 5 ||
                     presentCode == 7 ||
                     presentCode == 10 ||
-                    presentCode == 11 ||
-                    presentCode == 17) &&
+                    presentCode == 11) &&
                 highPriorityAlarm == 0) {
               setState(() {
                 vhighPriorityAlarm = 0;
@@ -31928,7 +31929,8 @@ class _CheckPageState extends State<Dashboard> {
               var data = AlarmsList(
                   presentCode.toString(), this.globalCounterNo.toString());
               dbHelpera.saveAlarm(data);
-              if (presentCode == 24 && vhighPriorityAlarm == 0) {
+              if ((presentCode == 24  ||
+                      presentCode == 17)  && vhighPriorityAlarm == 0) {
                 setState(() {
                   vhighPriorityAlarm = 1;
                   highPriorityAlarm = 0;
@@ -31942,8 +31944,7 @@ class _CheckPageState extends State<Dashboard> {
               } else if ((presentCode == 5 ||
                       presentCode == 7 ||
                       presentCode == 10 ||
-                      presentCode == 11 ||
-                      presentCode == 17) &&
+                      presentCode == 11) &&
                   highPriorityAlarm == 0) {
                 setState(() {
                   highPriorityAlarm = 1;
@@ -32047,6 +32048,8 @@ class _CheckPageState extends State<Dashboard> {
               ((finalList[106] << 8) + finalList[107]) == 24
                   ? alarmMessage =
                       "Blender Malfunctioning Ventilator Operation Stopped"
+                      : ((finalList[106] << 8) + finalList[107]) == 17
+                                  ? alarmMessage = "PATIENT DISCONNECTED"
                   : "";
             } else if (finalList[109] == 1) {
               ((finalList[106] << 8) + finalList[107]) == 5
@@ -32057,8 +32060,6 @@ class _CheckPageState extends State<Dashboard> {
                           ? alarmMessage = "HIGH LEAKAGE"
                           : ((finalList[106] << 8) + finalList[107]) == 11
                               ? alarmMessage = "HIGH PRESSURE"
-                              : ((finalList[106] << 8) + finalList[107]) == 17
-                                  ? alarmMessage = "PATIENT DISCONNECTED"
                                   : alarmMessage = "";
             } else if (finalList[109] == 2) {
               // // // // print("alarm code "+(((finalList[106] << 8) + finalList[107])).toString());
@@ -32394,7 +32395,8 @@ class _CheckPageState extends State<Dashboard> {
           receivedthold = ((finalList[166] << 8) + finalList[167]);
 
           if (operatinModeR == 3 && receivedoperatingModeR == 3 ||
-              operatinModeR == 20 && receivedoperatingModeR == 20) {
+              operatinModeR == 20 && receivedoperatingModeR == 20 ||
+              operatinModeR == 21 && receivedoperatingModeR == 21) {
             tiValue = (((double.tryParse(i) /
                         (double.tryParse(i) + double.tryParse(e))) *
                     (60000 / receivedbackuprr)) /

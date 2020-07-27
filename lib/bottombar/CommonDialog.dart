@@ -119,13 +119,23 @@ class _CommonDialogState extends State<CommonDialog> {
         prefix = false;
         suffix = false;
         units = true;
-      }); //
-    } else if (widget.value.toString() == "VVPEEP") {
+      }); 
+    } else if (widget.value.toString() == "APEEP") {
       setState(() {
         commomValue = preferences.getInt("peep").toDouble();
         checkValue = preferences.getInt("peep").toDouble();
         min = 0;
-        max = 30;
+        max = 45;
+        prefix = false;
+        suffix = false;
+        units = true;
+      }); //
+    }else if (widget.value.toString() == "VVPEEP") {
+      setState(() {
+        commomValue = preferences.getInt("peep").toDouble();
+        checkValue = preferences.getInt("peep").toDouble();
+        min = 0;
+        max = 45;
         prefix = false;
         suffix = false;
         units = true;
@@ -135,7 +145,7 @@ class _CommonDialogState extends State<CommonDialog> {
         commomValue = preferences.getInt("peep").toDouble();
         checkValue = preferences.getInt("peep").toDouble();
         min = 0;
-        max = 30;
+        max = 45;
         prefix = false;
         suffix = false;
         units = true;
@@ -167,7 +177,7 @@ class _CommonDialogState extends State<CommonDialog> {
         commomValue = preferences.getInt("ps").toDouble();
         checkValue = preferences.getInt("ps").toDouble();
         _pcCheckValue = preferences.getInt("pc").toDouble();
-        min = 5;
+        min = 0;
         max = _pcCheckValue;
         prefix = false;
         suffix = false;
@@ -449,6 +459,8 @@ class _CommonDialogState extends State<CommonDialog> {
                                     : widget.value.toString() == "PCV"
                                         ? "PC"
                                         : widget.value.toString() == "VPEEP"
+                                            ? "PEEP"
+                                            : widget.value.toString() == "APEEP"
                                             ? "PEEP"
                                             : widget.value.toString() == "VPS"
                                                 ? "PS"
@@ -810,7 +822,12 @@ class _CommonDialogState extends State<CommonDialog> {
         preferences.setInt("peep", value.ceil());
       });
       Navigator.pop(context, value.ceil().toString() + "ab" + "peep");
-    } else if (widget.value.toString() == "VPS") {
+    } else if (widget.value.toString() == "APEEP") {
+      setState(() {
+        preferences.setInt("peep", value.ceil());
+      });
+      Navigator.pop(context, value.ceil().toString() + "ab" + "peep");
+    }else if (widget.value.toString() == "VPS") {
       setState(() {
         preferences.setInt("ps", value.ceil());
       });
