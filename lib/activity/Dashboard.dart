@@ -841,12 +841,12 @@ class _CheckPageState extends State<Dashboard> {
 // }
         });
       } else {
-        // if(_isFlagTest==false && check1==1 && check2==1){
-        //   setState((){
-        //   _isFlagTest = true;
-        //     selftestRun();
-        //   });
-        // }
+        if(_isFlagTest==false && check1==1 && check2==1){
+          setState((){
+          _isFlagTest = true;
+            selftestRun();
+          });
+        }
       }
     });
     _timer3 = Timer.periodic(Duration(milliseconds: 60000), (timer) {
@@ -861,7 +861,7 @@ class _CheckPageState extends State<Dashboard> {
               if (_iso2High == true) {
                 resList.add(2);
               } else {
-                resList.add(2);
+                resList.add(1);
               }
             });
             if (_status == "Connected") {
@@ -5166,7 +5166,7 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                 ),
                 Text(
-                  "v1.8.4",
+                  "v1.8.4a",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: _isTab10 ? 18 : 10,
@@ -8649,7 +8649,7 @@ class _CheckPageState extends State<Dashboard> {
           if (_iso2High == true) {
             resList.add(2);
           } else {
-            resList.add(2);
+            resList.add(1);
           }
         });
         if (_status == "Connected") {
@@ -9373,53 +9373,73 @@ class _CheckPageState extends State<Dashboard> {
         SizedBox(width: _isTab10 ? 205 : 140),
         _isTab10
             ? Container(
-                padding: EdgeInsets.only(top: 370),
-                width: 255,
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          pItrig = !pItrig;
-                        });
-                      },
-                      child: Card(
-                          color: pItrig ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: Text(
-                              "Pressure Trig",
-                              style: TextStyle(
-                                color: pItrig
-                                    ? Color(0xFF213855)
-                                    : Color(0xFFE0E0E0),
-                              ),
-                            ),
-                          )),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          pItrig = !pItrig;
-                        });
-                      },
-                      child: Card(
-                          color: pItrig ? Color(0xFF213855) : Color(0xFFE0E0E0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: Text(
-                              "Flow Trig",
-                              style: TextStyle(
-                                color: pItrig
-                                    ? Color(0xFFE0E0E0)
-                                    : Color(0xFF213855),
-                              ),
-                            ),
-                          )),
-                    ),
-                  ],
-                ))
-            : Container(),
+                     margin:EdgeInsets.only(top:160,bottom:20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          Center(
+                              child: Text("Patient Trigger",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                          Container(
+                              padding: EdgeInsets.only(top: 20),
+                              width: 255,
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Colors.green
+                                            : Color(0xFFE0E0E0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "  Pressure  ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFFE0E0E0)
+                                                  : Color(0xFF213855),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Color(0xFFE0E0E0)
+                                            : Colors.green,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "      Flow      ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFF213855)
+                                                  : Color(0xFFE0E0E0),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ))
+                  : Container(),
         SizedBox(width: _isTab10 ? 30 : 0),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -14323,11 +14343,95 @@ class _CheckPageState extends State<Dashboard> {
         SizedBox(width: _isTab10 ? 30 : 140),
         _isTab10
             ? Column(
-                children: <Widget>[
+            children: <Widget>[
+              
+              _isTab10
+                  ? Container(
+                     margin:EdgeInsets.only(top:160,bottom:20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          Center(
+                              child: Text("Patient Trigger",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                          Container(
+                              padding: EdgeInsets.only(top: 20),
+                              width: 255,
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Colors.green
+                                            : Color(0xFFE0E0E0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "  Pressure  ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFFE0E0E0)
+                                                  : Color(0xFF213855),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Color(0xFFE0E0E0)
+                                            : Colors.green,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "      Flow      ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFF213855)
+                                                  : Color(0xFFE0E0E0),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ))
+                  : Container(),
                   Container(
-                      padding: EdgeInsets.only(top: 330),
-                      width: 255,
-                      child: Row(
+               
+                 decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 20),
+                          Center(
+                              child: Text("Backup Apnea Type",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 16))),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           InkWell(
                             onTap: () {
@@ -14339,16 +14443,16 @@ class _CheckPageState extends State<Dashboard> {
                             },
                             child: Card(
                                 color: pControl
-                                    ? Color(0xFFE0E0E0)
-                                    : Color(0xFF213855),
+                                    ? Colors.green
+                                    : Color(0xFFE0E0E0),
                                 child: Padding(
                                   padding: const EdgeInsets.all(22.0),
                                   child: Text(
                                     "Pressure",
                                     style: TextStyle(
                                       color: pControl
-                                          ? Color(0xFF213855)
-                                          : Color(0xFFE0E0E0),
+                                          ? Color(0xFFE0E0E0)
+                                          : Color(0xFF213855),
                                     ),
                                   ),
                                 )),
@@ -14363,75 +14467,27 @@ class _CheckPageState extends State<Dashboard> {
                             },
                             child: Card(
                                 color: pControl
-                                    ? Color(0xFF213855)
-                                    : Color(0xFFE0E0E0),
+                                    ? Color(0xFFE0E0E0)
+                                    : Colors.green,
                                 child: Padding(
                                   padding: const EdgeInsets.all(22.0),
                                   child: Text(
                                     "Volume",
                                     style: TextStyle(
                                       color: pControl
-                                          ? Color(0xFFE0E0E0)
-                                          : Color(0xFF213855),
-                                    ),
-                                  ),
-                                )),
-                          ),
-                        ],
-                      )),
-                  Container(
-                      padding: EdgeInsets.only(top: 10),
-                      width: 255,
-                      child: Row(
-                        children: [
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                pItrig = !pItrig;
-                              });
-                            },
-                            child: Card(
-                                color: pItrig
-                                    ? Color(0xFFE0E0E0)
-                                    : Color(0xFF213855),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(22.0),
-                                  child: Text(
-                                    "Pressure Trig",
-                                    style: TextStyle(
-                                      color: pItrig
                                           ? Color(0xFF213855)
                                           : Color(0xFFE0E0E0),
                                     ),
                                   ),
                                 )),
                           ),
-                          InkWell(
-                            onTap: () {
-                              setState(() {
-                                pItrig = !pItrig;
-                              });
-                            },
-                            child: Card(
-                                color: pItrig
-                                    ? Color(0xFF213855)
-                                    : Color(0xFFE0E0E0),
-                                child: Padding(
-                                  padding: const EdgeInsets.all(22.0),
-                                  child: Text(
-                                    "Flow Trig",
-                                    style: TextStyle(
-                                      color: pItrig
-                                          ? Color(0xFFE0E0E0)
-                                          : Color(0xFF213855),
-                                    ),
-                                  ),
-                                )),
-                          ),
+                          
                         ],
-                      )),
-                ],
-              )
+                      )
+                    ],
+                  )),
+            ],
+          )
             : Container(),
         SizedBox(width: _isTab10 ? 30 : 0),
         Column(
@@ -16055,143 +16111,165 @@ class _CheckPageState extends State<Dashboard> {
           ],
         ),
         SizedBox(width: _isTab10 ? 120 : 15),
-        Column(
-          children: <Widget>[
-            Container(
-                padding: EdgeInsets.only(top: 270),
-                width: 255,
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          assistmodePressureOn = !assistmodePressureOn;
-                          if (assistmodePressureOn == true) {
-                            pacvEnabled = true;
-                            pccmvEnabled = false;
-                          } else {
-                            pccmvEnabled = true;
-                            pacvEnabled = false;
-                          }
-                        });
-                      },
-                      child: Card(
-                          color: assistmodePressureOn
-                              ? Color(0xFF213855)
-                              : Color(0xFFE0E0E0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: Text(
-                              "Assist Off",
-                              style: TextStyle(
+         Column(
+            children: <Widget>[
+              
+              _isTab10
+                  ? Container(
+                     margin:EdgeInsets.only(top:160,bottom:20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          Center(
+                              child: Text("Patient Trigger",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                          Container(
+                              padding: EdgeInsets.only(top: 20),
+                              width: 255,
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Colors.green
+                                            : Color(0xFFE0E0E0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "  Pressure  ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFFE0E0E0)
+                                                  : Color(0xFF213855),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Color(0xFFE0E0E0)
+                                            : Colors.green,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "      Flow      ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFF213855)
+                                                  : Color(0xFFE0E0E0),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ))
+                  : Container(),
+                  Container(
+               
+                 decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 20),
+                          Center(
+                              child: Text("Assist",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          
+                         
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                assistmodePressureOn = !assistmodePressureOn;
+                                if (assistmodePressureOn == true) {
+                                  pacvEnabled = true;
+                                  pccmvEnabled = false;
+                                } else {
+                                  pccmvEnabled = true;
+                                  pacvEnabled = false;
+                                }
+                              });
+                            },
+                            child: Card(
                                 color: assistmodePressureOn
                                     ? Color(0xFFE0E0E0)
                                     : Color(0xFF213855),
-                              ),
-                            ),
-                          )),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          assistmodePressureOn = !assistmodePressureOn;
-                          if (assistmodePressureOn == true) {
-                            pacvEnabled = true;
-                            pccmvEnabled = false;
-                          } else {
-                            pccmvEnabled = true;
-                            pacvEnabled = false;
-                          }
-                        });
-                      },
-                      child: Card(
-                          color: assistmodePressureOn
-                              ? Color(0xFFE0E0E0)
-                              : Color(0xFF213855),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: Text(
-                              "Assist on",
-                              style: TextStyle(
-                                color: assistmodePressureOn
-                                    ? Color(0xFF213855)
-                                    : Color(0xFFE0E0E0),
-                              ),
-                            ),
-                          )),
-                    ),
-                  ],
-                )),
-            _isTab10
-                ? Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        color: Colors.white),
-                    height: 140,
-                    width: 245,
-                    child: Column(
-                      children: <Widget>[
-                        SizedBox(height: 20),
-                        Center(
-                            child: Text("Patient Trigger",
-                                style: TextStyle(
-                                    color: Colors.black, fontSize: 20))),
-                        Container(
-                            padding: EdgeInsets.only(top: 20),
-                            width: 255,
-                            child: Row(
-                              children: [
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      pItrig = !pItrig;
-                                    });
-                                  },
-                                  child: Card(
-                                      color: pItrig
-                                          ? Colors.green
+                                child: Padding(
+                                  padding: const EdgeInsets.all(22.0),
+                                  child: Text(
+                                    "Off",
+                                    style: TextStyle(
+                                      color: assistmodePressureOn
+                                          ? Color(0xFF213855)
                                           : Color(0xFFE0E0E0),
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(22.0),
-                                        child: Text(
-                                          "  Pressure  ",
-                                          style: TextStyle(
-                                            color: pItrig
-                                                ? Color(0xFFE0E0E0)
-                                                : Color(0xFF213855),
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                                InkWell(
-                                  onTap: () {
-                                    setState(() {
-                                      pItrig = !pItrig;
-                                    });
-                                  },
-                                  child: Card(
-                                      color: pItrig
+                                    ),
+                                  ),
+                                )),
+                          ),
+                           SizedBox(height:10),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                assistmodePressureOn = !assistmodePressureOn;
+                                if (assistmodePressureOn == true) {
+                                  pacvEnabled = true;
+                                  pccmvEnabled = false;
+                                } else {
+                                  pccmvEnabled = true;
+                                  pacvEnabled = false;
+                                }
+                              });
+                            },
+                            child: Card(
+                                color: assistmodePressureOn
+                                    ? Colors.green
+                                    : Color(0xFFE0E0E0),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(22.0),
+                                  child: Text(
+                                    "On",
+                                    style: TextStyle(
+                                      color: assistmodePressureOn
                                           ? Color(0xFFE0E0E0)
-                                          : Colors.green,
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(22.0),
-                                        child: Text(
-                                          "      Flow      ",
-                                          style: TextStyle(
-                                            color: pItrig
-                                                ? Color(0xFF213855)
-                                                : Color(0xFFE0E0E0),
-                                          ),
-                                        ),
-                                      )),
-                                ),
-                              ],
-                            )),
-                      ],
-                    ))
-                : Container(),
-          ],
-        ),
+                                          : Color(0xFF213855),
+                                    ),
+                                  ),
+                                )),
+                          ),
+                        ],
+                      ),
+                    ],
+                  )),
+            ],
+          ),
+        
         SizedBox(width: _isTab10 ? 120 : 15),
         Column(
           children: [
@@ -17608,53 +17686,73 @@ class _CheckPageState extends State<Dashboard> {
         SizedBox(width: _isTab10 ? 30 : 140),
         _isTab10
             ? Container(
-                padding: EdgeInsets.only(top: 370),
-                width: 255,
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          pItrig = !pItrig;
-                        });
-                      },
-                      child: Card(
-                          color: pItrig ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: Text(
-                              "Pressure Trig",
-                              style: TextStyle(
-                                color: pItrig
-                                    ? Color(0xFF213855)
-                                    : Color(0xFFE0E0E0),
-                              ),
-                            ),
-                          )),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          pItrig = !pItrig;
-                        });
-                      },
-                      child: Card(
-                          color: pItrig ? Color(0xFF213855) : Color(0xFFE0E0E0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: Text(
-                              "Flow Trig",
-                              style: TextStyle(
-                                color: pItrig
-                                    ? Color(0xFFE0E0E0)
-                                    : Color(0xFF213855),
-                              ),
-                            ),
-                          )),
-                    ),
-                  ],
-                ))
-            : Container(),
+                     margin:EdgeInsets.only(top:160,bottom:20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          Center(
+                              child: Text("Patient Trigger",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                          Container(
+                              padding: EdgeInsets.only(top: 20),
+                              width: 255,
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Colors.green
+                                            : Color(0xFFE0E0E0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "  Pressure  ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFFE0E0E0)
+                                                  : Color(0xFF213855),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Color(0xFFE0E0E0)
+                                            : Colors.green,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "      Flow      ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFF213855)
+                                                  : Color(0xFFE0E0E0),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ))
+                  : Container(),
         SizedBox(width: _isTab10 ? 30 : 0),
         Column(
           children: [
@@ -19294,52 +19392,72 @@ class _CheckPageState extends State<Dashboard> {
         SizedBox(width: _isTab10 ? 30 : 140),
         _isTab10
             ? Container(
-                padding: EdgeInsets.only(top: 370),
-                width: 255,
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          pItrig = !pItrig;
-                        });
-                      },
-                      child: Card(
-                          color: pItrig ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: Text(
-                              "Pressure Trig",
-                              style: TextStyle(
-                                color: pItrig
-                                    ? Color(0xFF213855)
-                                    : Color(0xFFE0E0E0),
-                              ),
-                            ),
-                          )),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          pItrig = !pItrig;
-                        });
-                      },
-                      child: Card(
-                          color: pItrig ? Color(0xFF213855) : Color(0xFFE0E0E0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: Text(
-                              "Flow Trig",
-                              style: TextStyle(
-                                color: pItrig
-                                    ? Color(0xFFE0E0E0)
-                                    : Color(0xFF213855),
-                              ),
-                            ),
-                          )),
-                    ),
-                  ],
-                ))
+                     margin:EdgeInsets.only(top:160,bottom:20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          Center(
+                              child: Text("Patient Trigger",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                          Container(
+                              padding: EdgeInsets.only(top: 20),
+                              width: 255,
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Colors.green
+                                            : Color(0xFFE0E0E0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "  Pressure  ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFFE0E0E0)
+                                                  : Color(0xFF213855),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Color(0xFFE0E0E0)
+                                            : Colors.green,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "      Flow      ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFF213855)
+                                                  : Color(0xFFE0E0E0),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ))
             : Container(),
         SizedBox(width: _isTab10 ? 30 : 0),
         Column(
@@ -20804,73 +20922,94 @@ class _CheckPageState extends State<Dashboard> {
           ],
         ),
         SizedBox(width: _isTab10 ? 120 : 15),
-        Container(
-            padding: EdgeInsets.only(top: 290),
-            width: 255,
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      assistmodePressureOn = !assistmodePressureOn;
-
-                      if (assistmodePressureOn == true) {
-                        pacvEnabled = true;
-                        pccmvEnabled = false;
-                      } else {
-                        pccmvEnabled = true;
-                        pacvEnabled = false;
-                      }
-                    });
-                  },
-                  child: Card(
-                      color: assistmodePressureOn == false
-                          ? Color(0xFFE0E0E0)
-                          : Color(0xFF213855),
-                      child: Padding(
-                        padding: const EdgeInsets.all(22.0),
-                        child: Text(
-                          "Assist Off",
-                          style: TextStyle(
-                            color: assistmodePressureOn == false
-                                ? Color(0xFF213855)
-                                : Color(0xFFE0E0E0),
+        Column(
+            children: <Widget>[
+              SizedBox(height:320),
+              Container(
+                 decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 20),
+                          Center(
+                              child: Text("Assist",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          
+                         
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                assistmodePressureOn = !assistmodePressureOn;
+                                if (assistmodePressureOn == true) {
+                                  pacvEnabled = true;
+                                  pccmvEnabled = false;
+                                } else {
+                                  pccmvEnabled = true;
+                                  pacvEnabled = false;
+                                }
+                              });
+                            },
+                            child: Card(
+                                color: assistmodePressureOn
+                                    ? Color(0xFFE0E0E0)
+                                    : Colors.green,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(22.0),
+                                  child: Text(
+                                    "Off",
+                                    style: TextStyle(
+                                      color: assistmodePressureOn
+                                          ? Color(0xFF213855)
+                                          : Color(0xFFE0E0E0),
+                                    ),
+                                  ),
+                                )),
                           ),
-                        ),
-                      )),
-                ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      assistmodePressureOn = !assistmodePressureOn;
-
-                      if (assistmodePressureOn == true) {
-                        pacvEnabled = true;
-                        pccmvEnabled = false;
-                      } else {
-                        pccmvEnabled = true;
-                        pacvEnabled = false;
-                      }
-                    });
-                  },
-                  child: Card(
-                      color: assistmodePressureOn == true
-                          ? Color(0xFFE0E0E0)
-                          : Color(0xFF213855),
-                      child: Padding(
-                        padding: const EdgeInsets.all(22.0),
-                        child: Text(
-                          "Assist On",
-                          style: TextStyle(
-                            color: assistmodePressureOn == true
-                                ? Color(0xFF213855)
-                                : Color(0xFFE0E0E0),
+                           SizedBox(height:10),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                assistmodePressureOn = !assistmodePressureOn;
+                                if (assistmodePressureOn == true) {
+                                  pacvEnabled = true;
+                                  pccmvEnabled = false;
+                                } else {
+                                  pccmvEnabled = true;
+                                  pacvEnabled = false;
+                                }
+                              });
+                            },
+                            child: Card(
+                                color: assistmodePressureOn
+                                    ? Colors.green
+                                    : Color(0xFFE0E0E0),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(22.0),
+                                  child: Text(
+                                    "On",
+                                    style: TextStyle(
+                                      color: assistmodePressureOn
+                                          ? Color(0xFFE0E0E0)
+                                          : Color(0xFF213855),
+                                    ),
+                                  ),
+                                )),
                           ),
-                        ),
-                      )),
-                ),
-              ],
-            )),
+                        ],
+                      ),
+                    ],
+                  )),
+            ],
+          ),
         SizedBox(width: _isTab10 ? 120 : 15),
         Column(
           children: [
@@ -22008,6 +22147,7 @@ class _CheckPageState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
+            Container(width:146),
             // InkWell(
             //   onTap: () async {
             //     setState(() {
@@ -22123,77 +22263,99 @@ class _CheckPageState extends State<Dashboard> {
             //     ),
             //   ),
             // ),
+
           ],
         ),
-        SizedBox(width: _isTab10 ? 146 : 15),
-        Container(
-            padding: EdgeInsets.only(top: 290),
-            width: 255,
-            child: Row(
-              children: [
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      assistmodeVolumeOn = !assistmodeVolumeOn;
-
-                      if (assistmodeVolumeOn == true) {
-                        vacvEnabled = true;
-                        vccmvEnabled = false;
-                      } else {
-                        vccmvEnabled = true;
-                        vacvEnabled = false;
-                      }
-                    });
-                  },
-                  child: Card(
-                      color: assistmodeVolumeOn == false
-                          ? Color(0xFFE0E0E0)
-                          : Color(0xFF213855),
-                      child: Padding(
-                        padding: const EdgeInsets.all(22.0),
-                        child: Text(
-                          "Assist Off",
-                          style: TextStyle(
-                            color: assistmodeVolumeOn == false
-                                ? Color(0xFF213855)
-                                : Color(0xFFE0E0E0),
+        SizedBox(width: _isTab10 ? 30 : 15),
+        Column(
+            children: <Widget>[
+              SizedBox(height:320),
+              Container(
+                 decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 20),
+                          Center(
+                              child: Text("Assist",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          
+                         
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                assistmodeVolumeOn = !assistmodeVolumeOn;
+                                if (assistmodeVolumeOn == true) {
+                                  vacvEnabled = true;
+                                  vccmvEnabled = false;
+                                } else {
+                                  vccmvEnabled = true;
+                                  vacvEnabled = false;
+                                }
+                              });
+                            },
+                            child: Card(
+                                color: assistmodeVolumeOn
+                                    ? Color(0xFFE0E0E0)
+                                    : Colors.green,
+                                child: Padding(
+                                  padding: const EdgeInsets.all(22.0),
+                                  child: Text(
+                                    "Off",
+                                    style: TextStyle(
+                                      color: assistmodeVolumeOn
+                                          ? Color(0xFF213855)
+                                          : Color(0xFFE0E0E0),
+                                    ),
+                                  ),
+                                )),
                           ),
-                        ),
-                      )),
-                ),
-                InkWell(
-                  onTap: () {
-                    setState(() {
-                      assistmodeVolumeOn = !assistmodeVolumeOn;
-
-                      if (assistmodeVolumeOn == true) {
-                        vacvEnabled = true;
-                        vccmvEnabled = false;
-                      } else {
-                        vccmvEnabled = true;
-                        vacvEnabled = false;
-                      }
-                    });
-                  },
-                  child: Card(
-                      color: assistmodeVolumeOn == true
-                          ? Color(0xFFE0E0E0)
-                          : Color(0xFF213855),
-                      child: Padding(
-                        padding: const EdgeInsets.all(22.0),
-                        child: Text(
-                          "Assist On",
-                          style: TextStyle(
-                            color: assistmodeVolumeOn == true
-                                ? Color(0xFF213855)
-                                : Color(0xFFE0E0E0),
+                           SizedBox(height:10),
+                          InkWell(
+                            onTap: () {
+                              setState(() {
+                                assistmodeVolumeOn = !assistmodeVolumeOn;
+                                if (assistmodeVolumeOn == true) {
+                                  vacvEnabled = true;
+                                  vccmvEnabled = false;
+                                } else {
+                                  vccmvEnabled = true;
+                                  vacvEnabled = false;
+                                }
+                              });
+                            },
+                            child: Card(
+                                color: assistmodeVolumeOn
+                                    ? Colors.green
+                                    : Color(0xFFE0E0E0),
+                                child: Padding(
+                                  padding: const EdgeInsets.all(22.0),
+                                  child: Text(
+                                    "On",
+                                    style: TextStyle(
+                                      color: assistmodeVolumeOn
+                                          ? Color(0xFFE0E0E0)
+                                          : Color(0xFF213855),
+                                    ),
+                                  ),
+                                )),
                           ),
-                        ),
-                      )),
-                ),
-              ],
-            )),
-        SizedBox(width: _isTab10 ? 93 : 15),
+                        ],
+                      ),
+                    ],
+                  )),
+            ],
+          ),
+        SizedBox(width: _isTab10 ? 63 : 15),
         Column(
           children: [
             Container(
@@ -23797,52 +23959,72 @@ class _CheckPageState extends State<Dashboard> {
         SizedBox(width: _isTab10 ? 30 : 140),
         _isTab10
             ? Container(
-                padding: EdgeInsets.only(top: 370),
-                width: 255,
-                child: Row(
-                  children: [
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          pItrig = !pItrig;
-                        });
-                      },
-                      child: Card(
-                          color: pItrig ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: Text(
-                              "Pressure Trig",
-                              style: TextStyle(
-                                color: pItrig
-                                    ? Color(0xFF213855)
-                                    : Color(0xFFE0E0E0),
-                              ),
-                            ),
-                          )),
-                    ),
-                    InkWell(
-                      onTap: () {
-                        setState(() {
-                          pItrig = !pItrig;
-                        });
-                      },
-                      child: Card(
-                          color: pItrig ? Color(0xFF213855) : Color(0xFFE0E0E0),
-                          child: Padding(
-                            padding: const EdgeInsets.all(22.0),
-                            child: Text(
-                              "Flow Trig",
-                              style: TextStyle(
-                                color: pItrig
-                                    ? Color(0xFFE0E0E0)
-                                    : Color(0xFF213855),
-                              ),
-                            ),
-                          )),
-                    ),
-                  ],
-                ))
+                     margin:EdgeInsets.only(top:160,bottom:20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          Center(
+                              child: Text("Patient Trigger",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                          Container(
+                              padding: EdgeInsets.only(top: 20),
+                              width: 255,
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Colors.green
+                                            : Color(0xFFE0E0E0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "  Pressure  ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFFE0E0E0)
+                                                  : Color(0xFF213855),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Color(0xFFE0E0E0)
+                                            : Colors.green,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "      Flow      ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFF213855)
+                                                  : Color(0xFFE0E0E0),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ))
             : Container(),
         SizedBox(width: _isTab10 ? 30 : 0),
         Column(
@@ -25398,7 +25580,7 @@ class _CheckPageState extends State<Dashboard> {
                               child: Padding(
                                 padding: const EdgeInsets.all(22.0),
                                 child: Text(
-                                  "Assist Off",
+                                  "Off",
                                   style: TextStyle(
                                     color: assistmodeVolumeOn == false
                                         ? Color(0xFF213855)
@@ -25428,7 +25610,7 @@ class _CheckPageState extends State<Dashboard> {
                               child: Padding(
                                 padding: const EdgeInsets.all(22.0),
                                 child: Text(
-                                  "Assist On",
+                                  "On",
                                   style: TextStyle(
                                     color: assistmodeVolumeOn == true
                                         ? Color(0xFF213855)
@@ -25443,17 +25625,100 @@ class _CheckPageState extends State<Dashboard> {
         ),
         _isTab10
             ? Column(
-                children: <Widget>[
+            children: <Widget>[
+              
+              _isTab10
+                  ? Container(
+                     margin:EdgeInsets.only(top:160,bottom:20),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                      child: Column(
+                        children: <Widget>[
+                          SizedBox(height: 20),
+                          Center(
+                              child: Text("Patient Trigger",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                          Container(
+                              padding: EdgeInsets.only(top: 20),
+                              width: 255,
+                              child: Row(
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Colors.green
+                                            : Color(0xFFE0E0E0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "  Pressure  ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFFE0E0E0)
+                                                  : Color(0xFF213855),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pItrig = !pItrig;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pItrig
+                                            ? Color(0xFFE0E0E0)
+                                            : Colors.green,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "      Flow      ",
+                                            style: TextStyle(
+                                              color: pItrig
+                                                  ? Color(0xFF213855)
+                                                  : Color(0xFFE0E0E0),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              )),
+                        ],
+                      ))
+                  : Container(),
                   Container(
-                      padding: EdgeInsets.only(top: 290),
-                      width: 255,
-                      child: Row(
+               
+                 decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10),
+                          color: Colors.white),
+                      height: 140,
+                      width: 245,
+                  child: Column(
+                    children: <Widget>[
+                      SizedBox(height: 20),
+                          Center(
+                              child: Text("Assist",
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 20))),
+                      SizedBox(height: 20),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
                           InkWell(
                             onTap: () {
                               setState(() {
                                 assistmodeVolumeOn = !assistmodeVolumeOn;
-
                                 if (assistmodeVolumeOn == true) {
                                   vacvEnabled = true;
                                   vccmvEnabled = false;
@@ -25464,26 +25729,26 @@ class _CheckPageState extends State<Dashboard> {
                               });
                             },
                             child: Card(
-                                color: assistmodeVolumeOn == false
+                                color: assistmodeVolumeOn
                                     ? Color(0xFFE0E0E0)
                                     : Color(0xFF213855),
                                 child: Padding(
                                   padding: const EdgeInsets.all(22.0),
                                   child: Text(
-                                    "Assist Off",
+                                    "Off",
                                     style: TextStyle(
-                                      color: assistmodeVolumeOn == false
+                                      color: assistmodeVolumeOn
                                           ? Color(0xFF213855)
                                           : Color(0xFFE0E0E0),
                                     ),
                                   ),
                                 )),
                           ),
+                           SizedBox(height:10),
                           InkWell(
                             onTap: () {
                               setState(() {
                                 assistmodeVolumeOn = !assistmodeVolumeOn;
-
                                 if (assistmodeVolumeOn == true) {
                                   vacvEnabled = true;
                                   vccmvEnabled = false;
@@ -25494,78 +25759,27 @@ class _CheckPageState extends State<Dashboard> {
                               });
                             },
                             child: Card(
-                                color: assistmodeVolumeOn == true
-                                    ? Color(0xFFE0E0E0)
-                                    : Color(0xFF213855),
+                                color: assistmodeVolumeOn
+                                    ? Colors.green
+                                    : Color(0xFFE0E0E0),
                                 child: Padding(
                                   padding: const EdgeInsets.all(22.0),
                                   child: Text(
-                                    "Assist On",
+                                    "On",
                                     style: TextStyle(
-                                      color: assistmodeVolumeOn == true
-                                          ? Color(0xFF213855)
-                                          : Color(0xFFE0E0E0),
+                                      color: assistmodeVolumeOn
+                                          ? Color(0xFFE0E0E0)
+                                          : Color(0xFF213855),
                                     ),
                                   ),
                                 )),
                           ),
                         ],
-                      )),
-                  _isTab10
-                      ? Container(
-                          padding: EdgeInsets.only(top: 10),
-                          width: 255,
-                          child: Row(
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    pItrig = !pItrig;
-                                  });
-                                },
-                                child: Card(
-                                    color: pItrig
-                                        ? Color(0xFFE0E0E0)
-                                        : Color(0xFF213855),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(22.0),
-                                      child: Text(
-                                        "Pressure Trig",
-                                        style: TextStyle(
-                                          color: pItrig
-                                              ? Color(0xFF213855)
-                                              : Color(0xFFE0E0E0),
-                                        ),
-                                      ),
-                                    )),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    pItrig = !pItrig;
-                                  });
-                                },
-                                child: Card(
-                                    color: pItrig
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(22.0),
-                                      child: Text(
-                                        "Flow Trig",
-                                        style: TextStyle(
-                                          color: pItrig
-                                              ? Color(0xFFE0E0E0)
-                                              : Color(0xFF213855),
-                                        ),
-                                      ),
-                                    )),
-                              ),
-                            ],
-                          ))
-                      : Container(),
-                ],
-              )
+                      ),
+                    ],
+                  )),
+            ],
+          )
             : Container(),
         SizedBox(width: _isTab10 ? 63 : 25),
         Column(
@@ -29017,7 +29231,7 @@ class _CheckPageState extends State<Dashboard> {
         modeWriteList.add(0);
         modeWriteList.add(20);
         modeWriteList.add(0);
-        modeWriteList.add(3);
+        modeWriteList.add(21);
 
         modeWriteList.add((-autoItrigValue & 0xFF00) >> 8); //5
         modeWriteList.add((-autoItrigValue & 0x00FF)); //6
@@ -29077,7 +29291,7 @@ class _CheckPageState extends State<Dashboard> {
       });
 
       preferences = await SharedPreferences.getInstance();
-      preferences.setString("mode", "auto");
+      preferences.setString("mode", "AUTO");
       preferences.setString("checkMode", "auto");
 
       preferences.setInt("rr", autoBackupRrValue);
@@ -32036,7 +32250,11 @@ class _CheckPageState extends State<Dashboard> {
         setState(() {
           modeName = "CPAP";
         });
-      } else {
+      } else if (operatinModeR == 21) {
+        setState(() {
+          modeName = "AUTO";
+        });
+      }else {
         setState(() {
           selfTestingButtonEnabled = true;
         });
