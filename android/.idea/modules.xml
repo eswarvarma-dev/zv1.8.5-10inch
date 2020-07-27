@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/android.iml" filepath="$PROJECT_DIR$/android.iml" group="android" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-691623645/android-path_provider_linux.iml" filepath="$PROJECT_DIR$/.idea/modules/-691623645/android-path_provider_linux.iml" group="android/path_provider_linux" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1394587109/android-shared_preferences_macos.iml" filepath="$PROJECT_DIR$/.idea/modules/1394587109/android-shared_preferences_macos.iml" group="android/shared_preferences_macos" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2123451063/android-sqflite.iml" filepath="$PROJECT_DIR$/.idea/modules/2123451063/android-sqflite.iml" group="android/sqflite" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" group="android/app" />
+      <module fileurl="file://$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/fluttertoast-4.0.1/android/fluttertoast.iml" filepath="$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/fluttertoast-4.0.1/android/fluttertoast.iml" group="android/fluttertoast" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/725493890/fluttertoast-4.0.1-android-fluttertoast.iml" filepath="$PROJECT_DIR$/.idea/modules/725493890/fluttertoast-4.0.1-android-fluttertoast.iml" group="android/fluttertoast" />
+      <module fileurl="file://$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.8/android/path_provider.iml" filepath="$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/path_provider-1.6.8/android/path_provider.iml" group="android/path_provider" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1596322562/path_provider-1.6.11-android-path_provider.iml" filepath="$PROJECT_DIR$/.idea/modules/1596322562/path_provider-1.6.11-android-path_provider.iml" group="android/path_provider" />
+      <module fileurl="file://$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+2/android/path_provider_macos.iml" filepath="$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/path_provider_macos-0.0.4+2/android/path_provider_macos.iml" group="android/path_provider_macos" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/-2005333017/path_provider_macos-0.0.4+3-android-path_provider_macos.iml" filepath="$PROJECT_DIR$/.idea/modules/-2005333017/path_provider_macos-0.0.4+3-android-path_provider_macos.iml" group="android/path_provider_macos" />
+      <module fileurl="file://$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/screen-0.0.5/android/screen.iml" filepath="$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/screen-0.0.5/android/screen.iml" group="android/screen" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/876460515/screen-0.0.5-android-screen.iml" filepath="$PROJECT_DIR$/.idea/modules/876460515/screen-0.0.5-android-screen.iml" group="android/screen" />
+      <module fileurl="file://$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.6+3/android/shared_preferences.iml" filepath="$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/shared_preferences-0.5.6+3/android/shared_preferences.iml" group="android/shared_preferences" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/1798796740/shared_preferences-0.5.7+3-android-shared_preferences.iml" filepath="$PROJECT_DIR$/.idea/modules/1798796740/shared_preferences-0.5.7+3-android-shared_preferences.iml" group="android/shared_preferences" />
+      <module fileurl="file://$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+6/android/shared_preferences_macos.iml" filepath="$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/shared_preferences_macos-0.0.1+6/android/shared_preferences_macos.iml" group="android/shared_preferences_macos" />
+      <module fileurl="file://$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-0.1.2+4/android/shared_preferences_web.iml" filepath="$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/shared_preferences_web-0.1.2+4/android/shared_preferences_web.iml" group="android/shared_preferences_web" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/765083156/shared_preferences_web-0.1.2+7-android-shared_preferences_web.iml" filepath="$PROJECT_DIR$/.idea/modules/765083156/shared_preferences_web-0.1.2+7-android-shared_preferences_web.iml" group="android/shared_preferences_web" />
+      <module fileurl="file://$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.0+1/android/sqflite.iml" filepath="$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/sqflite-1.3.0+1/android/sqflite.iml" group="android/sqflite" />
+      <module fileurl="file://$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/usb_serial-0.2.4/android/usb_serial.iml" filepath="$USER_HOME$/flutter_sdk/.pub-cache/hosted/pub.dartlang.org/usb_serial-0.2.4/android/usb_serial.iml" group="android/usb_serial" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/modules/2110480967/usb_serial-0.2.4-android-usb_serial.iml" filepath="$PROJECT_DIR$/.idea/modules/2110480967/usb_serial-0.2.4-android-usb_serial.iml" group="android/usb_serial" />
+    </modules>
+  </component>
+</project>
