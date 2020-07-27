@@ -96,7 +96,7 @@ class _TracePainter extends CustomPainter {
       this.yRange,
       this.yMin,
       this.dataSet,
-      this.xScale = 10.0,
+      this.xScale = 16.0,
       this.traceColor = Colors.white});
 
   @override

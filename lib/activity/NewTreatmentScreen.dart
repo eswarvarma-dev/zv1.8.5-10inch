@@ -389,47 +389,43 @@ class _NewTreatmentScreenState extends State<NewTreatmentScreen> {
                                 setState(() {
                                   heightId.text =
                                       getDataheight(index).toString();
-                                  if (getDataheight(index) <= 70) {
-                                    setState(() {
-                                      weightId.text =
-                                          ((0.125 * getDataheight(index)) -
-                                                  0.75)
-                                              .toInt()
-                                              .toString();
-                                    });
-                                  } else if (70 < getDataheight(index) &&
-                                      getDataheight(index) <= 128) {
-                                    setState(() {
-                                      weightId.text =
-                                          (((0.0037 * getDataheight(index) -
-                                                          0.4018) *
-                                                      getDataheight(index)) +
-                                                  18.62)
-                                              .toInt()
-                                              .toString();
-                                    });
-                                  } else if (getDataheight(index) >= 129) {
-                                    setState(() {
+                                      if(80 < getDataheight(index) && getDataheight(index) <= 128){
+                                       setState(() {
+                                        weightId.text =(((0.0037 * getDataheight(index) -0.4018) *getDataheight(index)) +18.62).toInt().toString();
+                                      }); 
+                                      }else if(129 <= getDataheight(index) && getDataheight(index)<265){
+                                        setState(() {
                                       maleEnabled == true
                                           ? weightId.text =
-                                              ((0.9079 * getDataheight(index)) -
-                                                      88.022)
-                                                  .toInt()
-                                                  .toString()
+                                              ((0.9079 * getDataheight(index)) -88.022).toInt().toString()
                                           : femaleEnabled == true
-                                              ? weightId.text = ((0.9049 *
-                                                          getDataheight(
-                                                              index)) -
-                                                      88.022)
-                                                  .toInt()
-                                                  .toString()
+                                              ? weightId.text = ((0.9049 *getDataheight(index)) -88.022).toInt().toString()
                                               : 0.toString();
                                     });
-                                  }
+                                      }
+                                  // if (getDataheight(index) <= 70) {
+                                  //   setState(() {
+                                  //     weightId.text = ((0.125 * getDataheight(index)) - 0.75).toInt().toString();
+                                  //   });
+                                  // } else if (70 < getDataheight(index) &&
+                                  //     getDataheight(index) <= 128) {
+                                  //   setState(() {
+                                  //     weightId.text =(((0.0037 * getDataheight(index) -0.4018) *getDataheight(index)) +18.62).toInt().toString();
+                                  //   });
+                                  // } else if (getDataheight(index) >= 265) {
+                                  //   setState(() {
+                                  //     maleEnabled == true
+                                  //         ? weightId.text =
+                                  //             ((0.9079 * getDataheight(index)) -88.022).toInt().toString()
+                                  //         : femaleEnabled == true
+                                  //             ? weightId.text = ((0.9049 *getDataheight(index)) -88.022).toInt().toString()
+                                  //             : 0.toString();
+                                  //   });
+                                  // }
                                 });
                               },
                               children: List.generate(
-                                  67,
+                                  176,
                                   (index) => Center(
                                         child: Text(
                                             (getDataheight(index)).toString()),
@@ -459,48 +455,203 @@ class _NewTreatmentScreenState extends State<NewTreatmentScreen> {
   }
 
   getDataheight(index) {
-    return index == 0
-        ? 134
+        return index == 0
+        ? 80
         : index == 1
-            ? 135
+            ? 81
             : index == 2
-                ? 136
+                ? 82
                 : index == 3
-                    ? 137
+                    ? 83
                     : index == 4
-                        ? 138
-                        : index == 5
-                            ? 139
-                            : index == 6
-                                ? 140
-                                : index == 7
-                                    ? 141
-                                    : index == 8
-                                        ? 142
-                                        : index == 9
-                                            ? 143
-                                            : index == 10
-                                                ? 144
-                                                : index == 12
-                                                    ? 145
-                                                    : index == 12
-                                                        ? 146
-                                                        : index == 13
-                                                            ? 147
-                                                            : index == 14
-                                                                ? 148
-                                                                : index == 15
-                                                                    ? 149
-                                                                    : index ==
-                                                                            16
-                                                                        ? 150
-                                                                        : index ==
-                                                                                17
-                                                                            ? 151
-                                                                            : index == 18
-                                                                                ? 152
-                                                                                : index == 19 ? 153 : index == 20 ? 154 : index == 21 ? 155 : index == 22 ? 156 : index == 23 ? 157 : index == 24 ? 158 : index == 25 ? 159 : index == 26 ? 160 : index == 27 ? 161 : index == 28 ? 162 : index == 29 ? 163 : index == 30 ? 164 : index == 31 ? 165 : index == 32 ? 166 : index == 33 ? 167 : index == 34 ? 168 : index == 35 ? 169 : index == 36 ? 170 : index == 37 ? 171 : index == 38 ? 172 : index == 39 ? 173 : index == 40 ? 174 : index == 41 ? 175 : index == 42 ? 176 : index == 43 ? 177 : index == 44 ? 178 : index == 45 ? 179 : index == 46 ? 170 : index == 47 ? 181 : index == 48 ? 182 : index == 49 ? 183 : index == 50 ? 184 : index == 51 ? 185 : index == 52 ? 186 : index == 53 ? 187 : index == 54 ? 188 : index == 55 ? 189 : index == 56 ? 190 : index == 57 ? 191 : index == 58 ? 192 : index == 59 ? 193 : index == 60 ? 194 : index == 61 ? 195 : index == 62 ? 196 : index == 63 ? 197 : index == 64 ? 198 : index == 65 ? 199 : index == 66 ? 200 : "";
-  }
+? 84
+: index == 5
+    ? 85
+    : index == 6
+        ? 86
+        : index == 7
+            ? 87
+            : index == 8
+                ? 88
+                : index == 9
+                    ? 89
+                    : index == 10
+? 90
+: index == 11
+    ? 91
+    : index == 12
+        ? 92
+        : index == 13
+            ? 93
+            : index == 14
+                ? 94
+                : index == 15
+                    ? 95
+                    : index == 16
+? 96
+: index ==
+        17
+    ? 97
+    : index == 18
+        ? 98
+        : index == 19 ? 99 
+        : index == 20 ? 100 
+        : index == 21 ? 101 
+        : index == 22 ? 102 
+        : index == 23 ? 103 
+        : index == 24 ? 104 
+        : index == 25 ? 105 
+        : index == 26 ? 106 
+        : index == 27 ? 107 
+        : index == 28 ? 108 
+        : index == 29 ? 109 
+        : index == 30 ? 110 
+        : index == 31 ? 111 
+        : index == 32 ? 112 
+        : index == 33 ? 113 
+        : index == 34 ? 114 
+        : index == 35 ? 115 
+        : index == 36 ? 116 
+        : index == 37 ? 117 
+        : index == 38 ? 118 
+        : index == 39 ? 119 
+        : index == 40 ? 120 
+        : index == 41 ? 121 
+        : index == 42 ? 122 
+        : index == 43 ? 123 
+        : index == 44 ? 124 
+        : index == 45 ? 125 
+        : index == 46 ? 126 
+        : index == 47 ? 127 
+        : index == 48 ? 128 
+        : index == 49 ? 129 
+        : index == 50 ? 130 
+        : index == 51 ? 131 
+        : index == 52 ? 132 
+        : index == 53 ? 133 
+        : index == 54 ? 134 
+        : index == 55 ? 135 
+        : index == 56 ? 136 
+        : index == 57 ? 137 
+        : index == 58 ? 138 
+        : index == 59 ? 139 
+        : index == 60 ? 140 
+        : index == 61 ? 141 
+        : index == 62 ? 142 
+        : index == 63 ? 143 
+        : index == 64 ? 144 
+        : index == 65 ? 145 
+        : index == 66 ? 146
+        : index == 67 ? 147 
+        : index == 68 ? 148 
+        : index == 69 ? 149 
+        : index == 70 ? 150 
+        : index == 71 ? 151 
+        : index == 72 ? 152 
+        : index == 73 ? 153 
+        : index == 74 ? 154 
+        : index == 75 ? 155 
+        : index == 76 ? 156
+        : index == 77 ? 157 
+        : index == 78 ? 158 
+        : index == 79 ? 159 
+        : index == 80 ? 160 
+        : index == 81 ? 161 
+        : index == 82 ? 162 
+        : index == 83 ? 163 
+        : index == 84 ? 164 
+        : index == 85 ? 165 
+        : index == 86 ? 166
+        : index == 87 ? 167 
+        : index == 88 ? 168 
+        : index == 89 ? 169 
+        : index == 90 ? 170 
+        : index == 91 ? 181 
+        : index == 92 ? 182 
+        : index == 93 ? 183 
+        : index == 94 ? 184 
+        : index == 95 ? 185 
+        : index == 96 ? 186
+        : index == 97 ? 187 
+        : index == 98 ? 188 
+        : index == 99 ? 189 
+        : index == 100 ? 190 
+        : index == 101 ? 191 
+        : index == 102 ? 192 
+        : index == 103 ? 193 
+        : index == 104 ? 194 
+        : index == 105 ? 195 
+        : index == 106 ? 196
+        : index == 107 ? 197 
+        : index == 108 ? 198 
+        : index == 109 ? 199 
+        : index == 110 ? 200 
+        : index == 111 ? 201 
+        : index == 112 ? 202 
+        : index == 113 ? 203 
+        : index == 114 ? 204 
+        : index == 115 ? 205 
+        : index == 116 ? 206
+        : index == 117 ? 207 
+        : index == 118 ? 208 
+        : index == 119 ? 209 
+        : index == 120 ? 210 
+        : index == 121 ? 211 
+        : index == 122 ? 212 
+        : index == 123 ? 213 
+        : index == 124 ? 214 
+        : index == 125 ? 215 
+        : index == 126 ? 216
+        : index == 127 ? 217 
+        : index == 128 ? 218 
+        : index == 129 ? 219 
+        : index == 130 ? 220 
+        : index == 131 ? 221 
+        : index == 132 ? 222 
+        : index == 133 ? 223 
+        : index == 134 ? 224 
+        : index == 135 ? 225 
+        : index == 136 ? 226
+        : index == 137 ? 227 
+        : index == 138 ? 228 
+        : index == 139 ? 229
+        : index == 140 ? 230 
+        : index == 141 ? 231 
+        : index == 142 ? 232 
+        : index == 143 ? 233 
+        : index == 144 ? 234 
+        : index == 145 ? 235 
+        : index == 146 ? 236
+        : index == 147 ? 237 
+        : index == 148 ? 238 
+        : index == 149 ? 239
+        : index == 150 ? 240 
+        : index == 151 ? 241 
+        : index == 152 ? 242 
+        : index == 153 ? 243 
+        : index == 154 ? 244 
+        : index == 155 ? 245 
+        : index == 156 ? 246
+        : index == 157 ? 247 
+        : index == 158 ? 248 
+        : index == 159 ? 249
+        : index == 160 ? 250 
+        : index == 161 ? 251 
+        : index == 162 ? 252 
+        : index == 163 ? 253 
+        : index == 164 ? 254 
+        : index == 165 ? 255 
+        : index == 166 ? 256
+        : index == 167 ? 257 
+        : index == 168 ? 258 
+        : index == 169 ? 259
+        : index == 170 ? 260 
+        : index == 171 ? 261 
+        : index == 172 ? 262 
+        : index == 173 ? 263 
+        : index == 174 ? 264 
+        : index == 175 ? 265 
+         : "";}
 
   // /// Fired when the virtual keyboard key is pressed.
   // _onKeyPress(VirtualKeyboardKey key) {

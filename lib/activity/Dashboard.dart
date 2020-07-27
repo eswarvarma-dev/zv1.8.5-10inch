@@ -133,6 +133,8 @@ class _CheckPageState extends State<Dashboard> {
       mode1fio2val = 21,
       mode1tival = 50;
 
+  bool _iso2High = true,_isgraphFullScreen=true;
+
   bool modeEnable = false,
       audioEnable = true,
       usbConnected = false,
@@ -391,7 +393,7 @@ class _CheckPageState extends State<Dashboard> {
       cpappPcValue = 25;
 
   int cpappmaxValue = 45, cpappminValue = 0, cpappdefaultValue = 10;
-  String cpappparameterName = "PEEP", cpappparameterUnits = "cmH\u2082O";
+  String cpappparameterName = "CPAP", cpappparameterUnits = "cmH\u2082O";
 
   int bipapmaxValue = 30;
   int bipapminValue = 0;
@@ -419,7 +421,9 @@ class _CheckPageState extends State<Dashboard> {
       ieDisplayValue = 0,
       cdisplayParameter = 0,
       rrDisplayValue = 0;
-  String ioreDisplayParamter = "I/E", amsDisplayParamter = "AMS";
+  String ioreDisplayParamter = "I/E",
+      amsDisplayParamter = "",
+      displayApneaTime = "";
   bool playOnEnabled = false, powerOnEnabled = false, _playButtonbool;
   var dbHelper = DatabaseHelper();
   var dbHelpera = ADatabaseHelper();
@@ -810,6 +814,11 @@ class _CheckPageState extends State<Dashboard> {
             setState(() {
               resList.add((result & 0x00FF));
               resList.add(counter);
+              if (_iso2High == true) {
+                resList.add(2);
+              } else {
+                resList.add(2);
+              }
             });
             if (_status == "Connected") {
               sendDataUsbConnection(resList, 2);
@@ -1605,7 +1614,7 @@ class _CheckPageState extends State<Dashboard> {
         padding: 10.0,
         backgroundColor: Color(0xFF171e27),
         traceColor: Colors.blue,
-        yAxisMax: 1000.0,
+        yAxisMax: 2600.0,
         yAxisMin: 0.0,
         dataSet: volumePoints);
 
@@ -5372,7 +5381,7 @@ class _CheckPageState extends State<Dashboard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(width: _isTab10 ? 5 : 10),
-                          _isTab10 ? graphs10() : graphs(),
+                          _isgraphFullScreen ? graphsScale():graphs10() ,
                           SizedBox(width: _isTab10 ? 5 : 25),
                           Container(
                             margin: EdgeInsets.only(top: 40),
@@ -5887,25 +5896,55 @@ class _CheckPageState extends State<Dashboard> {
                                                         width: 120),
                                                   ],
                                                 ),
-                                                Container(
-                                                  height: 25,
-                                                  width: 25,
-                                                  decoration: new BoxDecoration(
-                                                    borderRadius:
-                                                        new BorderRadius
-                                                            .circular(25.0),
-                                                    border: new Border.all(
-                                                      width: 2.0,
-                                                      color: Colors.green,
+                                                Column(
+                                                  children: <Widget>[
+                                                    Container(
+                                                      height: 25,
+                                                      width: 25,
+                                                      decoration:
+                                                          new BoxDecoration(
+                                                        borderRadius:
+                                                            new BorderRadius
+                                                                .circular(25.0),
+                                                        border: new Border.all(
+                                                          width: 2.0,
+                                                          color: Colors.green,
+                                                        ),
+                                                      ),
+                                                      child: Center(
+                                                          child: Text(
+                                                              ioreDisplayParamter,
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      10))),
                                                     ),
-                                                  ),
-                                                  child: Center(
-                                                      child: Text(
-                                                          ioreDisplayParamter,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 10))),
+                                                    Container(
+                                                      margin: EdgeInsets.only(
+                                                          top: 80),
+                                                      height: 25,
+                                                      width: 25,
+                                                      decoration:
+                                                          new BoxDecoration(
+                                                        borderRadius:
+                                                            new BorderRadius
+                                                                .circular(25.0),
+                                                        border: new Border.all(
+                                                          width: 2.0,
+                                                          color: Colors.green,
+                                                        ),
+                                                      ),
+                                                      child: Center(
+                                                          child: Text(
+                                                              amsDisplayParamter,
+                                                              style: TextStyle(
+                                                                  color: Colors
+                                                                      .white,
+                                                                  fontSize:
+                                                                      10))),
+                                                    ),
+                                                  ],
                                                 ),
                                               ],
                                             ),
@@ -6052,7 +6091,10 @@ class _CheckPageState extends State<Dashboard> {
                     ),
                     Row(
                       children: <Widget>[
-                        modeName == "PSV" || operatinModeR == 3 || modeName=="CPAP" || operatinModeR==20
+                        modeName == "PSV" ||
+                                operatinModeR == 3 ||
+                                modeName == "CPAP" ||
+                                operatinModeR == 20
                             ? psvBottomBar()
                             : bottombar(),
                         lockEnabled
@@ -6196,64 +6238,68 @@ class _CheckPageState extends State<Dashboard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-         modeName=="CPAP" || operatinModeR==20? Container():   InkWell(
-              onTap: () {
-                setState(() {
-                  _setValuesonClick = false;
-                });
-                if (modeWriteList.isNotEmpty) {
-                  lockEnabled ? playOnEnabled ? "" : CommonClick("PSV") : "";
-                } else {}
-              },
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
-                  child: Card(
-                    elevation: 40,
-                    color: lockEnabled ? Color(0xFF213855) : Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "PS",
-                              style: TextStyle(
-                                  fontSize: _isTab10 ? 20 : 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
+            modeName == "CPAP" || operatinModeR == 20
+                ? Container()
+                : InkWell(
+                    onTap: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("PSV")
+                            : "";
+                      } else {}
+                    },
+                    child: Center(
+                      child: Container(
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
+                        child: Card(
+                          elevation: 40,
+                          color: lockEnabled ? Color(0xFF213855) : Colors.grey,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "PS",
+                                    style: TextStyle(
+                                        fontSize: _isTab10 ? 20 : 12,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 17.0),
+                                    child: Text(
+                                      receivedps.toString(),
+                                      style: TextStyle(
+                                          fontSize: _isTab10 ? 50 : 30,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 17.0),
-                              child: Text(
-                                receivedps.toString(),
-                                style: TextStyle(
-                                    fontSize: _isTab10 ? 50 : 30,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
             InkWell(
               onTap: () {
                 setState(() {
@@ -6430,69 +6476,74 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-           modeName=="CPAP" || operatinModeR==20? Container(): InkWell(
-              onTap: () {
-                setState(() {
-                  _setValuesonClick = false;
-                });
-                if (modeWriteList.isNotEmpty) {
-                  lockEnabled
-                      ? playOnEnabled ? "" : CommonClick("Backup I:E")
-                      : "";
-                }
-              },
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
-                  child: Card(
-                    elevation: 40,
-                    color: lockEnabled ? Color(0xFF213855) : Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Backup I:E",
-                              style: TextStyle(
-                                  fontSize: _isTab10 ? 20 : 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
+            modeName == "CPAP" || operatinModeR == 20
+                ? Container()
+                : InkWell(
+                    onTap: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("Backup I:E")
+                            : "";
+                      }
+                    },
+                    child: Center(
+                      child: Container(
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
+                        child: Card(
+                          elevation: 40,
+                          color: lockEnabled ? Color(0xFF213855) : Colors.grey,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Backup I:E",
+                                    style: TextStyle(
+                                        fontSize: _isTab10 ? 20 : 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 17.0),
+                                    child: Text(
+                                      checkI((receivedi / 10)
+                                              .toDouble()
+                                              .toString()) +
+                                          ":" +
+                                          checkE((receivede / 10)
+                                              .toDouble()
+                                              .toString()),
+                                      style: TextStyle(
+                                          fontSize: _isTab10 ? 50 : 30,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 17.0),
-                              child: Text(
-                                checkI((receivedi / 10).toDouble().toString()) +
-                                    ":" +
-                                    checkE(
-                                        (receivede / 10).toDouble().toString()),
-                                style: TextStyle(
-                                    fontSize: _isTab10 ? 50 : 30,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
             pControl
                 ? InkWell(
                     onTap: () {
@@ -6732,64 +6783,69 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-          modeName=="CPAP" || operatinModeR==20 ? Container():  InkWell(
-              onTap: () {
-                setState(() {
-                  _setValuesonClick = false;
-                });
-                if (modeWriteList.isNotEmpty) {
-                  lockEnabled ? playOnEnabled ? "" : CommonClick("Ti") : "";
-                }
-              },
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
-                  child: Card(
-                    elevation: 40,
-                    color: lockEnabled ? Color(0xFF213855) : Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Ti",
-                              style: TextStyle(
-                                  fontSize: _isTab10 ? 20 : 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
+            modeName == "CPAP" || operatinModeR == 20
+                ? Container()
+                : InkWell(
+                    onTap: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("Ti")
+                            : "";
+                      }
+                    },
+                    child: Center(
+                      child: Container(
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
+                        child: Card(
+                          elevation: 40,
+                          color: lockEnabled ? Color(0xFF213855) : Colors.grey,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Ti",
+                                    style: TextStyle(
+                                        fontSize: _isTab10 ? 20 : 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "s",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 17.0),
+                                    child: Text(
+                                      ((receivedti / 1000).toDouble())
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: _isTab10 ? 50 : 30,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "s",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 17.0),
-                              child: Text(
-                                ((receivedti / 1000).toDouble()).toString(),
-                                style: TextStyle(
-                                    fontSize: _isTab10 ? 50 : 30,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -7941,7 +7997,11 @@ class _CheckPageState extends State<Dashboard> {
                       });
                       if (modeWriteList.isNotEmpty) {
                         lockEnabled
-                            ? playOnEnabled ? "" : pItrig ? CommonClick("ITRI") : CommonClick("PITRI")
+                            ? playOnEnabled
+                                ? ""
+                                : pItrig
+                                    ? CommonClick("ITRI")
+                                    : CommonClick("PITRI")
                             : "";
                       }
                     },
@@ -7980,7 +8040,9 @@ class _CheckPageState extends State<Dashboard> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(top: 17.0),
                                     child: Text(
-                                      pItrig? "-$receivedItrig":"$receivedItrig" ,
+                                      pItrig
+                                          ? "-$receivedItrig"
+                                          : "$receivedItrig",
                                       style: TextStyle(
                                           fontSize: _isTab10 ? 50 : 30,
                                           color: Colors.white),
@@ -8050,7 +8112,32 @@ class _CheckPageState extends State<Dashboard> {
               )),
               SizedBox(
                   width: modeName == "VSIMV" || modeName == "PSIMV" ? 50 : 75),
-              SizedBox(width: _isTab10 ? 150 : 0),
+              SizedBox(width: _isTab10 ? 90 : 0),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    lockEnabled ? showAlertDialogO2() : "";
+                  });
+                },
+                child: Center(
+                  child: Container(
+                    width: 60,
+                    child: Card(
+                      color: lockEnabled ? Colors.white : Colors.grey,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 0.0, left: 10, right: 10, bottom: 0.0),
+                        child: Center(
+                          child: Text("O\u2082",
+                              style:
+                                  TextStyle(color: Colors.black, fontSize: 24)),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
+
               InkWell(
                 onTap: () {
                   if (powerIndication == 1 && playOnEnabled == true) {
@@ -8291,6 +8378,66 @@ class _CheckPageState extends State<Dashboard> {
     );
   }
 
+  showAlertDialogO2() {
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) => CupertinoAlertDialog(
+              title: new Text("OXYGEN INLET TYPE"),
+              actions: <Widget>[
+                CupertinoDialogAction(
+                  child: Text("Low Pressure",
+                  style:TextStyle(color:_iso2High? Colors.black: Colors.blue)),
+                  onPressed: () {
+                    setState(() {
+                      _iso2High = false;
+                    });
+                    
+                    Navigator.pop(context);
+                    o2packet();
+                  },
+                ),
+                CupertinoDialogAction(
+                  child: Text("High Pressure"
+                  ,style:TextStyle(color:_iso2High? Colors.blue: Colors.black)),
+                  onPressed: () {
+                    setState((){
+                      _iso2High = true;
+                    });
+                    
+                    Navigator.pop(context);
+                    o2packet();
+                  },
+                ),
+              ],
+            ));
+  }
+
+  o2packet(){
+    shutdownChannel.invokeMethod('getBatteryLevel').then((result) async {
+          counter = counter + 1;
+          List<int> resList = [0, 20, 0, 15];
+          if (counter <= 250) {
+            setState(() {
+              resList.add((result & 0x00FF));
+              resList.add(counter);
+              if (_iso2High == true) {
+                resList.add(2);
+              } else {
+                resList.add(2);
+              }
+            });
+            if (_status == "Connected") {
+              sendDataUsbConnection(resList, 2);
+            }
+          } else {
+            setState(() {
+              counter = 0;
+            });
+          }
+        });
+  }
+
   modeDefaultSettings() {
     return Row(
       children: [
@@ -8323,7 +8470,7 @@ class _CheckPageState extends State<Dashboard> {
                   setState(() {
                     cpappmaxValue = _isTab10 ? 45 : 30;
                     cpappminValue = 0;
-                    cpappparameterName = "PEEP";
+                    cpappparameterName = "CPAP";
                     cpappparameterUnits = "";
                     cpappItrig = false;
                     cpappPeep = true;
@@ -8348,7 +8495,7 @@ class _CheckPageState extends State<Dashboard> {
                             Align(
                               alignment: Alignment.topLeft,
                               child: Text(
-                                "PEEP",
+                                "CPAP",
                                 style: TextStyle(
                                     fontSize: 15,
                                     fontWeight: FontWeight.bold,
@@ -8711,7 +8858,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Text(
-                             pItrig? "-10":"10",
+                              pItrig ? "-10" : "10",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: cpappItrig
@@ -8722,7 +8869,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                              pItrig?"-1":"1",
+                              pItrig ? "-1" : "1",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: cpappItrig
@@ -8735,7 +8882,9 @@ class _CheckPageState extends State<Dashboard> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 1.0),
                               child: Text(
-                               pItrig? "-$cpappItrigValue":"$cpappItrigValue" ,
+                                pItrig
+                                    ? "-$cpappItrigValue"
+                                    : "$cpappItrigValue",
                                 style: TextStyle(
                                     fontSize: 35,
                                     color: cpappItrig
@@ -9274,7 +9423,9 @@ class _CheckPageState extends State<Dashboard> {
                           children: [
                             Text(
                               cpappItrig
-                                  ? pItrig?"-$cpappItrigValue":"$cpappItrigValue" 
+                                  ? pItrig
+                                      ? "-$cpappItrigValue"
+                                      : "$cpappItrigValue"
                                   : cpappPeep
                                       ? cpappPeepValue.toInt().toString()
                                       : cpappFio2
@@ -9374,14 +9525,18 @@ class _CheckPageState extends State<Dashboard> {
                         child: Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
-                            Text(cpappItrig? pItrig?"-$cpappminValue":"$cpappminValue"
-                            :cpappminValue.toString()),
+                            Text(cpappItrig
+                                ? pItrig ? "-$cpappminValue" : "$cpappminValue"
+                                : cpappminValue.toString()),
                             Text(
-                             cpappItrig? pItrig? cpappparameterUnits:"lpm":cpappparameterUnits,
+                              cpappItrig
+                                  ? pItrig ? cpappparameterUnits : "lpm"
+                                  : cpappparameterUnits,
                               style: TextStyle(fontSize: 16),
                             ),
-                            Text(cpappItrig? pItrig?"-$cpappmaxValue":"$cpappmaxValue"
-                              :cpappmaxValue.toString())
+                            Text(cpappItrig
+                                ? pItrig ? "-$cpappmaxValue" : "$cpappmaxValue"
+                                : cpappmaxValue.toString())
                           ],
                         ),
                       )
@@ -10383,8 +10538,8 @@ class _CheckPageState extends State<Dashboard> {
                   ? InkWell(
                       onTap: () {
                         setState(() {
-                          psvmaxValue =_isTab10?2500: 600;
-                          psvminValue = _isTab10?50:200;
+                          psvmaxValue = _isTab10 ? 2500 : 600;
+                          psvminValue = _isTab10 ? 50 : 200;
                           psvparameterName = "VT";
                           psvparameterUnits = "mL";
                           psvItrig = false;
@@ -10442,7 +10597,7 @@ class _CheckPageState extends State<Dashboard> {
                                   Align(
                                     alignment: Alignment.bottomRight,
                                     child: Text(
-                                     _isTab10?"2500": "600",
+                                      _isTab10 ? "2500" : "600",
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: psvPc
@@ -10453,7 +10608,7 @@ class _CheckPageState extends State<Dashboard> {
                                   Align(
                                     alignment: Alignment.bottomLeft,
                                     child: Text(
-                                      _isTab10?"50":"200",
+                                      _isTab10 ? "50" : "200",
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: psvPc
@@ -10489,7 +10644,9 @@ class _CheckPageState extends State<Dashboard> {
                                               : Color(0xFFE0E0E0),
                                         ),
                                         value: psvVtValue != null
-                                            ?_isTab10? psvVtValue/2500: psvVtValue / 600
+                                            ? _isTab10
+                                                ? psvVtValue / 2500
+                                                : psvVtValue / 600
                                             : 0,
                                       ),
                                     ),
@@ -11054,7 +11211,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Text(
-                              pItrig?"-10":"10",
+                              pItrig ? "-10" : "10",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: psvItrig
@@ -11065,7 +11222,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                             pItrig? "-1":"1",
+                              pItrig ? "-1" : "1",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: psvItrig
@@ -11078,7 +11235,7 @@ class _CheckPageState extends State<Dashboard> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 1.0),
                               child: Text(
-                               pItrig?  "-$psvItrigValue":"$psvItrigValue" ,
+                                pItrig ? "-$psvItrigValue" : "$psvItrigValue",
                                 style: TextStyle(
                                     fontSize: 35,
                                     color: psvItrig
@@ -11846,8 +12003,8 @@ class _CheckPageState extends State<Dashboard> {
                             onTap: () {
                               setState(() {
                                 pControl = !pControl;
-                                  psvVtValue = 300;
-                                  psvPcValue = psvPsValue;
+                                psvVtValue = 300;
+                                psvPcValue = psvPsValue;
                               });
                             },
                             child: Card(
@@ -11870,8 +12027,8 @@ class _CheckPageState extends State<Dashboard> {
                             onTap: () {
                               setState(() {
                                 pControl = !pControl;
-                                  psvVtValue = 300;
-                                  psvPcValue = psvPsValue;
+                                psvVtValue = 300;
+                                psvPcValue = psvPsValue;
                               });
                             },
                             child: Card(
@@ -11901,7 +12058,6 @@ class _CheckPageState extends State<Dashboard> {
                             onTap: () {
                               setState(() {
                                 pItrig = !pItrig;
-                               
                               });
                             },
                             child: Card(
@@ -12276,7 +12432,9 @@ class _CheckPageState extends State<Dashboard> {
                           children: [
                             Text(
                               psvItrig
-                                  ? pItrig?"-$psvItrigValue":"$psvItrigValue" 
+                                  ? pItrig
+                                      ? "-$psvItrigValue"
+                                      : "$psvItrigValue"
                                   : psvPeep
                                       ? psvPeepValue.toInt().toString()
                                       : psvPs
@@ -12472,18 +12630,20 @@ class _CheckPageState extends State<Dashboard> {
                             Text(psvIe
                                 ? getIeData(psvminValue, 1)
                                 : psvItrig
-                                    ? pItrig?"-$psvminValue":"$psvminValue" 
+                                    ? pItrig ? "-$psvminValue" : "$psvminValue"
                                     : psvTi
                                         ? getTiValue(psvminValue).toString()
                                         : psvminValue.toString()),
                             Text(
-                             psvItrig? pItrig? psvparameterUnits:"lpm":psvparameterUnits,
+                              psvItrig
+                                  ? pItrig ? psvparameterUnits : "lpm"
+                                  : psvparameterUnits,
                               style: TextStyle(fontSize: 16),
                             ),
                             Text(psvIe
                                 ? getIeData(psvmaxValue, 1)
                                 : psvItrig
-                                    ? pItrig?"-$psvmaxValue":"$psvmaxValue" 
+                                    ? pItrig ? "-$psvmaxValue" : "$psvmaxValue"
                                     : psvTi
                                         ? getTiValue(psvmaxValue).toString()
                                         : psvmaxValue.toString())
@@ -12912,7 +13072,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Text(
-                            pItrig?  "-10":"10",
+                              pItrig ? "-10" : "10",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: pacvItrig
@@ -12923,7 +13083,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                             pItrig? "-1":"1",
+                              pItrig ? "-1" : "1",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: pacvItrig
@@ -12936,7 +13096,7 @@ class _CheckPageState extends State<Dashboard> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 1.0),
                               child: Text(
-                                pItrig?"-$pacvItrigValue":"$pacvItrigValue",
+                                pItrig ? "-$pacvItrigValue" : "$pacvItrigValue",
                                 style: TextStyle(
                                     fontSize: 35,
                                     color: pacvItrig
@@ -13974,7 +14134,9 @@ class _CheckPageState extends State<Dashboard> {
                           children: [
                             Text(
                               pacvItrig
-                                  ? pItrig?"-$pacvItrigValue":"$pacvItrigValue" 
+                                  ? pItrig
+                                      ? "-$pacvItrigValue"
+                                      : "$pacvItrigValue"
                                   : pacvPeep
                                       ? pacvPeepValue.toInt().toString()
                                       : pacvRr
@@ -14116,16 +14278,22 @@ class _CheckPageState extends State<Dashboard> {
                             Text(pacvIe
                                 ? getIeData(pacvminValue, 1)
                                 : pacvItrig
-                                    ? pItrig? "-$pacvminValue":"$pacvminValue" 
+                                    ? pItrig
+                                        ? "-$pacvminValue"
+                                        : "$pacvminValue"
                                     : pacvminValue.toString()),
                             Text(
-                             pacvItrig? pItrig ?  pacvparameterUnits:"lpm":pacvparameterUnits,
+                              pacvItrig
+                                  ? pItrig ? pacvparameterUnits : "lpm"
+                                  : pacvparameterUnits,
                               style: TextStyle(fontSize: 16),
                             ),
                             Text(pacvIe
                                 ? getIeData(pacvmaxValue, 1)
                                 : pacvItrig
-                                    ? pItrig?"-$pacvmaxValue":"$pacvmaxValue" 
+                                    ? pItrig
+                                        ? "-$pacvmaxValue"
+                                        : "$pacvmaxValue"
                                     : pacvmaxValue.toString()),
                           ],
                         ),
@@ -14781,7 +14949,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Text(
-                             pItrig? "-10":"10",
+                              pItrig ? "-10" : "10",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: prvcItrig
@@ -14792,7 +14960,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                             pItrig? "-1":"1",
+                              pItrig ? "-1" : "1",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: prvcItrig
@@ -14805,7 +14973,7 @@ class _CheckPageState extends State<Dashboard> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 1.0),
                               child: Text(
-                                pItrig?"-$prvcItrigValue" :"$prvcItrigValue",
+                                pItrig ? "-$prvcItrigValue" : "$prvcItrigValue",
                                 style: TextStyle(
                                     fontSize: 35,
                                     color: prvcItrig
@@ -15408,7 +15576,9 @@ class _CheckPageState extends State<Dashboard> {
                           children: [
                             Text(
                               prvcItrig
-                                  ? pItrig?"-$prvcItrigValue":"$prvcItrigValue" 
+                                  ? pItrig
+                                      ? "-$prvcItrigValue"
+                                      : "$prvcItrigValue"
                                   : prvcPeep
                                       ? prvcPeepValue.toInt().toString()
                                       : prvcRr
@@ -15549,16 +15719,22 @@ class _CheckPageState extends State<Dashboard> {
                             Text(prvcIe
                                 ? getIeData(prvcminValue, 1)
                                 : prvcItrig
-                                    ? pItrig?"-$prvcminValue":"$prvcminValue" 
+                                    ? pItrig
+                                        ? "-$prvcminValue"
+                                        : "$prvcminValue"
                                     : prvcminValue.toString()),
                             Text(
-                           prvcItrig?  pItrig? prvcparameterUnits:"lpm":prvcparameterUnits,
+                              prvcItrig
+                                  ? pItrig ? prvcparameterUnits : "lpm"
+                                  : prvcparameterUnits,
                               style: TextStyle(fontSize: 16),
                             ),
                             Text(prvcIe
                                 ? getIeData(prvcminValue, 1)
                                 : prvcItrig
-                                    ? pItrig? "-$prvcmaxValue":"$prvcmaxValue" 
+                                    ? pItrig
+                                        ? "-$prvcmaxValue"
+                                        : "$prvcmaxValue"
                                     : prvcmaxValue.toString())
                           ],
                         ),
@@ -16224,7 +16400,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Text(
-                             pItrig? "-10":"10",
+                              pItrig ? "-10" : "10",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: psimvItrig
@@ -16235,7 +16411,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                             pItrig? "-1":"1",
+                              pItrig ? "-1" : "1",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: psimvItrig
@@ -16248,7 +16424,9 @@ class _CheckPageState extends State<Dashboard> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 1.0),
                               child: Text(
-                                pItrig?"-$psimvItrigValue" :"$psimvItrigValue",
+                                pItrig
+                                    ? "-$psimvItrigValue"
+                                    : "$psimvItrigValue",
                                 style: TextStyle(
                                     fontSize: 35,
                                     color: psimvItrig
@@ -17118,7 +17296,9 @@ class _CheckPageState extends State<Dashboard> {
                           children: [
                             Text(
                               psimvItrig
-                                  ? pItrig? "-$psimvItrigValue" :"$psimvItrigValue"
+                                  ? pItrig
+                                      ? "-$psimvItrigValue"
+                                      : "$psimvItrigValue"
                                   : psimvPeep
                                       ? psimvPeepValue.toInt().toString()
                                       : psimvRr
@@ -17284,16 +17464,22 @@ class _CheckPageState extends State<Dashboard> {
                             Text(psimvIe
                                 ? getIeData(psimvminValue, 1)
                                 : psimvItrig
-                                    ? pItrig?"-$psimvminValue":"$psimvminValue"
+                                    ? pItrig
+                                        ? "-$psimvminValue"
+                                        : "$psimvminValue"
                                     : psimvminValue.toString()),
                             Text(
-                           psimvItrig? pItrig ?  psimvparameterUnits:"lpm":psimvparameterUnits,
+                              psimvItrig
+                                  ? pItrig ? psimvparameterUnits : "lpm"
+                                  : psimvparameterUnits,
                               style: TextStyle(fontSize: 16),
                             ),
                             Text(psimvIe
                                 ? getIeData(psimvmaxValue, 1)
                                 : psimvItrig
-                                    ?pItrig? "-$psimvmaxValue" :"$psimvmaxValue"
+                                    ? pItrig
+                                        ? "-$psimvmaxValue"
+                                        : "$psimvmaxValue"
                                     : psimvmaxValue.toString())
                           ],
                         ),
@@ -20668,7 +20854,7 @@ class _CheckPageState extends State<Dashboard> {
                   vsimvmaxValue = 10;
                   vsimvminValue = 1;
                   vsimvparameterName = "I Trig";
-                  vsimvparameterUnits ="cmH\u2082O Below PEEP";
+                  vsimvparameterUnits = "cmH\u2082O Below PEEP";
                   vsimvItrig = true;
                   vsimvRr = false;
                   vsimvIe = false;
@@ -20719,7 +20905,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Text(
-                             pItrig? "-10":"10",
+                              pItrig ? "-10" : "10",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: vsimvItrig
@@ -20730,7 +20916,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                             pItrig? "-1":"1",
+                              pItrig ? "-1" : "1",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: vsimvItrig
@@ -20743,7 +20929,9 @@ class _CheckPageState extends State<Dashboard> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 1.0),
                               child: Text(
-                                pItrig? "-$vsimvItrigValue" :"$vsimvItrigValue",
+                                pItrig
+                                    ? "-$vsimvItrigValue"
+                                    : "$vsimvItrigValue",
                                 style: TextStyle(
                                     fontSize: 35,
                                     color: vsimvItrig
@@ -21600,7 +21788,9 @@ class _CheckPageState extends State<Dashboard> {
                           children: [
                             Text(
                               vsimvItrig
-                                  ? pItrig? "-$vsimvItrigValue":"$vsimvItrigValue" 
+                                  ? pItrig
+                                      ? "-$vsimvItrigValue"
+                                      : "$vsimvItrigValue"
                                   : vsimvPeep
                                       ? vsimvPeepValue.toInt().toString()
                                       : vsimvRr
@@ -21747,14 +21937,16 @@ class _CheckPageState extends State<Dashboard> {
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Text(vsimvItrig
-                                ? pItrig? "-$vsimvminValue":"$vsimvminValue" 
+                                ? pItrig ? "-$vsimvminValue" : "$vsimvminValue"
                                 : vsimvminValue.toString()),
                             Text(
-                             vsimvItrig? pItrig? vsimvparameterUnits:"lpm":vsimvparameterUnits,
+                              vsimvItrig
+                                  ? pItrig ? vsimvparameterUnits : "lpm"
+                                  : vsimvparameterUnits,
                               style: TextStyle(fontSize: 16),
                             ),
                             Text(vsimvItrig
-                                ? pItrig?"-$vsimvmaxValue":"$vsimvmaxValue"
+                                ? pItrig ? "-$vsimvmaxValue" : "$vsimvmaxValue"
                                 : vsimvmaxValue.toString())
                           ],
                         ),
@@ -22362,7 +22554,7 @@ class _CheckPageState extends State<Dashboard> {
                   vacvmaxValue = 10;
                   vacvminValue = 1;
                   vacvparameterName = "I Trig";
-                  vacvparameterUnits =  "cmH\u2082O Below PEEP";
+                  vacvparameterUnits = "cmH\u2082O Below PEEP";
                   vacvItrig = true;
                   vacvRr = false;
                   vacvIe = false;
@@ -22412,7 +22604,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomRight,
                             child: Text(
-                             pItrig? "-10":"10",
+                              pItrig ? "-10" : "10",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: vacvItrig
@@ -22423,7 +22615,7 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Text(
-                             pItrig ? "-1":"1",
+                              pItrig ? "-1" : "1",
                               style: TextStyle(
                                   fontSize: 12,
                                   color: vacvItrig
@@ -22436,7 +22628,7 @@ class _CheckPageState extends State<Dashboard> {
                             child: Padding(
                               padding: const EdgeInsets.only(top: 1.0),
                               child: Text(
-                                pItrig?"-$vacvItrigValue":"$vacvItrigValue",
+                                pItrig ? "-$vacvItrigValue" : "$vacvItrigValue",
                                 style: TextStyle(
                                     fontSize: 35,
                                     color: vacvItrig
@@ -23303,7 +23495,9 @@ class _CheckPageState extends State<Dashboard> {
                           children: [
                             Text(
                               vacvItrig
-                                  ? pItrig ? "-$vacvItrigValue":"$vacvItrigValue" 
+                                  ? pItrig
+                                      ? "-$vacvItrigValue"
+                                      : "$vacvItrigValue"
                                   : vacvPeep
                                       ? vacvPeepValue.toInt().toString()
                                       : vacvRr
@@ -23454,16 +23648,22 @@ class _CheckPageState extends State<Dashboard> {
                             Text(vacvIe
                                 ? getIeData(vacvminValue, 1)
                                 : vacvItrig
-                                    ? pItrig?"-$vacvminValue":"$vacvminValue" 
+                                    ? pItrig
+                                        ? "-$vacvminValue"
+                                        : "$vacvminValue"
                                     : vacvminValue.toString()),
                             Text(
-                             vacvItrig? pItrig ?  vacvparameterUnits:"lpm":vacvparameterUnits,
+                              vacvItrig
+                                  ? pItrig ? vacvparameterUnits : "lpm"
+                                  : vacvparameterUnits,
                               style: TextStyle(fontSize: 16),
                             ),
                             Text(vacvIe
                                 ? getIeData(vacvminValue, 1)
                                 : vacvItrig
-                                    ? pItrig?"-$vacvmaxValue":"$vacvmaxValue" 
+                                    ? pItrig
+                                        ? "-$vacvmaxValue"
+                                        : "$vacvmaxValue"
                                     : vacvmaxValue.toString())
                           ],
                         ),
@@ -23535,11 +23735,17 @@ class _CheckPageState extends State<Dashboard> {
                                 child: Text("Pressure",
                                     style: TextStyle(
                                         color: Colors.yellow, fontSize: 10))),
-                          ),
+                          ), //
                           Container(
                               margin: EdgeInsets.only(left: 362, top: 130),
                               child: Text(
                                 "s",
+                                style: TextStyle(color: Colors.grey),
+                              )),
+                          Container(
+                              margin: EdgeInsets.only(left: 200, top: 10),
+                              child: Text(
+                                "$displayApneaTime",
                                 style: TextStyle(color: Colors.grey),
                               )),
                         ],
@@ -23979,42 +24185,63 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ],
           ),
-          Container(
-              margin: EdgeInsets.only(left: _isTab10 ? 10 : 0),
-              width: _isTab10 ? 750 : 690,
-              height: 80,
-              child:
-                  // alarmActive == "1"
-                  //     ?
-                  Card(
-                color: alarmActive == "1" ? Colors.red : Color(0xFF171e27),
-                child: Center(
-                    child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Center(
-                    child: Text(
-                      alarmActive == "1" ? alarmMessage.toUpperCase() : "",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ),
-                )),
-              )
-              // : Container(),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: Container(
+                  decoration:BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  margin :EdgeInsets.only(left:40),
+                  width: 675,
+                  height: 80,
+                  child: alarmActive == "1"
+                      ? Card(
+                          color: alarmActive == "1" ? Colors.red : Color(0xFF171e27),
+                          child: Center(
+                              child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Center(
+                              child: Text(
+                                alarmActive == "1" ? alarmMessage.toUpperCase() : "",
+                                style: TextStyle(color: Colors.white, fontSize: 15),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )),
+                        )
+                      : Container(),
+                ),
               ),
+              InkWell(
+                onTap:(){
+                   setState((){
+                      _isgraphFullScreen =!_isgraphFullScreen;
+                   });
+                },
+                 child: Container(
+                  margin:EdgeInsets.only(left:10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.white),
+                      child: Icon(_isgraphFullScreen?  Icons.keyboard_arrow_left : Icons.keyboard_arrow_right,
+                          size: 40, color: Colors.black.withOpacity(0.9))),
+              )
+            ],
+          ),
         ],
       ),
     );
   }
 
-  //ui
-  graphs() {
+  graphsScale(){
     return Container(
       padding: EdgeInsets.only(left: 170, right: 0, top: 45),
       child: Column(
         children: [
           Container(
-            width: 520,
-            height: 110,
+            width: 769,
+            height: 150,
             child: Stack(
               children: [
                 Container(
@@ -24027,7 +24254,7 @@ class _CheckPageState extends State<Dashboard> {
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                    margin: EdgeInsets.only(left: 15, top: 88),
+                    margin: EdgeInsets.only(left: 15, top: 130),
                     child: Text(
                       "0",
                       style: TextStyle(color: Colors.grey),
@@ -24036,16 +24263,16 @@ class _CheckPageState extends State<Dashboard> {
                   margin: EdgeInsets.only(left: 28, top: 24),
                   width: 1,
                   color: Colors.grey,
-                  height: 76,
+                  height: 116,
                 ),
                 Container(
                   margin: EdgeInsets.only(
                     left: 28,
-                    top: 99,
+                    top: 138,
                   ),
                   color: Colors.grey,
                   height: 1,
-                  width: 473,
+                  width: 728,
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 12, top: 35),
@@ -24054,79 +24281,19 @@ class _CheckPageState extends State<Dashboard> {
                       child: Text("Pressure",
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                 ),
-
-                // Container(
-                //     margin: EdgeInsets.only(left: 450),
-                //     child: Text(
-                //       "Pressure ",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
                 Container(
-                    margin: EdgeInsets.only(left: 502, top: 90),
+                    margin: EdgeInsets.only(left: 758, top: 128),
                     child: Text(
                       "s",
                       style: TextStyle(color: Colors.grey),
                     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 60, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 106.6, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 156, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 207.3, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 260.6, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 310, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 363, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 415, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 460, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
+                
               ],
             ),
           ),
           Container(
-            width: 520,
-            height: 150,
+            width: 769,
+            height: 210,
             child: Stack(
               children: [
                 Container(
@@ -24144,13 +24311,13 @@ class _CheckPageState extends State<Dashboard> {
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                    margin: EdgeInsets.only(left: 10, top: 127),
+                    margin: EdgeInsets.only(left: 10, top: 200),
                     child: Text(
                       "-90 Lpm",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                    margin: EdgeInsets.only(left: 15, top: 86),
+                    margin: EdgeInsets.only(left: 15, top: 128),
                     child: Text(
                       "0",
                       style: TextStyle(color: Colors.grey),
@@ -24159,16 +24326,16 @@ class _CheckPageState extends State<Dashboard> {
                   margin: EdgeInsets.only(left: 28, top: 20),
                   width: 1,
                   color: Colors.grey,
-                  height: 108,
+                  height: 185,
                 ),
                 Container(
                   margin: EdgeInsets.only(
                     left: 28,
-                    top: 96,
+                    top: 138,
                   ),
                   color: Colors.grey,
                   height: 1,
-                  width: 473,
+                  width: 728,
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 12, top: 35),
@@ -24177,15 +24344,8 @@ class _CheckPageState extends State<Dashboard> {
                       child: Text("Flow",
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                 ),
-
-                // Container(
-                //     margin: EdgeInsets.only(left: 482),
-                //     child: Text(
-                //       "Flow ",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
                 Container(
-                    margin: EdgeInsets.only(left: 502, top: 86),
+                    margin: EdgeInsets.only(left: 759, top: 124),
                     child: Text(
                       "s",
                       style: TextStyle(color: Colors.grey),
@@ -24194,87 +24354,109 @@ class _CheckPageState extends State<Dashboard> {
             ),
           ),
           Container(
-            width: 520,
-            height: 110,
+            width: 769,
+            height: 150,
             child: Stack(
               children: [
                 Container(
                     margin: EdgeInsets.only(left: 20, right: 2, top: 10),
                     child: scopeOne2),
-                Container(
-                    margin: EdgeInsets.only(left: 10),
+               Container(
+                    margin: EdgeInsets.only(left: 10, top: 8),
                     child: Text(
-                      "1000 mL",
+                      "2600" + " mL",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                    margin: EdgeInsets.only(left: 15, top: 86),
+                    margin: EdgeInsets.only(left: 15, top: 130),
                     child: Text(
                       "0",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                  margin: EdgeInsets.only(left: 30, top: 15),
+                  margin: EdgeInsets.only(left: 28, top: 24),
                   width: 1,
                   color: Colors.grey,
-                  height: 85,
+                  height: 116,
                 ),
                 Container(
                   margin: EdgeInsets.only(
-                    left: 30,
-                    top: 99,
+                    left: 28,
+                    top: 138,
                   ),
                   color: Colors.grey,
                   height: 1,
-                  width: 470,
+                  width: 728,
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 12, top: 35),
+                  margin: EdgeInsets.only(left: 12, top: 55),
                   child: RotatedBox(
                       quarterTurns: 3,
                       child: Text("Volume",
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                 ),
-                // Container(
-                //     margin: EdgeInsets.only(left: 460),
-                //     child: Text(
-                //       "Volume ",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
                 Container(
-                    margin: EdgeInsets.only(left: 502, top: 89),
+                    margin: EdgeInsets.only(left: 758, top: 128),
                     child: Text(
                       "s",
                       style: TextStyle(color: Colors.grey),
-                    ))
+                    )),
               ],
             ),
           ),
-          Container(
-            width: 480,
-            height: 70,
-            child: alarmActive == "1"
-                ? Card(
-                    color: alarmActive == "1" ? Colors.red : Color(0xFF171e27),
-// priorityNo=="0" ? Colors.red: priorityNo=="1" ? Colors.red : priorityNo=="2" ? Colors.orange : priorityNo=="3" ? Colors.yellow :
-
-                    child: Center(
-                        child: Align(
-                      alignment: Alignment.centerLeft,
-                      child: Center(
-                        child: Text(
-                          alarmActive == "1" ? alarmMessage.toUpperCase() : "",
-                          style: TextStyle(color: Colors.white, fontSize: 18),
-                        ),
-                      ),
-                    )),
-                  )
-                : Container(),
+          SizedBox(height:20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              
+              Center(
+                child: Container(
+                  decoration:BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  margin :EdgeInsets.only(left:40),
+                  width: 675,
+                  height: 80,
+                  child: alarmActive == "1"
+                      ? Card(
+                          color: alarmActive == "1" ? Colors.red : Color(0xFF171e27),
+                          child: Center(
+                              child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Center(
+                              child: Text(
+                                alarmActive == "1" ? alarmMessage.toUpperCase() : "",
+                                style: TextStyle(color: Colors.white, fontSize: 15),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )),
+                        )
+                      : Container(),
+                ),
+              ),
+              InkWell(
+                onTap:(){
+                   setState((){
+                      _isgraphFullScreen =!_isgraphFullScreen;
+                   });
+                },
+                 child: Container(
+                  margin:EdgeInsets.only(left:10),
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(5),
+                          color: Colors.white),
+                      child: Icon(_isgraphFullScreen==false?  Icons.keyboard_arrow_right : Icons.keyboard_arrow_left,
+                          size: 40, color: Colors.black.withOpacity(0.9))),
+              )
+            ],
           ),
+          
         ],
       ),
     );
   }
+
+  
 
   Future CommonClick(String value) async {
     var result = await showDialog(
@@ -24439,6 +24621,17 @@ class _CheckPageState extends State<Dashboard> {
         getData();
         // // // print(modeWriteList.toString());
         sendDataUsbConnection(modeWriteList, 1);
+      } else if (cpapEnabled == true) {
+        int temp = int.tryParse(result.split("ab")[0]);
+        modeWriteList[18] = ((temp & 0xFF00) >> 8);
+        modeWriteList[19] = (temp & 0xFF);
+        modeWriteList[35] = (0);
+        modeWriteList[36] = (128);
+
+        preferences.setInt('cpapBackupRrValue', temp);
+        getData();
+        // // // print(modeWriteList.toString());
+        sendDataUsbConnection(modeWriteList, 1);
       }
     } else if (res == "peep") {
       //=============================
@@ -24533,6 +24726,17 @@ class _CheckPageState extends State<Dashboard> {
         getData();
         // // // print(modeWriteList.toString());
         sendDataUsbConnection(modeWriteList, 1);
+      } else if (cpapEnabled == true) {
+        int temp = int.tryParse(result.split("ab")[0]);
+        modeWriteList[6] = ((temp & 0xFF00) >> 8);
+        modeWriteList[7] = (temp & 0xFF);
+        modeWriteList[35] = (0);
+        modeWriteList[36] = (2);
+
+        preferences.setInt('cpapPeepValue', temp);
+        getData();
+        // // // print(modeWriteList.toString());
+        sendDataUsbConnection(modeWriteList, 1);
       }
     } else if (res == "fio2") {
       //=============================
@@ -24620,6 +24824,18 @@ class _CheckPageState extends State<Dashboard> {
         modeWriteList[24] = (0);
         modeWriteList[25] = (128);
         preferences.setInt('prvcFio2Value', temp);
+        getData();
+        // // // print(modeWriteList.toString());
+        sendDataUsbConnection(modeWriteList, 1);
+      } else if (cpapEnabled == true) {
+        int temp = int.tryParse(result.split("ab")[0]);
+        modeWriteList[10] = ((temp & 0xFF00) >> 8);
+        modeWriteList[11] = (temp & 0xFF);
+        modeWriteList[35] = (0);
+        modeWriteList[36] = (8);
+
+        preferences.setInt('cpapFio2Value', temp);
+
         getData();
         // // // print(modeWriteList.toString());
         sendDataUsbConnection(modeWriteList, 1);
@@ -24714,6 +24930,23 @@ class _CheckPageState extends State<Dashboard> {
         modeWriteList[25] = (64);
         preferences.setInt('prvcPcMaxValue', temp);
 
+        getData();
+        // // // print(modeWriteList.toString());
+        sendDataUsbConnection(modeWriteList, 1);
+      } else if (cpapEnabled == true) {
+        int temp = int.tryParse(result.split("ab")[0]);
+        modeWriteList[26] = ((temp & 0xFF00) >> 8);
+        modeWriteList[27] = (temp & 0xFF);
+        modeWriteList[35] = (8);
+        modeWriteList[36] = (0);
+        preferences.setInt('cpapPcValue', temp);
+
+        // if (receivedps > temp) {
+        //   modeWriteList[8] = ((temp & 0xFF00) >> 8);
+        //   modeWriteList[9] = (temp & 0xFF);
+        //   modeWriteList[36] = (4);
+        //   preferences.setInt('psvPsValue', temp);
+        // }
         getData();
         // // // print(modeWriteList.toString());
         sendDataUsbConnection(modeWriteList, 1);
@@ -24969,12 +25202,12 @@ class _CheckPageState extends State<Dashboard> {
         sendDataUsbConnection(modeWriteList, 1);
       } else if (psvEnabled == true) {
         int temp = int.tryParse(result.split("ab")[0]);
-        modeWriteList[28]=((temp & 0xFF00) >> 8);
-        modeWriteList[29]=(temp & 0xFF);
-        modeWriteList[35]= (16);
-        modeWriteList[36]= (0);
+        modeWriteList[28] = ((temp & 0xFF00) >> 8);
+        modeWriteList[29] = (temp & 0xFF);
+        modeWriteList[35] = (16);
+        modeWriteList[36] = (0);
         // // // print(modeWriteList.toString());
-        sendDataUsbConnection(modeWriteList,1);
+        sendDataUsbConnection(modeWriteList, 1);
       } else if (prvcEnabled == true) {
         int temp = int.tryParse(result.split("ab")[0]);
         modeWriteList[12] = ((temp & 0xFF00) >> 8);
@@ -25141,6 +25374,17 @@ class _CheckPageState extends State<Dashboard> {
         modeWriteList[25] = (1);
 
         preferences.setInt('prvcItrigValue', temp);
+        getData();
+        // // // print(modeWriteList.toString());
+        sendDataUsbConnection(modeWriteList, 1);
+      } else if (cpapEnabled == true) {
+        int temp = int.tryParse(result.split("ab")[0]);
+        modeWriteList[4] = ((-temp & 0xFF00) >> 8);
+        modeWriteList[5] = (-temp & 0xFF);
+        modeWriteList[35] = (0);
+        modeWriteList[36] = (1);
+
+        preferences.setInt('cpapItrigValue', temp);
         getData();
         // // // print(modeWriteList.toString());
         sendDataUsbConnection(modeWriteList, 1);
@@ -26203,11 +26447,13 @@ class _CheckPageState extends State<Dashboard> {
         modeWriteList.add((cpappFio2Value & 0xFF00) >> 8); //11
         modeWriteList.add((cpappFio2Value & 0x00FF));
 
-        modeWriteList.add(0); //13
-        modeWriteList.add(0);
+        var calAtime = cpappAtimeValue * 1000;
 
-        modeWriteList.add(0); //15
-        modeWriteList.add(0);
+        modeWriteList.add((calAtime & 0xFF00) >> 8); //13
+        modeWriteList.add((calAtime & 0x00FF));
+
+        modeWriteList.add(10); //15
+        modeWriteList.add(30);
 
         modeWriteList.add(0); //17
         modeWriteList.add(0); //
@@ -26229,6 +26475,10 @@ class _CheckPageState extends State<Dashboard> {
 
         modeWriteList.add(0); //29
         modeWriteList.add(0); //
+        modeWriteList.add(1); //31
+
+        modeWriteList.add(0); //29
+        modeWriteList.add(0); //
         modeWriteList.add(0); //31
         modeWriteList.add(0); //
 
@@ -26237,7 +26487,7 @@ class _CheckPageState extends State<Dashboard> {
       });
 
       preferences = await SharedPreferences.getInstance();
-      preferences.setString("mode", "cpap");
+      preferences.setString("mode", "CPAP");
       preferences.setString("checkMode", "cpap");
       preferences.setInt("rr", cpappBackupRrValue);
       preferences.setInt("peep", cpappPeepValue);
@@ -26246,6 +26496,7 @@ class _CheckPageState extends State<Dashboard> {
       preferences.setInt("pc", cpappPcValue);
       preferences.setInt("itrig", cpappItrigValue); //atime ti
       preferences.setInt("atime", cpappAtimeValue);
+
       // Fluttertoast.showToast(msg:cpappcpappalue.toString() +" pc "+cpappPcValue.toString());
 
       preferences.setInt('cpappItrigValue', cpappItrigValue);
@@ -26659,8 +26910,8 @@ class _CheckPageState extends State<Dashboard> {
       cpappmaxValue = 45;
       cpappminValue = 0;
       cpappdefaultValue = 10;
-      cpappparameterName = "PEEP";
-      cpappparameterUnits = pItrig? "cmH\u2082O":"lpm";
+      cpappparameterName = "CPAP";
+      cpappparameterUnits = pItrig ? "cmH\u2082O" : "lpm";
     } else if (bipapEnabled = true) {
       bipapmaxValue = 30;
       bipapminValue = 0;
@@ -26685,9 +26936,8 @@ class _CheckPageState extends State<Dashboard> {
       alarmList.add(0);
       alarmList.add(10);
 
-      alarmList.add((minRrtotal & 0xFF00) >> 8);
+      alarmList.add((minRrtotal & 0xFF00) >> 8); //4
       alarmList.add((minRrtotal & 0x00FF));
-
       alarmList.add((maxRrtotal & 0xFF00) >> 8);
       alarmList.add((maxRrtotal & 0x00FF));
 
@@ -26717,12 +26967,12 @@ class _CheckPageState extends State<Dashboard> {
       alarmList.add((maxfio2 & 0x00FF));
 
       if (_isTab10 == true) {
-        alarmList.add((minlv & 0xFF00) >> 8);
-        alarmList.add((minlv & 0x00FF));
         alarmList.add((maxlv & 0xFF00) >> 8);
         alarmList.add((maxlv & 0x00FF));
       }
     });
+
+    print(alarmList.toString());
 
     preferences = await SharedPreferences.getInstance();
     preferences.setInt("minrr", minRrtotal);
@@ -27508,7 +27758,7 @@ class _CheckPageState extends State<Dashboard> {
                                 Align(
                                   alignment: Alignment.topRight,
                                   child: Text(
-                                    "cmH\u2082O",
+                                    "L",
                                     style: TextStyle(
                                         fontSize: 9,
                                         color: alarmmv
@@ -28794,8 +29044,7 @@ class _CheckPageState extends State<Dashboard> {
                     presentCode == 22 ||
                     presentCode == 25 ||
                     presentCode == 26 ||
-                    presentCode == 27 ||
-                    presentCode == 28) &&
+                    presentCode == 27) &&
                 mediumPriorityAlarm == 0) {
               setState(() {
                 vhighPriorityAlarm = 0;
@@ -28872,8 +29121,7 @@ class _CheckPageState extends State<Dashboard> {
                       presentCode == 22 ||
                       presentCode == 25 ||
                       presentCode == 26 ||
-                      presentCode == 27 ||
-                      presentCode == 28) &&
+                      presentCode == 27) &&
                   mediumPriorityAlarm == 0) {
                 setState(() {
                   highPriorityAlarm = 0;
@@ -28928,12 +29176,24 @@ class _CheckPageState extends State<Dashboard> {
           } catch (e) {}
         }
 
+        var apneaCheckvalue = finalList[66];
+
+        if (apneaCheckvalue == 1) {
+          setState(() {
+            displayApneaTime = "Apnea";
+          });
+        } else {
+          setState(() {
+            displayApneaTime = "";
+          });
+        }
+
         if (finalList[108] == 1) {
           setState(() {
             if (finalList[109] == 0) {
               ((finalList[106] << 8) + finalList[107]) == 24
                   ? alarmMessage =
-                      "Blender Malfunctioning Disconnect Ventilator Immediately"
+                      "Blender Malfunctioning Ventilator Operation Stopped"
                   : "";
             } else if (finalList[109] == 1) {
               ((finalList[106] << 8) + finalList[107]) == 5
@@ -28989,7 +29249,7 @@ class _CheckPageState extends State<Dashboard> {
                                                                       : ((finalList[106] << 8) + finalList[107]) == 20
                                                                           ? alarmMessage =
                                                                               "HIGH RR"
-                                                                          : ((finalList[106] << 8) + finalList[107]) == 21 ? alarmMessage = "HIGH PEEP" : ((finalList[106] << 8) + finalList[107]) == 22 ? alarmMessage = "LOW PEEP" : ((finalList[106] << 8) + finalList[107]) == 25 ? alarmMessage = "Low Minute Volume" : ((finalList[106] << 8) + finalList[107]) == 26 ? alarmMessage = "High Minute Volume" : ((finalList[106] << 8) + finalList[107]) == 28 ? alarmMessage = "High Leak Volume" : alarmMessage = "";
+                                                                          : ((finalList[106] << 8) + finalList[107]) == 21 ? alarmMessage = "HIGH PEEP" : ((finalList[106] << 8) + finalList[107]) == 22 ? alarmMessage = "LOW PEEP" : ((finalList[106] << 8) + finalList[107]) == 25 ? alarmMessage = "Low Minute Volume" : ((finalList[106] << 8) + finalList[107]) == 26 ? alarmMessage = "High Minute Volume" : ((finalList[106] << 8) + finalList[107]) == 27 ? alarmMessage = "High Leak Volume" : alarmMessage = "";
             } else if (finalList[109] == 3) {
               ((finalList[106] << 8) + finalList[107]) == 23
                   ? alarmMessage = "Apnea backup"
@@ -29075,6 +29335,10 @@ class _CheckPageState extends State<Dashboard> {
       } else if (checkO2CalibrationValue == 3) {
         setState(() {
           textText = "0\u2082 Calibration Completed.";
+        });
+      } else if (checkO2CalibrationValue == 4) {
+        setState(() {
+          textText = "Low 0\u2082 Supply.";
         });
       } else if (checkO2CalibrationValue == 0) {
         setState(() {
@@ -29272,7 +29536,8 @@ class _CheckPageState extends State<Dashboard> {
           receivedo2voltage = ((finalList[164] << 8) + finalList[165]);
           receivedthold = ((finalList[166] << 8) + finalList[167]);
 
-          if (operatinModeR == 3 && receivedoperatingModeR == 3) {
+          if (operatinModeR == 3 && receivedoperatingModeR == 3 ||
+              operatinModeR == 20 && receivedoperatingModeR == 20) {
             tiValue = (((double.tryParse(i) /
                         (double.tryParse(i) + double.tryParse(e))) *
                     (60000 / receivedbackuprr)) /
@@ -29441,7 +29706,7 @@ class _CheckPageState extends State<Dashboard> {
                     ":" +
                     (receivede / 10).toString()));
             preferences.setInt('psvPsValue', receivedps);
-            preferences.setInt('psvVtValue',receivedvt);
+            preferences.setInt('psvVtValue', receivedvt);
             preferences.setInt('psvFio2Value', receivedfio2);
             preferences.setInt('psvBackupRrValue', receivedbackuprr);
             preferences.setInt('psvPcValue', receivedpc);
@@ -29455,7 +29720,7 @@ class _CheckPageState extends State<Dashboard> {
             preferences.setInt("peep", receivedpeep);
             preferences.setInt("fio2", receivedfio2);
             preferences.setInt("pc", receivedpc);
-            preferences.setInt("vt",receivedvt);
+            preferences.setInt("vt", receivedvt);
             preferences.setInt("ps", receivedps);
             preferences.setInt("itrig", receivedItrig);
             preferences.setInt("atime", apneatimeCaal);
@@ -29482,6 +29747,38 @@ class _CheckPageState extends State<Dashboard> {
             preferences.setInt('prvcVtValue', receivedvt);
             preferences.setInt('prvcFio2Value', receivedfio2);
             preferences.setInt('prvcPcMaxValue', receivedpcmax);
+          } else if (operatinModeR == 20 && receivedoperatingModeR == 20) {
+            var apneatimeCaal = (receivedapneaTime / 1000).toInt();
+            preferences.setString("checkMode", "cpap");
+            preferences.setInt('cpappItrigValue', receivedItrig);
+            // preferences.setInt('psvTiValue', psvTiValue);
+            preferences.setInt('cpappPeepValue', receivedpeep);
+            preferences.setInt(
+                'cpapIeValue',
+                getIeNumber((receivedi / 10).toString() +
+                    ":" +
+                    (receivede / 10).toString()));
+            preferences.setInt('cpappPsValue', receivedps);
+            preferences.setInt('cpappVtValue', receivedvt);
+            preferences.setInt('cpappFio2Value', receivedfio2);
+            preferences.setInt('cpappBackupRrValue', receivedbackuprr);
+            preferences.setInt('cpappPcValue', receivedpc);
+            preferences.setInt('cpappAtimeValue', apneatimeCaal); //3
+            preferences.setInt('cpappTiValue',
+                getTiValueNumber(((receivedti / 1000).toDouble()).toString()));
+
+            preferences.setInt("rr", receivedbackuprr);
+            preferences.setString("i", (receivedi / 10).toString());
+            preferences.setString("e", (receivede / 10).toString());
+            preferences.setInt("peep", receivedpeep);
+            preferences.setInt("fio2", receivedfio2);
+            preferences.setInt("pc", receivedpc);
+            preferences.setInt("vt", receivedvt);
+            preferences.setInt("ps", receivedps);
+            preferences.setInt("itrig", receivedItrig);
+            preferences.setInt("atime", apneatimeCaal);
+            preferences.setInt("ti",
+                getTiValueNumber(((receivedti / 1000).toDouble()).toString()));
           }
         });
       }
@@ -29679,3 +29976,4 @@ class _CheckPageState extends State<Dashboard> {
     });
   }
 }
+
