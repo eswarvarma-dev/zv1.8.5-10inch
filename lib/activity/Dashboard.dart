@@ -28390,7 +28390,7 @@ class _CheckPageState extends State<Dashboard> {
         sendDataUsbConnection(modeWriteList, 2);
         calculateTiTeValue(pccmvRRValue, dataI1, dataE1);
         // writeAlarmsData();
-        // modesEnabled = false;
+        modesEnabled = false;
       } else {
         Fluttertoast.showToast(msg: "No Communication");
       }
@@ -28479,7 +28479,7 @@ class _CheckPageState extends State<Dashboard> {
         sendDataUsbConnection(modeWriteList, 2);
         calculateTiTeValue(vccmvRRValue, dataI1, dataE1);
         // writeAlarmsData();
-        // modesEnabled = false;
+        modesEnabled = false;
       } else {
         Fluttertoast.showToast(msg: "No Communication");
       }
@@ -28575,7 +28575,7 @@ class _CheckPageState extends State<Dashboard> {
         sendDataUsbConnection(modeWriteList, 2);
         calculateTiTeValue(pacvRrValue, dataI1, dataE1);
         // writeAlarmsData();
-        // modesEnabled = false;
+        modesEnabled = false;
       } else {
         Fluttertoast.showToast(msg: "No Communication");
       }
@@ -28668,7 +28668,7 @@ class _CheckPageState extends State<Dashboard> {
         sendDataUsbConnection(modeWriteList, 2);
         calculateTiTeValue(vacvRrValue, dataI1, dataE1);
         // writeAlarmsData();
-        // modesEnabled = false;
+        modesEnabled = false;
       } else {
         Fluttertoast.showToast(msg: "No Communication");
       }
@@ -28764,7 +28764,7 @@ class _CheckPageState extends State<Dashboard> {
         sendDataUsbConnection(modeWriteList, 2);
         calculateTiTeValue(psimvRrValue, dataI1, dataE1);
         // writeAlarmsData();
-        // modesEnabled = false;
+        modesEnabled = false;
       } else {
         Fluttertoast.showToast(msg: "No Communication");
       }
@@ -28862,7 +28862,7 @@ class _CheckPageState extends State<Dashboard> {
         sendDataUsbConnection(modeWriteList, 2);
         calculateTiTeValue(vsimvRrValue, dataI1, dataE1);
         // writeAlarmsData();
-        // modesEnabled = false;
+        modesEnabled = false;
       } else {
         Fluttertoast.showToast(msg: "No Communication");
       }
@@ -29009,7 +29009,7 @@ class _CheckPageState extends State<Dashboard> {
         sendDataUsbConnection(modeWriteList, 2);
         calculateTiTeValue(psvBackupRrValue, dataI1, dataE1);
         // writeAlarmsData();
-        // modesEnabled = false;
+        modesEnabled = false;
       } else {
         Fluttertoast.showToast(msg: "No Communication");
       }
@@ -29104,7 +29104,7 @@ class _CheckPageState extends State<Dashboard> {
         sendDataUsbConnection(modeWriteList, 2);
         calculateTiTeValue(prvcRrValue, dataI1, dataE1);
         // writeAlarmsData();
-        // modesEnabled = false;
+        modesEnabled = false;
       } else {
         Fluttertoast.showToast(msg: "No Communication");
       }
@@ -29199,7 +29199,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool("play", false);
         sendDataUsbConnection(modeWriteList, 2);
         // writeAlarmsData();
-        // modesEnabled = false;
+        modesEnabled = false;
       } else {
         Fluttertoast.showToast(msg: "No Communication");
       }
@@ -29334,7 +29334,7 @@ class _CheckPageState extends State<Dashboard> {
         sendDataUsbConnection(modeWriteList, 2);
         calculateTiTeValue(autoBackupRrValue, dataI1, dataE1);
         // writeAlarmsData();
-        // modesEnabled = false;
+        modesEnabled = false;
       } else {
         Fluttertoast.showToast(msg: "No Communication");
       }
@@ -30453,114 +30453,6 @@ class _CheckPageState extends State<Dashboard> {
                   InkWell(
                     onTap: () {
                       setState(() {
-                        alarmmaxValue = 100;
-                        alarmminValue = 0;
-                        alarmparameterName = "Leak Volume";
-                        alarmRR = false;
-                        alarmVte = false;
-                        alarmlvchanged = true;
-                        alarmPpeak = false;
-                        alarmpeep = false;
-                        alarmFio2 = false;
-                        alarmConfirmed = false;
-                        alarmmv = false;
-                        alarmlv = true;
-                      });
-                      checkData();
-                    },
-                    child: Center(
-                      child: Container(
-                        color: alarmlvchanged
-                            ? Color(0xFFB0BEC5)
-                            : Color(0xFF213855),
-                        width: _isTab10 ? 176 : 146,
-                        height: _isTab10 ? 160 : 130,
-                        child: Card(
-                          elevation: 40,
-                          color:
-                              alarmlv ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                          child: Padding(
-                            padding: const EdgeInsets.all(6.0),
-                            child: Center(
-                                child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    "Leak Volume",
-                                    style: TextStyle(
-                                        fontSize: 15,
-                                        fontWeight: FontWeight.bold,
-                                        color: alarmlv
-                                            ? Color(0xFF213855)
-                                            : Color(0xFFE0E0E0)),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    "cmH\u2082O",
-                                    style: TextStyle(
-                                        fontSize: 9,
-                                        color: alarmlv
-                                            ? Color(0xFF213855)
-                                            : Color(0xFFE0E0E0)),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomRight,
-                                  child: Text(
-                                    "100",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: alarmlv
-                                            ? Color(0xFF213855)
-                                            : Color(0xFFE0E0E0)),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.bottomLeft,
-                                  child: Text(
-                                    "0",
-                                    style: TextStyle(
-                                        fontSize: 12,
-                                        color: alarmlv
-                                            ? Color(0xFF213855)
-                                            : Color(0xFFE0E0E0)),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 1.0),
-                                    child: Text(
-                                      "$minlv - $maxlv",
-                                      style: TextStyle(
-                                          fontSize: 20,
-                                          color: alarmlv
-                                              ? Color(0xFF213855)
-                                              : Color(0xFFE0E0E0)),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ],
-              )
-            : Container(),
-        _isTab10
-            ? Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  InkWell(
-                    onTap: () {
-                      setState(() {
                         alarmmaxValue = 25;
                         alarmminValue = 0;
                         alarmparameterName = "Mv";
@@ -30658,6 +30550,15 @@ class _CheckPageState extends State<Dashboard> {
                       ),
                     ),
                   ),
+                ],
+              )
+            : Container(),
+        _isTab10
+            ? Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  
                 ],
               )
             : Container(),
