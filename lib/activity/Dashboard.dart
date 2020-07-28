@@ -32012,7 +32012,7 @@ class _CheckPageState extends State<Dashboard> {
             if (finalList[109] == 0) {
               ((finalList[106] << 8) + finalList[107]) == 24
                   ? alarmMessage =
-                      "Blender Malfunctioning Ventilator Operation Stopped"
+                      "Blender Malfunction. Ventilator Operation Stopped."
                   : ((finalList[106] << 8) + finalList[107]) == 17
                       ? alarmMessage = "PATIENT DISCONNECTED"
                       : "";
@@ -32107,10 +32107,6 @@ class _CheckPageState extends State<Dashboard> {
       });
 
       setState(() {
-// list[26]=(0x55);
-// list[27]=(0x55);
-// list[28]=(0x55);
-// list[29]=(0x55);
         o2pressuresensor = ((list[26] & 0x3) >> 0);
         mtpressuresensor = ((list[26] & 0xC) >> 2);
         exhalationflowsensor = ((list[26] & 0x30) >> 4);
@@ -32131,12 +32127,7 @@ class _CheckPageState extends State<Dashboard> {
         blender = ((list[29] & 0x30) >> 4);
         checkOfffset = ((list[29] & 0xC0) >> 6);
 
-// if (checkOfffset == 2) {
-//   _port.close();
-//   _status = "Disconnected";
-// }
 
-// Fluttertoast.showToast(msg: o2pressuresensor.toString() +" "+mtpressuresensor.toString());
       });
       setState(() {
         checkO2CalibrationValue = finalList[30];
