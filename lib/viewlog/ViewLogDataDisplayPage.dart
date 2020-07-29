@@ -195,6 +195,18 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
         setState(() {
           modeName = "VC-CMV";
         });
+      }else if(operatinModeR =="14"){
+         setState(() {
+          modeName = "PRVC";
+        });
+      }else if(operatinModeR =="20"){
+         setState(() {
+          modeName = "CPAP";
+        });
+      }else if(operatinModeR =="21"){
+         setState(() {
+          modeName = "AUTO";
+        });
       }
 
       if (int.tryParse(paw) <= 10) {
@@ -221,7 +233,11 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
 
       if (alarmActive == '1') {
         setState(() {
-          if (alarmPriority == '1' || alarmPriority == '0') {
+          if( alarmPriority == '0'){
+           alarmMessage == "24"
+                  ? alarmMessage =
+                      "Blender Malfunction. Ventilator Operation Stopped." : alarmMessage == '17' ? alarmMessage = "PATIENT DISCONNECTED":alarmMessage="";
+          } else if (alarmPriority == '1') {
             alarmMessage == '5'
                 ? alarmMessage = "SYSTEM FAULT"
                 : alarmMessage == '7'
@@ -230,8 +246,6 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                         ? alarmMessage = "HIGH LEAKAGE"
                         : alarmMessage == '11'
                             ? alarmMessage = "HIGH PRESSURE"
-                            : alarmMessage == '17'
-                                ? alarmMessage = "PATIENT DISCONNECTED"
                                 : alarmMessage = "";
           } else if (alarmPriority == '2') {
             // print("alarm code "+((alarmMessage).toString());
@@ -279,6 +293,9 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                                                 "HIGH PEEP"
                                                                             : alarmMessage == '22'
                                                                                 ? alarmMessage = "LOW PEEP"
+                                                                                : alarmMessage == '25' ? alarmMessage = "Low Minute Volume" 
+                                                                          : alarmMessage == '26' ? alarmMessage = "High Minute Volume" 
+                                                                          : alarmMessage == '27' ? alarmMessage = "High Leak Volume"
                                                                                 : alarmMessage = "";
           } else if (alarmPriority == '3') {
             alarmMessage == '23'
@@ -296,7 +313,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
-    scopeOne = Oscilloscope(
+   scopeOne = Oscilloscope(
         showYAxis: true,
         yAxisColor: Colors.grey,
         padding: 10.0,
@@ -322,7 +339,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
         padding: 10.0,
         backgroundColor: Color(0xFF171e27),
         traceColor: Colors.blue,
-        yAxisMax: _isTab10?2600:1000.0,
+        yAxisMax: 3000.0,
         yAxisMin: 0.0,
         dataSet: volumePoints);
 
@@ -352,7 +369,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
         padding: 10.0,
         backgroundColor: Color(0xFF171e27),
         traceColor: Colors.blue,
-        yAxisMax: 2600.0,
+        yAxisMax: 3000.0,
         yAxisMin: 0.0,
         dataSet: volumePoints);
 
@@ -382,7 +399,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
         padding: 10.0,
         backgroundColor: Colors.transparent,
         traceColor: Colors.blue,
-        yAxisMax: 2600.0,
+        yAxisMax: 3000.0,
         yAxisMin: 0.0,
         dataSet: volumePoints);
 
@@ -956,7 +973,11 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                       ),
                     ),
                     Row(children: <Widget>[
-                      modeName == "PSV" || operatinModeR == 3
+                      modeName == "PSV" || operatinModeR == "3" ||  
+                                modeName == "CPAP" ||
+                                operatinModeR == "20" ||
+                                operatinModeR == "21" ||
+                                modeName == "AUTO"
                             ? psvBottomBar()
                             : bottombar(),
                     ],),
@@ -1587,7 +1608,9 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
           crossAxisAlignment: CrossAxisAlignment.start,
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
-            InkWell(
+            modeName == "CPAP" || operatinModeR == "20"
+                ? Container()
+                :InkWell(
               onTap: () {},
               child: Center(
                 child: Container(
@@ -1787,7 +1810,9 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                 ),
               ),
             ),
-            InkWell(
+           modeName == "CPAP" || operatinModeR == "20"
+                ? Container()
+                :  InkWell(
               onTap: () {},
               child: Center(
                 child: Container(
@@ -1837,56 +1862,173 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {},
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
-                  child: Card(
-                    elevation: 40,
-                    color: Color(0xFF213855),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "PC",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
+             modeName == "AUTO" || operatinModeR == 21
+                ? InkWell(
+                    onTap: () {
+                     
+                    },
+                    child: Center(
+                      child: Container(
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
+                        child: Card(
+                          elevation: 40,
+                          color: Color(0xFF213855),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "VT",
+                                    style: TextStyle(
+                                        fontSize: _isTab10 ? 20 : 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "mL",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 17.0),
+                                    child: Text(
+                                      vtValue.toString(),
+                                      style: TextStyle(
+                                          fontSize: _isTab10 ? 30 : 30,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "cmH\u2082O",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 17.0),
-                              child: Text(
-                                pcValue.toString(),
-                                style: TextStyle(
-                                    fontSize: 30, color: Colors.white),
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
+            operatinModeR == "21" || modeName == "AUTO"
+                ? Container()
+                : InkWell(
+                        onTap: () {
+                          
+                        },
+                        child: Center(
+                          child: Container(
+                            width: _isTab10 ? 155 : 120,
+                            height: _isTab10 ? 145 : 110,
+                            child: Card(
+                              elevation: 40,
+                              color:
+                                  Color(0xFF213855),
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Center(
+                                    child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        "PC",
+                                        style: TextStyle(
+                                            fontSize: _isTab10 ? 20 : 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(
+                                        "cmH\u2082O",
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.white),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 17.0),
+                                        child: Text(
+                                          pcValue.toString(),
+                                          style: TextStyle(
+                                              fontSize: _isTab10 ? 30 : 30,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
                               ),
                             ),
                           ),
-                        ],
-                      )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+                        ),
+                      ),
+                    // InkWell(
+                    //     onTap: () {
+                          
+                    //     },
+                    //     child: Center(
+                    //       child: Container(
+                    //         width: _isTab10 ? 155 : 120,
+                    //         height: _isTab10 ? 145 : 110,
+                    //         child: Card(
+                    //           elevation: 40,
+                    //           color:
+                    //               Color(0xFF213855),
+                    //           child: Padding(
+                    //             padding: const EdgeInsets.all(12.0),
+                    //             child: Center(
+                    //                 child: Stack(
+                    //               children: [
+                    //                 Align(
+                    //                   alignment: Alignment.topLeft,
+                    //                   child: Text(
+                    //                     "VT",
+                    //                     style: TextStyle(
+                    //                         fontSize: _isTab10 ? 20 : 18,
+                    //                         fontWeight: FontWeight.bold,
+                    //                         color: Colors.white),
+                    //                   ),
+                    //                 ),
+                    //                 Align(
+                    //                   alignment: Alignment.topRight,
+                    //                   child: Text(
+                    //                     "mL",
+                    //                     style: TextStyle(
+                    //                         fontSize: 12, color: Colors.white),
+                    //                   ),
+                    //                 ),
+                    //                 Align(
+                    //                   alignment: Alignment.center,
+                    //                   child: Padding(
+                    //                     padding:
+                    //                         const EdgeInsets.only(top: 17.0),
+                    //                     child: Text(
+                    //                       vtValue.toString(),
+                    //                       style: TextStyle(
+                    //                           fontSize: _isTab10 ? 50 : 30,
+                    //                           color: Colors.white),
+                    //                     ),
+                    //                   ),
+                    //                 ),
+                    //               ],
+                    //             )),
+                    //           ),
+                    //         ),
+                    //       ),
+                    //     ),
+                    //   ),
             InkWell(
               onTap: () {},
               child: Center(
@@ -1987,7 +2129,9 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                 ),
               ),
             ),
-            InkWell(
+            modeName == "CPAP" || operatinModeR == "20"
+                ? Container()
+                :  InkWell(
               onTap: () {},
               child: Center(
                 child: Container(
@@ -2785,7 +2929,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                           Container(
                               margin: EdgeInsets.only(left: 10, top: 8),
                               child: Text(
-                                "2600 mL",
+                                "3000 mL",
                                 style: TextStyle(color: Colors.blue),
                               )),
                           Container(
@@ -2855,7 +2999,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                             Container(
                                 margin: EdgeInsets.only(left: 220, top: 10),
                                 child: Text(
-                                  "2600 mL",
+                                  "3000 mL",
                                   style: TextStyle(color: Colors.blue),
                                 )),
                           ],
@@ -3045,7 +3189,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                             Container(
                                 margin: EdgeInsets.only(left: 10, top: 8),
                                 child: Text(
-                                  "2600 mL",
+                                  "3000 mL",
                                   style: TextStyle(color: Colors.blue),
                                 )),
                             Container(
