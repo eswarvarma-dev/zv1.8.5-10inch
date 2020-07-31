@@ -20,6 +20,7 @@ import 'package:ventilator/database/ADatabaseHelper.dart';
 import 'package:ventilator/database/CounterDatabaseHelper.dart';
 import 'package:ventilator/database/DatabaseHelper.dart';
 import 'package:ventilator/database/VentilatorOMode.dart';
+import 'package:ventilator/graphs/LoopGraphs.dart';
 import 'package:ventilator/graphs/Oscilloscope.dart';
 import 'package:ventilator/graphs/OscilloscopeBig.dart';
 import 'package:ventilator/viewlog/ViewLogPatientList.dart';
@@ -254,7 +255,7 @@ class _CheckPageState extends State<Dashboard> {
       psvPeepValue = 10,
       psvIeValue = 51,
       psvPsValue = 25,
-      psvTiValue = 1,
+      psvTiValue = 11,
       psvVtMinValue = 0,
       psvVtMaxValue = 2400,
       psvFio2Value = 21,
@@ -430,7 +431,7 @@ class _CheckPageState extends State<Dashboard> {
       cpappAtimeValue = 10,
       cpappPcValue = 25;
 
-  int cpappmaxValue = 45, cpappminValue = 0, cpappdefaultValue = 10;
+  int cpappmaxValue = 25, cpappminValue = 0, cpappdefaultValue = 10;
   String cpappparameterName = "CPAP", cpappparameterUnits = "cmH\u2082O";
 
   int bipapmaxValue = 30;
@@ -490,6 +491,13 @@ class _CheckPageState extends State<Dashboard> {
       maxlv = 100,
       minlv = 0;
   int faultBatteryStatus = 0;
+
+  double prePressureValue = 0.0;
+  double currentPressureValue = 0.0;
+  double presVolumeValue = 0.0;
+  double currentVolumeValue = 0.0;
+  double presFlowValue = 0.0;
+  double currentFlowValue = 0.0;
 
   int alarmmaxValue = 100, alarmminValue = 1;
   String alarmparameterName = "RR Total";
@@ -609,12 +617,19 @@ class _CheckPageState extends State<Dashboard> {
   bool pControl = true;
   int check1 = 0, check2 = 0;
   bool _getPointsData = false;
+  bool _isLoopGraph = false;
 
   List<Widget> _temporarySetValue = [];
   List<double> _pressureList = [];
   List<double> _volumeList = [];
   List<double> _flowList = [];
   bool breathCycle = false;
+
+  List<double> tempList = [];
+  List<double> temp1List = [];
+  List<double> temp3List = [];
+  List<double> l1 = [];
+  List<double> l2 = [];
 
   Future<bool> _connectTo(device) async {
     list.clear();
@@ -709,8 +724,14 @@ class _CheckPageState extends State<Dashboard> {
   int displayTemperature = 0;
   int globalCounter = 0, globalCounterNo = 1;
   int countergetPorts = 0;
-  List<Point> data = [Point(0.0,0.0)];
-  List<Point> _plotData = [Point(0.0,0.0)];
+  List<Point> datapv = [Point(0.0, 0.0)];
+  List<Point> datapf = [Point(0.0, 0.0)];
+  List<Point> datavf = [Point(0.0, 0.0)];
+  List<Point> _plotDataPv = [Point(0.0, 0.0)];
+  List<Point> _plotDataPf = [Point(0.0, 0.0)];
+  List<Point> _plotDataVf = [Point(0.0, 0.0)];
+  List<Offset> offs = [];
+  // [Offset(50,20),Offset(60,40),Offset(80,60),Offset(100,80),Offset(50,80),Offset(50,60),Offset(50,40),Offset(50,20)];
 
   // getNoTimes() async {
   //   await sleep(Duration(seconds: 6));
@@ -844,10 +865,6 @@ class _CheckPageState extends State<Dashboard> {
               powerButtonEnabled = false;
             });
           }
-// Fluttertoast.showToast(msg:"timeout "+differnceD.inSeconds.toString());
-// if(differnceD.inSeconds>61){
-//   turnOffScreen();
-// }
         });
       } else {
         if (_isFlagTest == false &&
@@ -1143,7 +1160,7 @@ class _CheckPageState extends State<Dashboard> {
     return uiCrc;
   }
 
-  checkCrc(List<int> obj, length) async {
+  checkCrc(List<int> obj, length, int resV) async {
     int index = length - 2;
     int i = 0;
     int crcData = 0;
@@ -1163,7 +1180,11 @@ class _CheckPageState extends State<Dashboard> {
 
     crcData = obj[length - 1] * 256 + obj[length - 2];
     if (crcData == uiCrc) {
-      extractingData(obj);
+      if (resV == 1) {
+        extractingData(obj);
+      } else if (resV == 2) {
+        extractingBreathData(obj);
+      }
     } else if (crcData != uiCrc) {
       setState(() {
         missedCounter = missedCounter + 1;
@@ -1271,7 +1292,7 @@ class _CheckPageState extends State<Dashboard> {
       patientAge = preferences.getString("page");
       patientHeight = preferences.getString("pheight");
       patientWeight = preferences.getString("pweight");
-      playOnEnabled = preferences.getBool("play");
+      // playOnEnabled = preferences.getBool("play");
       List<String> lsaveListTemp = preferences.getStringList("saveList");
       savedList.clear();
       if (lsaveListTemp != null) {
@@ -1649,6 +1670,9 @@ class _CheckPageState extends State<Dashboard> {
         autoVtValue = preferences.getInt('autoVtValue');
         autoPcMaxValue = preferences.getInt('autoPcMaxValue');
       }
+
+      assistmodePressureOn = preferences.getBool("flag");
+      assistmodeVolumeOn = preferences.getBool("flag1");
     });
   }
 
@@ -4162,7 +4186,7 @@ class _CheckPageState extends State<Dashboard> {
                                                     ? Colors.blue
                                                     : Colors.white,
                                                 child: Container(
-                                                  width: 98,
+                                                  width: 120,
                                                   height: 70,
                                                   child: Align(
                                                       alignment:
@@ -4171,7 +4195,7 @@ class _CheckPageState extends State<Dashboard> {
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(8.0),
-                                                        child: Text("PSV",
+                                                        child: Text("PSV/CPAP",
                                                             style: TextStyle(
                                                                 fontSize: 20,
                                                                 color: psvEnabled
@@ -4206,7 +4230,7 @@ class _CheckPageState extends State<Dashboard> {
                                                     ? Colors.blue
                                                     : Colors.white,
                                                 child: Container(
-                                                  width: 98,
+                                                  width: 115,
                                                   height: 70,
                                                   child: Align(
                                                       alignment:
@@ -4230,51 +4254,51 @@ class _CheckPageState extends State<Dashboard> {
                                                 ),
                                               ),
                                             ),
-                                            InkWell(
-                                              onTap: () {
-                                                setState(() {
-                                                  pccmvEnabled = false;
-                                                  vccmvEnabled = false;
-                                                  pacvEnabled = false;
-                                                  vacvEnabled = false;
-                                                  psimvEnabled = false;
-                                                  vsimvEnabled = false;
-                                                  psvEnabled = false;
-                                                  prvcEnabled = false;
+                                            // InkWell(
+                                            //   onTap: () {
+                                            //     setState(() {
+                                            //       pccmvEnabled = false;
+                                            //       vccmvEnabled = false;
+                                            //       pacvEnabled = false;
+                                            //       vacvEnabled = false;
+                                            //       psimvEnabled = false;
+                                            //       vsimvEnabled = false;
+                                            //       psvEnabled = false;
+                                            //       prvcEnabled = false;
 
-                                                  autoEnabled = false;
-                                                  cpapEnabled = true;
-                                                });
-                                              },
-                                              child: Card(
-                                                color: cpapEnabled
-                                                    ? Colors.blue
-                                                    : Colors.white,
-                                                child: Container(
-                                                  width: 104,
-                                                  height: 70,
-                                                  child: Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Padding(
-                                                        padding:
-                                                            const EdgeInsets
-                                                                .all(8.0),
-                                                        child: Text("CPAP",
-                                                            style: TextStyle(
-                                                                fontSize: 20,
-                                                                color: cpapEnabled
-                                                                    ? Colors
-                                                                        .white
-                                                                    : Colors
-                                                                        .black,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold)),
-                                                      )),
-                                                ),
-                                              ),
-                                            ),
+                                            //       autoEnabled = false;
+                                            //       cpapEnabled = true;
+                                            //     });
+                                            //   },
+                                            //   child: Card(
+                                            //     color: cpapEnabled
+                                            //         ? Colors.blue
+                                            //         : Colors.white,
+                                            //     child: Container(
+                                            //       width: 104,
+                                            //       height: 70,
+                                            //       child: Align(
+                                            //           alignment:
+                                            //               Alignment.center,
+                                            //           child: Padding(
+                                            //             padding:
+                                            //                 const EdgeInsets
+                                            //                     .all(8.0),
+                                            //             child: Text("CPAP",
+                                            //                 style: TextStyle(
+                                            //                     fontSize: 20,
+                                            //                     color: cpapEnabled
+                                            //                         ? Colors
+                                            //                             .white
+                                            //                         : Colors
+                                            //                             .black,
+                                            //                     fontWeight:
+                                            //                         FontWeight
+                                            //                             .bold)),
+                                            //           )),
+                                            //     ),
+                                            //   ),
+                                            // ),
                                             InkWell(
                                               onTap: () {
                                                 setState(() {
@@ -4296,7 +4320,7 @@ class _CheckPageState extends State<Dashboard> {
                                                     ? Colors.blue
                                                     : Colors.white,
                                                 child: Container(
-                                                  width: 98,
+                                                  width: 115,
                                                   height: 70,
                                                   child: Align(
                                                       alignment:
@@ -5172,7 +5196,7 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                 ),
                 Text(
-                  "v1.8.4a",
+                  "v1.8.4c",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: _isTab10 ? 18 : 10,
@@ -5482,51 +5506,15 @@ class _CheckPageState extends State<Dashboard> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(width: _isTab10 ? 5 : 10),
-                          // Container(
-                          //   padding: EdgeInsets.only(left: 170, right: 2, top: 45),
-                          //   height:300,
-                          //   width:600,
-                          //   child: Card(
-                          //     child: Column(
-                          //       children: <Widget>[
-                          //         new Container(
-                          //           padding: const EdgeInsets.only(top: 12.0),
-                          //           child: new Text('Pressure & Volume'),
-                          //         ),
-                          //         new Container(
-                          //           child: new Plot(
-                          //             height: 200.0,
-                          //             data: _plotData,
-                          //             gridSize: new Offset(10.0, 100.0),
-                          //             style: new PlotStyle(
-                          //               axisStrokeWidth: 2.0,
-                          //               pointRadius: 3.0,
-                          //               outlineRadius: 1.0,
-                          //               primary: Colors.yellow,
-                          //               secondary: Colors.red,
-                          //               trace: true,
-                          //               traceStokeWidth: 3.0,
-                          //               traceColor: Colors.blueGrey,
-                          //               // traceClose: true,
-                          //               showCoordinates: false,
-                          //               textStyle: new TextStyle(
-                          //                 fontSize: 8.0,
-                          //                 color: Colors.grey,
-                          //               ),
-                          //               // axis: Colors.blueGrey[600],
-                          //               // gridline: Colors.blueGrey[100],
-                          //             ),
-                          //             padding: const EdgeInsets.fromLTRB(
-                          //                 40.0, 12.0, 40.0, 40.0),
-                          //             //xTitle: 'My X Title',
-                          //             //yTitle: 'My Y Title',
-                          //           ),
-                          //         ),
-                          //       ],
-                          //     ),
-                          //   ),
-                          // ),
-                          _isgraphFullScreen ? graphsScale() : graphs10(),
+                          // _isLoopGraph == true
+                          //         ? loopsGraphs() : Container(),
+                          _isgraphFullScreen == false
+                              ? _isLoopGraph == false
+                                  ? graphs10()
+                                  : loopsGraphs()
+                              : _isLoopGraph == false
+                                  ? graphsScale()
+                                  : loopsGraphs(),
                           SizedBox(width: _isTab10 ? 5 : 25),
                           Container(
                             margin: EdgeInsets.only(top: 40),
@@ -6470,7 +6458,9 @@ class _CheckPageState extends State<Dashboard> {
                           ? ""
                           : operatinModeR == 21
                               ? CommonClick("APEEP")
-                              : CommonClick("PEEP")
+                              : modeName == "CPAP" || operatinModeR == 20
+                                  ? CommonClick("CPAP")
+                                  : CommonClick("PEEP")
                       : "";
                 }
               },
@@ -6489,7 +6479,9 @@ class _CheckPageState extends State<Dashboard> {
                           Align(
                             alignment: Alignment.topLeft,
                             child: Text(
-                              "peep".toUpperCase(),
+                              modeName == "CPAP" || operatinModeR == 20
+                                  ? "CPAP"
+                                  : "peep".toUpperCase(),
                               style: TextStyle(
                                   fontSize: _isTab10 ? 20 : 12,
                                   fontWeight: FontWeight.bold,
@@ -8370,7 +8362,7 @@ class _CheckPageState extends State<Dashboard> {
 
   topbar() {
     return Container(
-      width: 904,
+      width: 944,
       height: 50,
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -8406,8 +8398,9 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               )),
               SizedBox(
-                  width: modeName == "VSIMV" || modeName == "PSIMV" ? 50 : 75),
+                  width: modeName == "VSIMV" || modeName == "PSIMV" ? 40 : 75),
               SizedBox(width: _isTab10 ? 90 : 0),
+              //_isLoopGraph
               InkWell(
                 onTap: () {
                   setState(() {
@@ -8431,7 +8424,7 @@ class _CheckPageState extends State<Dashboard> {
                     ),
                   ),
                 ),
-              ),
+              ), //_isLoopGraph
 
               InkWell(
                 onTap: () {
@@ -8564,18 +8557,31 @@ class _CheckPageState extends State<Dashboard> {
                         )),
                       ),
                     ),
-              // SizedBox(width: 10),
-              // Material(
-              //     borderRadius: BorderRadius.circular(5),
-              //     child: Container(
-              //         width: 80,
-              //         height: 40,
-              //         child: Center(
-              //   child: Padding(
-              // padding: const EdgeInsets.all(8.0),
-              // child: Text(displayTemperature.toString() + "\u2103",
-              //     style: TextStyle(fontSize: 20)),
-              //         )))),
+              SizedBox(width: 5),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    _isLoopGraph = !_isLoopGraph;
+                  });
+                },
+                child: Center(
+                  child: Container(
+                    width: 60,
+                    child: Card(
+                      color: _isLoopGraph ? Colors.green : Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 0.0, left: 10, right: 10, bottom: 0.0),
+                        child: Center(
+                          child: Icon(Icons.timeline,
+                              color:
+                                  _isLoopGraph ? Colors.white : Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(width: 5),
               Material(
                 borderRadius: BorderRadius.circular(5),
@@ -8654,20 +8660,6 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ],
           ),
-
-// Stack(
-//   children: [
-//     Padding(
-//       padding: const EdgeInsets.only(bottom: 6),
-//       child: Container(
-//         child: Text(
-// dateandTime ?? "",
-// style: TextStyle(color: Colors.white, fontSize: 15),
-//         ),
-//       ),
-//     ),
-//   ],
-// )
         ],
       ),
     );
@@ -8746,7 +8738,7 @@ class _CheckPageState extends State<Dashboard> {
         vsimvEnabled ? vsimvData() : Container(),
         psvEnabled ? psvData() : Container(),
         prvcEnabled ? prvcData() : Container(),
-        cpapEnabled ? cpapData() : Container(),
+        // cpapEnabled ? cpapData() : Container(),
         autoEnabled ? autoData() : Container(),
         // cbipapEnabled ? cbap() : Container(),
       ],
@@ -8765,7 +8757,7 @@ class _CheckPageState extends State<Dashboard> {
               InkWell(
                 onTap: () {
                   setState(() {
-                    cpappmaxValue = _isTab10 ? 45 : 30;
+                    cpappmaxValue = _isTab10 ? 25 : 30;
                     cpappminValue = 0;
                     cpappparameterName = "CPAP";
                     cpappparameterUnits = "";
@@ -8815,7 +8807,7 @@ class _CheckPageState extends State<Dashboard> {
                             Align(
                               alignment: Alignment.bottomRight,
                               child: Text(
-                                _isTab10 ? "45" : "30",
+                                _isTab10 ? "25" : "30",
                                 style: TextStyle(
                                     fontSize: 12,
                                     color: cpappPeep
@@ -8862,7 +8854,7 @@ class _CheckPageState extends State<Dashboard> {
                                   ),
                                   value: cpappPeepValue != null
                                       ? _isTab10
-                                          ? cpappPeepValue / 45
+                                          ? cpappPeepValue / 25
                                           : cpappPeepValue / 30
                                       : 0,
                                 ),
@@ -9685,7 +9677,7 @@ class _CheckPageState extends State<Dashboard> {
                             onPressed: () {
                               setState(() {
                                 int maxValue = _isTab10 ? 90 : 65;
-                                int maxPeep = _isTab10 ? 45 : 30;
+                                int maxPeep = _isTab10 ? 25 : 30;
                                 int maxValuepcValue, maxValuepeepValue;
                                 maxValuepcValue = maxValue - cpappPeepValue;
                                 if ((maxValue - cpappPcValue) >= maxPeep) {
@@ -9776,7 +9768,7 @@ class _CheckPageState extends State<Dashboard> {
                             max: cpappmaxValue.toDouble(),
                             onChanged: (double value) {
                               int maxValue = _isTab10 ? 90 : 65;
-                              int maxPeep = _isTab10 ? 45 : 30;
+                              int maxPeep = _isTab10 ? 25 : 30;
                               int maxValuepcValue, maxValuepeepValue;
                               maxValuepcValue = maxValue - cpappPeepValue;
                               if ((maxValue - cpappPcValue) >= maxPeep) {
@@ -26288,6 +26280,173 @@ class _CheckPageState extends State<Dashboard> {
     );
   }
 
+  pressureVolumeLoop() {
+    return Container(
+      padding: EdgeInsets.only(left: 10, right: 2, top: 45),
+      height: 305,
+      width: 380,
+      child: Column(
+        children: <Widget>[
+          new Container(
+            color: Color(0xFF171e27),
+            padding: const EdgeInsets.only(top: 12.0),
+            child: new Text('Pressure & Volume',
+                style: TextStyle(color: Colors.white)),
+          ),
+          new Container(
+            color: Color(0xFF171e27),
+            child: new Plot(
+              height: 200.0,
+              data: _plotDataPv,
+              gridSize: new Offset(100.0, 1000.0),
+              style: new PlotStyle(
+                axisStrokeWidth: 1.0,
+                pointRadius: 1.0,
+                outlineRadius: 1.0,
+                primary: Colors.red,
+                secondary: Colors.red,
+                trace: true,
+                traceStokeWidth: 4.0,
+                // traceColor: Colors.blueGrey,
+                // traceClose: true,
+                // showCoordinates: true,
+                textStyle: new TextStyle(
+                  fontSize: 8.0,
+                  color: Colors.grey,
+                ),
+                axis: Colors.blueGrey[600],
+                // gridline: Colors.blueGrey[100],
+              ),
+              padding: const EdgeInsets.fromLTRB(40.0, 12.0, 40.0, 40.0),
+              xTitle: 'Pressure',
+              yTitle: 'Volume',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  pressureFlowLoop() {
+    return Container(
+      padding: EdgeInsets.only(left: 10, right: 2, top: 45),
+      height: 305,
+      width: 380,
+      child: Column(
+        children: <Widget>[
+          new Container(
+            color: Color(0xFF171e27),
+            padding: const EdgeInsets.only(top: 12.0),
+            child: new Text('Flow & Pressure',
+                style: TextStyle(color: Colors.white)),
+          ),
+          new Container(
+            color: Color(0xFF171e27),
+            child: new Plot(
+              height: 200.0,
+              data: _plotDataPf,
+              gridSize: new Offset(200.0, 100.0),
+              style: new PlotStyle(
+                axisStrokeWidth: 1.0,
+                pointRadius: 1.0,
+                outlineRadius: 1.0,
+                primary: Colors.red,
+                secondary: Colors.red,
+                trace: true,
+                traceStokeWidth: 4.0,
+                // traceColor: Colors.blueGrey,
+                // traceClose: true,
+                // showCoordinates: true,
+                textStyle: new TextStyle(
+                  fontSize: 8.0,
+                  color: Colors.grey,
+                ),
+                axis: Colors.blueGrey[600],
+                // gridline: Colors.blueGrey[100],
+              ),
+              padding: const EdgeInsets.fromLTRB(40.0, 12.0, 40.0, 40.0),
+              xTitle: 'Flow',
+              yTitle: 'Pressure',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  volumeFlowLoop() {
+    return Container(
+      padding: EdgeInsets.only(left: 10, right: 2, top: 45),
+      height: 305,
+      width: 380,
+      child: Column(
+        children: <Widget>[
+          new Container(
+            color: Color(0xFF171e27),
+            padding: const EdgeInsets.only(top: 12.0),
+            child: new Text('Volume & Flow',
+                style: TextStyle(color: Colors.white)),
+          ),
+          new Container(
+            color: Color(0xFF171e27),
+            child: new Plot(
+              height: 200.0,
+              data: _plotDataVf,
+              gridSize: new Offset(500.0, 100.0),
+              style: new PlotStyle(
+                axisStrokeWidth: 1.0,
+                pointRadius: 1.0,
+                outlineRadius: 1.0,
+                primary: Colors.red,
+                secondary: Colors.red,
+                trace: true,
+                traceStokeWidth: 4.0,
+                // traceColor: Colors.blueGrey,
+                // traceClose: true,
+                // showCoordinates: true,
+                textStyle: new TextStyle(
+                  fontSize: 8.0,
+                  color: Colors.grey,
+                ),
+                axis: Colors.blueGrey[600],
+                // gridline: Colors.blueGrey[100],
+              ),
+              padding: const EdgeInsets.fromLTRB(40.0, 12.0, 40.0, 40.0),
+              xTitle: 'Volume',
+              yTitle: 'Flow',
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  loopsGraphs() {
+    return Container(
+      margin: EdgeInsets.only(left: 174, right: 5, top: 30, bottom: 14),
+      child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Row(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: <Widget>[
+                pressureVolumeLoop(),
+                pressureFlowLoop(),
+              ],
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: <Widget>[
+                volumeFlowLoop(),
+              ],
+            ),
+          ]),
+    );
+  }
+
   graphs10() {
     return Container(
       padding: EdgeInsets.only(left: 170, right: 2, top: 45),
@@ -28424,6 +28583,7 @@ class _CheckPageState extends State<Dashboard> {
       preferences.setInt("peep", pccmvPeepValue);
       preferences.setInt("fio2", pccmvFio2Value);
       preferences.setInt("pc", pccmvPcValue);
+      preferences.setBool("flag", assistmodePressureOn);
 
       preferences.setInt('pccmvRRValue', pccmvRRValue);
       preferences.setInt('pccmvIeValue', pccmvIeValue);
@@ -28513,6 +28673,7 @@ class _CheckPageState extends State<Dashboard> {
       // preferences.setInt("ps", 40);
       preferences.setInt("fio2", vccmvFio2Value);
       preferences.setInt("vt", vccmvVtValue);
+      preferences.setBool("flag1", assistmodeVolumeOn);
 
       preferences.setInt('vccmvRRValue', vccmvRRValue);
       preferences.setInt('vccmvIeValue', vccmvIeValue);
@@ -28608,6 +28769,7 @@ class _CheckPageState extends State<Dashboard> {
       preferences.setInt("fio2", pacvFio2Value);
       preferences.setInt("pc", pacvPcValue);
       preferences.setInt("itrig", pacvItrigValue);
+      preferences.setBool("flag", assistmodePressureOn);
 
       //==
       preferences.setInt('pacvItrigValue', pacvItrigValue);
@@ -28702,6 +28864,7 @@ class _CheckPageState extends State<Dashboard> {
       preferences.setInt("fio2", vacvFio2Value);
       preferences.setInt("vt", vacvVtValue);
       preferences.setInt("itrig", vacvItrigValue);
+      preferences.setBool("flag1", assistmodeVolumeOn);
 
       preferences.setInt('vacvItrigValue', vacvItrigValue);
       preferences.setInt('vacvRrValue', vacvRrValue);
@@ -29054,6 +29217,8 @@ class _CheckPageState extends State<Dashboard> {
       preferences.setInt('psvEtrigValue', psvEtrigValue);
       preferences.setInt('psvMinTeValue', psvMinTeValue);
       preferences.setInt('psvdefaultValue', psvdefaultValue);
+
+      sendDataUsbConnection(modeWriteList, 2);
 
       if (_status == "Connected") {
         preferences.setBool("play", false);
@@ -29408,6 +29573,8 @@ class _CheckPageState extends State<Dashboard> {
       writePlay.add(0);
       writePlay.add(31);
       playOnEnabled = false;
+      playOnEnabled = false;
+      playOnEnabled = false;
     });
     sendDataUsbConnection(writePlay, 2);
   }
@@ -29421,6 +29588,8 @@ class _CheckPageState extends State<Dashboard> {
       writePlay.add(20);
       writePlay.add(0);
       writePlay.add(30);
+      playOnEnabled = true;
+      playOnEnabled = true;
       playOnEnabled = true;
     });
     sendDataUsbConnection(writePlay, 2);
@@ -31619,7 +31788,7 @@ class _CheckPageState extends State<Dashboard> {
       preferences = await SharedPreferences.getInstance();
       preferences.setString("lastRecordTime", lastRecordTime);
 
-      checkCrc(finalList, finalList.length);
+      checkCrc(finalList, finalList.length, 1);
       // extractingData(finalList);
     } else if (finalList.isNotEmpty &&
         ((finalList[2] << 8) + finalList[3]) == 17) {
@@ -31631,6 +31800,8 @@ class _CheckPageState extends State<Dashboard> {
         finalList.clear();
         acknowledgeData.clear();
       });
+    } else {
+      checkCrc(finalList, finalList.length, 2);
     }
   }
 
@@ -31651,8 +31822,9 @@ class _CheckPageState extends State<Dashboard> {
     //       ModalRoute.withName('/'));
     // }
     // pressure graph
-    double temp = (((finalList[34] << 8) + finalList[35]))
-        .toDouble(); // pressure points 35,36
+    double temp = (((finalList[34] << 8) + finalList[35])).toDouble();
+
+    // pressure points 35,36
 
     if (temp > 40000) {
       setState(() {
@@ -31685,6 +31857,12 @@ class _CheckPageState extends State<Dashboard> {
     } else {
       volumePoints.add(temp1);
     }
+
+    var inhalationData = (finalList[46] << 8) + finalList[47];
+    var exhalationData = (finalList[48] << 8) + finalList[49];
+
+    // print(inhalationData.toString());
+
     double temp3 = ((((finalList[46] << 8) + finalList[47])) -
             (((finalList[48] << 8) + finalList[49])))
         .toDouble();
@@ -31698,26 +31876,72 @@ class _CheckPageState extends State<Dashboard> {
       flowPoints.add(temp3);
     }
 
-    if (temp3 >= 0) {
+    if (temp3 <= 0) {
+      setState(() {
+        datapv.add(Point(temp, temp1));
+        datapf.add(Point(temp3, temp));
+        datavf.add(Point(temp1, temp3));
+        breathCycle = true;
+      });
+    } else if (temp3 >= 0) {
+      setState(() {
+        datapv.add(Point(temp, temp1));
+        datapf.add(Point(temp3, temp));
+        datavf.add(Point(temp1, temp3));
+
         if (breathCycle == true) {
-          data.clear();
+          if (datapv.length > 10 && datapv.length != 0) {
+            //re-insti
+            _plotDataPv = [Point(peepDisplayValue.toDouble(), 2.0)];
+            //pressure volume
+            _plotDataPv.add(Point(peepDisplayValue.toDouble(), 2.0));
+            datapv.removeLast();
+            _plotDataPv.addAll(datapv);
+            _plotDataPv.add(Point(peepDisplayValue.toDouble(), 2.0));
+          } else {
+            datapv.clear();
+          }
+
+          // pressure flow
+          if (datapf.length > 10 && datapf.length != 0) {
+            _plotDataPf = [(Point(0.0, 0.0))];
+            datapf.removeLast();
+            _plotDataPf.addAll(datapf);
+            _plotDataPf.add(Point(0.0, 0.0));
+          } else {
+            datapf.clear();
+          }
+
+          // volume flow
+          if (datavf.length > 10 && datavf.length != 0) {
+            _plotDataVf = [(Point(0.0, 0.0))];
+            datavf.removeLast();
+            _plotDataVf.addAll(datavf);
+            _plotDataVf.add(Point(0.0, 0.0));
+          } else {
+            datavf.clear();
+          }
+
+          print(datavf);
+          print(datapf);
+          print(datapv);
+          datavf.clear();
+          datapv.clear();
+          datapf.clear();
           breathCycle = false;
         }
-        data.add(Point(temp, temp1));
-      } else if (temp3<=0) {
-        data.add(Point(temp, temp1));
-        breathCycle = true;
-      }
-
-      if(data!=null){
-        _plotData.clear();
-        _plotData.addAll(data);
-      }
+      });
+    }
 
     if (((finalList[60] << 8) + finalList[61]).toInt() >= 0 &&
         ((finalList[60] << 8) + finalList[61]).toInt() <= 150) {
       setState(() {
-        pplateauDisplay = ((finalList[60] << 8) + finalList[61]).toDouble();
+        double dataPlatea = ((finalList[60] << 8) + finalList[61]).toDouble();
+        if (dataPlatea > pipValue.toDouble()) {
+          pplateauDisplay = pipValue.toDouble() - 1.0;
+        } else {
+          pplateauDisplay = dataPlatea;
+        }
       });
     }
 
@@ -31875,7 +32099,8 @@ class _CheckPageState extends State<Dashboard> {
               _playMusicMedium();
               sendSoundOn();
               audioEnable = true;
-            } else if (presentCode == 23 && lowPriorityAlarm == 0) {
+            } else if ((presentCode == 23 || presentCode == 28) &&
+                lowPriorityAlarm == 0) {
               setState(() {
                 vhighPriorityAlarm = 0;
                 highPriorityAlarm = 0;
@@ -31952,7 +32177,8 @@ class _CheckPageState extends State<Dashboard> {
                 _playMusicMedium();
                 sendSoundOn();
                 audioEnable = true;
-              } else if (presentCode == 23 && lowPriorityAlarm == 0) {
+              } else if ((presentCode == 23 || presentCode == 28) &&
+                  lowPriorityAlarm == 0) {
                 setState(() {
                   vhighPriorityAlarm = 0;
                   highPriorityAlarm = 0;
@@ -31966,7 +32192,6 @@ class _CheckPageState extends State<Dashboard> {
               }
             }
           }
-          // }
         } else if (finalList[108] == 0) {
           setState(() {
             vhighPriorityAlarm = 0;
@@ -32072,7 +32297,10 @@ class _CheckPageState extends State<Dashboard> {
             } else if (finalList[109] == 3) {
               ((finalList[106] << 8) + finalList[107]) == 23
                   ? alarmMessage = "Apnea backup"
-                  : alarmMessage = "";
+                  : ((finalList[106] << 8) + finalList[107]) == 28
+                      ? alarmMessage =
+                          "Set volume can't be reached. due to low PC Max"
+                      : alarmMessage = "";
             }
           });
         }
@@ -32126,8 +32354,6 @@ class _CheckPageState extends State<Dashboard> {
         compressor = ((list[29] & 0xC) >> 2);
         blender = ((list[29] & 0x30) >> 4);
         checkOfffset = ((list[29] & 0xC0) >> 6);
-
-
       });
       setState(() {
         checkO2CalibrationValue = finalList[30];
@@ -32253,8 +32479,6 @@ class _CheckPageState extends State<Dashboard> {
           alarmActive = 0.toString();
         }
       });
-
-      
 
       // if (temp3 < 0 && bnegative == true) {
       //   negativeNumber = temp3;
@@ -32720,6 +32944,22 @@ class _CheckPageState extends State<Dashboard> {
     });
   }
 
+  extractingBreathData(List<int> breathList) {
+    if (breathList[0] == 2) {
+      var lengthPacket = breathList[1];
+      var pressurePostiveLength = breathList[2];
+      var pressureNegativeLength = breathList[pressurePostiveLength + 1];
+      var flowPostiveLength = breathList[pressureNegativeLength + 1];
+      var flowNegativeLength = breathList[flowPostiveLength + 1];
+      var volumePostiveLength = breathList[flowNegativeLength + 1];
+      var volumeNegativeLength = breathList[volumePostiveLength + 1];
+
+      if (lengthPacket == volumeNegativeLength) {
+        print("done");
+      }
+    }
+  }
+
   sendData(List<int> listCrcDataC, checkValue) async {
     List<int> cfinalListSend = [];
 
@@ -32732,6 +32972,7 @@ class _CheckPageState extends State<Dashboard> {
     await _port.write(Uint8List.fromList(cfinalListSend));
 
     // sleep(Duration(milliseconds: 50));
+    print(cfinalListSend);
 
     // acknowReceivedValue = acknowledgeData[4];
     // ackPacket =  acknowledgeData[5];
@@ -32773,7 +33014,7 @@ class _CheckPageState extends State<Dashboard> {
     setState(() {
       acknowReceivedValue = 0;
       ackPacket = 0;
-      playOnEnabled = true;
+      // playOnEnabled = true;
       selfTestingButtonEnabled = true;
     });
   }
@@ -32782,7 +33023,7 @@ class _CheckPageState extends State<Dashboard> {
     setState(() {
       acknowReceivedValue = 0;
       ackPacket = 0;
-      playOnEnabled = false;
+      // playOnEnabled = false;
       selfTestingButtonEnabled = true;
     });
   }
@@ -32825,4 +33066,52 @@ class _CheckPageState extends State<Dashboard> {
       finalListSend.clear();
     });
   }
+
+  // // ignore: non_constant_identifier_names
+  // createPlotArray_pv(double currentPressure, double prePressureValue,
+  //     double currentVolume, double presVolumeValue, int state) async {
+  //   double slope = 0.0;
+  //   double diffPress = 0.0;
+  //   double diffvol = 0.0;
+  //   List<double> lp1 = [];
+  //   List<double> lv1 = [];
+
+  //   setState((){
+  //   if (state == 1) {
+  //     diffPress = (((currentPressure - prePressureValue) / 10) - 1.0);
+  //     diffvol = (((currentVolume - presVolumeValue) / 10) - 1.0);
+  //     slope = ((currentPressure - prePressureValue) /
+  //         (currentVolume - presVolumeValue));
+  //   } else if (state == 2) {
+  //     diffPress = (((prePressureValue - currentPressure) / 10) - 1.0);
+  //     diffvol = (((presVolumeValue - currentVolume) / 10) - 1.0);
+  //     slope = ((prePressureValue - currentPressure) /
+  //         (presVolumeValue - currentVolume));
+  //   }
+
+  //   if (slope != double.nan &&
+  //       slope != double.infinity &&
+  //       slope != double.negativeInfinity) {
+  //     print("sloper: " + slope.toString());
+  //     print("pressure: " + diffPress.toString());
+  //     print("volume: " + diffvol.toString());
+
+  //     for (int i = 0; i < diffPress.toInt(); i++) {
+  //       double datp = prePressureValue + (diffPress.toInt() * 10);
+  //       lp1.add(datp);
+  //     }
+  //     for (int i = 0; i < diffvol.toInt(); i++) {
+  //       double datv = presVolumeValue + (diffvol.toInt() * 10);
+  //       lv1.add(datv);
+  //     }
+  //     for (int i = 0; i > lv1.length; i++) {
+  //       data.add(Point(lv1[i], lp1[i]));
+  //     }
+  //   }
+
+  //    prePressureValue = currentPressure;
+  //    presVolumeValue = currentVolume;
+
+  //    });
+  // }
 }

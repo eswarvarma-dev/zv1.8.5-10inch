@@ -130,7 +130,18 @@ class _CommonDialogState extends State<CommonDialog> {
         suffix = false;
         units = true;
       }); //
-    }else if (widget.value.toString() == "VVPEEP") {
+    }else if (widget.value.toString() == "CPAP") {
+      setState(() {
+        commomValue = preferences.getInt("peep").toDouble();
+        checkValue = preferences.getInt("peep").toDouble();
+        min = 0;
+        max = 25;
+        prefix = false;
+        suffix = false;
+        units = true;
+      }); //
+    }
+    else if (widget.value.toString() == "VVPEEP") {
       setState(() {
         commomValue = preferences.getInt("peep").toDouble();
         checkValue = preferences.getInt("peep").toDouble();
@@ -466,7 +477,7 @@ class _CommonDialogState extends State<CommonDialog> {
                                                 ? "PS"
                                                 : widget.value.toString() ==
                                                         "PC MAX"
-                                                    ? "PC MAC"
+                                                    ? "PC MAX"
                                                     : widget.value.toString() ==
                                                             "PRVCPEEP"
                                                         ? "PEEP"
@@ -803,6 +814,12 @@ class _CommonDialogState extends State<CommonDialog> {
       });
       Navigator.pop(context, value.ceil().toString() + "ab" + "peep");
     } else if (widget.value.toString() == "VVPEEP") {
+      setState(() {
+        preferences.setInt("peep", value.ceil());
+      });
+      Navigator.pop(context, value.ceil().toString() + "ab" + "peep");
+    } 
+    else if (widget.value.toString() == "CPAP") {
       setState(() {
         preferences.setInt("peep", value.ceil());
       });

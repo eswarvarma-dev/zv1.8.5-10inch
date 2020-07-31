@@ -108,6 +108,8 @@ class _SplashPageState extends State<SplashPage> {
     preferences.setInt('minlv', 0);
     preferences.setInt('maxlv', 100);
     preferences.setBool('pControl', true);
+    preferences.setBool("flag",false);
+    preferences.setBool("flag1",false);
 
     var dateS = preferences.getString('lastRecordTime');
     var res = dbHelper.delete7Daysdata(dateS);

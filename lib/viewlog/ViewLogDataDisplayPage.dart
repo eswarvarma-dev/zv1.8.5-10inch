@@ -296,7 +296,8 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                                                 : alarmMessage == '25' ? alarmMessage = "Low Minute Volume" 
                                                                           : alarmMessage == '26' ? alarmMessage = "High Minute Volume" 
                                                                           : alarmMessage == '27' ? alarmMessage = "High Leak Volume"
-                                                                                : alarmMessage = "";
+                                                                          : alarmMessage == '28' ? alarmMessage = "High Leak Volume"
+                                                                                : alarmMessage = "Set volume can't be reached. due to low PC Max";
           } else if (alarmPriority == '3') {
             alarmMessage == '23'
                 ? alarmMessage = "Apnea backup"
@@ -632,7 +633,8 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           SizedBox(width:_isTab10? 5:10),
-                          _isTab10 ? graphs10() : graphs(),
+                          // _isTab10 ? graphs10() : graphs(),
+                          graphsScale(),
                           SizedBox(width: _isTab10?5:25),
                           Container(
                             margin: EdgeInsets.only(top: 40),
@@ -2766,549 +2768,18 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
     );
   }
 
-   graphs10() {
-    return Container(
-      padding: EdgeInsets.only(left: 170, right: 2, top: 45),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 380,
-                      height: 150,
-                      child: Stack(
-                        children: [
-                          Container(
-                              margin:
-                                  EdgeInsets.only(left: 20, right: 10, top: 10),
-                              child: mscopeOne),
-                          Container(
-                              margin: EdgeInsets.only(left: 10, top: 8),
-                              child: Text(
-                                "100" + " cmH\u2082O",
-                                style: TextStyle(color: Colors.yellow),
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(left: 15, top: 133),
-                              child: Text(
-                                "0",
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                          Container(
-                            margin: EdgeInsets.only(left: 28, top: 24),
-                            width: 1,
-                            color: Colors.grey,
-                            height: 117,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: 28,
-                              top: 139,
-                            ),
-                            color: Colors.grey,
-                            height: 1,
-                            width: 328,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 12, top: 45),
-                            child: RotatedBox(
-                                quarterTurns: 3,
-                                child: Text("Pressure",
-                                    style: TextStyle(
-                                        color: Colors.yellow, fontSize: 10))),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(left: 362, top: 130),
-                              child: Text(
-                                "s",
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 380,
-                      height: 190,
-                      child: Stack(
-                        children: [
-                          // Container(
-                          //     margin: EdgeInsets.only(
-                          //       left: 20,
-                          //       bottom: 56.5,
-                          //       top: 10,
-                          //       right: 10,
-                          //     ),
-                          //     child: mscopeOne1),
-                          Container(
-                              margin: EdgeInsets.only(
-                                left: 20,
-                                bottom: 10,
-                                top: 10,
-                                right: 10,
-                              ),
-                              child: mscopeOne1),
-                          Container(
-                              margin: EdgeInsets.only(left: 10, top: 10),
-                              child: Text(
-                                "200 Lpm",
-                                style: TextStyle(color: Colors.green),
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(left: 10, top: 174),
-                              child: Text(
-                                "-90 Lpm",
-                                style: TextStyle(color: Colors.green),
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(left: 15, top: 125),
-                              child: Text(
-                                "0",
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                          Container(
-                            margin: EdgeInsets.only(left: 28, top: 20),
-                            width: 1,
-                            color: Colors.grey,
-                            height: 156,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: 28,
-                              top: 123,
-                            ),
-                            color: Colors.grey,
-                            height: 1,
-                            width: 328,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 12, top: 35),
-                            child: RotatedBox(
-                                quarterTurns: 3,
-                                child: Text("Flow",
-                                    style: TextStyle(
-                                        color: Colors.green, fontSize: 10))),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(left: 362, top: 115),
-                              child: Text(
-                                "s",
-                                style: TextStyle(color: Colors.grey),
-                              ))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 380,
-                      height: 190,
-                      child: Stack(
-                        children: [
-                          Container(
-                              margin: EdgeInsets.only(
-                                left: 20,
-                                bottom: 10,
-                                top: 10,
-                                right: 10,
-                              ),
-                              child: mscopeOne2),
-                          // Container(
-                          //     margin: EdgeInsets.only(
-                          //       left: 20,
-                          //       bottom: 10,
-                          //       top: 10,
-                          //       right: 10,
-                          //     ),
-                          //     child: sscopeOne1),
-                          Container(
-                              margin: EdgeInsets.only(left: 10, top: 8),
-                              child: Text(
-                                "3000 mL",
-                                style: TextStyle(color: Colors.blue),
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(left: 15, top: 155),
-                              child: Text(
-                                "0",
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                          Container(
-                            margin: EdgeInsets.only(left: 28, top: 20),
-                            width: 1,
-                            color: Colors.grey,
-                            height: 150,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: 28,
-                              top: 168,
-                            ),
-                            color: Colors.grey,
-                            height: 1,
-                            width: 328,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 12, top: 55),
-                            child: RotatedBox(
-                                quarterTurns: 3,
-                                child: Text("Volume",
-                                    style: TextStyle(
-                                        color: Colors.blue, fontSize: 10))),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(left: 362, top: 160),
-                              child: Text(
-                                "s",
-                                style: TextStyle(color: Colors.grey),
-                              ))
-                        ],
-                      ),
-                    ),
-                  ]),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 385,
-                    height: 150,
-                    child: Stack(
-                      children: [
-                        Container(
-                            margin:
-                                EdgeInsets.only(left: 20, right: 10, top: 10),
-                            child: mscopeOne),
-                        Container(
-                            margin:
-                                EdgeInsets.only(left: 20, right: 10, top: 10),
-                            child: sscopeOne2),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                margin: EdgeInsets.only(left: 10, top: 8),
-                                child: Text(
-                                  "100" + " cmH\u2082O",
-                                  style: TextStyle(color: Colors.yellow),
-                                )),
-                            Container(
-                                margin: EdgeInsets.only(left: 220, top: 10),
-                                child: Text(
-                                  "3000 mL",
-                                  style: TextStyle(color: Colors.blue),
-                                )),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 15, top: 133),
-                            child: Text(
-                              "0",
-                              style: TextStyle(color: Colors.grey),
-                            )),
-                        Container(
-                          margin: EdgeInsets.only(left: 28, top: 24),
-                          width: 1,
-                          color: Colors.grey,
-                          height: 117,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 28,
-                            top: 139,
-                          ),
-                          color: Colors.grey,
-                          height: 1,
-                          width: 328,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 25),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Volume",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(" & ",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Pressure",
-                                      style: TextStyle(
-                                          color: Colors.yellow, fontSize: 10))),
-                            ),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 365, top: 130),
-                            child: Text(
-                              "s",
-                              style: TextStyle(color: Colors.grey),
-                            )),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 385,
-                    height: 190,
-                    child: Stack(
-                      children: [
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 20,
-                              bottom: 56.5,
-                              top: 10,
-                              right: 10,
-                            ),
-                            child: mscopeOne),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 20,
-                              bottom: 10,
-                              top: 10,
-                              right: 10,
-                            ),
-                            child: sscopeOne1),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                margin: EdgeInsets.only(left: 10, top: 8),
-                                child: Text(
-                                  "100" + " cmH\u2082O",
-                                  style: TextStyle(color: Colors.yellow),
-                                )),
-                            Container(
-                                margin: EdgeInsets.only(left: 220, top: 10),
-                                child: Text(
-                                  "200 Lpm",
-                                  style: TextStyle(color: Colors.green),
-                                )),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 300, top: 174),
-                            child: Text(
-                              "-90 Lpm",
-                              style: TextStyle(color: Colors.green),
-                            )),
-                        Container(
-                            margin: EdgeInsets.only(left: 15, top: 125),
-                            child: Text(
-                              "0",
-                              style: TextStyle(color: Colors.grey),
-                            )),
-                        Container(
-                          margin: EdgeInsets.only(left: 28, top: 20),
-                          width: 1,
-                          color: Colors.grey,
-                          height: 166,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 28,
-                            top: 123,
-                          ),
-                          color: Colors.grey,
-                          height: 1,
-                          width: 328,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 35),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Flow",
-                                      style: TextStyle(
-                                          color: Colors.green, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(" & ",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Pressure",
-                                      style: TextStyle(
-                                          color: Colors.yellow, fontSize: 10))),
-                            ),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 365, top: 115),
-                            child: Text(
-                              "s",
-                              style: TextStyle(color: Colors.grey),
-                            ))
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 385,
-                    height: 190,
-                    child: Stack(
-                      children: [
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 20,
-                              bottom: 55,
-                              top: 10,
-                              right: 10,
-                            ),
-                            child: mscopeOne2),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 20,
-                              bottom: 10,
-                              top: 10,
-                              right: 10,
-                            ),
-                            child: sscopeOne1),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                margin: EdgeInsets.only(left: 10, top: 8),
-                                child: Text(
-                                  "3000 mL",
-                                  style: TextStyle(color: Colors.blue),
-                                )),
-                            Container(
-                                margin: EdgeInsets.only(left: 230, top: 10),
-                                child: Text(
-                                  "200 Lpm",
-                                  style: TextStyle(color: Colors.green),
-                                )),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 300, top: 174),
-                            child: Text(
-                              "-90 Lpm",
-                              style: TextStyle(color: Colors.green),
-                            )),
-                        Container(
-                            margin: EdgeInsets.only(left: 15, top: 125),
-                            child: Text(
-                              "0",
-                              style: TextStyle(color: Colors.grey),
-                            )),
-                        Container(
-                          margin: EdgeInsets.only(left: 28, top: 20),
-                          width: 1,
-                          color: Colors.grey,
-                          height: 166,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 28,
-                            top: 123,
-                          ),
-                          color: Colors.grey,
-                          height: 1,
-                          width: 328,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 35),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Flow",
-                                      style: TextStyle(
-                                          color: Colors.green, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(" & ",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Volume",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 10))),
-                            ),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 365, top: 115),
-                            child: Text(
-                              "s",
-                              style: TextStyle(color: Colors.grey),
-                            ))
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ],
-          ),
-          Container(
-              width: 690,
-              height: 80,
-              child:
-                  // alarmActive == "1"
-                  //     ?
-                  Card(
-                color: alarmActive == "1" ? Colors.red : Color(0xFF171e27),
-                // color: alarmActive == "1" ? Colors.red : Colors.white,
-                // priorityNo=="0" ? Colors.red: priorityNo=="1" ? Colors.red : priorityNo=="2" ? Colors.orange : priorityNo=="3" ? Colors.yellow :
-
-                child: Center(
-                    child: Align(
-                  alignment: Alignment.centerLeft,
-                  child: Center(
-                    child: Text(
-                      alarmActive == "1" ? alarmMessage.toUpperCase() : "",
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-                  ),
-                )),
-              )
-              // : Container(),
-              ),
-        ],
-      ),
-    );
-  }
-
-  graphs() {
+   graphsScale() {
     return Container(
       padding: EdgeInsets.only(left: 170, right: 0, top: 45),
       child: Column(
         children: [
           Container(
-            width: 520,
-            height: 110,
+            width: 769,
+            height: 150,
             child: Stack(
               children: [
                 Container(
-                    margin: EdgeInsets.only(left: 20, right: 10, top: 10),
+                    margin: EdgeInsets.only(left: 20, right: 2, top: 10),
                     child: scopeOne),
                 Container(
                     margin: EdgeInsets.only(left: 10, top: 8),
@@ -3317,7 +2788,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                    margin: EdgeInsets.only(left: 15, top: 93),
+                    margin: EdgeInsets.only(left: 15, top: 130),
                     child: Text(
                       "0",
                       style: TextStyle(color: Colors.grey),
@@ -3326,16 +2797,16 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                   margin: EdgeInsets.only(left: 28, top: 24),
                   width: 1,
                   color: Colors.grey,
-                  height: 85,
+                  height: 116,
                 ),
                 Container(
                   margin: EdgeInsets.only(
                     left: 28,
-                    top: 99,
+                    top: 138,
                   ),
                   color: Colors.grey,
                   height: 1,
-                  width: 473,
+                  width: 728,
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 12, top: 35),
@@ -3344,79 +2815,18 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                       child: Text("Pressure",
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                 ),
-
-                // Container(
-                //     margin: EdgeInsets.only(left: 450),
-                //     child: Text(
-                //       "Pressure ",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
                 Container(
-                    margin: EdgeInsets.only(left: 502, top: 90),
+                    margin: EdgeInsets.only(left: 758, top: 128),
                     child: Text(
                       "s",
                       style: TextStyle(color: Colors.grey),
                     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 60, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 106.6, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 156, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 207.3, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 260.6, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 310, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 363, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 415, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
-                // Container(
-                //     margin: EdgeInsets.only(left: 460, top: 88),
-                //     child: Text(
-                //       "|",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
               ],
             ),
           ),
           Container(
-            width: 520,
-            height: 150,
+            width: 769,
+            height: 210,
             child: Stack(
               children: [
                 Container(
@@ -3424,7 +2834,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                       left: 20,
                       bottom: 10,
                       top: 10,
-                      right: 10,
+                      right: 2,
                     ),
                     child: scopeOne1),
                 Container(
@@ -3434,13 +2844,13 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                    margin: EdgeInsets.only(left: 10, top: 127),
+                    margin: EdgeInsets.only(left: 10, top: 195),
                     child: Text(
                       "-90 Lpm",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                    margin: EdgeInsets.only(left: 15, top: 66),
+                    margin: EdgeInsets.only(left: 15, top: 128),
                     child: Text(
                       "0",
                       style: TextStyle(color: Colors.grey),
@@ -3449,16 +2859,16 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                   margin: EdgeInsets.only(left: 28, top: 20),
                   width: 1,
                   color: Colors.grey,
-                  height: 108,
+                  height: 185,
                 ),
                 Container(
                   margin: EdgeInsets.only(
                     left: 28,
-                    top: 96,
+                    top: 138,
                   ),
                   color: Colors.grey,
                   height: 1,
-                  width: 473,
+                  width: 728,
                 ),
                 Container(
                   margin: EdgeInsets.only(left: 12, top: 35),
@@ -3467,15 +2877,8 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                       child: Text("Flow",
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                 ),
-
-                // Container(
-                //     margin: EdgeInsets.only(left: 482),
-                //     child: Text(
-                //       "Flow ",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
                 Container(
-                    margin: EdgeInsets.only(left: 502, top: 86),
+                    margin: EdgeInsets.only(left: 759, top: 124),
                     child: Text(
                       "s",
                       style: TextStyle(color: Colors.grey),
@@ -3484,80 +2887,93 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
             ),
           ),
           Container(
-            width: 520,
-            height: 110,
+            width: 769,
+            height: 150,
             child: Stack(
               children: [
                 Container(
-                    margin: EdgeInsets.only(left: 20, right: 10, top: 10),
+                    margin: EdgeInsets.only(left: 20, right: 2, top: 10),
                     child: scopeOne2),
                 Container(
-                    margin: EdgeInsets.only(left: 10),
+                    margin: EdgeInsets.only(left: 10, top: 8),
                     child: Text(
-                      "1000 mL",
+                      "3000" + " mL",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                    margin: EdgeInsets.only(left: 15, top: 89),
+                    margin: EdgeInsets.only(left: 15, top: 130),
                     child: Text(
                       "0",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                  margin: EdgeInsets.only(left: 30, top: 15),
+                  margin: EdgeInsets.only(left: 28, top: 24),
                   width: 1,
                   color: Colors.grey,
-                  height: 85,
+                  height: 116,
                 ),
                 Container(
                   margin: EdgeInsets.only(
                     left: 28,
-                    top: 99,
+                    top: 138,
                   ),
                   color: Colors.grey,
                   height: 1,
-                  width: 473,
+                  width: 728,
                 ),
                 Container(
-                  margin: EdgeInsets.only(left: 12, top: 35),
+                  margin: EdgeInsets.only(left: 12, top: 55),
                   child: RotatedBox(
                       quarterTurns: 3,
                       child: Text("Volume",
                           style: TextStyle(color: Colors.grey, fontSize: 10))),
                 ),
-                // Container(
-                //     margin: EdgeInsets.only(left: 460),
-                //     child: Text(
-                //       "Volume ",
-                //       style: TextStyle(color: Colors.white),
-                //     )),
                 Container(
-                    margin: EdgeInsets.only(left: 502, top: 89),
+                    margin: EdgeInsets.only(left: 758, top: 128),
                     child: Text(
                       "s",
                       style: TextStyle(color: Colors.grey),
-                    ))
+                    )),
               ],
             ),
           ),
-          Container(
-            width: 480,
-            height: 70,
-            child: Card(
-              color: alarmActive == "1" ? Colors.red : Color(0xFF171e27),
-              // priorityNo=="0" ? Colors.red: priorityNo=="1" ? Colors.red : priorityNo=="2" ? Colors.orange : priorityNo=="3" ? Colors.yellow :
-
-              child: Center(
-                  child: Align(
-                alignment: Alignment.centerLeft,
-                child: Center(
-                  child: Text(
-                    alarmActive == "1" ? alarmMessage.toUpperCase() : "",
-                    style: TextStyle(color: Colors.white, fontSize: 18),
-                  ),
+          SizedBox(height: 20),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: <Widget>[
+              Center(
+                child: Container(
+                  decoration:
+                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                  margin: EdgeInsets.only(left: 40),
+                  width: 675,
+                  height: 80,
+                  child: alarmActive == "1"
+                      ? Card(
+                          color: alarmActive == "1"
+                              ? Colors.red
+                              : Color(0xFF171e27),
+                          child: Center(
+                              child: Align(
+                            alignment: Alignment.centerLeft,
+                            child: Center(
+                              child: Text(
+                                alarmActive == "1"
+                                    ? alarmMessage.toUpperCase()
+                                    : "",
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 15),
+                                textAlign: TextAlign.center,
+                              ),
+                            ),
+                          )),
+                        )
+                      : Container(),
                 ),
-              )),
-            ),
+              ),
+              
+            ],
           ),
         ],
       ),
