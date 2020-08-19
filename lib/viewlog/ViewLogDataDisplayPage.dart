@@ -233,10 +233,14 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
 
       if (alarmActive == '1') {
         setState(() {
-          if( alarmPriority == '0'){
-           alarmMessage == "24"
-                  ? alarmMessage =
-                      "Blender Malfunction. Ventilator Operation Stopped." : alarmMessage == '17' ? alarmMessage = "PATIENT DISCONNECTED":alarmMessage="";
+          if (alarmPriority == "0") {
+            alarmMessage == "17"
+                ? alarmMessage="Patient Discconnected"
+                : alarmMessage == "24"
+                    ? alarmMessage = "Blender Malfunction. \nOxygen blending not possible."
+                    : alarmMessage == "25" ?
+                                alarmMessage= "Replace Oxygen Sensor"
+                    : "";
           } else if (alarmPriority == '1') {
             alarmMessage == '5'
                 ? alarmMessage = "SYSTEM FAULT"
@@ -508,7 +512,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
         Container(
           padding: EdgeInsets.only(left: 0, top: 0),
           child: Container(
-            width: _isTab10 ? 160 : 120,
+            width: 160 ,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -632,14 +636,14 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(width:_isTab10? 5:10),
+                          SizedBox(width:5),
                           // _isTab10 ? graphs10() : graphs(),
                           graphsScale(),
-                          SizedBox(width: _isTab10?5:25),
+                          SizedBox(width:5),
                           Container(
                             margin: EdgeInsets.only(top: 40),
                             width: 1,
-                            height: _isTab10 ? 600 : 440,
+                            height: 600 ,
                             color: Colors.white,
                           ),
                           Align(
@@ -657,7 +661,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                       child: Container(
                                         color: Color(0xFF171e27),
                                         width: 170,
-                                        height: _isTab10 ? 115 : 81,
+                                        height: 115,
                                         child: Padding(
                                           padding: const EdgeInsets.only(
                                               top: 2, left: 4),
@@ -701,8 +705,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                     // "000",
                                                     style: TextStyle(
                                                         color: Colors.yellow,
-                                                        fontSize:
-                                                            _isTab10 ? 40 : 35),
+                                                        fontSize: 40),
                                                   ),
                                                 ),
                                               ),
@@ -716,7 +719,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                     style: TextStyle(
                                                         color: Colors.white,
                                                         fontSize:
-                                                            _isTab10 ? 20 : 12),
+                                                             20),
                                                   ),
                                                 ),
                                               ),
@@ -741,7 +744,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                       child: Container(
                                         color: Color(0xFF171e27),
                                         width: 170,
-                                        height: _isTab10 ? 115 : 81,
+                                        height: 115,
                                         child: Padding(
                                           padding: const EdgeInsets.only(
                                               top: 2, left: 4),
@@ -788,8 +791,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                     // "0000",
                                                     style: TextStyle(
                                                         color: Colors.green,
-                                                        fontSize:
-                                                            _isTab10 ? 40 : 35),
+                                                        fontSize: 40),
                                                   ),
                                                 ),
                                               ),
@@ -802,8 +804,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                     "MVe",
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize:
-                                                            _isTab10 ? 20 : 12),
+                                                        fontSize: 20 ),
                                                   ),
                                                 ),
                                               ),
@@ -831,7 +832,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                       child: Container(
                                         color: Color(0xFF171e27),
                                         width: 170,
-                                        height: _isTab10 ? 115 : 81,
+                                        height:  115,
                                         child: Padding(
                                           padding: const EdgeInsets.only(
                                               top: 2, left: 4),
@@ -871,8 +872,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                   child: Text("",
                                                     style: TextStyle(
                                                         color: Colors.pink,
-                                                        fontSize:
-                                                            _isTab10 ? 40 : 35),
+                                                        fontSize:40 ),
                                                   ),
                                                 ),
                                               ),
@@ -885,8 +885,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                     "P Plateau",
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize:
-                                                            _isTab10 ? 20 : 12),
+                                                        fontSize: 20),
                                                   ),
                                                 ),
                                               ),
@@ -926,17 +925,16 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                 Stack(
                                                   children: [
                                                     Image.asset(
-                                                        lungImage == 1
+                                                  lungImage == "1"
                                                             ? "assets/lungs/1.png"
-                                                            : lungImage == 2
+                                                      : lungImage == "2"
                                                                 ? "assets/lungs/2.png"
-                                                                : lungImage == 3
+                                                          : lungImage == "3"
                                                                     ? "assets/lungs/3.png"
-                                                                    : lungImage ==
-                                                                            4
+                                                              : lungImage == "4"
                                                                         ? "assets/lungs/4.png"
                                                                         : lungImage ==
-                                                                                5
+                                                                          "5"
                                                                             ? "assets/lungs/5.png"
                                                                             : "assets/lungs/1.png",
                                                         width: 120),

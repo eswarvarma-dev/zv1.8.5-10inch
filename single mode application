@@ -478,3 +478,303 @@ class PlotStyle {
   });
 }
 
+
+
+
+
+
+
+
+
+        var vhighPriorityAlarm = 0;
+        var highPriorityAlarm = 0;
+        var mediumPriorityAlarm = 0;
+        var lowPriorityAlarm = 0;
+
+        if (finalList[108] == 1) {
+          presentCode = ((finalList[106] << 8) + finalList[107]);
+          alarmCounter = finalList[90];
+
+          if (presentCode != previousCode) {
+            previousCode = presentCode;
+            sendSoundOn();
+            _stopMusic();
+            var data = AlarmsList(
+                presentCode.toString(), this.globalCounterNo.toString());
+            dbHelpera.saveAlarm(data);
+            // alarmPrevCounter = alarmCounter;
+            if ((presentCode == 24 || presentCode == 17) &&
+                vhighPriorityAlarm == 0) {
+              setState(() {
+                vhighPriorityAlarm = 1;
+                highPriorityAlarm = 0;
+                mediumPriorityAlarm = 0;
+                lowPriorityAlarm = 0;
+                _stopMusic();
+                _playMusicHigh();
+                sendSoundOn();
+                audioEnable = true;
+              });
+            } else if ((presentCode == 5 ||
+                    presentCode == 7 ||
+                    presentCode == 10 ||
+                    presentCode == 11) &&
+                highPriorityAlarm == 0) {
+              setState(() {
+                vhighPriorityAlarm = 0;
+                highPriorityAlarm = 1;
+                mediumPriorityAlarm = 0;
+                lowPriorityAlarm = 0;
+              });
+              _stopMusic();
+              _playMusicHigh();
+              sendSoundOn();
+              audioEnable = true;
+            } else if ((presentCode == 1 ||
+                    presentCode == 2 ||
+                    presentCode == 3 ||
+                    presentCode == 4 ||
+                    presentCode == 6 ||
+                    presentCode == 8 ||
+                    presentCode == 9 ||
+                    presentCode == 12 ||
+                    presentCode == 13 ||
+                    presentCode == 14 ||
+                    presentCode == 15 ||
+                    presentCode == 16 ||
+                    presentCode == 18 ||
+                    presentCode == 19 ||
+                    presentCode == 20 ||
+                    presentCode == 21 ||
+                    presentCode == 22 ||
+                    presentCode == 25 ||
+                    presentCode == 26 ||
+                    presentCode == 27) &&
+                mediumPriorityAlarm == 0) {
+              setState(() {
+                vhighPriorityAlarm = 0;
+                highPriorityAlarm = 0;
+                mediumPriorityAlarm = 1;
+                lowPriorityAlarm = 0;
+              });
+              _stopMusic();
+              _playMusicMedium();
+              sendSoundOn();
+              audioEnable = true;
+            } else if ((presentCode == 23 ||
+                    presentCode == 28 ||
+                    presentCode == 29 ||
+                    presentCode == 7) &&
+                lowPriorityAlarm == 0) {
+              setState(() {
+                vhighPriorityAlarm = 0;
+                highPriorityAlarm = 0;
+                mediumPriorityAlarm = 0;
+                lowPriorityAlarm = 1;
+              });
+              _stopMusic();
+              _playMusicLower();
+              sendSoundOn();
+              audioEnable = true;
+            }
+          } else {
+            if (alarmCounter != alarmPrevCounter) {
+              alarmPrevCounter = alarmCounter;
+              _stopMusic();
+              var data = AlarmsList(
+                  presentCode.toString(), this.globalCounterNo.toString());
+              dbHelpera.saveAlarm(data);
+
+              if ((presentCode == 5 ||
+                      presentCode == 10 ||
+                      presentCode == 11 ||
+                      presentCode == 24 ||
+                      presentCode == 17) &&
+                  highPriorityAlarm == 0) {
+                setState(() {
+                  highPriorityAlarm = 1;
+                  mediumPriorityAlarm = 0;
+                  lowPriorityAlarm = 0;
+                  vhighPriorityAlarm = 0;
+                });
+                _stopMusic();
+                _playMusicHigh();
+                sendSoundOn();
+                audioEnable = true;
+              } else if ((presentCode == 1 ||
+                      presentCode == 2 ||
+                      presentCode == 3 ||
+                      presentCode == 4 ||
+                      presentCode == 6 ||
+                      presentCode == 8 ||
+                      presentCode == 9 ||
+                      presentCode == 12 ||
+                      presentCode == 13 ||
+                      presentCode == 14 ||
+                      presentCode == 15 ||
+                      presentCode == 16 ||
+                      presentCode == 18 ||
+                      presentCode == 19 ||
+                      presentCode == 20 ||
+                      presentCode == 21 ||
+                      presentCode == 22 ||
+                      presentCode == 25 ||
+                      presentCode == 26 ||
+                      presentCode == 27) &&
+                  mediumPriorityAlarm == 0) {
+                setState(() {
+                  highPriorityAlarm = 0;
+                  mediumPriorityAlarm = 1;
+                  lowPriorityAlarm = 0;
+                  vhighPriorityAlarm = 0;
+                });
+                _stopMusic();
+                _playMusicMedium();
+                sendSoundOn();
+                audioEnable = true;
+              } else if ((presentCode == 23 ||
+                      presentCode == 28 ||
+                      presentCode == 29 ||
+                      presentCode == 7) &&
+                  lowPriorityAlarm == 0) {
+                setState(() {
+                  vhighPriorityAlarm = 0;
+                  highPriorityAlarm = 0;
+                  mediumPriorityAlarm = 0;
+                  lowPriorityAlarm = 1;
+                });
+                _stopMusic();
+                _playMusicLower();
+                sendSoundOn();
+                audioEnable = true;
+              }
+            }
+          }
+        } else if (finalList[108] == 0) {
+          setState(() {
+            vhighPriorityAlarm = 0;
+            highPriorityAlarm = 0;
+            mediumPriorityAlarm = 0;
+            lowPriorityAlarm = 0;
+          });
+          sendSoundOff();
+          _stopMusic();
+        }
+
+        var selfRun = finalList[92];
+
+        if (selfRun == 1) {
+          //  preferences.setBool("_isFlagTest", true);
+          preferences.setBool("calli", false);
+          //  _isFlagTest = true;
+          // textText = "";
+          selftestRun(1);
+          preferences.setBool('first', false);
+        } else if (selfRun == 2) {
+          setState(() {
+            selftestRun(1);
+            selfTestingEnabled = true;
+          });
+        }
+
+        if (vteValue != null &&
+            vteValue != 0 &&
+            pplateauDisplay != null &&
+            pplateauDisplay != 0) {
+          try {
+            // var dataC = (double.tryParse(vteValue.toString()) /(pplateauDisplay - double.tryParse(peepDisplayValue.toString()))).toInt();
+            var dataC =
+                (vteValue ~/ (pplateauDisplay.toInt() - peepDisplayValue))
+                    .toInt();
+            if (dataC < 0) {
+            } else {
+              cdisplayParameter = dataC;
+            }
+          } catch (e) {}
+        }
+
+        var apneaCheckvalue = finalList[66];
+
+        if (apneaCheckvalue == 1) {
+          setState(() {
+            displayApneaTime = "Apnea";
+          });
+        } else {
+          setState(() {
+            displayApneaTime = "";
+          });
+        }
+
+        if (finalList[108] == 1) {
+          setState(() {
+            if (finalList[109] == 0) {
+              ((finalList[106] << 8) + finalList[107]) == 24
+                  ? alarmMessage =
+                      "Blender Malfunction. \nOxygen blending not possible."
+                  : ((finalList[106] << 8) + finalList[107]) == 17
+                      ? alarmMessage = "PATIENT DISCONNECTED"
+                      : "";
+            } else if (finalList[109] == 1) {
+              ((finalList[106] << 8) + finalList[107]) == 5
+                  ? alarmMessage = "SYSTEM FAULT"
+                  : ((finalList[106] << 8) + finalList[107]) == 10
+                      ? alarmMessage = "HIGH LEAKAGE"
+                      : ((finalList[106] << 8) + finalList[107]) == 11
+                          ? alarmMessage = "HIGH PRESSURE"
+                          : alarmMessage = "";
+            } else if (finalList[109] == 2) {
+              ((finalList[106] << 8) + finalList[107]) == 1
+                  ? alarmMessage = "POWER SUPPLY DISCONNECTED"
+                  : ((finalList[106] << 8) + finalList[107]) == 2
+                      ? alarmMessage = " LOW BATTERY"
+                      : ((finalList[106] << 8) + finalList[107]) == 3
+                          ? alarmMessage = "CALIBRATE FiO2"
+                          : ((finalList[106] << 8) + finalList[107]) == 4
+                              ? alarmMessage = "CALIBRATION FiO2 FAIL"
+                              : ((finalList[106] << 8) + finalList[107]) == 6
+                                  ? alarmMessage = "SELF TEST FAIL"
+                                  : ((finalList[106] << 8) + finalList[107]) == 8
+                                      ? alarmMessage = "HIGH FiO2"
+                                      : ((finalList[106] << 8) + finalList[107]) == 9
+                                          ? alarmMessage = "LOW FiO2"
+                                          : ((finalList[106] << 8) + finalList[107]) == 12
+                                              ? alarmMessage = "LOW PRESSURE"
+                                              : ((finalList[106] << 8) +
+                                                          finalList[107]) ==
+                                                      13
+                                                  ? alarmMessage = "LOW VTE"
+                                                  : ((finalList[106] << 8) +
+                                                              finalList[107]) ==
+                                                          14
+                                                      ? alarmMessage =
+                                                          "HIGH VTE"
+                                                      : ((finalList[106] << 8) + finalList[107]) == 15
+                                                          ? alarmMessage =
+                                                              "LOW VTI"
+                                                          : ((finalList[106] << 8) + finalList[107]) == 16
+                                                              ? alarmMessage =
+                                                                  "HIGH VTI"
+                                                              : ((finalList[106] << 8) + finalList[107]) == 18
+                                                                  ? alarmMessage =
+                                                                      "LOW O2  Supply"
+                                                                  : ((finalList[106] << 8) + finalList[107]) == 19
+                                                                      ? alarmMessage =
+                                                                          "LOW RR"
+                                                                      : ((finalList[106] << 8) + finalList[107]) == 20
+                                                                          ? alarmMessage =
+                                                                              "HIGH RR"
+                                                                          : ((finalList[106] << 8) + finalList[107]) == 21 ? alarmMessage = "HIGH PEEP" : ((finalList[106] << 8) + finalList[107]) == 22 ? alarmMessage = "LOW PEEP" : ((finalList[106] << 8) + finalList[107]) == 25 ? alarmMessage = "Low Minute Volume" : ((finalList[106] << 8) + finalList[107]) == 26 ? alarmMessage = "High Minute Volume" : ((finalList[106] << 8) + finalList[107]) == 27 ? alarmMessage = "High Leak Volume" : alarmMessage = "";
+            } else if (finalList[109] == 3) {
+              ((finalList[106] << 8) + finalList[107]) == 23
+                  ? alarmMessage = "Apnea backup"
+                  : ((finalList[106] << 8) + finalList[107]) == 29
+                      ? alarmMessage = "Replace FiO\u2082 Sensor"
+                      : ((finalList[106] << 8) + finalList[107]) == 7
+                          ? alarmMessage = "FiO\u2082 SENSOR MISSING"
+                          : ((finalList[106] << 8) + finalList[107]) == 28
+                              ? alarmMessage =
+                                  "Set volume can't be reached. due to low PC Max"
+                              : alarmMessage = "";
+            }
+          });
+        }

@@ -10,6 +10,7 @@ import android.os.BatteryManager
 import android.os.Build
 import android.os.PowerManager
 import android.util.Log
+import android.view.View
 import android.view.ViewTreeObserver
 import android.view.WindowManager
 
@@ -47,6 +48,7 @@ class MainActivity: FlutterActivity() {
     override fun configureFlutterEngine(@NonNull flutterEngine: FlutterEngine) {
         window.setStatusBarColor(0x00000000);
         GeneratedPluginRegistrant.registerWith(flutterEngine)
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
 
         mAdminComponentName = MyDeviceAdminReceiver.getComponentName(this)
         mDevicePolicyManager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
@@ -80,7 +82,30 @@ class MainActivity: FlutterActivity() {
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }
-                result.success(true)
+                result.success(true)//sendPlayAudioStartvH
+            }else if(call.method == "sendPlayAudioStartvH"){
+                try {
+                    mp= MediaPlayer.create(getApplicationContext(), R.raw.ealarm);// the song is a filename which i have pasted inside a folder **raw** created under the **res** folder.//
+
+                    if(mp?.isPlaying()!!){
+//                        mp?.stop();
+//                        mp?.reset();
+//                        mp?.release();
+                    }
+                    else{
+                        mp?.start()
+                        mp?.setLooping(true)
+                        mp!!.setOnCompletionListener(object : MediaPlayer.OnCompletionListener {
+                            override fun onCompletion(mp: MediaPlayer) {
+                                mp?.release()
+
+                            }
+                        })
+                    }
+                } catch (ex: Exception) {
+                    ex.printStackTrace()
+                }
+                result.success(true)//sendPlayAudioStartvH
             }  else if(call.method == "sendPlayAudioStartM"){
                 try {
                     mp= MediaPlayer.create(getApplicationContext(), R.raw.medium);// the song is a filename which i have pasted inside a folder **raw** created under the **res** folder.//

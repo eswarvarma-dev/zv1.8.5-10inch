@@ -96,7 +96,7 @@ class _SplashPageState extends State<SplashPage> {
     preferences.setInt('minrr', 1);
     preferences.setInt('maxrr', 70);
     preferences.setInt('minvte', 0);
-    preferences.setInt('maxvte', _isTab10 ? 3000 : 2400);
+    preferences.setInt('maxvte', 3000 );
     preferences.setInt('minppeak', 0);
     preferences.setInt('maxppeak', 100);
     preferences.setInt('minpeep', 0);
@@ -107,9 +107,14 @@ class _SplashPageState extends State<SplashPage> {
     preferences.setInt('maxmv', 25);
     preferences.setInt('minlv', 0);
     preferences.setInt('maxlv', 100);
+    preferences.setBool('calli', true);
+    preferences.setBool('_isFlagTest', false);
+    preferences.setBool('_setValuesonClick', true);
+    preferences.setBool('playpauseButtonEnabled', false);
+    preferences.setBool("flag", true);
+    preferences.setBool("flag1", true);
     preferences.setBool('pControl', true);
-    preferences.setBool("flag",false);
-    preferences.setBool("flag1",false);
+    preferences.setBool('first', true);
 
     var dateS = preferences.getString('lastRecordTime');
     var res = dbHelper.delete7Daysdata(dateS);
@@ -128,7 +133,7 @@ class _SplashPageState extends State<SplashPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values);
+    SystemChrome.setEnabledSystemUIOverlays([]);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(

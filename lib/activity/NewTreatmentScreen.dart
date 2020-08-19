@@ -36,6 +36,8 @@ class _NewTreatmentScreenState extends State<NewTreatmentScreen> {
   var dbHelper = DatabaseHelper();
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations(
+      [DeviceOrientation.landscapeLeft]);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: Container(

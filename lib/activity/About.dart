@@ -53,6 +53,7 @@ class _AboutState extends State<About> {
 
   @override
   Widget build(BuildContext context) {
+    SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
     return Scaffold(
       resizeToAvoidBottomPadding: false,
       body: WillPopScope(

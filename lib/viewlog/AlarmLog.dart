@@ -75,12 +75,13 @@ class _AlarmLogListState extends State<AlarmLog> {
                                                                             : res == 19
                                                                                 ? "LOW RR"
                                                                                 : res == 20 ? "HIGH RR" : res == 21 ? "HIGH PEEP" : res == 22 ? "LOW PEEP" : res == 23 ? "Apnea backup" 
-                                                                                : res == 24 ? "Blender Malfunction. Ventilator Operation Stopped."
+                                                                                : res == 24 ? "Blender Malfunction. \n Oxygen blending not possible."
                                                                                 : res == 25 ? "Low Minute Volume"
                                                                                 : res == 26 ? "High Minute Volume"
                                                                                 : res == 27 ? "High Leak Volume"
                                                                                 : res == 28 ? "Set volume can't be reached. due to low PC Max"
-                                                                                : "0";
+                                                                                : res == 29 ? "Replace Oxygen Sensor"
+                                                                                : "";
     return data;
   }
 
