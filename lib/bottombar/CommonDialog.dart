@@ -676,12 +676,12 @@ class _CommonDialogState extends State<CommonDialog> {
                           SizedBox(
                             height: 0,
                           ),
-                          units
-                              ? Text(
-                                  "cmH2O",
-                                  style: TextStyle(fontSize: 16),
-                                )
-                              : Text(""),
+                          // units
+                          //     ? Text(
+                          //         "cmH2O",
+                          //         style: TextStyle(fontSize: 16),
+                          //       )
+                          //     : Text(""),
                         ],
                       ),
                     ),
