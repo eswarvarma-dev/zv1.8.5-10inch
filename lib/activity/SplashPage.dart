@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:intl/intl.dart';
 import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
@@ -107,7 +108,7 @@ class _SplashPageState extends State<SplashPage> {
     preferences.setInt('maxmv', 25);
     preferences.setInt('minlv', 0);
     preferences.setInt('maxlv', 100);
-    preferences.setBool('calli', false);
+    preferences.setBool('calli', true);
     preferences.setBool('_isFlagTest', false);
     preferences.setBool('_setValuesonClick', true);
     preferences.setBool('playpauseButtonEnabled', false);
@@ -115,6 +116,9 @@ class _SplashPageState extends State<SplashPage> {
     preferences.setBool("flag1", true);
     preferences.setBool('pControl', true);
     preferences.setBool('first', true);
+    //  var now = new DateTime.now();
+    // var o2Time = DateFormat("dd/MM/yyyy").format(now);
+    //  preferences.setString("o2time", o2Time.toString());
 
     var dateS = preferences.getString('lastRecordTime');
     var res = dbHelper.delete7Daysdata(dateS);

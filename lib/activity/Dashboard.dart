@@ -551,7 +551,7 @@ class _CheckPageState extends State<Dashboard> {
   String sendBattery;
   List<int> listTemp = [];
   bool testingText = false;
-  String textText = "";
+  String textText = "Selftest starting..";
   String selfTexttext = "";
   int timerCount = 17;
   var o2pressuresensor = 0,
@@ -564,6 +564,8 @@ class _CheckPageState extends State<Dashboard> {
       inhalationvalve = 0,
       exhalationvalve = 0,
       ventvalue = 0,
+      safetyvalue1 = 0,
+      safetyvalue2 = 0,
       mainpower = 0,
       battery = 0,
       communication = 0,
@@ -743,6 +745,7 @@ class _CheckPageState extends State<Dashboard> {
   List<Point> _plotDataPf = [Point(0.0, 0.0)];
   List<Point> _plotDataVf = [Point(0.0, 0.0)];
   List<Offset> offs = [];
+  String o2Time = "";
   // [Offset(50,20),Offset(60,40),Offset(80,60),Offset(100,80),Offset(50,80),Offset(50,60),Offset(50,40),Offset(50,20)];
 
   // getNoTimes() async {
@@ -966,11 +969,11 @@ class _CheckPageState extends State<Dashboard> {
   selftestRun(int res) {
     List<int> objSelfTestData = [];
     setState(() {
-      // if (res == 1) {
-      //   textText = "Selftest starting..";
-      // } else {
-      //   textText = "";
-      // }
+      if (res == 1) {
+        textText = "Selftest starting..";
+      } else {
+        textText = "";
+      }
       o2pressuresensor = 0;
       mtpressuresensor = 0;
       exhalationflowsensor = 0;
@@ -1335,14 +1338,20 @@ class _CheckPageState extends State<Dashboard> {
 
     preferences = await SharedPreferences.getInstance();
     setState(() {
+      var otime = preferences.getString('o2time');
+      if (otime == null) {
+        o2Time = "--" + "/" + "--" + "/" + "----";
+      } else {
+        o2Time = otime;
+      }
       var checkData = preferences.getString('checkMode');
       // if (_status == "Connected") {
       callibrationEnabled = preferences.getBool("calli");
       // }v
-      // var first = preferences.getBool("first");
-      // if(first==true){
-      //    countDownTimer1();
-      // }
+      var first = preferences.getBool("first");
+      if (first == true) {
+        countDownTimer1();
+      }
       _isFlagTest = preferences.getBool('_isFlagTest');
       // _setValuesonClick= preferences.getBool('_setValuesonClick');
       // modeName = preferences.getString("mode");
@@ -2808,11 +2817,6 @@ class _CheckPageState extends State<Dashboard> {
       });
       countDownTimer();
     }
-    setState(() {
-      if (timerCount == 0) {
-        textText = "";
-      }
-    });
   }
 
   countDownTimer() async {
@@ -2820,25 +2824,26 @@ class _CheckPageState extends State<Dashboard> {
       await Future.delayed(Duration(seconds: 1)).then((_) {
         setState(() {
           timerCount -= 1;
+          if (timerCount == 0) {
+            textText = "";
+          }
         });
       });
     }
-    setState(() {
-      if (timerCount == 0) {
-        textText = "";
-      }
-    });
   }
 
-  // countDownTimer1() async {
-  //   for (int x = 17; x > 0; x--) {
-  //     await Future.delayed(Duration(seconds: 1)).then((_) {
-  //       setState(() {
-  //         timerCount -= 1;
-  //       });
-  //     });
-  //   }
-  // }
+  countDownTimer1() async {
+    for (int x = 17; x > 0; x--) {
+      await Future.delayed(Duration(seconds: 1)).then((_) {
+        setState(() {
+          timerCount -= 1;
+          if (timerCount == 0) {
+            textText = "";
+          }
+        });
+      });
+    }
+  }
 
   // ignore: unused_element
   _closebatteryScreen() {
@@ -3419,8 +3424,8 @@ class _CheckPageState extends State<Dashboard> {
                       textText == "" ||
                       textText == "Low 0\u2082 Supply" ||
                       textText == "0\u2082 Calibration Completed."
-                  ? "$textText"
-                  : timerCount != null ? " Time Left : $timerCount" : "",
+                  ? ""
+                  : "Time Left: $timerCount",
               style: TextStyle(
                   color:
                       checkO2CalibrationValue == 1 ? Colors.red : Colors.white,
@@ -3604,6 +3609,18 @@ class _CheckPageState extends State<Dashboard> {
                                     : Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: _isTab10 ? 32 : 22,
+                              ),
+                              textAlign: TextAlign.center,
+                            ),
+                            Text(
+                              "Last Calibrated on - $o2Time".toUpperCase(),
+                              style: TextStyle(
+                                color: textText == "Calibrating 0\u2082.." ||
+                                        textText == "Selftest starting.."
+                                    ? Colors.white
+                                    : Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 12,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -3883,33 +3900,34 @@ class _CheckPageState extends State<Dashboard> {
       child: Center(
         child: Column(
           children: [
-            Row(
-              crossAxisAlignment: CrossAxisAlignment.end,
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: <Widget>[
-                Padding(
-                  padding: const EdgeInsets.all(18.0),
-                  child: IconButton(
-                      icon: Icon(
-                        Icons.settings,
-                        color: Colors.white,
-                        size: 40,
-                      ),
-                      onPressed: () {
-                        checkOfffset == 2
-                            ? Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => About()))
-                            : "";
-                      }),
-                ),
-                // Padding(
-                //   padding: const EdgeInsets.only(top:10.0,left:10,right:10,bottom: 5),
-                //   child: Text("About",style: TextStyle(color: Colors.white,fontSize: 20),),
-                // ),
-              ],
-            ),
+            SizedBox(height: 20),
+            // Row(
+            //   crossAxisAlignment: CrossAxisAlignment.end,
+            //   mainAxisAlignment: MainAxisAlignment.end,
+            //   children: <Widget>[
+            //     Padding(
+            //       padding: const EdgeInsets.all(18.0),
+            //       child: IconButton(
+            //           icon: Icon(
+            //             Icons.settings,
+            //             color: Colors.white,
+            //             size: 40,
+            //           ),
+            //           onPressed: () {
+            //             checkOfffset == 2
+            //                 ? Navigator.push(
+            //                     context,
+            //                     MaterialPageRoute(
+            //                         builder: (context) => About()))
+            //                 : "";
+            //           }),
+            //     ),
+            //     // Padding(
+            //     //   padding: const EdgeInsets.only(top:10.0,left:10,right:10,bottom: 5),
+            //     //   child: Text("About",style: TextStyle(color: Colors.white,fontSize: 20),),
+            //     // ),
+            //   ],
+            // ),
             Container(
               child: Text(
                 "SWASIT",
@@ -3920,7 +3938,7 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ),
             SizedBox(
-              height: _isTab10 ? 60 : 10,
+              height: _isTab10 ? 45 : 10,
             ),
             Container(
               padding: EdgeInsets.all(_isTab10 ? 40.0 : 0.0),
@@ -3941,7 +3959,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Inhalation Valve         ",
+                                  "Inhalation Valve             ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -3971,7 +3989,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Exhalation Valve        ",
+                                  "Exhalation Valve            ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4001,7 +4019,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Vent Value                  ",
+                                  "Vent Value                      ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4031,19 +4049,49 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "O\u2082 Pressure Sensor  ",
+                                  "Safety Value - I               ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
                               Checkbox(
-                                value: o2pressuresensor == 0
+                                value: safetyvalue1 == 0
                                     ? false
-                                    : o2pressuresensor == 1
+                                    : safetyvalue1 == 1
                                         ? false
-                                        : o2pressuresensor == 2 ? true : false,
-                                activeColor: o2pressuresensor == 1
+                                        : safetyvalue1 == 2 ? true : false,
+                                activeColor: safetyvalue1 == 1
                                     ? Colors.red
-                                    : o2pressuresensor == 2
+                                    : safetyvalue1 == 2
+                                        ? Colors.blue
+                                        : Colors.green,
+                                onChanged: (bool value) {},
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Card(
+                          color: Colors.grey,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  "Safety Value - II              ",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              Checkbox(
+                                value: safetyvalue2 == 0
+                                    ? false
+                                    : safetyvalue2 == 1
+                                        ? false
+                                        : safetyvalue2 == 2 ? true : false,
+                                activeColor: safetyvalue2 == 1
+                                    ? Colors.red
+                                    : safetyvalue2 == 2
                                         ? Colors.blue
                                         : Colors.green,
                                 onChanged: (bool value) {},
@@ -4067,7 +4115,37 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Inhalation Pressure Sensor ",
+                                  "O\u2082 Pressure Sensor                  ",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              Checkbox(
+                                value: o2pressuresensor == 0
+                                    ? false
+                                    : o2pressuresensor == 1
+                                        ? false
+                                        : o2pressuresensor == 2 ? true : false,
+                                activeColor: o2pressuresensor == 1
+                                    ? Colors.red
+                                    : o2pressuresensor == 2
+                                        ? Colors.blue
+                                        : Colors.green,
+                                onChanged: (bool value) {},
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Card(
+                          color: Colors.grey,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  "Inhalation Pressure Sensor     ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4099,7 +4177,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Exhalation Pressure Sensor",
+                                  "Exhalation Pressure Sensor    ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4131,7 +4209,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Inhalation Flow Sensor         ",
+                                  "Inhalation Flow Sensor             ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4163,7 +4241,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Exhalation Flow Sensor        ",
+                                  "Exhalation Flow Sensor            ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4201,7 +4279,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "O \u2082 Sensor                  ",
+                                  "O \u2082 Sensor                       ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4231,7 +4309,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "MT Pressure Sensor ",
+                                  "MT Pressure Sensor      ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4261,7 +4339,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Compressor               ",
+                                  "Compressor                    ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4291,7 +4369,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Blender                       ",
+                                  "Blender                            ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4304,6 +4382,36 @@ class _CheckPageState extends State<Dashboard> {
                                 activeColor: blender == 1
                                     ? Colors.red
                                     : blender == 2 ? Colors.blue : Colors.black,
+                                onChanged: (bool value) {},
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.all(10.0),
+                        child: Card(
+                          color: Colors.grey,
+                          child: Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Text(
+                                  "Main Power                    ",
+                                  style: TextStyle(color: Colors.black),
+                                ),
+                              ),
+                              Checkbox(
+                                value: mainpower == 0
+                                    ? false
+                                    : mainpower == 1
+                                        ? false
+                                        : mainpower == 2 ? true : false,
+                                activeColor: mainpower == 1
+                                    ? Colors.red
+                                    : mainpower == 2
+                                        ? Colors.blue
+                                        : Colors.black,
                                 onChanged: (bool value) {},
                               )
                             ],
@@ -4325,37 +4433,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Main Power       ",
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                              ),
-                              Checkbox(
-                                value: mainpower == 0
-                                    ? false
-                                    : mainpower == 1
-                                        ? false
-                                        : mainpower == 2 ? true : false,
-                                activeColor: mainpower == 1
-                                    ? Colors.red
-                                    : mainpower == 2
-                                        ? Colors.blue
-                                        : Colors.black,
-                                onChanged: (bool value) {},
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.all(10.0),
-                        child: Card(
-                          color: Colors.grey,
-                          child: Row(
-                            children: [
-                              Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Text(
-                                  "Battery                ",
+                                  "Battery                     ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4383,7 +4461,7 @@ class _CheckPageState extends State<Dashboard> {
                               Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Text(
-                                  "Communication",
+                                  "Communication     ",
                                   style: TextStyle(color: Colors.black),
                                 ),
                               ),
@@ -4410,7 +4488,7 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ),
             SizedBox(
-              height: _isTab10 ? 20 : 15,
+              height: 10,
             ),
             checkOfffset == 2
                 ? InkWell(
@@ -4482,7 +4560,10 @@ class _CheckPageState extends State<Dashboard> {
                           ),
                           CircularProgressIndicator()
                         ],
-                      )
+                      ),
+            SizedBox(
+              height: 20,
+            ),
           ],
         ),
       ),
@@ -4534,24 +4615,27 @@ class _CheckPageState extends State<Dashboard> {
                                             assistmodePressureOn
                                                 ? InkWell(
                                                     onTap: () {
-                                                      setState(() {
-                                                        // getData();
-
-                                                        pccmvEnabled = false;
-                                                        vccmvEnabled = false;
-                                                        pacvEnabled = true;
-                                                        vacvEnabled = false;
-                                                        psimvEnabled = false;
-                                                        vsimvEnabled = false;
-                                                        psvEnabled = false;
-                                                        prvcEnabled = false;
-                                                        autoEnabled = false;
-                                                        cpapEnabled = false;
-                                                        if (modeName !=
-                                                            "PACV") {
-                                                          setData();
-                                                        }
-                                                      });
+                                                      if (_modeChangeEnabled ==
+                                                          true) {
+                                                        setState(() {
+                                                          _modeChangeEnabled =
+                                                              false;
+                                                          pccmvEnabled = false;
+                                                          vccmvEnabled = false;
+                                                          pacvEnabled = true;
+                                                          vacvEnabled = false;
+                                                          psimvEnabled = false;
+                                                          vsimvEnabled = false;
+                                                          psvEnabled = false;
+                                                          prvcEnabled = false;
+                                                          autoEnabled = false;
+                                                          cpapEnabled = false;
+                                                          if (modeName !=
+                                                              "PACV") {
+                                                            setData();
+                                                          }
+                                                        });
+                                                      }
                                                     },
                                                     child: Card(
                                                       color: pacvEnabled
@@ -4586,23 +4670,27 @@ class _CheckPageState extends State<Dashboard> {
                                                   )
                                                 : InkWell(
                                                     onTap: () {
-                                                      setState(() {
-                                                        // getData();
-                                                        pccmvEnabled = true;
-                                                        vccmvEnabled = false;
-                                                        pacvEnabled = false;
-                                                        vacvEnabled = false;
-                                                        psimvEnabled = false;
-                                                        vsimvEnabled = false;
-                                                        psvEnabled = false;
-                                                        prvcEnabled = false;
-                                                        autoEnabled = false;
-                                                        cpapEnabled = false;
-                                                        if (modeName !=
-                                                            "PC-CMV") {
-                                                          setData();
-                                                        }
-                                                      });
+                                                      if (_modeChangeEnabled ==
+                                                          true) {
+                                                        setState(() {
+                                                          _modeChangeEnabled =
+                                                              false;
+                                                          pccmvEnabled = true;
+                                                          vccmvEnabled = false;
+                                                          pacvEnabled = false;
+                                                          vacvEnabled = false;
+                                                          psimvEnabled = false;
+                                                          vsimvEnabled = false;
+                                                          psvEnabled = false;
+                                                          prvcEnabled = false;
+                                                          autoEnabled = false;
+                                                          cpapEnabled = false;
+                                                          if (modeName !=
+                                                              "PC-CMV") {
+                                                            setData();
+                                                          }
+                                                        });
+                                                      }
                                                     },
                                                     child: Card(
                                                       color: pccmvEnabled
@@ -4638,23 +4726,27 @@ class _CheckPageState extends State<Dashboard> {
                                             assistmodeVolumeOn
                                                 ? InkWell(
                                                     onTap: () {
-                                                      setState(() {
-                                                        // getData();
-                                                        pccmvEnabled = false;
-                                                        vccmvEnabled = false;
-                                                        pacvEnabled = false;
-                                                        vacvEnabled = true;
-                                                        psimvEnabled = false;
-                                                        vsimvEnabled = false;
-                                                        psvEnabled = false;
-                                                        prvcEnabled = false;
-                                                        autoEnabled = false;
-                                                        cpapEnabled = false;
-                                                        if (modeName !=
-                                                            "VACV") {
-                                                          setData();
-                                                        }
-                                                      });
+                                                      if (_modeChangeEnabled ==
+                                                          true) {
+                                                        setState(() {
+                                                          _modeChangeEnabled =
+                                                              false;
+                                                          pccmvEnabled = false;
+                                                          vccmvEnabled = false;
+                                                          pacvEnabled = false;
+                                                          vacvEnabled = true;
+                                                          psimvEnabled = false;
+                                                          vsimvEnabled = false;
+                                                          psvEnabled = false;
+                                                          prvcEnabled = false;
+                                                          autoEnabled = false;
+                                                          cpapEnabled = false;
+                                                          if (modeName !=
+                                                              "VACV") {
+                                                            setData();
+                                                          }
+                                                        });
+                                                      }
                                                     },
                                                     child: Card(
                                                       color: vacvEnabled
@@ -4689,23 +4781,27 @@ class _CheckPageState extends State<Dashboard> {
                                                   )
                                                 : InkWell(
                                                     onTap: () {
-                                                      setState(() {
-                                                        // getData();
-                                                        pccmvEnabled = false;
-                                                        vccmvEnabled = true;
-                                                        pacvEnabled = false;
-                                                        vacvEnabled = false;
-                                                        psimvEnabled = false;
-                                                        vsimvEnabled = false;
-                                                        psvEnabled = false;
-                                                        prvcEnabled = false;
-                                                        autoEnabled = false;
-                                                        cpapEnabled = false;
-                                                        if (modeName !=
-                                                            "VC-CMV") {
-                                                          setData();
-                                                        }
-                                                      });
+                                                      if (_modeChangeEnabled ==
+                                                          true) {
+                                                        setState(() {
+                                                          _modeChangeEnabled =
+                                                              false;
+                                                          pccmvEnabled = false;
+                                                          vccmvEnabled = true;
+                                                          pacvEnabled = false;
+                                                          vacvEnabled = false;
+                                                          psimvEnabled = false;
+                                                          vsimvEnabled = false;
+                                                          psvEnabled = false;
+                                                          prvcEnabled = false;
+                                                          autoEnabled = false;
+                                                          cpapEnabled = false;
+                                                          if (modeName !=
+                                                              "VC-CMV") {
+                                                            setData();
+                                                          }
+                                                        });
+                                                      }
                                                     },
                                                     child: Card(
                                                         color: vccmvEnabled
@@ -4740,22 +4836,25 @@ class _CheckPageState extends State<Dashboard> {
                                                   ),
                                             InkWell(
                                               onTap: () {
-                                                setState(() {
-                                                  // getData();
-                                                  pccmvEnabled = false;
-                                                  vccmvEnabled = false;
-                                                  pacvEnabled = false;
-                                                  vacvEnabled = false;
-                                                  psimvEnabled = true;
-                                                  vsimvEnabled = false;
-                                                  psvEnabled = false;
-                                                  prvcEnabled = false;
-                                                  autoEnabled = false;
-                                                  cpapEnabled = false;
-                                                  if (modeName != "PSIMV") {
-                                                    setData();
-                                                  }
-                                                });
+                                                if (_modeChangeEnabled ==
+                                                    true) {
+                                                  setState(() {
+                                                    _modeChangeEnabled = false;
+                                                    pccmvEnabled = false;
+                                                    vccmvEnabled = false;
+                                                    pacvEnabled = false;
+                                                    vacvEnabled = false;
+                                                    psimvEnabled = true;
+                                                    vsimvEnabled = false;
+                                                    psvEnabled = false;
+                                                    prvcEnabled = false;
+                                                    autoEnabled = false;
+                                                    cpapEnabled = false;
+                                                    if (modeName != "PSIMV") {
+                                                      setData();
+                                                    }
+                                                  });
+                                                }
                                               },
                                               child: Card(
                                                 color: psimvEnabled
@@ -4789,22 +4888,26 @@ class _CheckPageState extends State<Dashboard> {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                setState(() {
-                                                  // getData();
-                                                  pccmvEnabled = false;
-                                                  vccmvEnabled = false;
-                                                  pacvEnabled = false;
-                                                  vacvEnabled = false;
-                                                  psimvEnabled = false;
-                                                  vsimvEnabled = true;
-                                                  psvEnabled = false;
-                                                  prvcEnabled = false;
-                                                  autoEnabled = false;
-                                                  cpapEnabled = false;
-                                                  if (modeName != "VSIMV") {
-                                                    setData();
-                                                  }
-                                                });
+                                                if (_modeChangeEnabled ==
+                                                    true) {
+                                                  setState(() {
+                                                    _modeChangeEnabled = false;
+                                                    // getData();
+                                                    pccmvEnabled = false;
+                                                    vccmvEnabled = false;
+                                                    pacvEnabled = false;
+                                                    vacvEnabled = false;
+                                                    psimvEnabled = false;
+                                                    vsimvEnabled = true;
+                                                    psvEnabled = false;
+                                                    prvcEnabled = false;
+                                                    autoEnabled = false;
+                                                    cpapEnabled = false;
+                                                    if (modeName != "VSIMV") {
+                                                      setData();
+                                                    }
+                                                  });
+                                                }
                                               },
                                               child: Card(
                                                 color: vsimvEnabled
@@ -4838,22 +4941,25 @@ class _CheckPageState extends State<Dashboard> {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                setState(() {
-                                                  // getData();
-                                                  pccmvEnabled = false;
-                                                  vccmvEnabled = false;
-                                                  pacvEnabled = false;
-                                                  vacvEnabled = false;
-                                                  psimvEnabled = false;
-                                                  vsimvEnabled = false;
-                                                  psvEnabled = true;
-                                                  prvcEnabled = false;
-                                                  autoEnabled = false;
-                                                  cpapEnabled = false;
-                                                  if (modeName != "PSV/CPAP") {
-                                                    setData();
-                                                  }
-                                                });
+                                                if (_modeChangeEnabled ==
+                                                    true) {
+                                                  setState(() {
+                                                    _modeChangeEnabled = false;
+                                                    pccmvEnabled = false;
+                                                    vccmvEnabled = false;
+                                                    pacvEnabled = false;
+                                                    vacvEnabled = false;
+                                                    psimvEnabled = false;
+                                                    vsimvEnabled = false;
+                                                    psvEnabled = true;
+                                                    prvcEnabled = false;
+                                                    autoEnabled = false;
+                                                    cpapEnabled = false;
+                                                    if (modeName != "PSV") {
+                                                      setData();
+                                                    }
+                                                  });
+                                                }
                                               },
                                               child: Card(
                                                 color: psvEnabled
@@ -4869,7 +4975,7 @@ class _CheckPageState extends State<Dashboard> {
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(8.0),
-                                                        child: Text("PSV/CPAP",
+                                                        child: Text("PSV",
                                                             style: TextStyle(
                                                                 fontSize: 20,
                                                                 color: psvEnabled
@@ -4886,21 +4992,25 @@ class _CheckPageState extends State<Dashboard> {
                                             ),
                                             InkWell(
                                               onTap: () {
-                                                setState(() {
-                                                  pccmvEnabled = false;
-                                                  vccmvEnabled = false;
-                                                  pacvEnabled = false;
-                                                  vacvEnabled = false;
-                                                  psimvEnabled = false;
-                                                  vsimvEnabled = false;
-                                                  psvEnabled = false;
-                                                  prvcEnabled = true;
-                                                  autoEnabled = false;
-                                                  cpapEnabled = false;
-                                                  if (modeName != "PRVC") {
-                                                    setData();
-                                                  }
-                                                });
+                                                if (_modeChangeEnabled ==
+                                                    true) {
+                                                  setState(() {
+                                                    _modeChangeEnabled = false;
+                                                    pccmvEnabled = false;
+                                                    vccmvEnabled = false;
+                                                    pacvEnabled = false;
+                                                    vacvEnabled = false;
+                                                    psimvEnabled = false;
+                                                    vsimvEnabled = false;
+                                                    psvEnabled = false;
+                                                    prvcEnabled = true;
+                                                    autoEnabled = false;
+                                                    cpapEnabled = false;
+                                                    if (modeName != "PRVC") {
+                                                      setData();
+                                                    }
+                                                  });
+                                                }
                                               },
                                               child: Card(
                                                 color: prvcEnabled
@@ -5041,9 +5151,12 @@ class _CheckPageState extends State<Dashboard> {
                                             children: <Widget>[
                                               InkWell(
                                                 onTap: () {
-                                                  setState(() {
-                                                    setData();
-                                                  });
+                                                  if (_parameterChangeEnabled ==
+                                                      true) {
+                                                    setState(() {
+                                                      setData();
+                                                    });
+                                                  }
                                                 },
                                                 child: Container(
                                                   height: 80,
@@ -5324,6 +5437,38 @@ class _CheckPageState extends State<Dashboard> {
                                               mainAxisAlignment:
                                                   MainAxisAlignment.end,
                                               children: [
+                                                _modeChangeEnabled == false
+                                                    ? InkWell(
+                                                        onTap: () {
+                                                          setState(() {
+                                                            _modeChangeEnabled =
+                                                                true;
+                                                          });
+                                                        },
+                                                        child: Container(
+                                                          height: 80,
+                                                          width: 210,
+                                                          child: Card(
+                                                            child: Center(
+                                                                child: Padding(
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(8.0),
+                                                              child: Text(
+                                                                  "Change Mode",
+                                                                  style: TextStyle(
+                                                                      fontSize:
+                                                                          22,
+                                                                      color: Colors
+                                                                          .black,
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold)),
+                                                            )),
+                                                          ),
+                                                        ),
+                                                      )
+                                                    : Container(),
                                                 InkWell(
                                                   onTap: () {
                                                     getData();
@@ -5357,10 +5502,10 @@ class _CheckPageState extends State<Dashboard> {
                                                 ),
                                                 InkWell(
                                                   onTap: () {
-                                                    // if(pccmvRR==true){
-                                                    //   pccmvRRValue=pccmvTempValue;
-                                                    // }
-                                                    modeSetCheck();
+                                                    if (_parameterChangeEnabled ==
+                                                        true) {
+                                                      modeSetCheck();
+                                                    }
                                                   },
                                                   child: Container(
                                                     height: 80,
@@ -5873,7 +6018,7 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                 ),
                 Text(
-                  "v1.8.5p",
+                  "v1.8.5r",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: _isTab10 ? 18 : 10,
@@ -7066,13 +7211,23 @@ class _CheckPageState extends State<Dashboard> {
             modeName == "CPAP" || operatinModeR == 20
                 ? Container()
                 : InkWell(
+                    onLongPress: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("PPSV")
+                            : "";
+                      } else {}
+                    },
                     onTap: () {
                       setState(() {
                         _setValuesonClick = false;
                       });
                       if (modeWriteList.isNotEmpty) {
                         lockEnabled
-                            ? playOnEnabled ? "" : CommonClick("PSV")
+                            ? playOnEnabled ? "" : CommonClick("PPSV")
                             : "";
                       } else {}
                     },
@@ -7126,6 +7281,22 @@ class _CheckPageState extends State<Dashboard> {
                     ),
                   ),
             InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled
+                      ? playOnEnabled
+                          ? ""
+                          : operatinModeR == 21
+                              ? CommonClick("APEEP")
+                              : modeName == "CPAP" || operatinModeR == 20
+                                  ? CommonClick("CPAP")
+                                  : CommonClick("PEEP")
+                      : "";
+                }
+              },
               onTap: () {
                 setState(() {
                   _setValuesonClick = false;
@@ -7194,6 +7365,14 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ),
             InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled ? playOnEnabled ? "" : CommonClick("FiO2") : "";
+                }
+              },
               onTap: () {
                 setState(() {
                   _setValuesonClick = false;
@@ -7252,6 +7431,16 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ),
             InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled
+                      ? playOnEnabled ? "" : CommonClick("Backup RR")
+                      : "";
+                }
+              },
               onTap: () {
                 setState(() {
                   _setValuesonClick = false;
@@ -7314,6 +7503,16 @@ class _CheckPageState extends State<Dashboard> {
             modeName == "CPAP" || operatinModeR == 20
                 ? Container()
                 : InkWell(
+                    onLongPress: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("Backup I:E")
+                            : "";
+                      }
+                    },
                     onTap: () {
                       setState(() {
                         _setValuesonClick = false;
@@ -7381,6 +7580,16 @@ class _CheckPageState extends State<Dashboard> {
                   ),
             modeName == "AUTO" || operatinModeR == 21
                 ? InkWell(
+                    onLongPress: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("Vt")
+                            : "";
+                      }
+                    },
                     onTap: () {
                       setState(() {
                         _setValuesonClick = false;
@@ -7445,6 +7654,16 @@ class _CheckPageState extends State<Dashboard> {
                 ? Container()
                 : pControl
                     ? InkWell(
+                        onLongPress: () {
+                          setState(() {
+                            _setValuesonClick = false;
+                          });
+                          if (modeWriteList.isNotEmpty) {
+                            lockEnabled
+                                ? playOnEnabled ? "" : CommonClick("PCV")
+                                : "";
+                          }
+                        },
                         onTap: () {
                           setState(() {
                             _setValuesonClick = false;
@@ -7507,6 +7726,16 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                       )
                     : InkWell(
+                        onLongPress: () {
+                          setState(() {
+                            _setValuesonClick = false;
+                          });
+                          if (modeWriteList.isNotEmpty) {
+                            lockEnabled
+                                ? playOnEnabled ? "" : CommonClick("Vt")
+                                : "";
+                          }
+                        },
                         onTap: () {
                           setState(() {
                             _setValuesonClick = false;
@@ -7569,6 +7798,14 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                       ),
             InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled ? playOnEnabled ? "" : CommonClick("ITRI") : "";
+                }
+              },
               onTap: () {
                 setState(() {
                   _setValuesonClick = false;
@@ -7627,6 +7864,16 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ),
             InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled
+                      ? playOnEnabled ? "" : CommonClick("Apnea Time")
+                      : "";
+                }
+              },
               onTap: () {
                 setState(() {
                   _setValuesonClick = false;
@@ -7689,6 +7936,16 @@ class _CheckPageState extends State<Dashboard> {
             modeName == "CPAP" || operatinModeR == 20
                 ? Container()
                 : InkWell(
+                    onLongPress: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("Ti")
+                            : "";
+                      }
+                    },
                     onTap: () {
                       setState(() {
                         _setValuesonClick = false;
@@ -7751,6 +8008,16 @@ class _CheckPageState extends State<Dashboard> {
                   ),
             operatinModeR == 21 || modeName == "AUTO"
                 ? InkWell(
+                    onLongPress: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("PC MAX")
+                            : "";
+                      }
+                    },
                     onTap: () {
                       setState(() {
                         _setValuesonClick = false;
@@ -8429,6 +8696,23 @@ class _CheckPageState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled
+                      ? operatinModeR == 4 ||
+                              modeName == "PSIMV" ||
+                              operatinModeR == 5 ||
+                              modeName == "VSIMV" ||
+                              operatinModeR == 14 ||
+                              modeName == "PRVC"
+                          ? playOnEnabled ? "" : CommonClick("eRR")
+                          : playOnEnabled ? "" : CommonClick("RR")
+                      : "";
+                }
+              },
               onTap: () {
                 setState(() {
                   _setValuesonClick = false;
@@ -8496,6 +8780,14 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ),
             InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled ? playOnEnabled ? "" : CommonClick("I:E") : "";
+                }
+              },
               onTap: () {
                 setState(() {
                   _setValuesonClick = false;
@@ -8557,6 +8849,27 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ),
             InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled
+                      ? playOnEnabled
+                          ? ""
+                          : operatinModeR == 5 || modeName == "VSIMV"
+                              ? CommonClick("VPEEP")
+                              : operatinModeR == 1 ||
+                                      modeName == "VACV" ||
+                                      operatinModeR == 7 ||
+                                      modeName == "VCCMV"
+                                  ? CommonClick("VVPEEP")
+                                  : operatinModeR == 14 || modeName == "PRVC"
+                                      ? CommonClick("PRVCPEEP")
+                                      : CommonClick("PEEP")
+                      : "";
+                }
+              },
               onTap: () {
                 setState(() {
                   _setValuesonClick = false;
@@ -8629,6 +8942,16 @@ class _CheckPageState extends State<Dashboard> {
             ),
             operatinModeR == 14 || modeName == "PRVC"
                 ? InkWell(
+                    onLongPress: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("PC MAX")
+                            : "";
+                      }
+                    },
                     onTap: () {
                       setState(() {
                         _setValuesonClick = false;
@@ -8696,6 +9019,22 @@ class _CheckPageState extends State<Dashboard> {
                     modeName == "VSIMV" ||
                     operatinModeR == 5
                 ? InkWell(
+                    onLongPress: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled
+                                ? ""
+                                : modeName == "VSIMV" || operatinModeR == 5
+                                    ? CommonClick("VPS")
+                                    : operatinModeR == 4 || modeName == "PSIMV"
+                                        ? CommonClick("PSV")
+                                        : CommonClick("PS")
+                            : "";
+                      }
+                    },
                     onTap: () {
                       setState(() {
                         _setValuesonClick = false;
@@ -8763,6 +9102,36 @@ class _CheckPageState extends State<Dashboard> {
                   )
                 : Container(),
             InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled
+                      ? playOnEnabled
+                          ? ""
+                          : CommonClick(
+                              operatinModeR == 4 || modeName == "PSIMV"
+                                  ? CommonClick("PCV")
+                                  : operatinModeR == 6 ||
+                                          operatinModeR == 2 ||
+                                          modeName == "PC-CMV" ||
+                                          modeName == "PACV"
+                                      ? "PC"
+                                      : operatinModeR == 7 ||
+                                              operatinModeR == 1 ||
+                                              operatinModeR == 5 ||
+                                              modeName == "VC-CMV" ||
+                                              modeName == "VACV" ||
+                                              modeName == "VSIMV"
+                                          ? "Vt"
+                                          : operatinModeR == 14 ||
+                                                  modeName == "PRVC"
+                                              ? "Target Vt"
+                                              : "PC")
+                      : "";
+                }
+              },
               onTap: () {
                 setState(() {
                   _setValuesonClick = false;
@@ -8892,6 +9261,14 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ),
             InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled ? playOnEnabled ? "" : CommonClick("FiO2") : "";
+                }
+              },
               onTap: () {
                 setState(() {
                   _setValuesonClick = false;
@@ -8956,6 +9333,20 @@ class _CheckPageState extends State<Dashboard> {
                     operatinModeR == 5 ||
                     operatinModeR == 14
                 ? InkWell(
+                    onLongPress: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled
+                                ? ""
+                                : pItrig
+                                    ? CommonClick("ITRI")
+                                    : CommonClick("PITRI")
+                            : "";
+                      }
+                    },
                     onTap: () {
                       setState(() {
                         _setValuesonClick = false;
@@ -9060,7 +9451,7 @@ class _CheckPageState extends State<Dashboard> {
                         size: 40, color: Colors.black.withOpacity(0.9))),
               ),
               Container(
-                  width: 250,
+                  width: 240,
                   child: Padding(
                     padding: const EdgeInsets.only(
                         left: 20, right: 0, top: 4, bottom: 4),
@@ -9095,7 +9486,7 @@ class _CheckPageState extends State<Dashboard> {
                         child: Center(
                           child: Text("O\u2082",
                               style:
-                                  TextStyle(color: Colors.black, fontSize: 24)),
+                                  TextStyle(color: Colors.black, fontSize: 20)),
                         ),
                       ),
                     ),
@@ -9243,31 +9634,31 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                       ),
                     ),
-              SizedBox(width: 5),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _isLoopGraph = !_isLoopGraph;
-                  });
-                },
-                child: Center(
-                  child: Container(
-                    width: 60,
-                    child: Card(
-                      color: _isLoopGraph ? Colors.green : Colors.white,
-                      child: Padding(
-                        padding: const EdgeInsets.only(
-                            top: 0.0, left: 10, right: 10, bottom: 0.0),
-                        child: Center(
-                          child: Icon(Icons.timeline,
-                              color:
-                                  _isLoopGraph ? Colors.white : Colors.black),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+              // SizedBox(width: 5),
+              // InkWell(
+              //   onTap: () {
+              //     setState(() {
+              //       _isLoopGraph = !_isLoopGraph;
+              //     });
+              //   },
+              //   child: Center(
+              //     child: Container(
+              //       width: 60,
+              //       child: Card(
+              //         color: _isLoopGraph ? Colors.green : Colors.white,
+              //         child: Padding(
+              //           padding: const EdgeInsets.only(
+              //               top: 0.0, left: 10, right: 10, bottom: 0.0),
+              //           child: Center(
+              //             child: Icon(Icons.timeline,
+              //                 color:
+              //                     _isLoopGraph ? Colors.white : Colors.black),
+              //           ),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
               SizedBox(width: 5),
               Material(
                 borderRadius: BorderRadius.circular(5),
@@ -13516,7 +13907,9 @@ class _CheckPageState extends State<Dashboard> {
             children: [
               InkWell(
                 onTap: () {
+                  if (_parameterChangeEnabled == true) {
                   setState(() {
+                    _parameterChangeEnabled = false;
                     psvmaxValue = 65;
                     psvminValue = 0;
                     psvparameterName = "PS";
@@ -13536,6 +13929,7 @@ class _CheckPageState extends State<Dashboard> {
                     psvMinTe = false;
                     psvVt = false;
                   });
+                }
                 },
                 child: Center(
                   child: Container(
@@ -13635,7 +14029,9 @@ class _CheckPageState extends State<Dashboard> {
               pControl == false
                   ? InkWell(
                       onTap: () {
-                        setState(() {
+                        if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                           psvmaxValue = _isTab10 ? 2500 : 600;
                           psvminValue = _isTab10 ? 50 : 200;
                           psvparameterName = "VT";
@@ -13655,6 +14051,7 @@ class _CheckPageState extends State<Dashboard> {
                           psvVt = true;
                           psvMinTe = false;
                         });
+                      }
                       },
                       child: Center(
                         child: Container(
@@ -13758,7 +14155,9 @@ class _CheckPageState extends State<Dashboard> {
                     )
                   : InkWell(
                       onTap: () {
-                        setState(() {
+                        if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                           psvmaxValue = _isTab10 ? 85 : 60;
                           psvminValue = 5;
                           psvparameterName = "PC";
@@ -13778,6 +14177,7 @@ class _CheckPageState extends State<Dashboard> {
                           psvVt = false;
                           psvMinTe = false;
                         });
+                      }
                       },
                       child: Center(
                         child: Container(
@@ -13881,7 +14281,9 @@ class _CheckPageState extends State<Dashboard> {
                     ),
               InkWell(
                 onTap: () {
+                  if (_parameterChangeEnabled == true) {
                   setState(() {
+                    _parameterChangeEnabled = false;
                     psvmaxValue = _isTab10 ? 45 : 30;
                     psvminValue = 0;
                     psvparameterName = "PEEP";
@@ -13901,6 +14303,7 @@ class _CheckPageState extends State<Dashboard> {
                     psvBackupRr = false;
                     psvMinTe = false;
                   });
+                }
                 },
                 child: Center(
                   child: Container(
@@ -14012,7 +14415,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   psvmaxValue = 55;
                   psvminValue = 5;
                   psvparameterName = "A Time";
@@ -14032,6 +14437,7 @@ class _CheckPageState extends State<Dashboard> {
                   psvBackupRr = false;
                   psvMinTe = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -14131,7 +14537,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+               if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   psvmaxValue = 100;
                   psvminValue = 21;
                   psvparameterName = "FiO\u2082";
@@ -14151,6 +14559,7 @@ class _CheckPageState extends State<Dashboard> {
                   psvBackupRr = false;
                   psvMinTe = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -14250,7 +14659,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   psvmaxValue = 10;
                   psvminValue = 1;
                   psvparameterName = "I Trig";
@@ -14270,6 +14681,7 @@ class _CheckPageState extends State<Dashboard> {
                   psvBackupRr = false;
                   psvMinTe = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -14730,7 +15142,9 @@ class _CheckPageState extends State<Dashboard> {
               // ),
               InkWell(
                 onTap: () {
+                  if (_parameterChangeEnabled == true) {
                   setState(() {
+                    _parameterChangeEnabled = false;
                     psvmaxValue = 60;
                     psvminValue = 1;
                     psvparameterName = "Backup RR";
@@ -14750,6 +15164,7 @@ class _CheckPageState extends State<Dashboard> {
                     psvBackupRr = true;
                     psvMinTe = false;
                   });
+                }
                 },
                 child: Center(
                   child: Container(
@@ -14850,7 +15265,9 @@ class _CheckPageState extends State<Dashboard> {
               ),
               InkWell(
                 onTap: () {
+                  if (_parameterChangeEnabled == true) {
                   setState(() {
+                    _parameterChangeEnabled = false;
                     psvmaxValue = 61;
                     psvminValue = 1;
                     psvparameterName = "Backup I:E";
@@ -14870,6 +15287,7 @@ class _CheckPageState extends State<Dashboard> {
                     psvBackupRr = false;
                     psvMinTe = false;
                   });
+                }
                 },
                 child: Center(
                   child: Container(
@@ -14969,7 +15387,9 @@ class _CheckPageState extends State<Dashboard> {
               ),
               InkWell(
                 onTap: () {
+                  if (_parameterChangeEnabled == true) {
                   setState(() {
+                    _parameterChangeEnabled = false;
                     psvmaxValue = 46;
                     psvminValue = 1;
                     psvparameterName = "Ti";
@@ -14989,6 +15409,7 @@ class _CheckPageState extends State<Dashboard> {
                     psvBackupRr = false;
                     psvMinTe = false;
                   });
+                }
                 },
                 child: Center(
                   child: Container(
@@ -15333,12 +15754,13 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-            Container(
+              _parameterChangeEnabled == false
+                ? Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Color(0xFFE0E0E0)),
                 width: 400,
-                height: 195,
+                height: 246,
                 child: Center(
                   child: Column(
                     children: [
@@ -15379,15 +15801,18 @@ class _CheckPageState extends State<Dashboard> {
                                     psvPeepValue = psvPeepValue - 1;
                                   });
                                 } else if (psvPs == true &&
-                                    psvPsValue != psvPcValue + 1 &&
-                                    psvPsValue != 0 &&
-                                    pControl == true) {
+                                        // psvPsValue != psvPcValue + 1 &&
+                                        psvPsValue != 0
+                                    // &&
+                                    // pControl == true
+                                    ) {
                                   setState(() {
                                     psvPsValue = psvPsValue - 1;
                                   });
-                                } else if (psvPs == true &&
-                                    psvPsValue != 0 &&
-                                    pControl == false) {
+                                } else if (psvPs == true && psvPsValue != 5
+                                    // &&
+                                    // pControl == false
+                                    ) {
                                   setState(() {
                                     psvPsValue = psvPsValue - 1;
                                   });
@@ -15423,13 +15848,13 @@ class _CheckPageState extends State<Dashboard> {
                                     psvVtValue = psvVtValue - 1;
                                   });
                                 } else if (psvPc == true &&
-                                    psvPcValue != psvminValue &&
+                                    // psvPcValue != psvminValue &&
                                     psvPcValue != 5) {
                                   setState(() {
                                     psvPcValue = psvPcValue - 1;
-                                    if (psvPcValue < psvPsValue) {
-                                      psvPsValue = psvPcValue;
-                                    }
+                                    // if (psvPcValue < psvPsValue) {
+                                    //   psvPsValue = psvPcValue;
+                                    // }
                                   });
                                 } else if (psvAtime == true &&
                                     psvAtimeValue != psvminValue) {
@@ -15494,16 +15919,20 @@ class _CheckPageState extends State<Dashboard> {
                                   setState(() {
                                     psvPeepValue = psvPeepValue + 1;
                                   });
-                                } else if (psvPs == true &&
-                                    psvPsValue != psvPcValue &&
-                                    pControl == true &&
-                                    psvPcValue < maxValuepcValue) {
-                                  setState(() {
-                                    psvPsValue = psvPsValue + 1;
-                                  });
-                                } else if (psvPs == true &&
-                                    psvPsValue != psvmaxValue &&
-                                    pControl == false) {
+                                }
+                                // else if (psvPs == true &&
+                                //     // psvPsValue != psvPcValue &&
+                                //     // pControl == true &&
+                                //     psvPcValue < maxValuepcValue) {
+                                //   setState(() {
+                                //     psvPsValue = psvPsValue + 1;
+                                //   });
+                                // }
+                                else if (psvPs == true &&
+                                        psvPsValue != psvmaxValue
+                                    // &&
+                                    // pControl == false
+                                    ) {
                                   setState(() {
                                     psvPsValue = psvPsValue + 1;
                                   });
@@ -15665,11 +16094,11 @@ class _CheckPageState extends State<Dashboard> {
                                 });
                               } else if (psvPs == true && pControl == true) {
                                 setState(() {
-                                  if (value.toInt() >= psvPcValue) {
-                                    psvPsValue = psvPcValue;
-                                  } else {
-                                    psvPsValue = value.toInt();
-                                  }
+                                  // if (value.toInt() >= psvPcValue) {
+                                  //   psvPsValue = psvPcValue;
+                                  // } else {
+                                  psvPsValue = value.toInt();
+                                  // }
                                 });
                               } else if (psvPs == true && pControl == false) {
                                 setState(() {
@@ -15702,20 +16131,20 @@ class _CheckPageState extends State<Dashboard> {
                                 });
                               } else if (psvPc == true) {
                                 setState(() {
-                                  if (value.toInt() < psvPsValue) {
-                                    if (value.toInt() >= maxValuepcValue) {
-                                      psvPcValue = maxValuepcValue;
-                                    } else {
-                                      psvPcValue = value.toInt();
-                                    }
-                                    psvPsValue = psvPcValue;
-                                  } else {
-                                    if (value.toInt() >= maxValuepcValue) {
-                                      psvPcValue = maxValuepcValue;
-                                    } else {
-                                      psvPcValue = value.toInt();
-                                    }
-                                  }
+                                  // if (value.toInt() < psvPsValue) {
+                                  // if (value.toInt() >= maxValuepcValue) {
+                                  //   psvPcValue = maxValuepcValue;
+                                  // } else {
+                                  psvPcValue = value.toInt();
+                                  // }
+                                  //   psvPsValue = psvPcValue;
+                                  // } else {
+                                  //   if (value.toInt() >= maxValuepcValue) {
+                                  //     psvPcValue = maxValuepcValue;
+                                  //   } else {
+                                  //     psvPcValue = value.toInt();
+                                  //   }
+                                  // }
                                   // if(value.toInt())
                                 });
                               } else if (psvEtrig == true) {
@@ -15800,10 +16229,41 @@ class _CheckPageState extends State<Dashboard> {
                                         : psvmaxValue.toString())
                           ],
                         ),
-                      )
+                      ),
+                       Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _parameterChangeEnabled = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Card(
+                                      color: Colors.grey,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18.0,
+                                            bottom: 18,
+                                            left: 45,
+                                            right: 45),
+                                        child: Center(
+                                            child: Text("  OK  ",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                      )),
+                                ),
+                              ),
+                            ],
+                          )
                     ],
                   ),
-                )),
+                )):Container(),
           ],
         ),
       ],
@@ -15821,21 +16281,24 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
-                  pacvmaxValue = 60;
-                  pacvminValue = 1;
-                  pacvparameterName = "RR";
-                  pacvparameterUnits = "bpm";
-                  pacvItrig = false;
-                  pacvRr = true;
-                  pacvIe = false;
-                  pacvPeep = false;
-                  pacvPc = false;
-                  pacvVtMin = false;
-                  pacvVtMax = false;
-                  pacvFio2 = false;
-                  pacvFlowRamp = false;
-                });
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    pacvmaxValue = 60;
+                    pacvminValue = 1;
+                    pacvparameterName = "RR";
+                    pacvparameterUnits = "bpm";
+                    pacvItrig = false;
+                    pacvRr = true;
+                    pacvIe = false;
+                    pacvPeep = false;
+                    pacvPc = false;
+                    pacvVtMin = false;
+                    pacvVtMax = false;
+                    pacvFio2 = false;
+                    pacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -15934,21 +16397,24 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
-                  pacvmaxValue = 61;
-                  pacvminValue = 1;
-                  pacvparameterName = "I:E";
-                  pacvparameterUnits = "";
-                  pacvItrig = false;
-                  pacvRr = false;
-                  pacvIe = true;
-                  pacvPeep = false;
-                  pacvPc = false;
-                  pacvVtMin = false;
-                  pacvVtMax = false;
-                  pacvFio2 = false;
-                  pacvFlowRamp = false;
-                });
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    pacvmaxValue = 61;
+                    pacvminValue = 1;
+                    pacvparameterName = "I:E";
+                    pacvparameterUnits = "";
+                    pacvItrig = false;
+                    pacvRr = false;
+                    pacvIe = true;
+                    pacvPeep = false;
+                    pacvPc = false;
+                    pacvVtMin = false;
+                    pacvVtMax = false;
+                    pacvFio2 = false;
+                    pacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -16047,21 +16513,24 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
-                  pacvmaxValue = _isTab10 ? 45 : 30;
-                  pacvminValue = 0;
-                  pacvparameterName = "PEEP";
-                  pacvparameterUnits = "cmH\u2082O";
-                  pacvItrig = false;
-                  pacvRr = false;
-                  pacvIe = false;
-                  pacvPeep = true;
-                  pacvPc = false;
-                  pacvVtMin = false;
-                  pacvVtMax = false;
-                  pacvFio2 = false;
-                  pacvFlowRamp = false;
-                });
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    pacvmaxValue = _isTab10 ? 45 : 30;
+                    pacvminValue = 0;
+                    pacvparameterName = "PEEP";
+                    pacvparameterUnits = "cmH\u2082O";
+                    pacvItrig = false;
+                    pacvRr = false;
+                    pacvIe = false;
+                    pacvPeep = true;
+                    pacvPc = false;
+                    pacvVtMin = false;
+                    pacvVtMax = false;
+                    pacvFio2 = false;
+                    pacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -16169,7 +16638,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   pacvmaxValue = 10;
                   pacvminValue = 1;
                   pacvparameterName = "I Trig";
@@ -16184,6 +16655,7 @@ class _CheckPageState extends State<Dashboard> {
                   pacvFio2 = false;
                   pacvFlowRamp = false;
                 });
+                }
               },
               child: Center(
                 child: Container(
@@ -16283,7 +16755,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   pacvmaxValue = _isTab10 ? 85 : 60;
                   pacvminValue = 5;
                   pacvparameterName = "PC";
@@ -16298,6 +16772,7 @@ class _CheckPageState extends State<Dashboard> {
                   pacvFio2 = false;
                   pacvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -16399,7 +16874,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+               if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   pacvmaxValue = 100;
                   pacvminValue = 21;
                   pacvparameterName = "FiO\u2082";
@@ -16414,6 +16891,7 @@ class _CheckPageState extends State<Dashboard> {
                   pacvFio2 = true;
                   pacvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -16967,16 +17445,19 @@ class _CheckPageState extends State<Dashboard> {
                       children: [
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              assistmodePressureOn = !assistmodePressureOn;
-                              if (assistmodePressureOn == true) {
-                                pacvEnabled = true;
-                                pccmvEnabled = false;
-                              } else {
-                                pccmvEnabled = true;
-                                pacvEnabled = false;
-                              }
-                            });
+                            if (_modeChangeEnabled == true) {
+                              setState(() {
+                                _modeChangeEnabled = false;
+                                assistmodePressureOn = !assistmodePressureOn;
+                                if (assistmodePressureOn == true) {
+                                  pacvEnabled = true;
+                                  pccmvEnabled = false;
+                                } else {
+                                  pccmvEnabled = true;
+                                  pacvEnabled = false;
+                                }
+                              });
+                            }
                           },
                           child: Card(
                               color: assistmodePressureOn
@@ -16997,16 +17478,19 @@ class _CheckPageState extends State<Dashboard> {
                         SizedBox(height: 10),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              assistmodePressureOn = !assistmodePressureOn;
-                              if (assistmodePressureOn == true) {
-                                pacvEnabled = true;
-                                pccmvEnabled = false;
-                              } else {
-                                pccmvEnabled = true;
-                                pacvEnabled = false;
-                              }
-                            });
+                            if (_modeChangeEnabled == true) {
+                              setState(() {
+                                _modeChangeEnabled = false;
+                                assistmodePressureOn = !assistmodePressureOn;
+                                if (assistmodePressureOn == true) {
+                                  pacvEnabled = true;
+                                  pccmvEnabled = false;
+                                } else {
+                                  pccmvEnabled = true;
+                                  pacvEnabled = false;
+                                }
+                              });
+                            }
                           },
                           child: Card(
                               color: assistmodePressureOn
@@ -17125,12 +17609,13 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-            Container(
+             _parameterChangeEnabled == false
+                ? Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Color(0xFFE0E0E0)),
                 width: 400,
-                height: 195,
+                height: 246,
                 child: Center(
                   child: Column(
                     children: [
@@ -17480,10 +17965,40 @@ class _CheckPageState extends State<Dashboard> {
                                     : pacvmaxValue.toString()),
                           ],
                         ),
-                      )
+                      ), Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _parameterChangeEnabled = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Card(
+                                      color: Colors.grey,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18.0,
+                                            bottom: 18,
+                                            left: 45,
+                                            right: 45),
+                                        child: Center(
+                                            child: Text("  OK  ",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                      )),
+                                ),
+                              ),
+                            ],
+                          )
                     ],
                   ),
-                )),
+                )):Container(),
           ],
         ),
       ],
@@ -17501,7 +18016,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+               if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   prvcmaxValue = 30;
                   prvcminValue = 1;
                   prvcparameterName = "RR";
@@ -17516,6 +18033,7 @@ class _CheckPageState extends State<Dashboard> {
                   prvcFio2 = false;
                   prvcFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -17614,7 +18132,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   prvcmaxValue = 61;
                   prvcminValue = 1;
                   prvcparameterName = "I:E";
@@ -17629,6 +18149,7 @@ class _CheckPageState extends State<Dashboard> {
                   prvcFio2 = false;
                   prvcFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -17728,7 +18249,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+               if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   prvcmaxValue = _isTab10 ? 45 : 30;
                   prvcminValue = 0;
                   prvcparameterName = "PEEP";
@@ -17743,6 +18266,7 @@ class _CheckPageState extends State<Dashboard> {
                   prvcFio2 = false;
                   prvcFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -17850,7 +18374,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   prvcmaxValue = 1200;
                   prvcminValue = 200;
                   prvcparameterName = "Target Vt";
@@ -17865,6 +18391,7 @@ class _CheckPageState extends State<Dashboard> {
                   prvcFio2 = false;
                   prvcFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -17964,7 +18491,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   prvcmaxValue = 100;
                   prvcminValue = 21;
                   prvcparameterName = "FiO\u2082";
@@ -17979,6 +18508,7 @@ class _CheckPageState extends State<Dashboard> {
                   prvcFio2 = true;
                   prvcFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -18078,7 +18608,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   prvcmaxValue = 10;
                   prvcminValue = 1;
                   prvcparameterName = "I Trig";
@@ -18093,6 +18625,7 @@ class _CheckPageState extends State<Dashboard> {
                   prvcFio2 = false;
                   prvcFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -18198,7 +18731,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   prvcmaxValue = 100;
                   prvcminValue = 10;
                   prvcparameterName = "PC Max";
@@ -18213,6 +18748,7 @@ class _CheckPageState extends State<Dashboard> {
                   prvcFio2 = false;
                   prvcFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -18606,12 +19142,13 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-            Container(
+              _parameterChangeEnabled == false
+                ? Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Color(0xFFE0E0E0)),
                 width: 400,
-                height: 195,
+                height: 246,
                 child: Center(
                   child: Column(
                     children: [
@@ -18939,10 +19476,41 @@ class _CheckPageState extends State<Dashboard> {
                                     : prvcmaxValue.toString())
                           ],
                         ),
-                      )
+                      ),
+                      Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _parameterChangeEnabled = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Card(
+                                      color: Colors.grey,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18.0,
+                                            bottom: 18,
+                                            left: 45,
+                                            right: 45),
+                                        child: Center(
+                                            child: Text("  OK  ",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                      )),
+                                ),
+                              ),
+                            ],
+                          )
                     ],
                   ),
-                )),
+                )):Container(),
           ],
         ),
       ],
@@ -18960,7 +19528,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   psimvmaxValue = 30;
                   psimvminValue = 1;
                   psimvparameterName = "RR";
@@ -18976,6 +19546,7 @@ class _CheckPageState extends State<Dashboard> {
                   psimvFlowRamp = false;
                   psimvPs = false;
                 });
+                }
               },
               child: Center(
                 child: Container(
@@ -19075,7 +19646,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   psimvmaxValue = 61;
                   psimvminValue = 1;
                   psimvparameterName = "I:E";
@@ -19091,6 +19664,7 @@ class _CheckPageState extends State<Dashboard> {
                   psimvFlowRamp = false;
                   psimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -19191,7 +19765,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                  _parameterChangeEnabled = false;
                   psimvmaxValue = _isTab10 ? 45 : 30;
                   psimvminValue = 0;
                   psimvparameterName = "PEEP";
@@ -19207,6 +19783,7 @@ class _CheckPageState extends State<Dashboard> {
                   psimvFlowRamp = false;
                   psimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -19314,7 +19891,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   psimvmaxValue = _isTab10 ? 85 : 60;
                   psimvminValue = 5;
                   psimvparameterName = "PC";
@@ -19330,6 +19909,7 @@ class _CheckPageState extends State<Dashboard> {
                   psimvFlowRamp = false;
                   psimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -19431,7 +20011,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   psimvmaxValue = 100;
                   psimvminValue = 21;
                   psimvparameterName = "FiO\u2082";
@@ -19447,6 +20029,7 @@ class _CheckPageState extends State<Dashboard> {
                   psimvFlowRamp = false;
                   psimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -19546,7 +20129,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   psimvmaxValue = 10;
                   psimvminValue = 1;
                   psimvparameterName = "I Trig";
@@ -19562,6 +20147,7 @@ class _CheckPageState extends State<Dashboard> {
                   psimvFio2 = false;
                   psimvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -19901,7 +20487,9 @@ class _CheckPageState extends State<Dashboard> {
 
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   psimvmaxValue = 65;
                   psimvminValue = 0;
                   psimvparameterName = "PS";
@@ -19917,6 +20505,7 @@ class _CheckPageState extends State<Dashboard> {
                   psimvFlowRamp = false;
                   psimvPs = true;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -20312,12 +20901,13 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-            Container(
+            _parameterChangeEnabled == false
+                ? Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Color(0xFFE0E0E0)),
                 width: 400,
-                height: 195,
+                height: 246,
                 child: Center(
                   child: Column(
                     children: [
@@ -20702,10 +21292,41 @@ class _CheckPageState extends State<Dashboard> {
                                     : psimvmaxValue.toString())
                           ],
                         ),
-                      )
+                      ),
+                       Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _parameterChangeEnabled = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Card(
+                                      color: Colors.grey,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18.0,
+                                            bottom: 18,
+                                            left: 45,
+                                            right: 45),
+                                        child: Center(
+                                            child: Text("  OK  ",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                      )),
+                                ),
+                              ),
+                            ],
+                          )
                     ],
                   ),
-                )),
+                )):Container(),
           ],
         ),
       ],
@@ -20723,23 +21344,26 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
-                  pccmvmaxValue = 60;
-                  pccmvminValue = 1;
-                  pccmvparameterName = "RR";
-                  pccmvparameterUnits = "bpm";
-                  // pccmvTempValue = pccmvRRValue;
-                  pccmvRRChanged = true;
-                  pccmvRR = true;
-                  pccmvIe = false;
-                  pccmvPeep = false;
-                  pccmvPc = false;
-                  pccmvFio2 = false;
-                  pccmvVtmin = false;
-                  pccmvVtmax = false;
-                  pccmvFlowRamp = false;
-                  pccmvTih = false;
-                });
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    pccmvmaxValue = 60;
+                    pccmvminValue = 1;
+                    pccmvparameterName = "RR";
+                    pccmvparameterUnits = "bpm";
+                    // pccmvTempValue = pccmvRRValue;
+                    pccmvRRChanged = true;
+                    pccmvRR = true;
+                    pccmvIe = false;
+                    pccmvPeep = false;
+                    pccmvPc = false;
+                    pccmvFio2 = false;
+                    pccmvVtmin = false;
+                    pccmvVtmax = false;
+                    pccmvFlowRamp = false;
+                    pccmvTih = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -20839,21 +21463,24 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
-                  pccmvmaxValue = 61;
-                  pccmvminValue = 1;
-                  pccmvparameterName = "I:E";
-                  pccmvparameterUnits = "";
-                  pccmvRR = false;
-                  pccmvIe = true;
-                  pccmvPeep = false;
-                  pccmvPc = false;
-                  pccmvFio2 = false;
-                  pccmvVtmin = false;
-                  pccmvVtmax = false;
-                  pccmvFlowRamp = false;
-                  pccmvTih = false;
-                });
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    pccmvmaxValue = 61;
+                    pccmvminValue = 1;
+                    pccmvparameterName = "I:E";
+                    pccmvparameterUnits = "";
+                    pccmvRR = false;
+                    pccmvIe = true;
+                    pccmvPeep = false;
+                    pccmvPc = false;
+                    pccmvFio2 = false;
+                    pccmvVtmin = false;
+                    pccmvVtmax = false;
+                    pccmvFlowRamp = false;
+                    pccmvTih = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -20953,21 +21580,24 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
-                  pccmvmaxValue = _isTab10 ? 45 : 30;
-                  pccmvminValue = 0;
-                  pccmvparameterName = "PEEP";
-                  pccmvparameterUnits = "cmH\u2082O";
-                  pccmvRR = false;
-                  pccmvIe = false;
-                  pccmvPeep = true;
-                  pccmvPc = false;
-                  pccmvFio2 = false;
-                  pccmvVtmin = false;
-                  pccmvVtmax = false;
-                  pccmvFlowRamp = false;
-                  pccmvTih = false;
-                });
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    pccmvmaxValue = _isTab10 ? 45 : 30;
+                    pccmvminValue = 0;
+                    pccmvparameterName = "PEEP";
+                    pccmvparameterUnits = "cmH\u2082O";
+                    pccmvRR = false;
+                    pccmvIe = false;
+                    pccmvPeep = true;
+                    pccmvPc = false;
+                    pccmvFio2 = false;
+                    pccmvVtmin = false;
+                    pccmvVtmax = false;
+                    pccmvFlowRamp = false;
+                    pccmvTih = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -21075,21 +21705,24 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
-                  pccmvmaxValue = _isTab10 ? 85 : 60;
-                  pccmvminValue = 5;
-                  pccmvparameterName = "PC";
-                  pccmvparameterUnits = "cmH\u2082O above PEEP";
-                  pccmvRR = false;
-                  pccmvIe = false;
-                  pccmvPeep = false;
-                  pccmvPc = true;
-                  pccmvFio2 = false;
-                  pccmvVtmin = false;
-                  pccmvVtmax = false;
-                  pccmvFlowRamp = false;
-                  pccmvTih = false;
-                });
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    pccmvmaxValue = _isTab10 ? 85 : 60;
+                    pccmvminValue = 5;
+                    pccmvparameterName = "PC";
+                    pccmvparameterUnits = "cmH\u2082O above PEEP";
+                    pccmvRR = false;
+                    pccmvIe = false;
+                    pccmvPeep = false;
+                    pccmvPc = true;
+                    pccmvFio2 = false;
+                    pccmvVtmin = false;
+                    pccmvVtmax = false;
+                    pccmvFlowRamp = false;
+                    pccmvTih = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -21191,21 +21824,24 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
-                  pccmvmaxValue = 100;
-                  pccmvminValue = 21;
-                  pccmvparameterName = "FiO\u2082";
-                  pccmvparameterUnits = "%";
-                  pccmvRR = false;
-                  pccmvIe = false;
-                  pccmvPeep = false;
-                  pccmvPc = false;
-                  pccmvFio2 = true;
-                  pccmvVtmin = false;
-                  pccmvVtmax = false;
-                  pccmvFlowRamp = false;
-                  pccmvTih = false;
-                });
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    pccmvmaxValue = 100;
+                    pccmvminValue = 21;
+                    pccmvparameterName = "FiO\u2082";
+                    pccmvparameterUnits = "%";
+                    pccmvRR = false;
+                    pccmvIe = false;
+                    pccmvPeep = false;
+                    pccmvPc = false;
+                    pccmvFio2 = true;
+                    pccmvVtmin = false;
+                    pccmvVtmax = false;
+                    pccmvFlowRamp = false;
+                    pccmvTih = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -21701,16 +22337,19 @@ class _CheckPageState extends State<Dashboard> {
                       children: [
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              assistmodePressureOn = !assistmodePressureOn;
-                              if (assistmodePressureOn == true) {
-                                pacvEnabled = true;
-                                pccmvEnabled = false;
-                              } else {
-                                pccmvEnabled = true;
-                                pacvEnabled = false;
-                              }
-                            });
+                            if (_modeChangeEnabled == true) {
+                              setState(() {
+                                _modeChangeEnabled = false;
+                                assistmodePressureOn = !assistmodePressureOn;
+                                if (assistmodePressureOn == true) {
+                                  pacvEnabled = true;
+                                  pccmvEnabled = false;
+                                } else {
+                                  pccmvEnabled = true;
+                                  pacvEnabled = false;
+                                }
+                              });
+                            }
                           },
                           child: Card(
                               color: assistmodePressureOn
@@ -21731,16 +22370,19 @@ class _CheckPageState extends State<Dashboard> {
                         SizedBox(height: 10),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              assistmodePressureOn = !assistmodePressureOn;
-                              if (assistmodePressureOn == true) {
-                                pacvEnabled = true;
-                                pccmvEnabled = false;
-                              } else {
-                                pccmvEnabled = true;
-                                pacvEnabled = false;
-                              }
-                            });
+                            if (_modeChangeEnabled == true) {
+                              setState(() {
+                                _modeChangeEnabled = false;
+                                assistmodePressureOn = !assistmodePressureOn;
+                                if (assistmodePressureOn == true) {
+                                  pacvEnabled = true;
+                                  pccmvEnabled = false;
+                                } else {
+                                  pccmvEnabled = true;
+                                  pacvEnabled = false;
+                                }
+                              });
+                            }
                           },
                           child: Card(
                               color: assistmodePressureOn
@@ -21860,325 +22502,365 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-            Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xFFE0E0E0)),
-                width: 400,
-                height: 195,
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Colors.black,
-                              size: 55,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (pccmvRR == true &&
-                                    pccmvRRValue != pccmvminValue) {
-                                  setState(() {
-                                    pccmvRRValue = pccmvRRValue - 1;
-                                  });
-                                } else if (pccmvIe == true &&
-                                    pccmvIeValue != pccmvminValue) {
-                                  setState(() {
-                                    pccmvIeValue = pccmvIeValue - 1;
-                                  });
-                                } else if (pccmvPeep == true &&
-                                    pccmvPeepValue != pccmvminValue) {
-                                  setState(() {
-                                    pccmvPeepValue = pccmvPeepValue - 1;
-                                  });
-                                } else if (pccmvPc == true &&
-                                    pccmvPcValue != pccmvminValue) {
-                                  setState(() {
-                                    pccmvPcValue = pccmvPcValue - 1;
-                                  });
-                                } else if (pccmvFio2 == true &&
-                                    pccmvFio2Value != pccmvminValue) {
-                                  setState(() {
-                                    pccmvFio2Value = pccmvFio2Value - 1;
-                                  });
-                                } else if (pccmvVtmin == true &&
-                                    pccmvVtminValue != pccmvminValue) {
-                                  setState(() {
-                                    pccmvVtminValue = pccmvVtminValue - 1;
-                                  });
-                                } else if (pccmvVtmax == true &&
-                                    pccmvVtmaxValue != pccmvVtminValue + 1) {
-                                  pccmvVtmaxValue = pccmvVtmaxValue - 1;
-                                } else if (pccmvFlowRamp == true &&
-                                    pccmvFlowRampValue != pccmvminValue) {
-                                  setState(() {
-                                    pccmvFlowRampValue = pccmvFlowRampValue - 1;
-                                  });
-                                }
-                              });
-                            },
-                          ),
+            _parameterChangeEnabled == false
+                ? Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFFE0E0E0)),
+                    width: 400,
+                    height: 246,
+                    child: Center(
+                      child: Column(
+                        children: [
                           SizedBox(
-                            width: 60,
+                            height: 5,
                           ),
-                          Text(
-                            pccmvparameterName,
-                            style: TextStyle(fontSize: 36),
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 55,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                int maxValue = _isTab10 ? 90 : 65;
-                                int maxPeep = _isTab10 ? 45 : 30;
-                                int maxValuepcValue, maxValuepeepValue;
-                                maxValuepcValue = maxValue - pccmvPeepValue;
-                                if ((maxValue - pccmvPcValue) >= maxPeep) {
-                                  maxValuepeepValue = maxPeep;
-                                } else {
-                                  maxValuepeepValue = maxValue - pccmvPcValue;
-                                }
-                                if (pccmvRR == true &&
-                                    pccmvRRValue != pccmvmaxValue) {
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                  size: 55,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    pccmvRRValue = pccmvRRValue + 1;
-                                  });
-                                } else if (pccmvIe == true &&
-                                    pccmvIeValue != pccmvmaxValue) {
-                                  setState(() {
-                                    pccmvIeValue = pccmvIeValue + 1;
-                                  });
-                                } else if (pccmvPeep == true &&
-                                    pccmvPeepValue != pccmvmaxValue &&
-                                    pccmvPeepValue < maxValuepeepValue) {
-                                  setState(() {
-                                    pccmvPeepValue = pccmvPeepValue + 1;
-                                    // if (pccmvPcValue <= pccmvPeepValue) {
-                                    //   pccmvPcValue = pccmvPeepValue + 1;
-                                    // }
-                                  });
-                                } else if (pccmvPc == true &&
-                                    pccmvPcValue != pccmvmaxValue &&
-                                    pccmvPcValue < maxValuepcValue) {
-                                  setState(() {
-                                    pccmvPcValue = pccmvPcValue + 1;
-                                  });
-                                } else if (pccmvFio2 == true &&
-                                    pccmvFio2Value != pccmvmaxValue) {
-                                  setState(() {
-                                    pccmvFio2Value = pccmvFio2Value + 1;
-                                  });
-                                } else if (pccmvVtmin == true &&
-                                    pccmvVtminValue != pccmvmaxValue) {
-                                  setState(() {
-                                    if (pccmvVtmaxValue != 1190 &&
-                                        pccmvVtminValue != 1189) {
-                                      pccmvVtminValue = pccmvVtminValue + 1;
-                                      pccmvVtmaxValue = pccmvVtminValue + 1;
+                                    if (pccmvRR == true &&
+                                        pccmvRRValue != pccmvminValue) {
+                                      setState(() {
+                                        pccmvRRValue = pccmvRRValue - 1;
+                                      });
+                                    } else if (pccmvIe == true &&
+                                        pccmvIeValue != pccmvminValue) {
+                                      setState(() {
+                                        pccmvIeValue = pccmvIeValue - 1;
+                                      });
+                                    } else if (pccmvPeep == true &&
+                                        pccmvPeepValue != pccmvminValue) {
+                                      setState(() {
+                                        pccmvPeepValue = pccmvPeepValue - 1;
+                                      });
+                                    } else if (pccmvPc == true &&
+                                        pccmvPcValue != pccmvminValue) {
+                                      setState(() {
+                                        pccmvPcValue = pccmvPcValue - 1;
+                                      });
+                                    } else if (pccmvFio2 == true &&
+                                        pccmvFio2Value != pccmvminValue) {
+                                      setState(() {
+                                        pccmvFio2Value = pccmvFio2Value - 1;
+                                      });
+                                    } else if (pccmvVtmin == true &&
+                                        pccmvVtminValue != pccmvminValue) {
+                                      setState(() {
+                                        pccmvVtminValue = pccmvVtminValue - 1;
+                                      });
+                                    } else if (pccmvVtmax == true &&
+                                        pccmvVtmaxValue !=
+                                            pccmvVtminValue + 1) {
+                                      pccmvVtmaxValue = pccmvVtmaxValue - 1;
+                                    } else if (pccmvFlowRamp == true &&
+                                        pccmvFlowRampValue != pccmvminValue) {
+                                      setState(() {
+                                        pccmvFlowRampValue =
+                                            pccmvFlowRampValue - 1;
+                                      });
                                     }
                                   });
-                                } else if (pccmvVtmax == true &&
-                                    pccmvVtmaxValue != pccmvmaxValue) {
+                                },
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              Text(
+                                pccmvparameterName,
+                                style: TextStyle(fontSize: 36),
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 55,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    pccmvVtmaxValue = pccmvVtmaxValue + 1;
+                                    int maxValue = _isTab10 ? 90 : 65;
+                                    int maxPeep = _isTab10 ? 45 : 30;
+                                    int maxValuepcValue, maxValuepeepValue;
+                                    maxValuepcValue = maxValue - pccmvPeepValue;
+                                    if ((maxValue - pccmvPcValue) >= maxPeep) {
+                                      maxValuepeepValue = maxPeep;
+                                    } else {
+                                      maxValuepeepValue =
+                                          maxValue - pccmvPcValue;
+                                    }
+                                    if (pccmvRR == true &&
+                                        pccmvRRValue != pccmvmaxValue) {
+                                      setState(() {
+                                        pccmvRRValue = pccmvRRValue + 1;
+                                      });
+                                    } else if (pccmvIe == true &&
+                                        pccmvIeValue != pccmvmaxValue) {
+                                      setState(() {
+                                        pccmvIeValue = pccmvIeValue + 1;
+                                      });
+                                    } else if (pccmvPeep == true &&
+                                        pccmvPeepValue != pccmvmaxValue &&
+                                        pccmvPeepValue < maxValuepeepValue) {
+                                      setState(() {
+                                        pccmvPeepValue = pccmvPeepValue + 1;
+                                        // if (pccmvPcValue <= pccmvPeepValue) {
+                                        //   pccmvPcValue = pccmvPeepValue + 1;
+                                        // }
+                                      });
+                                    } else if (pccmvPc == true &&
+                                        pccmvPcValue != pccmvmaxValue &&
+                                        pccmvPcValue < maxValuepcValue) {
+                                      setState(() {
+                                        pccmvPcValue = pccmvPcValue + 1;
+                                      });
+                                    } else if (pccmvFio2 == true &&
+                                        pccmvFio2Value != pccmvmaxValue) {
+                                      setState(() {
+                                        pccmvFio2Value = pccmvFio2Value + 1;
+                                      });
+                                    } else if (pccmvVtmin == true &&
+                                        pccmvVtminValue != pccmvmaxValue) {
+                                      setState(() {
+                                        if (pccmvVtmaxValue != 1190 &&
+                                            pccmvVtminValue != 1189) {
+                                          pccmvVtminValue = pccmvVtminValue + 1;
+                                          pccmvVtmaxValue = pccmvVtminValue + 1;
+                                        }
+                                      });
+                                    } else if (pccmvVtmax == true &&
+                                        pccmvVtmaxValue != pccmvmaxValue) {
+                                      setState(() {
+                                        pccmvVtmaxValue = pccmvVtmaxValue + 1;
+                                      });
+                                    } else if (pccmvFlowRamp == true &&
+                                        pccmvFlowRampValue != pccmvmaxValue) {
+                                      setState(() {
+                                        pccmvFlowRampValue =
+                                            pccmvFlowRampValue + 1;
+                                      });
+                                    }
                                   });
-                                } else if (pccmvFlowRamp == true &&
-                                    pccmvFlowRampValue != pccmvmaxValue) {
-                                  setState(() {
-                                    pccmvFlowRampValue = pccmvFlowRampValue + 1;
-                                  });
-                                }
-                              });
-                            },
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              pccmvRR
-                                  ? pccmvRRValue.toInt().toString()
-                                  // : pccmvIe
-                                  //     ? "1:" + pccmvIeValue.toInt().toString()
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  pccmvRR
+                                      ? pccmvRRValue.toInt().toString()
+                                      // : pccmvIe
+                                      //     ? "1:" + pccmvIeValue.toInt().toString()
 
-                                  : pccmvIe
-                                      ? getIeData(pccmvIeValue, 1)
-                                      : pccmvPeep
-                                          ? pccmvPeepValue.toInt().toString()
-                                          : pccmvPc
-                                              ? pccmvPcValue.toInt().toString()
-                                              : pccmvFio2
-                                                  ? pccmvFio2Value
+                                      : pccmvIe
+                                          ? getIeData(pccmvIeValue, 1)
+                                          : pccmvPeep
+                                              ? pccmvPeepValue
+                                                  .toInt()
+                                                  .toString()
+                                              : pccmvPc
+                                                  ? pccmvPcValue
                                                       .toInt()
                                                       .toString()
-                                                  : pccmvVtmin
-                                                      ? pccmvVtminValue
+                                                  : pccmvFio2
+                                                      ? pccmvFio2Value
                                                           .toInt()
                                                           .toString()
-                                                      : pccmvVtmax
-                                                          ? pccmvVtmaxValue
+                                                      : pccmvVtmin
+                                                          ? pccmvVtminValue
                                                               .toInt()
                                                               .toString()
+                                                          : pccmvVtmax
+                                                              ? pccmvVtmaxValue
+                                                                  .toInt()
+                                                                  .toString()
+                                                              : pccmvFlowRamp
+                                                                  ? pccmvFlowRampValue
+                                                                              .toString() ==
+                                                                          "0"
+                                                                      ? "AF"
+                                                                      : pccmvFlowRampValue.toString() ==
+                                                                              "1"
+                                                                          ? "AS"
+                                                                          : pccmvFlowRampValue.toString() == "2"
+                                                                              ? "DF"
+                                                                              : pccmvFlowRampValue.toString() == "3" ? "DS" : pccmvFlowRampValue.toString() == "4" ? "S" : "S"
+                                                                  : "",
+                                  style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          // pccmvFio2
+                          //     ? Container()
+                          //     :
+                          Container(
+                            width: 350,
+                            child: Slider(
+                              activeColor: Colors.black,
+                              inactiveColor: Colors.black,
+                              min: pccmvminValue.toDouble() ?? 0,
+                              max: pccmvmaxValue.toDouble() ?? 0,
+                              value: pccmvRR
+                                  ? pccmvRRValue.toDouble()
+                                  : pccmvIe
+                                      ? pccmvIeValue.toDouble()
+                                      : pccmvPeep
+                                          ? pccmvPeepValue.toDouble()
+                                          : pccmvPc
+                                              ? pccmvPcValue.toDouble()
+                                              : pccmvFio2
+                                                  ? pccmvFio2Value.toDouble()
+                                                  : pccmvVtmin
+                                                      ? pccmvVtminValue
+                                                          .toDouble()
+                                                      : pccmvVtmax
+                                                          ? pccmvVtmaxValue
+                                                              .toDouble()
                                                           : pccmvFlowRamp
                                                               ? pccmvFlowRampValue
-                                                                          .toString() ==
-                                                                      "0"
-                                                                  ? "AF"
-                                                                  : pccmvFlowRampValue
-                                                                              .toString() ==
-                                                                          "1"
-                                                                      ? "AS"
-                                                                      : pccmvFlowRampValue.toString() ==
-                                                                              "2"
-                                                                          ? "DF"
-                                                                          : pccmvFlowRampValue.toString() == "3"
-                                                                              ? "DS"
-                                                                              : pccmvFlowRampValue.toString() == "4" ? "S" : "S"
+                                                                  .toDouble()
                                                               : "",
-                              style: TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
+                              onChanged: (double value) {
+                                setState(() {
+                                  int maxValue = _isTab10 ? 90 : 65;
+                                  int maxValuepcValue, maxValuepeepValue;
+                                  maxValuepcValue = maxValue - pccmvPeepValue;
+                                  if ((maxValue - pccmvPcValue) >= 30) {
+                                    maxValuepeepValue = 30;
+                                  } else {
+                                    maxValuepeepValue = maxValue - pccmvPcValue;
+                                  }
+                                  if (pccmvRR == true) {
+                                    setState(() {
+                                      pccmvRRValue = value.toInt();
+                                    });
+                                  } else if (pccmvIe == true) {
+                                    setState(() {
+                                      pccmvIeValue = value.toInt();
+                                    });
+                                  } else if (pccmvPeep == true) {
+                                    setState(() {
+                                      if (value.toInt() >= maxValuepeepValue) {
+                                        pccmvPeepValue = maxValuepeepValue;
+                                      } else {
+                                        pccmvPeepValue = value.toInt();
+                                      }
+                                    });
+                                  } else if (pccmvPc == true) {
+                                    setState(() {
+                                      if (value.toInt() >= maxValuepcValue) {
+                                        pccmvPcValue = maxValuepcValue;
+                                      } else {
+                                        pccmvPcValue = value.toInt();
+                                      }
+                                    });
+                                  } else if (pccmvFio2 == true) {
+                                    setState(() {
+                                      pccmvFio2Value = value.toInt();
+                                    });
+                                  } else if (pccmvVtmin == true) {
+                                    if (value.toInt() < 1190) {
+                                      pccmvVtminValue = value.toInt();
+                                      if (pccmvVtmaxValue <= pccmvVtminValue) {
+                                        pccmvVtmaxValue = pccmvVtminValue + 1;
+                                      }
+                                    }
+                                  } else if (pccmvVtmax == true) {
+                                    setState(() {
+                                      if (value.toInt() <=
+                                          pccmvVtminValue + 1) {
+                                        pccmvVtmaxValue = pccmvVtminValue + 1;
+                                      } else {
+                                        pccmvVtmaxValue = value.toInt();
+                                      }
+                                    });
+                                  } else if (pccmvFlowRamp == true) {
+                                    setState(() {
+                                      pccmvFlowRampValue = value.toInt();
+                                    });
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 45.0, right: 45.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(pccmvIe
+                                    ? getIeData(pccmvminValue, 1)
+                                    : pccmvminValue.toString()),
+                                Text(
+                                  pccmvparameterUnits,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(pccmvIe
+                                    ? getIeData(pccmvmaxValue, 1)
+                                    : pccmvmaxValue.toString())
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _parameterChangeEnabled = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Card(
+                                      color: Colors.grey,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18.0,
+                                            bottom: 18,
+                                            left: 45,
+                                            right: 45),
+                                        child: Center(
+                                            child: Text("  OK  ",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                      )),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      // pccmvFio2
-                      //     ? Container()
-                      //     :
-                      Container(
-                        width: 350,
-                        child: Slider(
-                          activeColor: Colors.black,
-                          inactiveColor: Colors.black,
-                          min: pccmvminValue.toDouble() ?? 0,
-                          max: pccmvmaxValue.toDouble() ?? 0,
-                          value: pccmvRR
-                              ? pccmvRRValue.toDouble()
-                              : pccmvIe
-                                  ? pccmvIeValue.toDouble()
-                                  : pccmvPeep
-                                      ? pccmvPeepValue.toDouble()
-                                      : pccmvPc
-                                          ? pccmvPcValue.toDouble()
-                                          : pccmvFio2
-                                              ? pccmvFio2Value.toDouble()
-                                              : pccmvVtmin
-                                                  ? pccmvVtminValue.toDouble()
-                                                  : pccmvVtmax
-                                                      ? pccmvVtmaxValue
-                                                          .toDouble()
-                                                      : pccmvFlowRamp
-                                                          ? pccmvFlowRampValue
-                                                              .toDouble()
-                                                          : "",
-                          onChanged: (double value) {
-                            setState(() {
-                              int maxValue = _isTab10 ? 90 : 65;
-                              int maxValuepcValue, maxValuepeepValue;
-                              maxValuepcValue = maxValue - pccmvPeepValue;
-                              if ((maxValue - pccmvPcValue) >= 30) {
-                                maxValuepeepValue = 30;
-                              } else {
-                                maxValuepeepValue = maxValue - pccmvPcValue;
-                              }
-                              if (pccmvRR == true) {
-                                setState(() {
-                                  pccmvRRValue = value.toInt();
-                                });
-                              } else if (pccmvIe == true) {
-                                setState(() {
-                                  pccmvIeValue = value.toInt();
-                                });
-                              } else if (pccmvPeep == true) {
-                                setState(() {
-                                  if (value.toInt() >= maxValuepeepValue) {
-                                    pccmvPeepValue = maxValuepeepValue;
-                                  } else {
-                                    pccmvPeepValue = value.toInt();
-                                  }
-                                });
-                              } else if (pccmvPc == true) {
-                                setState(() {
-                                  if (value.toInt() >= maxValuepcValue) {
-                                    pccmvPcValue = maxValuepcValue;
-                                  } else {
-                                    pccmvPcValue = value.toInt();
-                                  }
-                                });
-                              } else if (pccmvFio2 == true) {
-                                setState(() {
-                                  pccmvFio2Value = value.toInt();
-                                });
-                              } else if (pccmvVtmin == true) {
-                                if (value.toInt() < 1190) {
-                                  pccmvVtminValue = value.toInt();
-                                  if (pccmvVtmaxValue <= pccmvVtminValue) {
-                                    pccmvVtmaxValue = pccmvVtminValue + 1;
-                                  }
-                                }
-                              } else if (pccmvVtmax == true) {
-                                setState(() {
-                                  if (value.toInt() <= pccmvVtminValue + 1) {
-                                    pccmvVtmaxValue = pccmvVtminValue + 1;
-                                  } else {
-                                    pccmvVtmaxValue = value.toInt();
-                                  }
-                                });
-                              } else if (pccmvFlowRamp == true) {
-                                setState(() {
-                                  pccmvFlowRampValue = value.toInt();
-                                });
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45.0, right: 45.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(pccmvIe
-                                ? getIeData(pccmvminValue, 1)
-                                : pccmvminValue.toString()),
-                            Text(
-                              pccmvparameterUnits,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Text(pccmvIe
-                                ? getIeData(pccmvmaxValue, 1)
-                                : pccmvmaxValue.toString())
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                )),
+                    ))
+                : Container(),
           ],
         ),
       ],
@@ -22196,22 +22878,25 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
-                  vccmvmaxValue = 60;
-                  vccmvminValue = 1;
-                  vccmvparameterName = "RR";
-                  vccmvparameterUnits = "bpm";
-                  vccmvRR = true;
-                  vccmvIe = false;
-                  vccmvPeep = false;
-                  vccmvPcMax = false;
-                  vccmvPcMin = false;
-                  vccmvFio2 = false;
-                  vccmvVt = false;
-                  vccmvFlowRamp = false;
-                  vccmvTih = false;
-                });
-                sleep(const Duration(milliseconds: 200));
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    vccmvmaxValue = 60;
+                    vccmvminValue = 1;
+                    vccmvparameterName = "RR";
+                    vccmvparameterUnits = "bpm";
+                    vccmvRR = true;
+                    vccmvIe = false;
+                    vccmvPeep = false;
+                    vccmvPcMax = false;
+                    vccmvPcMin = false;
+                    vccmvFio2 = false;
+                    vccmvVt = false;
+                    vccmvFlowRamp = false;
+                    vccmvTih = false;
+                  });
+                }
+                // sleep(const Duration(milliseconds: 200));
               },
               child: Center(
                 child: Container(
@@ -22311,22 +22996,24 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
-                  vccmvmaxValue = 61;
-                  vccmvminValue = 1;
-                  vccmvparameterName = "I:E";
-                  vccmvparameterUnits = "";
-                  vccmvRR = false;
-                  vccmvIe = true;
-                  vccmvPeep = false;
-                  vccmvPcMax = false;
-                  vccmvPcMin = false;
-                  vccmvFio2 = false;
-                  vccmvVt = false;
-                  vccmvFlowRamp = false;
-                  vccmvTih = false;
-                });
-                sleep(const Duration(milliseconds: 200));
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    vccmvmaxValue = 61;
+                    vccmvminValue = 1;
+                    vccmvparameterName = "I:E";
+                    vccmvparameterUnits = "";
+                    vccmvRR = false;
+                    vccmvIe = true;
+                    vccmvPeep = false;
+                    vccmvPcMax = false;
+                    vccmvPcMin = false;
+                    vccmvFio2 = false;
+                    vccmvVt = false;
+                    vccmvFlowRamp = false;
+                    vccmvTih = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -22426,23 +23113,25 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
-                  vccmvmaxValue = _isTab10 ? 45 : 30;
-                  vccmvminValue = 0;
-                  vccmvparameterName = "PEEP";
-                  vccmvparameterUnits = "cmH\u2082O";
-                  vccmvRR = false;
-                  vccmvIe = false;
-                  vccmvPeep = true;
-                  vccmvPcMax = false;
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    vccmvmaxValue = _isTab10 ? 45 : 30;
+                    vccmvminValue = 0;
+                    vccmvparameterName = "PEEP";
+                    vccmvparameterUnits = "cmH\u2082O";
+                    vccmvRR = false;
+                    vccmvIe = false;
+                    vccmvPeep = true;
+                    vccmvPcMax = false;
 
-                  vccmvPcMin = false;
-                  vccmvFio2 = false;
-                  vccmvVt = false;
-                  vccmvFlowRamp = false;
-                  vccmvTih = false;
-                });
-                sleep(const Duration(milliseconds: 200));
+                    vccmvPcMin = false;
+                    vccmvFio2 = false;
+                    vccmvVt = false;
+                    vccmvFlowRamp = false;
+                    vccmvTih = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -22550,22 +23239,24 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
-                  vccmvmaxValue = _isTab10 ? 2500 : 600;
-                  vccmvminValue = _isTab10 ? 50 : 200;
-                  vccmvparameterName = "VT";
-                  vccmvparameterUnits = "mL";
-                  vccmvRR = false;
-                  vccmvIe = false;
-                  vccmvPeep = false;
-                  vccmvVt = true;
-                  vccmvPcMax = false;
-                  vccmvPcMin = false;
-                  vccmvFio2 = false;
-                  vccmvFlowRamp = false;
-                  vccmvTih = false;
-                });
-                sleep(const Duration(milliseconds: 200));
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    vccmvmaxValue = _isTab10 ? 2500 : 600;
+                    vccmvminValue = _isTab10 ? 50 : 200;
+                    vccmvparameterName = "VT";
+                    vccmvparameterUnits = "mL";
+                    vccmvRR = false;
+                    vccmvIe = false;
+                    vccmvPeep = false;
+                    vccmvVt = true;
+                    vccmvPcMax = false;
+                    vccmvPcMin = false;
+                    vccmvFio2 = false;
+                    vccmvFlowRamp = false;
+                    vccmvTih = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -22667,22 +23358,24 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
-                  vccmvmaxValue = 100;
-                  vccmvminValue = 21;
-                  vccmvparameterName = "FiO\u2082";
-                  vccmvparameterUnits = "%";
-                  vccmvRR = false;
-                  vccmvIe = false;
-                  vccmvPeep = false;
-                  vccmvVt = false;
-                  vccmvPcMax = false;
-                  vccmvPcMin = false;
-                  vccmvFio2 = true;
-                  vccmvFlowRamp = false;
-                  vccmvTih = false;
-                });
-                sleep(const Duration(milliseconds: 200));
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    vccmvmaxValue = 100;
+                    vccmvminValue = 21;
+                    vccmvparameterName = "FiO\u2082";
+                    vccmvparameterUnits = "%";
+                    vccmvRR = false;
+                    vccmvIe = false;
+                    vccmvPeep = false;
+                    vccmvVt = false;
+                    vccmvPcMax = false;
+                    vccmvPcMin = false;
+                    vccmvFio2 = true;
+                    vccmvFlowRamp = false;
+                    vccmvTih = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -22782,22 +23475,24 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
-                  vccmvmaxValue = 100;
-                  vccmvminValue = 0;
-                  vccmvparameterName = "PC Max";
-                  vccmvparameterUnits = "cmH\u2082O above PEEP";
-                  vccmvRR = false;
-                  vccmvIe = false;
-                  vccmvPeep = false;
-                  vccmvVt = false;
-                  vccmvPcMax = true;
-                  vccmvPcMin = false;
-                  vccmvFio2 = false;
-                  vccmvFlowRamp = false;
-                  vccmvTih = false;
-                });
-                sleep(const Duration(milliseconds: 200));
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    vccmvmaxValue = 100;
+                    vccmvminValue = 0;
+                    vccmvparameterName = "PC Max";
+                    vccmvparameterUnits = "cmH\u2082O above PEEP";
+                    vccmvRR = false;
+                    vccmvIe = false;
+                    vccmvPeep = false;
+                    vccmvVt = false;
+                    vccmvPcMax = true;
+                    vccmvPcMin = false;
+                    vccmvFio2 = false;
+                    vccmvFlowRamp = false;
+                    vccmvTih = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -23043,16 +23738,19 @@ class _CheckPageState extends State<Dashboard> {
                       children: [
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              assistmodeVolumeOn = !assistmodeVolumeOn;
-                              if (assistmodeVolumeOn == true) {
-                                vacvEnabled = true;
-                                vccmvEnabled = false;
-                              } else {
-                                vccmvEnabled = true;
-                                vacvEnabled = false;
-                              }
-                            });
+                            if (_modeChangeEnabled == true) {
+                              setState(() {
+                                _modeChangeEnabled = false;
+                                assistmodeVolumeOn = !assistmodeVolumeOn;
+                                if (assistmodeVolumeOn == true) {
+                                  vacvEnabled = true;
+                                  vccmvEnabled = false;
+                                } else {
+                                  vccmvEnabled = true;
+                                  vacvEnabled = false;
+                                }
+                              });
+                            }
                           },
                           child: Card(
                               color: assistmodeVolumeOn
@@ -23073,16 +23771,19 @@ class _CheckPageState extends State<Dashboard> {
                         SizedBox(height: 10),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              assistmodeVolumeOn = !assistmodeVolumeOn;
-                              if (assistmodeVolumeOn == true) {
-                                vacvEnabled = true;
-                                vccmvEnabled = false;
-                              } else {
-                                vccmvEnabled = true;
-                                vacvEnabled = false;
-                              }
-                            });
+                            if (_modeChangeEnabled == true) {
+                              setState(() {
+                                _modeChangeEnabled = false;
+                                assistmodeVolumeOn = !assistmodeVolumeOn;
+                                if (assistmodeVolumeOn == true) {
+                                  vacvEnabled = true;
+                                  vccmvEnabled = false;
+                                } else {
+                                  vccmvEnabled = true;
+                                  vacvEnabled = false;
+                                }
+                              });
+                            }
                           },
                           child: Card(
                               color: assistmodeVolumeOn
@@ -23201,312 +23902,346 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-            Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xFFE0E0E0)),
-                width: 400,
-                height: 195,
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (vccmvRR == true &&
-                                    vccmvRRValue != vccmvminValue) {
-                                  setState(() {
-                                    vccmvRRValue = vccmvRRValue - 1;
-                                  });
-                                } else if (vccmvIe == true &&
-                                    vccmvIeValue != vccmvminValue) {
-                                  setState(() {
-                                    vccmvIeValue = vccmvIeValue - 1;
-                                  });
-                                } else if (vccmvPeep == true &&
-                                    vccmvPeepValue != vccmvminValue) {
-                                  setState(() {
-                                    vccmvPeepValue = vccmvPeepValue - 1;
-                                    // if (vccmvPcMinValue <= vccmvPeepValue) {
-                                    //   vccmvPcMinValue = vccmvPeepValue + 1;
-                                    //   if (vccmvPcMaxValue <=
-                                    //       vccmvPcMinValue) {
-                                    //     vccmvPcMaxValue = vccmvPcMinValue + 1;
-                                    //   }
-                                    // }
-                                  });
-                                } else if (vccmvPcMax == true &&
-                                    vccmvPcMaxValue != vccmvminValue) {
-                                  vccmvPcMaxValue = vccmvPcMaxValue - 1;
-                                } else if (vccmvFio2 == true &&
-                                    vccmvFio2Value != vccmvminValue) {
-                                  setState(() {
-                                    vccmvFio2Value = vccmvFio2Value - 1;
-                                  });
-                                } else if (vccmvPcMin == true &&
-                                    vccmvPcMinValue != vccmvminValue) {
-                                  setState(() {
-                                    vccmvPcMinValue = vccmvPcMinValue - 1;
-                                    // if (vccmvPcMinValue >= vccmvPcMaxValue) {
-                                    //   vccmvPcMaxValue = vccmvPcMaxValue - 1;
-                                    // }
-                                  });
-                                } else if (vccmvVt == true &&
-                                    vccmvVtValue != vccmvminValue) {
-                                  setState(() {
-                                    vccmvVtValue = vccmvVtValue - 1;
-                                  });
-                                } else if (vccmvFlowRamp == true &&
-                                    vccmvFlowRampValue != vccmvminValue) {
-                                  setState(() {
-                                    vccmvFlowRampValue = vccmvFlowRampValue - 1;
-                                  });
-                                }
-                              });
-                            },
-                          ),
+            _parameterChangeEnabled == false
+                ? Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFFE0E0E0)),
+                    width: 400,
+                    height: 246,
+                    child: Center(
+                      child: Column(
+                        children: [
                           SizedBox(
-                            width: 60,
+                            height: 5,
                           ),
-                          Text(
-                            vccmvparameterName,
-                            style: TextStyle(fontSize: 36),
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (vccmvRR == true &&
-                                    vccmvRRValue != vccmvmaxValue) {
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    vccmvRRValue = vccmvRRValue + 1;
-                                  });
-                                } else if (vccmvIe == true &&
-                                    vccmvIeValue != vccmvmaxValue) {
-                                  setState(() {
-                                    vccmvIeValue = vccmvIeValue + 1;
-                                  });
-                                } else if (vccmvPeep == true &&
-                                    vccmvPeepValue != vccmvmaxValue) {
-                                  setState(() {
-                                    vccmvPeepValue = vccmvPeepValue + 1;
-                                    // if (vccmvPcMinValue <= vccmvPeepValue) {
-                                    //   vccmvPcMinValue = vccmvPeepValue + 1;
-                                    //   if (vccmvPcMaxValue <=
-                                    //       vccmvPcMinValue) {
-                                    //     vccmvPcMaxValue = vccmvPcMinValue + 1;
-                                    //   }
-                                    // }
-                                  });
-                                } else if (vccmvFio2 == true &&
-                                    vccmvFio2Value != vccmvmaxValue) {
-                                  setState(() {
-                                    vccmvFio2Value = vccmvFio2Value + 1;
-                                  });
-                                } else if (vccmvVt == true &&
-                                    vccmvVtValue != vccmvmaxValue) {
-                                  setState(() {
-                                    vccmvVtValue = vccmvVtValue + 1;
-                                  });
-                                } else if (vccmvPcMin == true &&
-                                    vccmvPcMinValue != vccmvmaxValue) {
-                                  setState(() {
-                                    if (vccmvPcMaxValue < 90) {
-                                      vccmvPcMinValue = vccmvPcMinValue + 1;
-                                      vccmvPcMaxValue = vccmvPcMinValue + 1;
+                                    if (vccmvRR == true &&
+                                        vccmvRRValue != vccmvminValue) {
+                                      setState(() {
+                                        vccmvRRValue = vccmvRRValue - 1;
+                                      });
+                                    } else if (vccmvIe == true &&
+                                        vccmvIeValue != vccmvminValue) {
+                                      setState(() {
+                                        vccmvIeValue = vccmvIeValue - 1;
+                                      });
+                                    } else if (vccmvPeep == true &&
+                                        vccmvPeepValue != vccmvminValue) {
+                                      setState(() {
+                                        vccmvPeepValue = vccmvPeepValue - 1;
+                                        // if (vccmvPcMinValue <= vccmvPeepValue) {
+                                        //   vccmvPcMinValue = vccmvPeepValue + 1;
+                                        //   if (vccmvPcMaxValue <=
+                                        //       vccmvPcMinValue) {
+                                        //     vccmvPcMaxValue = vccmvPcMinValue + 1;
+                                        //   }
+                                        // }
+                                      });
+                                    } else if (vccmvPcMax == true &&
+                                        vccmvPcMaxValue != vccmvminValue) {
+                                      vccmvPcMaxValue = vccmvPcMaxValue - 1;
+                                    } else if (vccmvFio2 == true &&
+                                        vccmvFio2Value != vccmvminValue) {
+                                      setState(() {
+                                        vccmvFio2Value = vccmvFio2Value - 1;
+                                      });
+                                    } else if (vccmvPcMin == true &&
+                                        vccmvPcMinValue != vccmvminValue) {
+                                      setState(() {
+                                        vccmvPcMinValue = vccmvPcMinValue - 1;
+                                        // if (vccmvPcMinValue >= vccmvPcMaxValue) {
+                                        //   vccmvPcMaxValue = vccmvPcMaxValue - 1;
+                                        // }
+                                      });
+                                    } else if (vccmvVt == true &&
+                                        vccmvVtValue != vccmvminValue) {
+                                      setState(() {
+                                        vccmvVtValue = vccmvVtValue - 1;
+                                      });
+                                    } else if (vccmvFlowRamp == true &&
+                                        vccmvFlowRampValue != vccmvminValue) {
+                                      setState(() {
+                                        vccmvFlowRampValue =
+                                            vccmvFlowRampValue - 1;
+                                      });
                                     }
                                   });
-                                } else if (vccmvPcMax == true &&
-                                    vccmvPcMaxValue != vccmvmaxValue) {
+                                },
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              Text(
+                                vccmvparameterName,
+                                style: TextStyle(fontSize: 36),
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    vccmvPcMaxValue = vccmvPcMaxValue + 1;
+                                    if (vccmvRR == true &&
+                                        vccmvRRValue != vccmvmaxValue) {
+                                      setState(() {
+                                        vccmvRRValue = vccmvRRValue + 1;
+                                      });
+                                    } else if (vccmvIe == true &&
+                                        vccmvIeValue != vccmvmaxValue) {
+                                      setState(() {
+                                        vccmvIeValue = vccmvIeValue + 1;
+                                      });
+                                    } else if (vccmvPeep == true &&
+                                        vccmvPeepValue != vccmvmaxValue) {
+                                      setState(() {
+                                        vccmvPeepValue = vccmvPeepValue + 1;
+                                        // if (vccmvPcMinValue <= vccmvPeepValue) {
+                                        //   vccmvPcMinValue = vccmvPeepValue + 1;
+                                        //   if (vccmvPcMaxValue <=
+                                        //       vccmvPcMinValue) {
+                                        //     vccmvPcMaxValue = vccmvPcMinValue + 1;
+                                        //   }
+                                        // }
+                                      });
+                                    } else if (vccmvFio2 == true &&
+                                        vccmvFio2Value != vccmvmaxValue) {
+                                      setState(() {
+                                        vccmvFio2Value = vccmvFio2Value + 1;
+                                      });
+                                    } else if (vccmvVt == true &&
+                                        vccmvVtValue != vccmvmaxValue) {
+                                      setState(() {
+                                        vccmvVtValue = vccmvVtValue + 1;
+                                      });
+                                    } else if (vccmvPcMin == true &&
+                                        vccmvPcMinValue != vccmvmaxValue) {
+                                      setState(() {
+                                        if (vccmvPcMaxValue < 90) {
+                                          vccmvPcMinValue = vccmvPcMinValue + 1;
+                                          vccmvPcMaxValue = vccmvPcMinValue + 1;
+                                        }
+                                      });
+                                    } else if (vccmvPcMax == true &&
+                                        vccmvPcMaxValue != vccmvmaxValue) {
+                                      setState(() {
+                                        vccmvPcMaxValue = vccmvPcMaxValue + 1;
+                                      });
+                                    } else if (vccmvFlowRamp == true &&
+                                        vccmvFlowRampValue != vccmvmaxValue) {
+                                      setState(() {
+                                        vccmvFlowRampValue =
+                                            vccmvFlowRampValue + 1;
+                                      });
+                                    }
                                   });
-                                } else if (vccmvFlowRamp == true &&
-                                    vccmvFlowRampValue != vccmvmaxValue) {
-                                  setState(() {
-                                    vccmvFlowRampValue = vccmvFlowRampValue + 1;
-                                  });
-                                }
-                              });
-                            },
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              vccmvRR
-                                  ? vccmvRRValue.toInt().toString()
-                                  : vccmvIe
-                                      ? getIeData(vccmvIeValue, 1)
-                                      : vccmvPeep
-                                          ? vccmvPeepValue.toInt().toString()
-                                          : vccmvPcMin
-                                              ? vccmvPcMinValue
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  vccmvRR
+                                      ? vccmvRRValue.toInt().toString()
+                                      : vccmvIe
+                                          ? getIeData(vccmvIeValue, 1)
+                                          : vccmvPeep
+                                              ? vccmvPeepValue
                                                   .toInt()
                                                   .toString()
-                                              : vccmvFio2
-                                                  ? vccmvFio2Value
+                                              : vccmvPcMin
+                                                  ? vccmvPcMinValue
                                                       .toInt()
                                                       .toString()
-                                                  : vccmvPcMax
-                                                      ? vccmvPcMaxValue
+                                                  : vccmvFio2
+                                                      ? vccmvFio2Value
                                                           .toInt()
                                                           .toString()
-                                                      : vccmvVt
-                                                          ? vccmvVtValue
+                                                      : vccmvPcMax
+                                                          ? vccmvPcMaxValue
                                                               .toInt()
                                                               .toString()
+                                                          : vccmvVt
+                                                              ? vccmvVtValue
+                                                                  .toInt()
+                                                                  .toString()
+                                                              : vccmvFlowRamp
+                                                                  ? vccmvFlowRampValue
+                                                                              .toString() ==
+                                                                          "0"
+                                                                      ? "AF"
+                                                                      : vccmvFlowRampValue.toString() ==
+                                                                              "1"
+                                                                          ? "AS"
+                                                                          : vccmvFlowRampValue.toString() == "2"
+                                                                              ? "DF"
+                                                                              : vccmvFlowRampValue.toString() == "3" ? "DS" : vccmvFlowRampValue.toString() == "4" ? "S" : "S"
+                                                                  : "",
+                                  style: TextStyle(
+                                    fontSize: 40,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          // vccmvFio2
+                          //     ? Container()
+                          //     :
+                          Container(
+                            width: 350,
+                            child: Slider(
+                              min: vccmvminValue.toDouble() ?? 0,
+                              max: vccmvmaxValue.toDouble() ?? 0,
+                              value: vccmvRR
+                                  ? vccmvRRValue.toDouble()
+                                  : vccmvIe
+                                      ? vccmvIeValue.toDouble()
+                                      : vccmvPeep
+                                          ? vccmvPeepValue.toDouble()
+                                          : vccmvPcMax
+                                              ? vccmvPcMaxValue.toDouble()
+                                              : vccmvFio2
+                                                  ? vccmvFio2Value.toDouble()
+                                                  : vccmvVt
+                                                      ? vccmvVtValue.toDouble()
+                                                      : vccmvPcMin
+                                                          ? vccmvPcMinValue
+                                                              .toDouble()
                                                           : vccmvFlowRamp
                                                               ? vccmvFlowRampValue
-                                                                          .toString() ==
-                                                                      "0"
-                                                                  ? "AF"
-                                                                  : vccmvFlowRampValue
-                                                                              .toString() ==
-                                                                          "1"
-                                                                      ? "AS"
-                                                                      : vccmvFlowRampValue.toString() ==
-                                                                              "2"
-                                                                          ? "DF"
-                                                                          : vccmvFlowRampValue.toString() == "3"
-                                                                              ? "DS"
-                                                                              : vccmvFlowRampValue.toString() == "4" ? "S" : "S"
+                                                                  .toDouble()
                                                               : "",
-                              style: TextStyle(
-                                fontSize: 40,
-                                fontWeight: FontWeight.bold,
+                              onChanged: (double value) {
+                                setState(() {
+                                  if (vccmvRR == true) {
+                                    setState(() {
+                                      vccmvRRValue = value.toInt();
+                                    });
+                                  } else if (vccmvIe == true) {
+                                    setState(() {
+                                      vccmvIeValue = value.toInt();
+                                    });
+                                  } else if (vccmvPeep == true) {
+                                    setState(() {
+                                      vccmvPeepValue = value.toInt();
+                                      // if (vccmvPcMinValue <= vccmvPeepValue) {
+                                      //   vccmvPcMinValue = value.toInt() + 1;
+                                      // if (vccmvPcMaxValue <= vccmvPcMinValue) {
+                                      //   vccmvPcMaxValue = value.toInt() + 1;
+                                      // }
+                                      // }
+                                    });
+                                  } else if (vccmvFio2 == true) {
+                                    setState(() {
+                                      vccmvFio2Value = value.toInt();
+                                    });
+                                  } else if (vccmvVt == true) {
+                                    setState(() {
+                                      vccmvVtValue = value.toInt();
+                                    });
+                                  } else if (vccmvPcMin == true) {
+                                    if (value.toInt() < 90) {
+                                      vccmvPcMinValue = value.toInt();
+                                      vccmvPcMaxValue = vccmvPcMinValue + 1;
+                                    }
+                                  } else if (vccmvPcMax == true) {
+                                    setState(() {
+                                      // if (value.toInt() <= vccmvPcMinValue + 1) {
+                                      //   vccmvPcMaxValue = vccmvPcMinValue + 1;
+                                      // } else {
+                                      vccmvPcMaxValue = value.toInt();
+                                      // }
+                                    });
+                                  } else if (vccmvFlowRamp == true) {
+                                    setState(() {
+                                      vccmvFlowRampValue = value.toInt();
+                                    });
+                                  }
+                                });
+                              },
+                            ),
+                          ),
+                          SizedBox(
+                            height: 1,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 45.0, right: 45.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(vccmvIe
+                                    ? getIeData(vccmvIeValue, 1)
+                                    : vccmvminValue.toString()),
+                                Text(
+                                  vccmvparameterUnits,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(vccmvIe
+                                    ? getIeData(vccmvmaxValue, 1)
+                                    : vccmvmaxValue.toString())
+                              ],
+                            ),
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _parameterChangeEnabled = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Card(
+                                      color: Colors.grey,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18.0,
+                                            bottom: 18,
+                                            left: 45,
+                                            right: 45),
+                                        child: Center(
+                                            child: Text("  OK  ",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                      )),
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
+                            ],
+                          )
+                        ],
                       ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      // vccmvFio2
-                      //     ? Container()
-                      //     :
-                      Container(
-                        width: 350,
-                        child: Slider(
-                          min: vccmvminValue.toDouble() ?? 0,
-                          max: vccmvmaxValue.toDouble() ?? 0,
-                          value: vccmvRR
-                              ? vccmvRRValue.toDouble()
-                              : vccmvIe
-                                  ? vccmvIeValue.toDouble()
-                                  : vccmvPeep
-                                      ? vccmvPeepValue.toDouble()
-                                      : vccmvPcMax
-                                          ? vccmvPcMaxValue.toDouble()
-                                          : vccmvFio2
-                                              ? vccmvFio2Value.toDouble()
-                                              : vccmvVt
-                                                  ? vccmvVtValue.toDouble()
-                                                  : vccmvPcMin
-                                                      ? vccmvPcMinValue
-                                                          .toDouble()
-                                                      : vccmvFlowRamp
-                                                          ? vccmvFlowRampValue
-                                                              .toDouble()
-                                                          : "",
-                          onChanged: (double value) {
-                            setState(() {
-                              if (vccmvRR == true) {
-                                setState(() {
-                                  vccmvRRValue = value.toInt();
-                                });
-                              } else if (vccmvIe == true) {
-                                setState(() {
-                                  vccmvIeValue = value.toInt();
-                                });
-                              } else if (vccmvPeep == true) {
-                                setState(() {
-                                  vccmvPeepValue = value.toInt();
-                                  // if (vccmvPcMinValue <= vccmvPeepValue) {
-                                  //   vccmvPcMinValue = value.toInt() + 1;
-                                  // if (vccmvPcMaxValue <= vccmvPcMinValue) {
-                                  //   vccmvPcMaxValue = value.toInt() + 1;
-                                  // }
-                                  // }
-                                });
-                              } else if (vccmvFio2 == true) {
-                                setState(() {
-                                  vccmvFio2Value = value.toInt();
-                                });
-                              } else if (vccmvVt == true) {
-                                setState(() {
-                                  vccmvVtValue = value.toInt();
-                                });
-                              } else if (vccmvPcMin == true) {
-                                if (value.toInt() < 90) {
-                                  vccmvPcMinValue = value.toInt();
-                                  vccmvPcMaxValue = vccmvPcMinValue + 1;
-                                }
-                              } else if (vccmvPcMax == true) {
-                                setState(() {
-                                  // if (value.toInt() <= vccmvPcMinValue + 1) {
-                                  //   vccmvPcMaxValue = vccmvPcMinValue + 1;
-                                  // } else {
-                                  vccmvPcMaxValue = value.toInt();
-                                  // }
-                                });
-                              } else if (vccmvFlowRamp == true) {
-                                setState(() {
-                                  vccmvFlowRampValue = value.toInt();
-                                });
-                              }
-                            });
-                          },
-                        ),
-                      ),
-                      SizedBox(
-                        height: 1,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45.0, right: 45.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(vccmvIe
-                                ? getIeData(vccmvIeValue, 1)
-                                : vccmvminValue.toString()),
-                            Text(
-                              vccmvparameterUnits,
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            Text(vccmvIe
-                                ? getIeData(vccmvmaxValue, 1)
-                                : vccmvmaxValue.toString())
-                          ],
-                        ),
-                      )
-                    ],
-                  ),
-                )),
+                    ))
+                : Container(),
           ],
         ),
       ],
@@ -23524,7 +24259,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vsimvmaxValue = 30;
                   vsimvminValue = 1;
                   vsimvparameterName = "RR";
@@ -23540,6 +24277,7 @@ class _CheckPageState extends State<Dashboard> {
                   vsimvFlowRamp = false;
                   vsimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -23639,7 +24377,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vsimvmaxValue = 61;
                   vsimvminValue = 1;
                   vsimvparameterName = "I:E";
@@ -23655,6 +24395,7 @@ class _CheckPageState extends State<Dashboard> {
                   vsimvFlowRamp = false;
                   vsimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -23755,7 +24496,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vsimvmaxValue = _isTab10 ? 45 : 30;
                   vsimvminValue = 0;
                   vsimvparameterName = "PEEP";
@@ -23771,6 +24514,7 @@ class _CheckPageState extends State<Dashboard> {
                   vsimvFlowRamp = false;
                   vsimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -23878,7 +24622,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vsimvmaxValue = _isTab10 ? 2500 : 600;
                   vsimvminValue = _isTab10 ? 50 : 200;
                   vsimvparameterName = "Vt";
@@ -23894,6 +24640,7 @@ class _CheckPageState extends State<Dashboard> {
                   vsimvFlowRamp = false;
                   vsimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -23993,7 +24740,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vsimvmaxValue = 100;
                   vsimvminValue = 21;
                   vsimvparameterName = "FiO\u2082";
@@ -24009,6 +24758,7 @@ class _CheckPageState extends State<Dashboard> {
                   vsimvFlowRamp = false;
                   vsimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -24108,7 +24858,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vsimvmaxValue = 10;
                   vsimvminValue = 1;
                   vsimvparameterName = "I Trig";
@@ -24124,6 +24876,7 @@ class _CheckPageState extends State<Dashboard> {
                   vsimvFlowRamp = false;
                   vsimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -24346,7 +25099,9 @@ class _CheckPageState extends State<Dashboard> {
             // ),
             InkWell(
               onTap: () {
-                setState(() {
+               if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vsimvmaxValue = 100;
                   vsimvminValue = 0;
                   vsimvparameterName = "PC Max";
@@ -24362,6 +25117,7 @@ class _CheckPageState extends State<Dashboard> {
                   vsimvFlowRamp = false;
                   vsimvPs = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -24462,7 +25218,9 @@ class _CheckPageState extends State<Dashboard> {
 
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vsimvmaxValue = 65;
                   vsimvminValue = 0;
                   vsimvparameterName = "PS";
@@ -24478,6 +25236,7 @@ class _CheckPageState extends State<Dashboard> {
                   vsimvFio2 = false;
                   vsimvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -24870,12 +25629,13 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-            Container(
+             _parameterChangeEnabled == false
+                ? Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Color(0xFFE0E0E0)),
                 width: 400,
-                height: 195,
+                height: 246,
                 child: Center(
                   child: Column(
                     children: [
@@ -25226,10 +25986,41 @@ class _CheckPageState extends State<Dashboard> {
                                 : vsimvmaxValue.toString())
                           ],
                         ),
-                      )
+                      ),
+                      Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _parameterChangeEnabled = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Card(
+                                      color: Colors.grey,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18.0,
+                                            bottom: 18,
+                                            left: 45,
+                                            right: 45),
+                                        child: Center(
+                                            child: Text("  OK  ",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                      )),
+                                ),
+                              ),
+                            ],
+                          )
                     ],
                   ),
-                )),
+                )):Container(),
           ],
         ),
       ],
@@ -25247,7 +26038,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vacvmaxValue = 60;
                   vacvminValue = 1;
                   vacvparameterName = "RR";
@@ -25262,6 +26055,7 @@ class _CheckPageState extends State<Dashboard> {
                   vacvFio2 = false;
                   vacvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -25360,7 +26154,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vacvmaxValue = 61;
                   vacvminValue = 1;
                   vacvparameterName = "I:E";
@@ -25375,6 +26171,7 @@ class _CheckPageState extends State<Dashboard> {
                   vacvFio2 = false;
                   vacvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -25474,7 +26271,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vacvmaxValue = _isTab10 ? 45 : 30;
                   vacvminValue = 0;
                   vacvparameterName = "PEEP";
@@ -25489,6 +26288,7 @@ class _CheckPageState extends State<Dashboard> {
                   vacvFio2 = false;
                   vacvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -25596,7 +26396,9 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vacvmaxValue = _isTab10 ? 2500 : 600;
                   vacvminValue = _isTab10 ? 50 : 200;
                   vacvparameterName = "Vt";
@@ -25611,6 +26413,7 @@ class _CheckPageState extends State<Dashboard> {
                   vacvFio2 = false;
                   vacvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -25712,7 +26515,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vacvmaxValue = 100;
                   vacvminValue = 21;
                   vacvparameterName = "FiO\u2082";
@@ -25727,6 +26532,7 @@ class _CheckPageState extends State<Dashboard> {
                   vacvFio2 = true;
                   vacvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -25826,7 +26632,9 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vacvmaxValue = 10;
                   vacvminValue = 1;
                   vacvparameterName = "I Trig";
@@ -25841,6 +26649,7 @@ class _CheckPageState extends State<Dashboard> {
                   vacvFio2 = false;
                   vacvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -26060,7 +26869,9 @@ class _CheckPageState extends State<Dashboard> {
             // ),
             InkWell(
               onTap: () {
-                setState(() {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
                   vacvmaxValue = 100;
                   vacvminValue = 0;
                   vacvparameterName = "PC Max";
@@ -26075,6 +26886,7 @@ class _CheckPageState extends State<Dashboard> {
                   vacvFio2 = false;
                   vacvFlowRamp = false;
                 });
+              }
               },
               child: Center(
                 child: Container(
@@ -26310,17 +27122,20 @@ class _CheckPageState extends State<Dashboard> {
                       children: [
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              assistmodeVolumeOn = !assistmodeVolumeOn;
+                            if (_modeChangeEnabled == true) {
+                              setState(() {
+                                _modeChangeEnabled = false;
+                                assistmodeVolumeOn = !assistmodeVolumeOn;
 
-                              if (assistmodeVolumeOn == true) {
-                                vacvEnabled = true;
-                                vccmvEnabled = false;
-                              } else {
-                                vccmvEnabled = true;
-                                vacvEnabled = false;
-                              }
-                            });
+                                if (assistmodeVolumeOn == true) {
+                                  vacvEnabled = true;
+                                  vccmvEnabled = false;
+                                } else {
+                                  vccmvEnabled = true;
+                                  vacvEnabled = false;
+                                }
+                              });
+                            }
                           },
                           child: Card(
                               color: assistmodeVolumeOn == false
@@ -26340,17 +27155,20 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                         InkWell(
                           onTap: () {
-                            setState(() {
-                              assistmodeVolumeOn = !assistmodeVolumeOn;
+                            if (_modeChangeEnabled == true) {
+                              setState(() {
+                                _modeChangeEnabled = false;
+                                assistmodeVolumeOn = !assistmodeVolumeOn;
 
-                              if (assistmodeVolumeOn == true) {
-                                vacvEnabled = true;
-                                vccmvEnabled = false;
-                              } else {
-                                vccmvEnabled = true;
-                                vacvEnabled = false;
-                              }
-                            });
+                                if (assistmodeVolumeOn == true) {
+                                  vacvEnabled = true;
+                                  vccmvEnabled = false;
+                                } else {
+                                  vccmvEnabled = true;
+                                  vacvEnabled = false;
+                                }
+                              });
+                            }
                           },
                           child: Card(
                               color: assistmodeVolumeOn == true
@@ -26466,16 +27284,19 @@ class _CheckPageState extends State<Dashboard> {
                             children: [
                               InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    assistmodeVolumeOn = !assistmodeVolumeOn;
-                                    if (assistmodeVolumeOn == true) {
-                                      vacvEnabled = true;
-                                      vccmvEnabled = false;
-                                    } else {
-                                      vccmvEnabled = true;
-                                      vacvEnabled = false;
-                                    }
-                                  });
+                                  if (_modeChangeEnabled == true) {
+                                    setState(() {
+                                      _modeChangeEnabled = false;
+                                      assistmodeVolumeOn = !assistmodeVolumeOn;
+                                      if (assistmodeVolumeOn == true) {
+                                        vacvEnabled = true;
+                                        vccmvEnabled = false;
+                                      } else {
+                                        vccmvEnabled = true;
+                                        vacvEnabled = false;
+                                      }
+                                    });
+                                  }
                                 },
                                 child: Card(
                                     color: assistmodeVolumeOn
@@ -26496,16 +27317,19 @@ class _CheckPageState extends State<Dashboard> {
                               SizedBox(height: 10),
                               InkWell(
                                 onTap: () {
-                                  setState(() {
-                                    assistmodeVolumeOn = !assistmodeVolumeOn;
-                                    if (assistmodeVolumeOn == true) {
-                                      vacvEnabled = true;
-                                      vccmvEnabled = false;
-                                    } else {
-                                      vccmvEnabled = true;
-                                      vacvEnabled = false;
-                                    }
-                                  });
+                                  if (_modeChangeEnabled == true) {
+                                    setState(() {
+                                      _modeChangeEnabled = false;
+                                      assistmodeVolumeOn = !assistmodeVolumeOn;
+                                      if (assistmodeVolumeOn == true) {
+                                        vacvEnabled = true;
+                                        vccmvEnabled = false;
+                                      } else {
+                                        vccmvEnabled = true;
+                                        vacvEnabled = false;
+                                      }
+                                    });
+                                  }
                                 },
                                 child: Card(
                                     color: assistmodeVolumeOn
@@ -26625,12 +27449,13 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-            Container(
+              _parameterChangeEnabled == false
+                ? Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Color(0xFFE0E0E0)),
                 width: 400,
-                height: 195,
+                height: 246,
                 child: Center(
                   child: Column(
                     children: [
@@ -26975,10 +27800,41 @@ class _CheckPageState extends State<Dashboard> {
                                     : vacvmaxValue.toString())
                           ],
                         ),
-                      )
+                      ),
+                      Row(
+                            mainAxisAlignment: MainAxisAlignment.end,
+                            crossAxisAlignment: CrossAxisAlignment.end,
+                            children: <Widget>[
+                              InkWell(
+                                onTap: () {
+                                  setState(() {
+                                    _parameterChangeEnabled = true;
+                                  });
+                                },
+                                child: Padding(
+                                  padding: const EdgeInsets.only(right: 8.0),
+                                  child: Card(
+                                      color: Colors.grey,
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(
+                                            top: 18.0,
+                                            bottom: 18,
+                                            left: 45,
+                                            right: 45),
+                                        child: Center(
+                                            child: Text("  OK  ",
+                                                style: TextStyle(
+                                                    color: Colors.black,
+                                                    fontWeight:
+                                                        FontWeight.bold))),
+                                      )),
+                                ),
+                              ),
+                            ],
+                          )
                     ],
                   ),
-                )),
+                )):Container(),
           ],
         ),
       ],
@@ -28437,12 +29293,12 @@ class _CheckPageState extends State<Dashboard> {
         modeWriteList[42] = (0);
         preferences.setInt('psvPcValue', temp);
 
-        if (receivedps > temp) {
-          modeWriteList[16] = ((temp & 0xFF00) >> 8);
-          modeWriteList[17] = (temp & 0xFF);
-          modeWriteList[42] = (4);
-          preferences.setInt('psvPsValue', temp);
-        }
+        // if (receivedps > temp) {
+        //   modeWriteList[16] = ((temp & 0xFF00) >> 8);
+        //   modeWriteList[17] = (temp & 0xFF);
+        //   modeWriteList[42] = (4);
+        //   preferences.setInt('psvPsValue', temp);
+        // }
         getData();
         // // // print(modeWriteList.toString());
         sendDataUsbConnection(modeWriteList, 1);
@@ -30777,6 +31633,7 @@ class _CheckPageState extends State<Dashboard> {
         psvBackupRr = false;
         // psvMe = false;
         psvPc = false;
+        pControl = true;
 
         psvItrigValue = 3;
         psvPeepValue = 10;
@@ -30791,9 +31648,10 @@ class _CheckPageState extends State<Dashboard> {
         psvBackupRrValue = 20;
         // psvMeValue = 1;
         psvPcValue = 25;
+        psvVtValue = 300;
 
-        psvmaxValue = 60;
-        psvminValue = 5;
+        psvmaxValue = 65;
+        psvminValue = 0;
         psvdefaultValue = 25;
         psvparameterName = "PS";
         psvparameterUnits = "cmH\u2082O  Below PEEP";
@@ -32753,7 +33611,7 @@ class _CheckPageState extends State<Dashboard> {
     } else {
       // print(finalList);
       if (_isLoopGraph == true) {
-        checkCrc(finalList, finalList.length, 2);
+        // checkCrc(finalList, finalList.length, 2);
       }
     }
   }
@@ -33133,21 +33991,21 @@ class _CheckPageState extends State<Dashboard> {
           _stopMusic();
         }
 
-        // var selfRun = finalList[92];
+        var selfRun = finalList[92];
 
-        // if (selfRun == 1) {
-        //   //  preferences.setBool("_isFlagTest", true);
-        //   preferences.setBool("calli", false);
-        //   //  _isFlagTest = true;
-        //   // textText = "";
-        //   selftestRun(1);
-        //   preferences.setBool('first', false);
-        // } else if (selfRun == 2) {
-        //   setState(() {
-        //     selftestRun(1);
-        //     selfTestingEnabled = true;
-        //   });
-        // }
+        if (selfRun == 1) {
+          //  preferences.setBool("_isFlagTest", true);
+          preferences.setBool("calli", false);
+          //  _isFlagTest = true;
+          // textText = "";
+          selftestRun(1);
+          preferences.setBool('first', false);
+        } else if (selfRun == 2) {
+          setState(() {
+            selftestRun(1);
+            selfTestingEnabled = true;
+          });
+        }
 
         if (vteValue != null &&
             vteValue != 0 &&
@@ -33242,7 +34100,8 @@ class _CheckPageState extends State<Dashboard> {
                   : ((finalList[106] << 8) + finalList[107]) == 29
                       ? alarmMessage = "Replace FiO\u2082 Sensor"
                       : ((finalList[106] << 8) + finalList[107]) == 7
-                          ? alarmMessage = "FiO\u2082 SENSOR MISSING"
+                          ? alarmMessage =
+                              "FiO\u2082 Sensor Missing Blending Not Possible"
                           : ((finalList[106] << 8) + finalList[107]) == 28
                               ? alarmMessage =
                                   "Set volume can't be reached. due to low PC Max"
@@ -33299,6 +34158,9 @@ class _CheckPageState extends State<Dashboard> {
         communication = ((list[29] & 0x3) >> 0);
         compressor = ((list[29] & 0xC) >> 2);
         blender = ((list[29] & 0x30) >> 4);
+
+        safetyvalue1 = (finalList[63] & 0x3);
+        safetyvalue2 = ((finalList[63] & 0xC) >> 2);
         checkOfffset = ((list[29] & 0xC0) >> 6);
       });
       setState(() {
@@ -33316,6 +34178,9 @@ class _CheckPageState extends State<Dashboard> {
         });
       } else if (checkO2CalibrationValue == 3) {
         setState(() {
+          var now = new DateTime.now();
+          var o2Time = DateFormat("dd/MM/yyyy").format(now);
+          preferences.setString("o2time", o2Time.toString());
           textText = "0\u2082 Calibration Completed.";
         });
       } else if (checkO2CalibrationValue == 4) {
@@ -33329,7 +34194,7 @@ class _CheckPageState extends State<Dashboard> {
       }
 
       var dataOperatingMode = ((finalList[104] << 8) + finalList[105]);
-      if (dataOperatingMode >= 0 && dataOperatingMode <= 21) {
+      if (dataOperatingMode >= 1 && dataOperatingMode <= 21) {
         setState(() {
           operatinModeR = ((finalList[104] << 8) + finalList[105]);
         });
@@ -33347,7 +34212,7 @@ class _CheckPageState extends State<Dashboard> {
         });
       } else if (operatinModeR == 3) {
         setState(() {
-          modeName = "PSV/CPAP";
+          modeName = "PSV";
           selfTestingButtonEnabled = false;
         });
       } else if (operatinModeR == 4) {
@@ -33385,12 +34250,12 @@ class _CheckPageState extends State<Dashboard> {
           modeName = "AUTO";
           selfTestingButtonEnabled = false;
         });
-      } else if (operatinModeR == 30) {
+      } else if (operatinModeR == 0) {
         setState(() {
           ioreDisplayParamter = "";
           amsDisplayParamter = "";
         });
-      }
+      }else{}
 
       if ((((finalList[68] << 8) + finalList[69]) / 100).round().toInt() >= 0 &&
           (((finalList[68] << 8) + finalList[69]) / 100).round().toInt() <=

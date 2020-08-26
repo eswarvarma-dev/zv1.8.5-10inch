@@ -166,7 +166,7 @@ class _CommonDialogState extends State<CommonDialog> {
         commomValue = preferences.getInt("ps").toDouble();
         checkValue = preferences.getInt("ps").toDouble();
         _pcCheckValue = preferences.getInt("pc").toDouble();
-        min = 0;
+        min = 5;
         max = _pcCheckValue;
         prefix = false;
         suffix = false;
@@ -190,6 +190,17 @@ class _CommonDialogState extends State<CommonDialog> {
         _pcCheckValue = preferences.getInt("pc").toDouble();
         min = 0;
         max = _pcCheckValue;
+        prefix = false;
+        suffix = false;
+        units = true;
+      });
+    }else if (widget.value.toString() == "PPSV") {
+      setState(() {
+        commomValue = preferences.getInt("ps").toDouble();
+        checkValue = preferences.getInt("ps").toDouble();
+        _pcCheckValue = preferences.getInt("pc").toDouble();
+        min = 0;
+        max = 65;
         prefix = false;
         suffix = false;
         units = true;
@@ -466,6 +477,8 @@ class _CommonDialogState extends State<CommonDialog> {
                                 : widget.value.toString() =="PITRI"
                                 ? "I Trig"
                                 : widget.value.toString() == "PSV"
+                                    ? "PS"
+                                    : widget.value.toString() == "PPSV"
                                     ? "PS"
                                     : widget.value.toString() == "PCV"
                                         ? "PC"
@@ -854,7 +867,12 @@ class _CommonDialogState extends State<CommonDialog> {
         preferences.setInt("ps", value.ceil());
       });
       Navigator.pop(context, value.ceil().toString() + "ab" + "ps");
-    } else if (widget.value.toString() == "FiO2") {
+    } else if (widget.value.toString() == "PPSV") {
+      setState(() {
+        preferences.setInt("ps", value.ceil());
+      });
+      Navigator.pop(context, value.ceil().toString() + "ab" + "ps");
+    }else if (widget.value.toString() == "FiO2") {
       setState(() {
         preferences.setInt("fio2", value.ceil());
       });
