@@ -21,7 +21,7 @@ class _DowngradeAppScreenState extends State<DowngradeAppScreen> {
   getLatestUrl() async {
     // make GET request
     String url =
-        'http://swasit-services.zynamedtech.com/ventilator-apk-manager/getAllAPKS';
+        'http://swasit-services-plus.zynamedtech.com/ventilator-apk-manager-plus/getAllAPKS';
     Response response = await get(url);
     setState(() {
       data = jsonDecode(response.body);

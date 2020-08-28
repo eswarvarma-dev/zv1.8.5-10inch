@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:screen/screen.dart';
-import 'package:ventilator/activity/Dashboard.dart';
 import 'package:ventilator/database/DatabaseHelper.dart';
 import 'package:ventilator/database/VentilatorOMode.dart';
 import 'package:ventilator/viewlog/ViewLogPatientList.dart';
-
 import 'AlarmLog.dart';
 import 'PatientsDatainSlots.dart';
 
+// ignore: must_be_immutable
 class PatientsDataByDate extends StatefulWidget {
   String datetimeW,patientId,date;
   PatientsDataByDate(this.datetimeW,this.patientId, this.date);

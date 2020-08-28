@@ -1,9 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:fluttertoast/fluttertoast.dart';
-import 'package:intl/intl.dart';
-import 'package:percent_indicator/circular_percent_indicator.dart';
 import 'package:screen/screen.dart';
 import 'package:ventilator/database/DatabaseHelper.dart';
 import 'package:ventilator/database/VentilatorOMode.dart';
@@ -11,6 +8,7 @@ import 'package:ventilator/graphs/Oscilloscope.dart';
 import 'package:ventilator/graphs/OscilloscopeBig.dart';
 import 'package:ventilator/viewlog/ViewLogPatientList.dart';
 
+// ignore: must_be_immutable
 class ViewLogDataDisplayPage extends StatefulWidget {
   var patientID, fromDateC, toDateC;
   ViewLogDataDisplayPage(this.fromDateC, this.toDateC);
@@ -63,6 +61,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
       psValue = "0",
       pcValue = "0",
       itrigValue = "0",
+      pplateauDisplay = "0",
       atime = "0",
       tipsv = "0",
       vtValue = "0";
@@ -159,6 +158,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
       tipsv = vomL[currentValue].tipsvS;
       atime = vomL[currentValue].atimeS;
       fio2Value = vomL[currentValue].fio2S;
+      pplateauDisplay = vomL[currentValue].pplateauDisplay??"0";
       operatinModeR = vomL[currentValue]?.operatingMode ?? "0";
       patientName = vomL[currentValue]?.patientName ?? "";
       paw = vomL[currentValue]?.paw ?? "0";
@@ -195,16 +195,16 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
         setState(() {
           modeName = "VC-CMV";
         });
-      }else if(operatinModeR =="14"){
-         setState(() {
+      } else if (operatinModeR == "14") {
+        setState(() {
           modeName = "PRVC";
         });
-      }else if(operatinModeR =="20"){
-         setState(() {
+      } else if (operatinModeR == "20") {
+        setState(() {
           modeName = "CPAP";
         });
-      }else if(operatinModeR =="21"){
-         setState(() {
+      } else if (operatinModeR == "21") {
+        setState(() {
           modeName = "AUTO";
         });
       }
@@ -235,12 +235,13 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
         setState(() {
           if (alarmPriority == "0") {
             alarmMessage == "17"
-                ? alarmMessage="Patient Discconnected"
+                ? alarmMessage = "Patient Discconnected"
                 : alarmMessage == "24"
-                    ? alarmMessage = "Blender Malfunction. \nOxygen blending not possible."
-                    : alarmMessage == "25" ?
-                                alarmMessage= "Replace Oxygen Sensor"
-                    : "";
+                    ? alarmMessage =
+                        "Blender Malfunction. \nOxygen blending not possible."
+                    : alarmMessage == "25"
+                        ? alarmMessage = "Replace Oxygen Sensor"
+                        : "";
           } else if (alarmPriority == '1') {
             alarmMessage == '5'
                 ? alarmMessage = "SYSTEM FAULT"
@@ -250,7 +251,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                         ? alarmMessage = "HIGH LEAKAGE"
                         : alarmMessage == '11'
                             ? alarmMessage = "HIGH PRESSURE"
-                                : alarmMessage = "";
+                            : alarmMessage = "";
           } else if (alarmPriority == '2') {
             // print("alarm code "+((alarmMessage).toString());
             alarmMessage == '1'
@@ -297,11 +298,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                                                 "HIGH PEEP"
                                                                             : alarmMessage == '22'
                                                                                 ? alarmMessage = "LOW PEEP"
-                                                                                : alarmMessage == '25' ? alarmMessage = "Low Minute Volume" 
-                                                                          : alarmMessage == '26' ? alarmMessage = "High Minute Volume" 
-                                                                          : alarmMessage == '27' ? alarmMessage = "High Leak Volume"
-                                                                          : alarmMessage == '28' ? alarmMessage = "High Leak Volume"
-                                                                                : alarmMessage = "Set volume can't be reached. due to low PC Max";
+                                                                                : alarmMessage == '25' ? alarmMessage = "Low Minute Volume" : alarmMessage == '26' ? alarmMessage = "High Minute Volume" : alarmMessage == '27' ? alarmMessage = "High Leak Volume" : alarmMessage == '28' ? alarmMessage = "High Leak Volume" : alarmMessage = "Set volume can't be reached. due to low PC Max";
           } else if (alarmPriority == '3') {
             alarmMessage == '23'
                 ? alarmMessage = "Apnea backup"
@@ -318,7 +315,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
   @override
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
-   scopeOne = Oscilloscope(
+    scopeOne = Oscilloscope(
         showYAxis: true,
         yAxisColor: Colors.grey,
         padding: 10.0,
@@ -466,7 +463,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                         ? Align(
                             alignment: Alignment.topCenter,
                             child: Text(
-                              dateTime,
+                             changeFormatDateTime(dateTime),
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ))
@@ -506,13 +503,21 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
             : Center(child: CircularProgressIndicator()));
   }
 
+  changeFormatDateTime(datetime) {
+    if(datetime!=null){
+      return datetime.toString().split(" ")[0].toString().split("-")[2] + "-"+datetime.toString().split(" ")[0].toString().split("-")[1] +"-"+datetime.toString().split(" ")[0].toString().split("-")[0] +"  "+datetime.toString().split(" ")[01].toString();
+    }else{
+      return "";
+    }
+  }
+
   rightBar() {
     return Stack(
       children: [
         Container(
           padding: EdgeInsets.only(left: 0, top: 0),
           child: Container(
-            width: 160 ,
+            width: 160,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.start,
@@ -521,30 +526,34 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                   height: 4,
                 ),
                 InkWell(
-                  onTap: () {
-                    
-                  },
-                  child: _isTab10? Row(children: <Widget>[
-                Text(
-                "SWASIT",
-                style: TextStyle(
-                    color: Colors.orange,
-                    fontSize: 34,
-                    fontFamily: "appleFont"),
-              ),
-              Padding(
-                padding: const EdgeInsets.only(bottom:18.0,left:4),
-                child: Image.asset(
-                              "assets/images/plus.png",
-                              width: 18,
+                  onTap: () {},
+                  child: _isTab10
+                      ? Row(
+                          children: <Widget>[
+                            Text(
+                              "SWASIT",
+                              style: TextStyle(
+                                  color: Colors.orange,
+                                  fontSize: 34,
+                                  fontFamily: "appleFont"),
                             ),
-              ),
-              ],):Text( "SWASIT",
-                    style: TextStyle(
-                        color: Colors.orange,
-                        fontSize:  22,
-                        fontFamily: "appleFont"),
-                  ),
+                            Padding(
+                              padding:
+                                  const EdgeInsets.only(bottom: 18.0, left: 4),
+                              child: Image.asset(
+                                "assets/images/plus.png",
+                                width: 18,
+                              ),
+                            ),
+                          ],
+                        )
+                      : Text(
+                          "SWASIT",
+                          style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: 22,
+                              fontFamily: "appleFont"),
+                        ),
                 ),
                 SizedBox(
                   height: 5,
@@ -618,7 +627,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
     );
   }
 
- main() {
+  main() {
     return Stack(
       children: [
         topbar(),
@@ -636,14 +645,14 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                         mainAxisAlignment: MainAxisAlignment.start,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          SizedBox(width:5),
+                          SizedBox(width: 5),
                           // _isTab10 ? graphs10() : graphs(),
                           graphsScale(),
-                          SizedBox(width:5),
+                          SizedBox(width: 5),
                           Container(
                             margin: EdgeInsets.only(top: 40),
                             width: 1,
-                            height: 600 ,
+                            height: 600,
                             color: Colors.white,
                           ),
                           Align(
@@ -718,8 +727,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                     "P mean",
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize:
-                                                             20),
+                                                        fontSize: 20),
                                                   ),
                                                 ),
                                               ),
@@ -804,7 +812,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                     "MVe",
                                                     style: TextStyle(
                                                         color: Colors.white,
-                                                        fontSize: 20 ),
+                                                        fontSize: 20),
                                                   ),
                                                 ),
                                               ),
@@ -832,7 +840,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                       child: Container(
                                         color: Color(0xFF171e27),
                                         width: 170,
-                                        height:  115,
+                                        height: 115,
                                         child: Padding(
                                           padding: const EdgeInsets.only(
                                               top: 2, left: 4),
@@ -869,10 +877,11 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                   padding:
                                                       const EdgeInsets.only(
                                                           right: 8.0),
-                                                  child: Text("",
+                                                  child: Text(
+                                                    pplateauDisplay,
                                                     style: TextStyle(
                                                         color: Colors.pink,
-                                                        fontSize:40 ),
+                                                        fontSize: 40),
                                                   ),
                                                 ),
                                               ),
@@ -906,7 +915,6 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                         ),
                                       ),
                                     ),
-                                    
                                   ],
                                 ),
                                 SizedBox(
@@ -915,55 +923,52 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                 Stack(
                                   children: [
                                     Align(
-                                            alignment: Alignment.center,
-                                            child: Row(
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment.start,
-                                              crossAxisAlignment:
-                                                  CrossAxisAlignment.start,
-                                              children: [
-                                                Stack(
-                                                  children: [
-                                                    Image.asset(
+                                      alignment: Alignment.center,
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Stack(
+                                            children: [
+                                              Image.asset(
                                                   lungImage == "1"
-                                                            ? "assets/lungs/1.png"
+                                                      ? "assets/lungs/1.png"
                                                       : lungImage == "2"
-                                                                ? "assets/lungs/2.png"
+                                                          ? "assets/lungs/2.png"
                                                           : lungImage == "3"
-                                                                    ? "assets/lungs/3.png"
+                                                              ? "assets/lungs/3.png"
                                                               : lungImage == "4"
-                                                                        ? "assets/lungs/4.png"
-                                                                        : lungImage ==
+                                                                  ? "assets/lungs/4.png"
+                                                                  : lungImage ==
                                                                           "5"
-                                                                            ? "assets/lungs/5.png"
-                                                                            : "assets/lungs/1.png",
-                                                        width: 120),
-                                                  ],
-                                                ),
-                                                Container(
-                                                  height: 25,
-                                                  width: 25,
-                                                  decoration: new BoxDecoration(
-                                                    borderRadius:
-                                                        new BorderRadius
-                                                            .circular(25.0),
-                                                    border: new Border.all(
-                                                      width: 2.0,
-                                                      color: Colors.green,
-                                                    ),
-                                                  ),
-                                                  child: Center(
-                                                      child: Text(
-                                                          ioreDisplayParamter,
-                                                          style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 10))),
-                                                ),
-                                              ],
+                                                                      ? "assets/lungs/5.png"
+                                                                      : "assets/lungs/1.png",
+                                                  width: 120),
+                                            ],
+                                          ),
+                                          Container(
+                                            height: 25,
+                                            width: 25,
+                                            decoration: new BoxDecoration(
+                                              borderRadius:
+                                                  new BorderRadius.circular(
+                                                      25.0),
+                                              border: new Border.all(
+                                                width: 2.0,
+                                                color: Colors.green,
+                                              ),
                                             ),
-                                          )
-                                        
+                                            child: Center(
+                                                child: Text(ioreDisplayParamter,
+                                                    style: TextStyle(
+                                                        color: Colors.white,
+                                                        fontSize: 10))),
+                                          ),
+                                        ],
+                                      ),
+                                    )
                                   ],
                                 )
                               ],
@@ -972,15 +977,18 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                         ],
                       ),
                     ),
-                    Row(children: <Widget>[
-                      modeName == "PSV" || operatinModeR == "3" ||  
+                    Row(
+                      children: <Widget>[
+                        modeName == "PSV" ||
+                                operatinModeR == "3" ||
                                 modeName == "CPAP" ||
                                 operatinModeR == "20" ||
                                 operatinModeR == "21" ||
                                 modeName == "AUTO"
                             ? psvBottomBar()
                             : bottombar(),
-                    ],),
+                      ],
+                    ),
                   ],
                 ),
               ),
@@ -997,7 +1005,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
     );
   }
 
-    leftbar() {
+  leftbar() {
     return Stack(
       children: [
         Container(
@@ -1610,56 +1618,56 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
           children: [
             modeName == "CPAP" || operatinModeR == "20"
                 ? Container()
-                :InkWell(
-              onTap: () {},
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
-                  child: Card(
-                    elevation: 40,
-                    color: Color(0xFF213855),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "PS",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
+                : InkWell(
+                    onTap: () {},
+                    child: Center(
+                      child: Container(
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
+                        child: Card(
+                          elevation: 40,
+                          color: Color(0xFF213855),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "PS",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 17.0),
+                                    child: Text(
+                                      psValue.toString(),
+                                      style: TextStyle(
+                                          fontSize: 30, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 17.0),
-                              child: Text(
-                                psValue.toString(),
-                                style: TextStyle(
-                                    fontSize: 30, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
             InkWell(
               onTap: () {},
               child: Center(
@@ -1810,63 +1818,61 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                 ),
               ),
             ),
-           modeName == "CPAP" || operatinModeR == "20"
+            modeName == "CPAP" || operatinModeR == "20"
                 ? Container()
-                :  InkWell(
-              onTap: () {},
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
-                  child: Card(
-                    elevation: 40,
-                    color: Color(0xFF213855),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Backup I:E",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
+                : InkWell(
+                    onTap: () {},
+                    child: Center(
+                      child: Container(
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
+                        child: Card(
+                          elevation: 40,
+                          color: Color(0xFF213855),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Backup I:E",
+                                    style: TextStyle(
+                                        fontSize: 15,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 17.0),
+                                    child: Text(
+                                      ieValue.toString(),
+                                      style: TextStyle(
+                                          fontSize: 30, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 17.0),
-                              child: Text(
-                                ieValue.toString(),
-                                style: TextStyle(
-                                    fontSize: 30, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
-             modeName == "AUTO" || operatinModeR == 21
+            modeName == "AUTO" || operatinModeR == "21"
                 ? InkWell(
-                    onTap: () {
-                     
-                    },
+                    onTap: () {},
                     child: Center(
                       child: Container(
                         width: _isTab10 ? 155 : 120,
@@ -1920,115 +1926,111 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
             operatinModeR == "21" || modeName == "AUTO"
                 ? Container()
                 : InkWell(
-                        onTap: () {
-                          
-                        },
-                        child: Center(
-                          child: Container(
-                            width: _isTab10 ? 155 : 120,
-                            height: _isTab10 ? 145 : 110,
-                            child: Card(
-                              elevation: 40,
-                              color:
-                                  Color(0xFF213855),
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Center(
-                                    child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        "PC",
-                                        style: TextStyle(
-                                            fontSize: _isTab10 ? 20 : 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
+                    onTap: () {},
+                    child: Center(
+                      child: Container(
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
+                        child: Card(
+                          elevation: 40,
+                          color: Color(0xFF213855),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "PC",
+                                    style: TextStyle(
+                                        fontSize: _isTab10 ? 20 : 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "cmH\u2082O",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 17.0),
+                                    child: Text(
+                                      pcValue.toString(),
+                                      style: TextStyle(
+                                          fontSize: _isTab10 ? 30 : 30,
+                                          color: Colors.white),
                                     ),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Text(
-                                        "cmH\u2082O",
-                                        style: TextStyle(
-                                            fontSize: 12, color: Colors.white),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 17.0),
-                                        child: Text(
-                                          pcValue.toString(),
-                                          style: TextStyle(
-                                              fontSize: _isTab10 ? 30 : 30,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                              ),
-                            ),
+                                  ),
+                                ),
+                              ],
+                            )),
                           ),
                         ),
                       ),
-                    // InkWell(
-                    //     onTap: () {
-                          
-                    //     },
-                    //     child: Center(
-                    //       child: Container(
-                    //         width: _isTab10 ? 155 : 120,
-                    //         height: _isTab10 ? 145 : 110,
-                    //         child: Card(
-                    //           elevation: 40,
-                    //           color:
-                    //               Color(0xFF213855),
-                    //           child: Padding(
-                    //             padding: const EdgeInsets.all(12.0),
-                    //             child: Center(
-                    //                 child: Stack(
-                    //               children: [
-                    //                 Align(
-                    //                   alignment: Alignment.topLeft,
-                    //                   child: Text(
-                    //                     "VT",
-                    //                     style: TextStyle(
-                    //                         fontSize: _isTab10 ? 20 : 18,
-                    //                         fontWeight: FontWeight.bold,
-                    //                         color: Colors.white),
-                    //                   ),
-                    //                 ),
-                    //                 Align(
-                    //                   alignment: Alignment.topRight,
-                    //                   child: Text(
-                    //                     "mL",
-                    //                     style: TextStyle(
-                    //                         fontSize: 12, color: Colors.white),
-                    //                   ),
-                    //                 ),
-                    //                 Align(
-                    //                   alignment: Alignment.center,
-                    //                   child: Padding(
-                    //                     padding:
-                    //                         const EdgeInsets.only(top: 17.0),
-                    //                     child: Text(
-                    //                       vtValue.toString(),
-                    //                       style: TextStyle(
-                    //                           fontSize: _isTab10 ? 50 : 30,
-                    //                           color: Colors.white),
-                    //                     ),
-                    //                   ),
-                    //                 ),
-                    //               ],
-                    //             )),
-                    //           ),
-                    //         ),
-                    //       ),
-                    //     ),
-                    //   ),
+                    ),
+                  ),
+            // InkWell(
+            //     onTap: () {
+
+            //     },
+            //     child: Center(
+            //       child: Container(
+            //         width: _isTab10 ? 155 : 120,
+            //         height: _isTab10 ? 145 : 110,
+            //         child: Card(
+            //           elevation: 40,
+            //           color:
+            //               Color(0xFF213855),
+            //           child: Padding(
+            //             padding: const EdgeInsets.all(12.0),
+            //             child: Center(
+            //                 child: Stack(
+            //               children: [
+            //                 Align(
+            //                   alignment: Alignment.topLeft,
+            //                   child: Text(
+            //                     "VT",
+            //                     style: TextStyle(
+            //                         fontSize: _isTab10 ? 20 : 18,
+            //                         fontWeight: FontWeight.bold,
+            //                         color: Colors.white),
+            //                   ),
+            //                 ),
+            //                 Align(
+            //                   alignment: Alignment.topRight,
+            //                   child: Text(
+            //                     "mL",
+            //                     style: TextStyle(
+            //                         fontSize: 12, color: Colors.white),
+            //                   ),
+            //                 ),
+            //                 Align(
+            //                   alignment: Alignment.center,
+            //                   child: Padding(
+            //                     padding:
+            //                         const EdgeInsets.only(top: 17.0),
+            //                     child: Text(
+            //                       vtValue.toString(),
+            //                       style: TextStyle(
+            //                           fontSize: _isTab10 ? 50 : 30,
+            //                           color: Colors.white),
+            //                     ),
+            //                   ),
+            //                 ),
+            //               ],
+            //             )),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
             InkWell(
               onTap: () {},
               child: Center(
@@ -2131,56 +2133,57 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
             ),
             modeName == "CPAP" || operatinModeR == "20"
                 ? Container()
-                :  InkWell(
-              onTap: () {},
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
-                  child: Card(
-                    elevation: 40,
-                    color: Color(0xFF213855),
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Ti",
-                              style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
+                : InkWell(
+                    onTap: () {},
+                    child: Center(
+                      child: Container(
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
+                        child: Card(
+                          elevation: 40,
+                          color: Color(0xFF213855),
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Ti",
+                                    style: TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "s",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 17.0),
+                                    child: Text(
+                                      getTiValue(int.tryParse(tipsv))
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: 30, color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
                           ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "s",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 17.0),
-                              child: Text(
-                                getTiValue(int.tryParse(tipsv)).toString(),
-                                style: TextStyle(
-                                    fontSize: 30, color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
+                        ),
+                      ),
                     ),
                   ),
-                ),
-              ),
-            ),
           ],
         ),
       ),
@@ -2190,7 +2193,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
   bottombar() {
     return Container(
       color: Color(0xFF171e27),
-       width: _isTab10 ? 908 : 700,
+      width: _isTab10 ? 908 : 700,
       child: SingleChildScrollView(
         scrollDirection: Axis.horizontal,
         child: Row(
@@ -2352,8 +2355,8 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                     onTap: () {},
                     child: Center(
                       child: Container(
-                         width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
                         child: Card(
                           elevation: 40,
                           color: Color(0xFF213855),
@@ -2409,8 +2412,8 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                     onTap: () {},
                     child: Center(
                       child: Container(
-                         width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
                         child: Card(
                           elevation: 40,
                           color: Color(0xFF213855),
@@ -2615,8 +2618,8 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                     onTap: () {},
                     child: Center(
                       child: Container(
-                         width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
                         child: Card(
                           elevation: 40,
                           color: Color(0xFF213855),
@@ -2724,7 +2727,6 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
     return data;
   }
 
-
   topbar() {
     return Container(
       width: 904,
@@ -2766,7 +2768,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
     );
   }
 
-   graphsScale() {
+  graphsScale() {
     return Container(
       padding: EdgeInsets.only(left: 170, right: 0, top: 45),
       child: Column(
@@ -2970,7 +2972,6 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                       : Container(),
                 ),
               ),
-              
             ],
           ),
         ],

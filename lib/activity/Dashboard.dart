@@ -103,8 +103,6 @@ class _CheckPageState extends State<Dashboard> {
       exhalationflowR,
       o2Valve,
       airiPValveStatusR,
-      _2by2inhalationValueR,
-      _2by2exhalationValueR,
       internalTemperatureR;
   int rrValue,
       peepValue,
@@ -258,7 +256,7 @@ class _CheckPageState extends State<Dashboard> {
       psvPeepValue = 10,
       psvIeValue = 51,
       psvPsValue = 25,
-      psvTiValue = 11,
+      psvTiValue = 6,
       psvVtMinValue = 0,
       psvVtMaxValue = 2400,
       psvFio2Value = 21,
@@ -7430,6 +7428,443 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
+            
+            modeName == "AUTO" || operatinModeR == 21
+                ? InkWell(
+                    onLongPress: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("Vt")
+                            : "";
+                      }
+                    },
+                    onTap: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("Vt")
+                            : "";
+                      }
+                    },
+                    child: Center(
+                      child: Container(
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
+                        child: Card(
+                          elevation: 40,
+                          color: lockEnabled ? Color(0xFF213855) : Colors.grey,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "VT",
+                                    style: TextStyle(
+                                        fontSize: _isTab10 ? 20 : 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "mL",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 17.0),
+                                    child: Text(
+                                      receivedvt.toString(),
+                                      style: TextStyle(
+                                          fontSize: _isTab10 ? 50 : 30,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
+                : Container(),
+
+           InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled ? playOnEnabled ? "" : CommonClick("ITRI") : "";
+                }
+              },
+              onTap: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled ? playOnEnabled ? "" : CommonClick("ITRI") : "";
+                }
+              },
+              child: Center(
+                child: Container(
+                  width: _isTab10 ? 155 : 120,
+                  height: _isTab10 ? 145 : 110,
+                  child: Card(
+                    elevation: 40,
+                    color: lockEnabled ? Color(0xFF213855) : Colors.grey,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Center(
+                          child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "I Trig",
+                              style: TextStyle(
+                                  fontSize: _isTab10 ? 20 : 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              pItrig ? "cmH\u2082O" : "lpm",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.white),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 17.0),
+                              child: Text(
+                                "-" + receivedItrig.toString(),
+                                style: TextStyle(
+                                    fontSize: _isTab10 ? 50 : 30,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                    ),
+                  ),
+                ),
+              ),
+            ),
+              modeName == "CPAP" || operatinModeR == 20
+                ? Container()
+                : InkWell(
+                    onLongPress: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("Ti")
+                            : "";
+                      }
+                    },
+                    onTap: () {
+                      setState(() {
+                        _setValuesonClick = false;
+                      });
+                      if (modeWriteList.isNotEmpty) {
+                        lockEnabled
+                            ? playOnEnabled ? "" : CommonClick("Ti")
+                            : "";
+                      }
+                    },
+                    child: Center(
+                      child: Container(
+                        width: _isTab10 ? 155 : 120,
+                        height: _isTab10 ? 145 : 110,
+                        child: Card(
+                          elevation: 40,
+                          color: lockEnabled ? Color(0xFF213855) : Colors.grey,
+                          child: Padding(
+                            padding: const EdgeInsets.all(12.0),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Text(
+                                    "Ti",
+                                    style: TextStyle(
+                                        fontSize: _isTab10 ? 20 : 18,
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topRight,
+                                  child: Text(
+                                    "s",
+                                    style: TextStyle(
+                                        fontSize: 12, color: Colors.white),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(top: 17.0),
+                                    child: Text(
+                                      ((receivedti / 1000).toDouble())
+                                          .toString(),
+                                      style: TextStyle(
+                                          fontSize: _isTab10 ? 50 : 30,
+                                          color: Colors.white),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )),
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+            operatinModeR == 21 || modeName == "AUTO"
+                ? Container()
+                : pControl
+                    ? InkWell(
+                        onLongPress: () {
+                          if (psvPsValue != 0) {
+                          } else {
+                            setState(() {
+                              _setValuesonClick = false;
+                            });
+                            if (modeWriteList.isNotEmpty) {
+                              lockEnabled
+                                  ? playOnEnabled ? "" : CommonClick("PCV")
+                                  : "";
+                            }
+                          }
+                        },
+                        onTap: () {
+                          if (psvPsValue != 0) {
+                          } else {
+                            setState(() {
+                              _setValuesonClick = false;
+                            });
+                            if (modeWriteList.isNotEmpty) {
+                              lockEnabled
+                                  ? playOnEnabled ? "" : CommonClick("PCV")
+                                  : "";
+                            }
+                          }
+                        },
+                        child: Center(
+                          child: Container(
+                            width: _isTab10 ? 155 : 120,
+                            height: _isTab10 ? 145 : 110,
+                            child: Card(
+                              elevation: 40,
+                              color:
+                                  lockEnabled ? Color(0xFF213855) : Colors.grey,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Center(
+                                    child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        "PC",
+                                        style: TextStyle(
+                                            fontSize: _isTab10 ? 20 : 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(
+                                        "cmH\u2082O",
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.white),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 17.0),
+                                        child: Text(
+                                          receivedpc.toString(),
+                                          style: TextStyle(
+                                              fontSize: _isTab10 ? 50 : 30,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                              ),
+                            ),
+                          ),
+                        ),
+                      )
+                    : InkWell(
+                        onLongPress: () {
+                          setState(() {
+                            _setValuesonClick = false;
+                          });
+                          if (modeWriteList.isNotEmpty) {
+                            lockEnabled
+                                ? playOnEnabled ? "" : CommonClick("Vt")
+                                : "";
+                          }
+                        },
+                        onTap: () {
+                          setState(() {
+                            _setValuesonClick = false;
+                          });
+                          if (modeWriteList.isNotEmpty) {
+                            lockEnabled
+                                ? playOnEnabled ? "" : CommonClick("Vt")
+                                : "";
+                          }
+                        },
+                        child: Center(
+                          child: Container(
+                            width: _isTab10 ? 155 : 120,
+                            height: _isTab10 ? 145 : 110,
+                            child: Card(
+                              elevation: 40,
+                              color:
+                                  lockEnabled ? Color(0xFF213855) : Colors.grey,
+                              child: Padding(
+                                padding: const EdgeInsets.all(12.0),
+                                child: Center(
+                                    child: Stack(
+                                  children: [
+                                    Align(
+                                      alignment: Alignment.topLeft,
+                                      child: Text(
+                                        "VT",
+                                        style: TextStyle(
+                                            fontSize: _isTab10 ? 20 : 18,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.topRight,
+                                      child: Text(
+                                        "mL",
+                                        style: TextStyle(
+                                            fontSize: 12, color: Colors.white),
+                                      ),
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: Padding(
+                                        padding:
+                                            const EdgeInsets.only(top: 17.0),
+                                        child: Text(
+                                          receivedvt.toString(),
+                                          style: TextStyle(
+                                              fontSize: _isTab10 ? 50 : 30,
+                                              color: Colors.white),
+                                        ),
+                                      ),
+                                    ),
+                                  ],
+                                )),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+            
+            InkWell(
+              onLongPress: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled
+                      ? playOnEnabled ? "" : CommonClick("Apnea Time")
+                      : "";
+                }
+              },
+              onTap: () {
+                setState(() {
+                  _setValuesonClick = false;
+                });
+                if (modeWriteList.isNotEmpty) {
+                  lockEnabled
+                      ? playOnEnabled ? "" : CommonClick("Apnea Time")
+                      : "";
+                }
+              },
+              child: Center(
+                child: Container(
+                  width: _isTab10 ? 155 : 120,
+                  height: _isTab10 ? 145 : 110,
+                  child: Card(
+                    elevation: 40,
+                    color: lockEnabled ? Color(0xFF213855) : Colors.grey,
+                    child: Padding(
+                      padding: const EdgeInsets.all(12.0),
+                      child: Center(
+                          child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Apnea Time",
+                              style: TextStyle(
+                                  fontSize: _isTab10 ? 20 : 12,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              "s",
+                              style:
+                                  TextStyle(fontSize: 12, color: Colors.white),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 17.0),
+                              child: Text(
+                                ((receivedapneaTime / 1000).toInt()).toString(),
+                                style: TextStyle(
+                                    fontSize: _isTab10 ? 50 : 30,
+                                    color: Colors.white),
+                              ),
+                            ),
+                          ),
+                        ],
+                      )),
+                    ),
+                  ),
+                ),
+              ),
+            ),
             InkWell(
               onLongPress: () {
                 setState(() {
@@ -7578,434 +8013,7 @@ class _CheckPageState extends State<Dashboard> {
                       ),
                     ),
                   ),
-            modeName == "AUTO" || operatinModeR == 21
-                ? InkWell(
-                    onLongPress: () {
-                      setState(() {
-                        _setValuesonClick = false;
-                      });
-                      if (modeWriteList.isNotEmpty) {
-                        lockEnabled
-                            ? playOnEnabled ? "" : CommonClick("Vt")
-                            : "";
-                      }
-                    },
-                    onTap: () {
-                      setState(() {
-                        _setValuesonClick = false;
-                      });
-                      if (modeWriteList.isNotEmpty) {
-                        lockEnabled
-                            ? playOnEnabled ? "" : CommonClick("Vt")
-                            : "";
-                      }
-                    },
-                    child: Center(
-                      child: Container(
-                        width: _isTab10 ? 155 : 120,
-                        height: _isTab10 ? 145 : 110,
-                        child: Card(
-                          elevation: 40,
-                          color: lockEnabled ? Color(0xFF213855) : Colors.grey,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Center(
-                                child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    "VT",
-                                    style: TextStyle(
-                                        fontSize: _isTab10 ? 20 : 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    "mL",
-                                    style: TextStyle(
-                                        fontSize: 12, color: Colors.white),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 17.0),
-                                    child: Text(
-                                      receivedvt.toString(),
-                                      style: TextStyle(
-                                          fontSize: _isTab10 ? 50 : 30,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                          ),
-                        ),
-                      ),
-                    ),
-                  )
-                : Container(),
-            operatinModeR == 21 || modeName == "AUTO"
-                ? Container()
-                : pControl
-                    ? InkWell(
-                        onLongPress: () {
-                          setState(() {
-                            _setValuesonClick = false;
-                          });
-                          if (modeWriteList.isNotEmpty) {
-                            lockEnabled
-                                ? playOnEnabled ? "" : CommonClick("PCV")
-                                : "";
-                          }
-                        },
-                        onTap: () {
-                          setState(() {
-                            _setValuesonClick = false;
-                          });
-                          if (modeWriteList.isNotEmpty) {
-                            lockEnabled
-                                ? playOnEnabled ? "" : CommonClick("PCV")
-                                : "";
-                          }
-                        },
-                        child: Center(
-                          child: Container(
-                            width: _isTab10 ? 155 : 120,
-                            height: _isTab10 ? 145 : 110,
-                            child: Card(
-                              elevation: 40,
-                              color:
-                                  lockEnabled ? Color(0xFF213855) : Colors.grey,
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Center(
-                                    child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        "PC",
-                                        style: TextStyle(
-                                            fontSize: _isTab10 ? 20 : 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Text(
-                                        "cmH\u2082O",
-                                        style: TextStyle(
-                                            fontSize: 12, color: Colors.white),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 17.0),
-                                        child: Text(
-                                          receivedpc.toString(),
-                                          style: TextStyle(
-                                              fontSize: _isTab10 ? 50 : 30,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                              ),
-                            ),
-                          ),
-                        ),
-                      )
-                    : InkWell(
-                        onLongPress: () {
-                          setState(() {
-                            _setValuesonClick = false;
-                          });
-                          if (modeWriteList.isNotEmpty) {
-                            lockEnabled
-                                ? playOnEnabled ? "" : CommonClick("Vt")
-                                : "";
-                          }
-                        },
-                        onTap: () {
-                          setState(() {
-                            _setValuesonClick = false;
-                          });
-                          if (modeWriteList.isNotEmpty) {
-                            lockEnabled
-                                ? playOnEnabled ? "" : CommonClick("Vt")
-                                : "";
-                          }
-                        },
-                        child: Center(
-                          child: Container(
-                            width: _isTab10 ? 155 : 120,
-                            height: _isTab10 ? 145 : 110,
-                            child: Card(
-                              elevation: 40,
-                              color:
-                                  lockEnabled ? Color(0xFF213855) : Colors.grey,
-                              child: Padding(
-                                padding: const EdgeInsets.all(12.0),
-                                child: Center(
-                                    child: Stack(
-                                  children: [
-                                    Align(
-                                      alignment: Alignment.topLeft,
-                                      child: Text(
-                                        "VT",
-                                        style: TextStyle(
-                                            fontSize: _isTab10 ? 20 : 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.topRight,
-                                      child: Text(
-                                        "mL",
-                                        style: TextStyle(
-                                            fontSize: 12, color: Colors.white),
-                                      ),
-                                    ),
-                                    Align(
-                                      alignment: Alignment.center,
-                                      child: Padding(
-                                        padding:
-                                            const EdgeInsets.only(top: 17.0),
-                                        child: Text(
-                                          receivedvt.toString(),
-                                          style: TextStyle(
-                                              fontSize: _isTab10 ? 50 : 30,
-                                              color: Colors.white),
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                )),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-            InkWell(
-              onLongPress: () {
-                setState(() {
-                  _setValuesonClick = false;
-                });
-                if (modeWriteList.isNotEmpty) {
-                  lockEnabled ? playOnEnabled ? "" : CommonClick("ITRI") : "";
-                }
-              },
-              onTap: () {
-                setState(() {
-                  _setValuesonClick = false;
-                });
-                if (modeWriteList.isNotEmpty) {
-                  lockEnabled ? playOnEnabled ? "" : CommonClick("ITRI") : "";
-                }
-              },
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
-                  child: Card(
-                    elevation: 40,
-                    color: lockEnabled ? Color(0xFF213855) : Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "I Trig",
-                              style: TextStyle(
-                                  fontSize: _isTab10 ? 20 : 18,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              pItrig ? "cmH\u2082O" : "lpm",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 17.0),
-                              child: Text(
-                                "-" + receivedItrig.toString(),
-                                style: TextStyle(
-                                    fontSize: _isTab10 ? 50 : 30,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onLongPress: () {
-                setState(() {
-                  _setValuesonClick = false;
-                });
-                if (modeWriteList.isNotEmpty) {
-                  lockEnabled
-                      ? playOnEnabled ? "" : CommonClick("Apnea Time")
-                      : "";
-                }
-              },
-              onTap: () {
-                setState(() {
-                  _setValuesonClick = false;
-                });
-                if (modeWriteList.isNotEmpty) {
-                  lockEnabled
-                      ? playOnEnabled ? "" : CommonClick("Apnea Time")
-                      : "";
-                }
-              },
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 155 : 120,
-                  height: _isTab10 ? 145 : 110,
-                  child: Card(
-                    elevation: 40,
-                    color: lockEnabled ? Color(0xFF213855) : Colors.grey,
-                    child: Padding(
-                      padding: const EdgeInsets.all(12.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Apnea Time",
-                              style: TextStyle(
-                                  fontSize: _isTab10 ? 20 : 12,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "s",
-                              style:
-                                  TextStyle(fontSize: 12, color: Colors.white),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 17.0),
-                              child: Text(
-                                ((receivedapneaTime / 1000).toInt()).toString(),
-                                style: TextStyle(
-                                    fontSize: _isTab10 ? 50 : 30,
-                                    color: Colors.white),
-                              ),
-                            ),
-                          ),
-                        ],
-                      )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            modeName == "CPAP" || operatinModeR == 20
-                ? Container()
-                : InkWell(
-                    onLongPress: () {
-                      setState(() {
-                        _setValuesonClick = false;
-                      });
-                      if (modeWriteList.isNotEmpty) {
-                        lockEnabled
-                            ? playOnEnabled ? "" : CommonClick("Ti")
-                            : "";
-                      }
-                    },
-                    onTap: () {
-                      setState(() {
-                        _setValuesonClick = false;
-                      });
-                      if (modeWriteList.isNotEmpty) {
-                        lockEnabled
-                            ? playOnEnabled ? "" : CommonClick("Ti")
-                            : "";
-                      }
-                    },
-                    child: Center(
-                      child: Container(
-                        width: _isTab10 ? 155 : 120,
-                        height: _isTab10 ? 145 : 110,
-                        child: Card(
-                          elevation: 40,
-                          color: lockEnabled ? Color(0xFF213855) : Colors.grey,
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Center(
-                                child: Stack(
-                              children: [
-                                Align(
-                                  alignment: Alignment.topLeft,
-                                  child: Text(
-                                    "Ti",
-                                    style: TextStyle(
-                                        fontSize: _isTab10 ? 20 : 18,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.white),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.topRight,
-                                  child: Text(
-                                    "s",
-                                    style: TextStyle(
-                                        fontSize: 12, color: Colors.white),
-                                  ),
-                                ),
-                                Align(
-                                  alignment: Alignment.center,
-                                  child: Padding(
-                                    padding: const EdgeInsets.only(top: 17.0),
-                                    child: Text(
-                                      ((receivedti / 1000).toDouble())
-                                          .toString(),
-                                      style: TextStyle(
-                                          fontSize: _isTab10 ? 50 : 30,
-                                          color: Colors.white),
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            )),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
+          
             operatinModeR == 21 || modeName == "AUTO"
                 ? InkWell(
                     onLongPress: () {
@@ -13908,28 +13916,28 @@ class _CheckPageState extends State<Dashboard> {
               InkWell(
                 onTap: () {
                   if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                    psvmaxValue = 65;
-                    psvminValue = 0;
-                    psvparameterName = "PS";
-                    psvparameterUnits = "cmH\u2082O above PEEP";
-                    psvItrig = false;
-                    psvPeep = false;
-                    psvIe = false;
-                    psvPs = true;
-                    psvTi = false;
-                    psvVtMin = false;
-                    psvVtMax = false;
-                    psvFio2 = false;
-                    psvAtime = false;
-                    psvEtrig = false;
-                    psvPc = false;
-                    psvBackupRr = false;
-                    psvMinTe = false;
-                    psvVt = false;
-                  });
-                }
+                    setState(() {
+                      _parameterChangeEnabled = false;
+                      psvmaxValue = 65;
+                      psvminValue = 0;
+                      psvparameterName = "PS";
+                      psvparameterUnits = "cmH\u2082O above PEEP";
+                      psvItrig = false;
+                      psvPeep = false;
+                      psvIe = false;
+                      psvPs = true;
+                      psvTi = false;
+                      psvVtMin = false;
+                      psvVtMax = false;
+                      psvFio2 = false;
+                      psvAtime = false;
+                      psvEtrig = false;
+                      psvPc = false;
+                      psvBackupRr = false;
+                      psvMinTe = false;
+                      psvVt = false;
+                    });
+                  }
                 },
                 child: Center(
                   child: Container(
@@ -14026,32 +14034,31 @@ class _CheckPageState extends State<Dashboard> {
                   ),
                 ),
               ),
-              pControl == false
-                  ? InkWell(
+            pControl==false ?   InkWell(
                       onTap: () {
                         if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                          psvmaxValue = _isTab10 ? 2500 : 600;
-                          psvminValue = _isTab10 ? 50 : 200;
-                          psvparameterName = "VT";
-                          psvparameterUnits = "mL";
-                          psvItrig = false;
-                          psvPeep = false;
-                          psvIe = false;
-                          psvPs = false;
-                          psvTi = false;
-                          psvVtMin = false;
-                          psvVtMax = false;
-                          psvFio2 = false;
-                          psvAtime = false;
-                          psvBackupRr = false;
-                          psvEtrig = false;
-                          psvPc = false;
-                          psvVt = true;
-                          psvMinTe = false;
-                        });
-                      }
+                          setState(() {
+                            _parameterChangeEnabled = false;
+                            psvmaxValue = _isTab10 ? 2500 : 600;
+                            psvminValue = _isTab10 ? 50 : 200;
+                            psvparameterName = "VT";
+                            psvparameterUnits = "mL";
+                            psvItrig = false;
+                            psvPeep = false;
+                            psvIe = false;
+                            psvPs = false;
+                            psvTi = false;
+                            psvVtMin = false;
+                            psvVtMax = false;
+                            psvFio2 = false;
+                            psvAtime = false;
+                            psvBackupRr = false;
+                            psvEtrig = false;
+                            psvPc = false;
+                            psvVt = true;
+                            psvMinTe = false;
+                          });
+                        }
                       },
                       child: Center(
                         child: Container(
@@ -14155,29 +14162,30 @@ class _CheckPageState extends State<Dashboard> {
                     )
                   : InkWell(
                       onTap: () {
-                        if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                          psvmaxValue = _isTab10 ? 85 : 60;
-                          psvminValue = 5;
-                          psvparameterName = "PC";
-                          psvparameterUnits = "cmH\u2082O above PEEP";
-                          psvItrig = false;
-                          psvPeep = false;
-                          psvIe = false;
-                          psvPs = false;
-                          psvTi = false;
-                          psvVtMin = false;
-                          psvVtMax = false;
-                          psvFio2 = false;
-                          psvAtime = false;
-                          psvBackupRr = false;
-                          psvEtrig = false;
-                          psvPc = true;
-                          psvVt = false;
-                          psvMinTe = false;
-                        });
-                      }
+                        if (_parameterChangeEnabled == true &&
+                            psvPsValue == 0) {
+                          setState(() {
+                            _parameterChangeEnabled = false;
+                            psvmaxValue = _isTab10 ? 85 : 60;
+                            psvminValue = 0;
+                            psvparameterName = "PC";
+                            psvparameterUnits = "cmH\u2082O above PEEP";
+                            psvItrig = false;
+                            psvPeep = false;
+                            psvIe = false;
+                            psvPs = false;
+                            psvTi = false;
+                            psvVtMin = false;
+                            psvVtMax = false;
+                            psvFio2 = false;
+                            psvAtime = false;
+                            psvBackupRr = false;
+                            psvEtrig = false;
+                            psvPc = true;
+                            psvVt = false;
+                            psvMinTe = false;
+                          });
+                        }
                       },
                       child: Center(
                         child: Container(
@@ -14185,8 +14193,11 @@ class _CheckPageState extends State<Dashboard> {
                           height: _isTab10 ? 160 : 130,
                           child: Card(
                             elevation: 40,
-                            color:
-                                psvPc ? Color(0xFFE0E0E0) : Color(0xFF213855),
+                            color: psvPc
+                                ? Color(0xFFE0E0E0)
+                                : psvPsValue == 0
+                                    ? Color(0xFF213855)
+                                    : Colors.grey,
                             child: Padding(
                               padding: const EdgeInsets.all(6.0),
                               child: Center(
@@ -14229,7 +14240,7 @@ class _CheckPageState extends State<Dashboard> {
                                   Align(
                                     alignment: Alignment.bottomLeft,
                                     child: Text(
-                                      "5",
+                                      "0",
                                       style: TextStyle(
                                           fontSize: 12,
                                           color: psvPc
@@ -14282,28 +14293,28 @@ class _CheckPageState extends State<Dashboard> {
               InkWell(
                 onTap: () {
                   if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                    psvmaxValue = _isTab10 ? 45 : 30;
-                    psvminValue = 0;
-                    psvparameterName = "PEEP";
-                    psvparameterUnits = "";
-                    psvItrig = false;
-                    psvPeep = true;
-                    psvIe = false;
-                    psvPs = false;
-                    psvTi = false;
-                    psvVtMin = false;
-                    psvVtMax = false;
-                    psvFio2 = false;
-                    psvAtime = false;
-                    psvEtrig = false;
-                    psvPc = false;
-                    psvVt = false;
-                    psvBackupRr = false;
-                    psvMinTe = false;
-                  });
-                }
+                    setState(() {
+                      _parameterChangeEnabled = false;
+                      psvmaxValue = _isTab10 ? 45 : 30;
+                      psvminValue = 0;
+                      psvparameterName = "PEEP";
+                      psvparameterUnits = "";
+                      psvItrig = false;
+                      psvPeep = true;
+                      psvIe = false;
+                      psvPs = false;
+                      psvTi = false;
+                      psvVtMin = false;
+                      psvVtMax = false;
+                      psvFio2 = false;
+                      psvAtime = false;
+                      psvEtrig = false;
+                      psvPc = false;
+                      psvVt = false;
+                      psvBackupRr = false;
+                      psvMinTe = false;
+                    });
+                  }
                 },
                 child: Center(
                   child: Container(
@@ -14418,26 +14429,26 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  psvmaxValue = 55;
-                  psvminValue = 5;
-                  psvparameterName = "A Time";
-                  psvparameterUnits = "s";
-                  psvItrig = false;
-                  psvPeep = false;
-                  psvIe = false;
-                  psvPs = false;
-                  psvTi = false;
-                  psvVtMin = false;
-                  psvVtMax = false;
-                  psvFio2 = false;
-                  psvAtime = true;
-                  psvEtrig = false;
-                  psvPc = false;
-                  psvVt = false;
-                  psvBackupRr = false;
-                  psvMinTe = false;
-                });
-              }
+                    psvmaxValue = 55;
+                    psvminValue = 5;
+                    psvparameterName = "A Time";
+                    psvparameterUnits = "s";
+                    psvItrig = false;
+                    psvPeep = false;
+                    psvIe = false;
+                    psvPs = false;
+                    psvTi = false;
+                    psvVtMin = false;
+                    psvVtMax = false;
+                    psvFio2 = false;
+                    psvAtime = true;
+                    psvEtrig = false;
+                    psvPc = false;
+                    psvVt = false;
+                    psvBackupRr = false;
+                    psvMinTe = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -14537,29 +14548,29 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-               if (_parameterChangeEnabled == true) {
+                if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  psvmaxValue = 100;
-                  psvminValue = 21;
-                  psvparameterName = "FiO\u2082";
-                  psvparameterUnits = "%";
-                  psvItrig = false;
-                  psvPeep = false;
-                  psvIe = false;
-                  psvPs = false;
-                  psvTi = false;
-                  psvVtMin = false;
-                  psvVtMax = false;
-                  psvFio2 = true;
-                  psvAtime = false;
-                  psvEtrig = false;
-                  psvPc = false;
-                  psvVt = false;
-                  psvBackupRr = false;
-                  psvMinTe = false;
-                });
-              }
+                    psvmaxValue = 100;
+                    psvminValue = 21;
+                    psvparameterName = "FiO\u2082";
+                    psvparameterUnits = "%";
+                    psvItrig = false;
+                    psvPeep = false;
+                    psvIe = false;
+                    psvPs = false;
+                    psvTi = false;
+                    psvVtMin = false;
+                    psvVtMax = false;
+                    psvFio2 = true;
+                    psvAtime = false;
+                    psvEtrig = false;
+                    psvPc = false;
+                    psvVt = false;
+                    psvBackupRr = false;
+                    psvMinTe = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -14662,26 +14673,26 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  psvmaxValue = 10;
-                  psvminValue = 1;
-                  psvparameterName = "I Trig";
-                  psvparameterUnits = "cmH\u2082O Below PEEP";
-                  psvItrig = true;
-                  psvPeep = false;
-                  psvIe = false;
-                  psvPs = false;
-                  psvTi = false;
-                  psvVtMin = false;
-                  psvVtMax = false;
-                  psvFio2 = false;
-                  psvAtime = false;
-                  psvEtrig = false;
-                  psvPc = false;
-                  psvVt = false;
-                  psvBackupRr = false;
-                  psvMinTe = false;
-                });
-              }
+                    psvmaxValue = 10;
+                    psvminValue = 1;
+                    psvparameterName = "I Trig";
+                    psvparameterUnits = "cmH\u2082O Below PEEP";
+                    psvItrig = true;
+                    psvPeep = false;
+                    psvIe = false;
+                    psvPs = false;
+                    psvTi = false;
+                    psvVtMin = false;
+                    psvVtMax = false;
+                    psvFio2 = false;
+                    psvAtime = false;
+                    psvEtrig = false;
+                    psvPc = false;
+                    psvVt = false;
+                    psvBackupRr = false;
+                    psvMinTe = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -15143,28 +15154,28 @@ class _CheckPageState extends State<Dashboard> {
               InkWell(
                 onTap: () {
                   if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                    psvmaxValue = 60;
-                    psvminValue = 1;
-                    psvparameterName = "Backup RR";
-                    psvparameterUnits = "bpm";
-                    psvItrig = false;
-                    psvPeep = false;
-                    psvIe = false;
-                    psvPs = false;
-                    psvTi = false;
-                    psvVtMin = false;
-                    psvVtMax = false;
-                    psvFio2 = false;
-                    psvAtime = false;
-                    psvEtrig = false;
-                    psvPc = false;
-                    psvVt = false;
-                    psvBackupRr = true;
-                    psvMinTe = false;
-                  });
-                }
+                    setState(() {
+                      _parameterChangeEnabled = false;
+                      psvmaxValue = 60;
+                      psvminValue = 1;
+                      psvparameterName = "Backup RR";
+                      psvparameterUnits = "bpm";
+                      psvItrig = false;
+                      psvPeep = false;
+                      psvIe = false;
+                      psvPs = false;
+                      psvTi = false;
+                      psvVtMin = false;
+                      psvVtMax = false;
+                      psvFio2 = false;
+                      psvAtime = false;
+                      psvEtrig = false;
+                      psvPc = false;
+                      psvVt = false;
+                      psvBackupRr = true;
+                      psvMinTe = false;
+                    });
+                  }
                 },
                 child: Center(
                   child: Container(
@@ -15266,28 +15277,28 @@ class _CheckPageState extends State<Dashboard> {
               InkWell(
                 onTap: () {
                   if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                    psvmaxValue = 61;
-                    psvminValue = 1;
-                    psvparameterName = "Backup I:E";
-                    psvparameterUnits = "";
-                    psvItrig = false;
-                    psvPeep = false;
-                    psvIe = false;
-                    psvPs = false;
-                    psvTi = false;
-                    psvVtMin = false;
-                    psvVtMax = false;
-                    psvFio2 = false;
-                    psvAtime = false;
-                    psvIe = true;
-                    psvPc = false;
-                    psvVt = false;
-                    psvBackupRr = false;
-                    psvMinTe = false;
-                  });
-                }
+                    setState(() {
+                      _parameterChangeEnabled = false;
+                      psvmaxValue = 61;
+                      psvminValue = 1;
+                      psvparameterName = "Backup I:E";
+                      psvparameterUnits = "";
+                      psvItrig = false;
+                      psvPeep = false;
+                      psvIe = false;
+                      psvPs = false;
+                      psvTi = false;
+                      psvVtMin = false;
+                      psvVtMax = false;
+                      psvFio2 = false;
+                      psvAtime = false;
+                      psvIe = true;
+                      psvPc = false;
+                      psvVt = false;
+                      psvBackupRr = false;
+                      psvMinTe = false;
+                    });
+                  }
                 },
                 child: Center(
                   child: Container(
@@ -15388,28 +15399,28 @@ class _CheckPageState extends State<Dashboard> {
               InkWell(
                 onTap: () {
                   if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                    psvmaxValue = 46;
-                    psvminValue = 1;
-                    psvparameterName = "Ti";
-                    psvparameterUnits = "s";
-                    psvItrig = false;
-                    psvPeep = false;
-                    psvIe = false;
-                    psvPs = false;
-                    psvTi = true;
-                    psvVtMin = false;
-                    psvVtMax = false;
-                    psvFio2 = false;
-                    psvAtime = false;
-                    psvEtrig = false;
-                    psvPc = false;
-                    psvVt = false;
-                    psvBackupRr = false;
-                    psvMinTe = false;
-                  });
-                }
+                    setState(() {
+                      _parameterChangeEnabled = false;
+                      psvmaxValue = 46;
+                      psvminValue = 1;
+                      psvparameterName = "Ti";
+                      psvparameterUnits = "s";
+                      psvItrig = false;
+                      psvPeep = false;
+                      psvIe = false;
+                      psvPs = false;
+                      psvTi = true;
+                      psvVtMin = false;
+                      psvVtMax = false;
+                      psvFio2 = false;
+                      psvAtime = false;
+                      psvEtrig = false;
+                      psvPc = false;
+                      psvVt = false;
+                      psvBackupRr = false;
+                      psvMinTe = false;
+                    });
+                  }
                 },
                 child: Center(
                   child: Container(
@@ -15584,76 +15595,78 @@ class _CheckPageState extends State<Dashboard> {
                             ],
                           ))
                       : Container(),
-                  Container(
-                      decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10),
-                          color: Colors.white),
-                      height: 140,
-                      width: 245,
-                      child: Column(
-                        children: <Widget>[
-                          SizedBox(height: 20),
-                          Center(
-                              child: Text("Backup Apnea Type",
-                                  style: TextStyle(
-                                      color: Colors.black, fontSize: 16))),
-                          SizedBox(height: 20),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            children: [
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    pControl = !pControl;
-                                    psvVtValue = 300;
-                                    psvPcValue = psvPsValue;
-                                  });
-                                },
-                                child: Card(
-                                    color: pControl
-                                        ? Colors.green
-                                        : Color(0xFFE0E0E0),
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(22.0),
-                                      child: Text(
-                                        "Pressure",
-                                        style: TextStyle(
-                                          color: pControl
-                                              ? Color(0xFFE0E0E0)
-                                              : Color(0xFF213855),
-                                        ),
-                                      ),
-                                    )),
-                              ),
-                              InkWell(
-                                onTap: () {
-                                  setState(() {
-                                    pControl = !pControl;
-                                    psvVtValue = 300;
-                                    psvPcValue = psvPsValue;
-                                  });
-                                },
-                                child: Card(
-                                    color: pControl
-                                        ? Color(0xFFE0E0E0)
-                                        : Colors.green,
-                                    child: Padding(
-                                      padding: const EdgeInsets.all(22.0),
-                                      child: Text(
-                                        "Volume",
-                                        style: TextStyle(
-                                          color: pControl
-                                              ? Color(0xFF213855)
-                                              : Color(0xFFE0E0E0),
-                                        ),
-                                      ),
-                                    )),
-                              ),
+                  psvPsValue != 0 && pControl == true
+                      ? Container()
+                      : Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white),
+                          height: 140,
+                          width: 245,
+                          child: Column(
+                            children: <Widget>[
+                              SizedBox(height: 20),
+                              Center(
+                                  child: Text("Backup Apnea Type",
+                                      style: TextStyle(
+                                          color: Colors.black, fontSize: 16))),
+                              SizedBox(height: 20),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pControl = !pControl;
+                                        psvVtValue = 300;
+                                        psvPcValue = psvPsValue;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pControl
+                                            ? Colors.green
+                                            : Color(0xFFE0E0E0),
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "Pressure",
+                                            style: TextStyle(
+                                              color: pControl
+                                                  ? Color(0xFFE0E0E0)
+                                                  : Color(0xFF213855),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                  InkWell(
+                                    onTap: () {
+                                      setState(() {
+                                        pControl = !pControl;
+                                        psvVtValue = 300;
+                                        psvPcValue = psvPsValue;
+                                      });
+                                    },
+                                    child: Card(
+                                        color: pControl
+                                            ? Color(0xFFE0E0E0)
+                                            : Colors.green,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(22.0),
+                                          child: Text(
+                                            "Volume",
+                                            style: TextStyle(
+                                              color: pControl
+                                                  ? Color(0xFF213855)
+                                                  : Color(0xFFE0E0E0),
+                                            ),
+                                          ),
+                                        )),
+                                  ),
+                                ],
+                              )
                             ],
-                          )
-                        ],
-                      )),
+                          )),
                 ],
               )
             : Container(),
@@ -15754,483 +15767,467 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-              _parameterChangeEnabled == false
+            _parameterChangeEnabled == false
                 ? Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xFFE0E0E0)),
-                width: 400,
-                height: 246,
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (psvItrig == true &&
-                                    psvItrigValue != psvminValue) {
-                                  setState(() {
-                                    psvItrigValue = psvItrigValue - 1;
-                                  });
-                                }
-                                // else if (psvPeep == true &&
-                                //     psvPeepValue != psvminValue) {
-                                //   setState(() {
-                                //     psvPeepValue = psvPeepValue - 1;
-                                //     if (psvItrigValue > 1 &&
-                                //         psvItrigValue > psvPeepValue) {
-                                //       psvItrigValue = psvPeepValue;
-                                //     }
-                                //   });
-                                // }
-                                else if (psvPeep == true &&
-                                    psvPeepValue != psvminValue) {
-                                  setState(() {
-                                    psvPeepValue = psvPeepValue - 1;
-                                  });
-                                } else if (psvPs == true &&
-                                        // psvPsValue != psvPcValue + 1 &&
-                                        psvPsValue != 0
-                                    // &&
-                                    // pControl == true
-                                    ) {
-                                  setState(() {
-                                    psvPsValue = psvPsValue - 1;
-                                  });
-                                } else if (psvPs == true && psvPsValue != 5
-                                    // &&
-                                    // pControl == false
-                                    ) {
-                                  setState(() {
-                                    psvPsValue = psvPsValue - 1;
-                                  });
-                                } else if (psvIe == true &&
-                                    psvIeValue != psvminValue) {
-                                  setState(() {
-                                    psvIeValue = psvIeValue - 1;
-                                  });
-                                } else if (psvTi == true &&
-                                    psvTiValue != psvminValue) {
-                                  setState(() {
-                                    psvTiValue = psvTiValue - 1;
-                                  });
-                                } else if (psvVtMin == true &&
-                                    psvVtMinValue != psvminValue) {
-                                  setState(() {
-                                    psvVtMinValue = psvVtMinValue - 1;
-                                    //  if (psvVtMinValue >= psvVtMaxValue) {
-                                    //    psvVtMaxValue = psvVtMaxValue - 1;
-                                    //  }
-                                  });
-                                } else if (psvVtMax == true &&
-                                    psvVtMaxValue != psvVtMinValue + 1) {
-                                  psvVtMaxValue = psvVtMaxValue - 1;
-                                } else if (psvFio2 == true &&
-                                    psvFio2Value != psvminValue) {
-                                  setState(() {
-                                    psvFio2Value = psvFio2Value - 1;
-                                  });
-                                } else if (psvVt == true &&
-                                    psvVtValue != psvminValue) {
-                                  setState(() {
-                                    psvVtValue = psvVtValue - 1;
-                                  });
-                                } else if (psvPc == true &&
-                                    // psvPcValue != psvminValue &&
-                                    psvPcValue != 5) {
-                                  setState(() {
-                                    psvPcValue = psvPcValue - 1;
-                                    // if (psvPcValue < psvPsValue) {
-                                    //   psvPsValue = psvPcValue;
-                                    // }
-                                  });
-                                } else if (psvAtime == true &&
-                                    psvAtimeValue != psvminValue) {
-                                  setState(() {
-                                    psvAtimeValue = psvAtimeValue - 1;
-                                  });
-                                } else if (psvEtrig == true &&
-                                    psvEtrigValue != psvminValue) {
-                                  setState(() {
-                                    psvEtrigValue = psvEtrigValue - 1;
-                                  });
-                                } else if (psvBackupRr == true &&
-                                    psvBackupRrValue != psvminValue) {
-                                  setState(() {
-                                    psvBackupRrValue = psvBackupRrValue - 1;
-                                  });
-                                } else if (psvMinTe == true &&
-                                    psvMinTeValue != psvminValue) {
-                                  setState(() {
-                                    psvMinTeValue = psvMinTeValue - 1;
-                                  });
-                                }
-                              });
-                            },
-                          ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFFE0E0E0)),
+                    width: 400,
+                    height: 246,
+                    child: Center(
+                      child: Column(
+                        children: [
                           SizedBox(
-                            width: 40,
+                            height: 5,
                           ),
-                          Text(
-                            psvparameterName,
-                            style: TextStyle(
-                                fontSize: 25, fontWeight: FontWeight.normal),
-                          ),
-                          SizedBox(
-                            width: 40,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              int maxPeep = _isTab10 ? 45 : 30;
-                              int maxValue = _isTab10 ? 85 : 65;
-                              int maxValuepcValue, maxValuepeepValue;
-                              setState(() {
-                                maxValuepcValue = maxValue - psvPeepValue;
-                                if ((maxValue - psvPcValue) >= maxPeep) {
-                                  maxValuepeepValue = maxPeep;
-                                } else {
-                                  maxValuepeepValue = maxValue - psvPcValue;
-                                }
-                                if (psvItrig == true &&
-                                    psvItrigValue != psvmaxValue) {
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    psvItrigValue = psvItrigValue + 1;
-                                  });
-                                } else if (psvPeep == true &&
-                                    psvPeepValue != psvmaxValue &&
-                                    psvPeepValue < maxValuepeepValue) {
-                                  setState(() {
-                                    psvPeepValue = psvPeepValue + 1;
-                                  });
-                                }
-                                // else if (psvPs == true &&
-                                //     // psvPsValue != psvPcValue &&
-                                //     // pControl == true &&
-                                //     psvPcValue < maxValuepcValue) {
-                                //   setState(() {
-                                //     psvPsValue = psvPsValue + 1;
-                                //   });
-                                // }
-                                else if (psvPs == true &&
-                                        psvPsValue != psvmaxValue
-                                    // &&
-                                    // pControl == false
-                                    ) {
-                                  setState(() {
-                                    psvPsValue = psvPsValue + 1;
-                                  });
-                                } else if (psvIe == true &&
-                                    psvIeValue != psvmaxValue) {
-                                  setState(() {
-                                    psvIeValue = psvIeValue + 1;
-                                  });
-                                } else if (psvVt == true &&
-                                    psvVtValue != psvmaxValue) {
-                                  setState(() {
-                                    psvVtValue = psvVtValue + 1;
-                                  });
-                                } else if (psvTi == true &&
-                                    psvTiValue != psvmaxValue) {
-                                  setState(() {
-                                    psvTiValue = psvTiValue + 1;
-                                  });
-                                } else if (psvVtMin == true &&
-                                    psvVtMinValue != pacvmaxValue) {
-                                  setState(() {
-                                    if (psvVtMaxValue != 1190 &&
-                                        psvVtMinValue != 1189) {
-                                      psvVtMinValue = psvVtMinValue + 1;
-                                      psvVtMaxValue = psvVtMinValue + 1;
+                                    if (psvItrig == true &&
+                                        psvItrigValue != psvminValue) {
+                                      setState(() {
+                                        psvItrigValue = psvItrigValue - 1;
+                                      });
+                                    } else if (psvPeep == true &&
+                                        psvPeepValue != psvminValue) {
+                                      setState(() {
+                                        psvPeepValue = psvPeepValue - 1;
+                                      });
+                                    } else if (psvPs == true &&
+                                        psvPsValue >= 0 &&
+                                        psvPsValue != psvminValue) {
+                                      setState(() {
+                                        psvPsValue = psvPsValue - 1;
+                                        // if (psvPsValue != 0) {
+                                        // if (psvPsValue <= 5) {
+                                        //   psvPcValue = 5;
+                                        // } else {
+                                        psvPcValue = psvPsValue;
+                                        // }
+                                        // }
+                                      });
+                                    } else if (psvIe == true &&
+                                        psvIeValue != psvminValue) {
+                                      setState(() {
+                                        psvIeValue = psvIeValue - 1;
+                                      });
+                                    } else if (psvTi == true &&
+                                        psvTiValue != psvminValue) {
+                                      setState(() {
+                                        psvTiValue = psvTiValue - 1;
+                                      });
+                                    } else if (psvVtMin == true &&
+                                        psvVtMinValue != psvminValue) {
+                                      setState(() {
+                                        psvVtMinValue = psvVtMinValue - 1;
+                                        //  if (psvVtMinValue >= psvVtMaxValue) {
+                                        //    psvVtMaxValue = psvVtMaxValue - 1;
+                                        //  }
+                                      });
+                                    } else if (psvVtMax == true &&
+                                        psvVtMaxValue != psvVtMinValue + 1) {
+                                      psvVtMaxValue = psvVtMaxValue - 1;
+                                    } else if (psvFio2 == true &&
+                                        psvFio2Value != psvminValue) {
+                                      setState(() {
+                                        psvFio2Value = psvFio2Value - 1;
+                                      });
+                                    } else if (psvVt == true &&
+                                        psvVtValue != psvminValue) {
+                                      setState(() {
+                                        psvVtValue = psvVtValue - 1;
+                                      });
+                                    } else if (psvPc == true &&
+                                        psvPcValue != psvminValue) {
+                                      setState(() {
+                                        psvPcValue = psvPcValue - 1;
+                                      });
+                                    } else if (psvAtime == true &&
+                                        psvAtimeValue != psvminValue) {
+                                      setState(() {
+                                        psvAtimeValue = psvAtimeValue - 1;
+                                      });
+                                    } else if (psvEtrig == true &&
+                                        psvEtrigValue != psvminValue) {
+                                      setState(() {
+                                        psvEtrigValue = psvEtrigValue - 1;
+                                      });
+                                    } else if (psvBackupRr == true &&
+                                        psvBackupRrValue != psvminValue) {
+                                      setState(() {
+                                        psvBackupRrValue = psvBackupRrValue - 1;
+                                      });
+                                    } else if (psvMinTe == true &&
+                                        psvMinTeValue != psvminValue) {
+                                      setState(() {
+                                        psvMinTeValue = psvMinTeValue - 1;
+                                      });
                                     }
                                   });
-                                } else if (psvVtMax == true &&
-                                    psvVtMaxValue != pacvmaxValue) {
+                                },
+                              ),
+                              SizedBox(
+                                width: 40,
+                              ),
+                              Text(
+                                psvparameterName,
+                                style: TextStyle(
+                                    fontSize: 25,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              SizedBox(
+                                width: 40,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
+                                  int maxPeep = _isTab10 ? 45 : 30;
+                                  int maxValue = _isTab10 ? 85 : 65;
+                                  int maxValuepcValue, maxValuepeepValue;
                                   setState(() {
-                                    psvVtMaxValue = psvVtMaxValue + 1;
+                                    maxValuepcValue = maxValue - psvPeepValue;
+                                    if ((maxValue - psvPcValue) >= maxPeep) {
+                                      maxValuepeepValue = maxPeep;
+                                    } else {
+                                      maxValuepeepValue = maxValue - psvPcValue;
+                                    }
+                                    if (psvItrig == true &&
+                                        psvItrigValue != psvmaxValue) {
+                                      setState(() {
+                                        psvItrigValue = psvItrigValue + 1;
+                                      });
+                                    } else if (psvPeep == true &&
+                                        psvPeepValue != psvmaxValue &&
+                                        psvPeepValue < maxValuepeepValue) {
+                                      setState(() {
+                                        psvPeepValue = psvPeepValue + 1;
+                                      });
+                                    } else if (psvPs == true &&
+                                        psvPsValue >= 0 &&
+                                        psvPsValue != psvmaxValue) {
+                                      setState(() {
+                                        psvPsValue = psvPsValue + 1;
+                                        // if (psvPsValue != 0) {
+                                        // if (psvPsValue <= 5) {
+                                        //   psvPcValue = 5;
+                                        // } else {
+                                        psvPcValue = psvPsValue;
+                                        // }
+                                        // }
+                                      });
+                                    } else if (psvIe == true &&
+                                        psvIeValue != psvmaxValue) {
+                                      setState(() {
+                                        psvIeValue = psvIeValue + 1;
+                                      });
+                                    } else if (psvVt == true &&
+                                        psvVtValue != psvmaxValue) {
+                                      setState(() {
+                                        psvVtValue = psvVtValue + 1;
+                                      });
+                                    } else if (psvTi == true &&
+                                        psvTiValue != psvmaxValue) {
+                                      setState(() {
+                                        psvTiValue = psvTiValue + 1;
+                                      });
+                                    } else if (psvVtMin == true &&
+                                        psvVtMinValue != pacvmaxValue) {
+                                      setState(() {
+                                        if (psvVtMaxValue != 1190 &&
+                                            psvVtMinValue != 1189) {
+                                          psvVtMinValue = psvVtMinValue + 1;
+                                          psvVtMaxValue = psvVtMinValue + 1;
+                                        }
+                                      });
+                                    } else if (psvVtMax == true &&
+                                        psvVtMaxValue != pacvmaxValue) {
+                                      setState(() {
+                                        psvVtMaxValue = psvVtMaxValue + 1;
+                                      });
+                                    } else if (psvFio2 == true &&
+                                        psvFio2Value != psvmaxValue) {
+                                      setState(() {
+                                        psvFio2Value = psvFio2Value + 1;
+                                      });
+                                    } else if (psvPc == true &&
+                                        psvPcValue != psvmaxValue) {
+                                      setState(() {
+                                        psvPcValue = psvPcValue + 1;
+                                      });
+                                    } else if (psvAtime == true &&
+                                        psvAtimeValue != psvmaxValue) {
+                                      setState(() {
+                                        psvAtimeValue = psvAtimeValue + 1;
+                                      });
+                                    } else if (psvEtrig == true &&
+                                        psvEtrigValue != psvmaxValue) {
+                                      setState(() {
+                                        psvEtrigValue = psvEtrigValue + 1;
+                                      });
+                                    } else if (psvBackupRr == true &&
+                                        psvBackupRrValue != psvmaxValue) {
+                                      setState(() {
+                                        psvBackupRrValue = psvBackupRrValue + 1;
+                                      });
+                                    } else if (psvMinTe == true &&
+                                        psvMinTeValue != psvmaxValue) {
+                                      setState(() {
+                                        psvMinTeValue = psvMinTeValue + 1;
+                                      });
+                                    }
                                   });
-                                } else if (psvFio2 == true &&
-                                    psvFio2Value != psvmaxValue) {
-                                  setState(() {
-                                    psvFio2Value = psvFio2Value + 1;
-                                  });
-                                } else if (psvPc == true &&
-                                    psvPcValue != psvmaxValue) {
-                                  setState(() {
-                                    psvPcValue = psvPcValue + 1;
-                                  });
-                                } else if (psvAtime == true &&
-                                    psvAtimeValue != psvmaxValue) {
-                                  setState(() {
-                                    psvAtimeValue = psvAtimeValue + 1;
-                                  });
-                                } else if (psvEtrig == true &&
-                                    psvEtrigValue != psvmaxValue) {
-                                  setState(() {
-                                    psvEtrigValue = psvEtrigValue + 1;
-                                  });
-                                } else if (psvBackupRr == true &&
-                                    psvBackupRrValue != psvmaxValue) {
-                                  setState(() {
-                                    psvBackupRrValue = psvBackupRrValue + 1;
-                                  });
-                                } else if (psvMinTe == true &&
-                                    psvMinTeValue != psvmaxValue) {
-                                  setState(() {
-                                    psvMinTeValue = psvMinTeValue + 1;
-                                  });
-                                }
-                              });
-                            },
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              psvItrig
-                                  ? pItrig
-                                      ? "-$psvItrigValue"
-                                      : "$psvItrigValue"
-                                  : psvPeep
-                                      ? psvPeepValue.toInt().toString()
-                                      : psvPs
-                                          ? psvPsValue.toInt().toString()
-                                          : psvIe
-                                              // ? psvIeValue.toInt().toString()
-                                              ? getIeData(psvIeValue, 1)
-                                              : psvTi
-                                                  ? getTiValue(psvTiValue)
-                                                      .toString()
-                                                  : psvVtMin
-                                                      ? psvVtMinValue
-                                                          .toInt()
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  psvItrig
+                                      ? pItrig
+                                          ? "-$psvItrigValue"
+                                          : "$psvItrigValue"
+                                      : psvPeep
+                                          ? psvPeepValue.toInt().toString()
+                                          : psvPs
+                                              ? psvPsValue.toInt().toString()
+                                              : psvIe
+                                                  // ? psvIeValue.toInt().toString()
+                                                  ? getIeData(psvIeValue, 1)
+                                                  : psvTi
+                                                      ? getTiValue(psvTiValue)
                                                           .toString()
-                                                      : psvVtMax
-                                                          ? psvVtMaxValue
+                                                      : psvVtMin
+                                                          ? psvVtMinValue
                                                               .toInt()
                                                               .toString()
-                                                          : psvFio2
-                                                              ? psvFio2Value
+                                                          : psvVtMax
+                                                              ? psvVtMaxValue
                                                                   .toInt()
                                                                   .toString()
-                                                              : psvPc
-                                                                  ? psvPcValue
+                                                              : psvFio2
+                                                                  ? psvFio2Value
                                                                       .toInt()
                                                                       .toString()
-                                                                  : psvAtime
-                                                                      ? psvAtimeValue
+                                                                  : psvPc
+                                                                      ? psvPcValue
                                                                           .toInt()
                                                                           .toString()
-                                                                      : psvEtrig
-                                                                          ? psvEtrigValue
+                                                                      : psvAtime
+                                                                          ? psvAtimeValue
                                                                               .toInt()
                                                                               .toString()
-                                                                          : psvBackupRr
-                                                                              ? psvBackupRrValue.toInt().toString()
-                                                                              : psvMinTe ? psvMinTeValue.toInt().toString() : psvVt ? psvVtValue.toInt().toString() : "",
-                              style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                                                                          : psvEtrig
+                                                                              ? psvEtrigValue.toInt().toString()
+                                                                              : psvBackupRr ? psvBackupRrValue.toInt().toString() : psvMinTe ? psvMinTeValue.toInt().toString() : psvVt ? psvVtValue.toInt().toString() : "",
+                                  style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 2,
-                      ),
-                      Container(
-                          width: 350,
-                          child: Slider(
-                            min: psvminValue.toDouble(),
-                            max: psvmaxValue.toDouble(),
-                            onChanged: (double value) {
-                              int maxPeep = _isTab10 ? 45 : 30;
-                              int maxValue = _isTab10 ? 85 : 65;
-                              int maxValuepcValue, maxValuepeepValue;
-                              setState(() {
-                                maxValuepcValue = maxValue - psvPeepValue;
-                                if ((maxValue - psvPcValue) >= maxPeep) {
-                                  maxValuepeepValue = maxPeep;
-                                } else {
-                                  maxValuepeepValue = maxValue - psvPcValue;
-                                }
-                              });
-                              if (psvItrig == true) {
-                                setState(() {
-                                  psvItrigValue = value.toInt();
-                                });
-                              } else if (psvVt == true) {
-                                setState(() {
-                                  psvVtValue = value.toInt();
-                                });
-                              } else if (psvPeep == true) {
-                                setState(() {
-                                  if (value.toInt() >= maxValuepeepValue) {
-                                    psvPeepValue = maxValuepeepValue;
-                                  } else {
-                                    psvPeepValue = value.toInt();
+                          ),
+                          SizedBox(
+                            height: 2,
+                          ),
+                          Container(
+                              width: 350,
+                              child: Slider(
+                                min: psvminValue.toDouble(),
+                                max: psvmaxValue.toDouble(),
+                                onChanged: (double value) {
+                                  int maxPeep = _isTab10 ? 45 : 30;
+                                  int maxValue = _isTab10 ? 85 : 65;
+                                  int maxValuepcValue, maxValuepeepValue;
+                                  setState(() {
+                                    maxValuepcValue = maxValue - psvPeepValue;
+                                    if ((maxValue - psvPcValue) >= maxPeep) {
+                                      maxValuepeepValue = maxPeep;
+                                    } else {
+                                      maxValuepeepValue = maxValue - psvPcValue;
+                                    }
+                                  });
+                                  if (psvItrig == true) {
+                                    setState(() {
+                                      psvItrigValue = value.toInt();
+                                    });
+                                  } else if (psvVt == true) {
+                                    setState(() {
+                                      psvVtValue = value.toInt();
+                                    });
+                                  } else if (psvPeep == true) {
+                                    setState(() {
+                                      if (value.toInt() >= maxValuepeepValue) {
+                                        psvPeepValue = maxValuepeepValue;
+                                      } else {
+                                        psvPeepValue = value.toInt();
+                                      }
+                                    });
+                                  } else if (psvPs == true &&
+                                      psvPsValue >= 0 &&
+                                      pControl == true) {
+                                    setState(() {
+                                      psvPsValue = value.toInt();
+                                      // if (psvPsValue != 0) {
+                                      // if (psvPsValue <= 5) {
+                                      //   psvPcValue = 5;
+                                      // } else {
+                                      psvPcValue = psvPsValue;
+                                      // }
+                                      // }
+                                    });
+                                  } else if (psvPs == true &&
+                                      pControl == false) {
+                                    setState(() {
+                                      psvPsValue = value.toInt();
+                                    });
+                                  } else if (psvIe == true) {
+                                    setState(() {
+                                      psvIeValue = value.toInt();
+                                    });
+                                  } else if (psvTi == true) {
+                                    setState(() {
+                                      psvTiValue = value.toInt();
+                                    });
+                                  } else if (psvVtMin == true) {
+                                    if (value.toInt() < 1190) {
+                                      psvVtMinValue = value.toInt();
+                                      psvVtMaxValue = psvVtMinValue + 1;
+                                    }
+                                  } else if (psvVtMax == true) {
+                                    setState(() {
+                                      if (value.toInt() <= psvVtMinValue + 1) {
+                                        psvVtMaxValue = psvVtMinValue + 1;
+                                      } else {
+                                        psvVtMaxValue = value.toInt();
+                                      }
+                                    });
+                                  } else if (psvFio2 == true) {
+                                    setState(() {
+                                      psvFio2Value = value.toInt();
+                                    });
+                                  } else if (psvPc == true) {
+                                    setState(() {
+                                      // if (value.toInt() < psvPsValue) {
+                                      // if (value.toInt() >= maxValuepcValue) {
+                                      //   psvPcValue = maxValuepcValue;
+                                      // } else {
+                                      psvPcValue = value.toInt();
+                                      // }
+                                      //   psvPsValue = psvPcValue;
+                                      // } else {
+                                      //   if (value.toInt() >= maxValuepcValue) {
+                                      //     psvPcValue = maxValuepcValue;
+                                      //   } else {
+                                      //     psvPcValue = value.toInt();
+                                      //   }
+                                      // }
+                                      // if(value.toInt())
+                                    });
+                                  } else if (psvEtrig == true) {
+                                    setState(() {
+                                      psvEtrigValue = value.toInt();
+                                    });
+                                  } else if (psvAtime == true) {
+                                    setState(() {
+                                      psvAtimeValue = value.toInt();
+                                    });
+                                  } else if (psvBackupRr == true) {
+                                    setState(() {
+                                      psvBackupRrValue = value.toInt();
+                                    });
+                                  } else if (psvMinTe == true) {
+                                    setState(() {
+                                      psvMinTeValue = value.toInt();
+                                    });
                                   }
-                                });
-                              } else if (psvPs == true && pControl == true) {
-                                setState(() {
-                                  // if (value.toInt() >= psvPcValue) {
-                                  //   psvPsValue = psvPcValue;
-                                  // } else {
-                                  psvPsValue = value.toInt();
-                                  // }
-                                });
-                              } else if (psvPs == true && pControl == false) {
-                                setState(() {
-                                  psvPsValue = value.toInt();
-                                });
-                              } else if (psvIe == true) {
-                                setState(() {
-                                  psvIeValue = value.toInt();
-                                });
-                              } else if (psvTi == true) {
-                                setState(() {
-                                  psvTiValue = value.toInt();
-                                });
-                              } else if (psvVtMin == true) {
-                                if (value.toInt() < 1190) {
-                                  psvVtMinValue = value.toInt();
-                                  psvVtMaxValue = psvVtMinValue + 1;
-                                }
-                              } else if (psvVtMax == true) {
-                                setState(() {
-                                  if (value.toInt() <= psvVtMinValue + 1) {
-                                    psvVtMaxValue = psvVtMinValue + 1;
-                                  } else {
-                                    psvVtMaxValue = value.toInt();
-                                  }
-                                });
-                              } else if (psvFio2 == true) {
-                                setState(() {
-                                  psvFio2Value = value.toInt();
-                                });
-                              } else if (psvPc == true) {
-                                setState(() {
-                                  // if (value.toInt() < psvPsValue) {
-                                  // if (value.toInt() >= maxValuepcValue) {
-                                  //   psvPcValue = maxValuepcValue;
-                                  // } else {
-                                  psvPcValue = value.toInt();
-                                  // }
-                                  //   psvPsValue = psvPcValue;
-                                  // } else {
-                                  //   if (value.toInt() >= maxValuepcValue) {
-                                  //     psvPcValue = maxValuepcValue;
-                                  //   } else {
-                                  //     psvPcValue = value.toInt();
-                                  //   }
-                                  // }
-                                  // if(value.toInt())
-                                });
-                              } else if (psvEtrig == true) {
-                                setState(() {
-                                  psvEtrigValue = value.toInt();
-                                });
-                              } else if (psvAtime == true) {
-                                setState(() {
-                                  psvAtimeValue = value.toInt();
-                                });
-                              } else if (psvBackupRr == true) {
-                                setState(() {
-                                  psvBackupRrValue = value.toInt();
-                                });
-                              } else if (psvMinTe == true) {
-                                setState(() {
-                                  psvMinTeValue = value.toInt();
-                                });
-                              }
-                            },
-                            value: psvItrig
-                                ? psvItrigValue.toDouble()
-                                : psvPeep
-                                    ? psvPeepValue.toDouble()
-                                    : psvPs
-                                        ? psvPsValue.toDouble()
-                                        : psvIe
-                                            ? psvIeValue.toDouble()
-                                            : psvTi
-                                                ? psvTiValue.toDouble()
-                                                : psvVtMin
-                                                    ? psvVtMinValue.toDouble()
-                                                    : psvVtMax
-                                                        ? psvVtMaxValue
+                                },
+                                value: psvItrig
+                                    ? psvItrigValue.toDouble()
+                                    : psvPeep
+                                        ? psvPeepValue.toDouble()
+                                        : psvPs
+                                            ? psvPsValue.toDouble()
+                                            : psvIe
+                                                ? psvIeValue.toDouble()
+                                                : psvTi
+                                                    ? psvTiValue.toDouble()
+                                                    : psvVtMin
+                                                        ? psvVtMinValue
                                                             .toDouble()
-                                                        : psvFio2
-                                                            ? psvFio2Value
+                                                        : psvVtMax
+                                                            ? psvVtMaxValue
                                                                 .toDouble()
-                                                            : psvPc
-                                                                ? psvPcValue
+                                                            : psvFio2
+                                                                ? psvFio2Value
                                                                     .toDouble()
-                                                                : psvEtrig
-                                                                    ? psvEtrigValue
+                                                                : psvPc
+                                                                    ? psvPcValue
                                                                         .toDouble()
-                                                                    : psvAtime
-                                                                        ? psvAtimeValue
+                                                                    : psvEtrig
+                                                                        ? psvEtrigValue
                                                                             .toDouble()
-                                                                        : psvBackupRr
-                                                                            ? psvBackupRrValue
+                                                                        : psvAtime
+                                                                            ? psvAtimeValue
                                                                                 .toDouble()
-                                                                            : psvMinTe
-                                                                                ? psvMinTeValue.toDouble()
-                                                                                : psvVt ? psvVtValue.toDouble() : "",
-                          )),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45.0, right: 45.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(psvIe
-                                ? getIeData(psvminValue, 1)
-                                : psvItrig
-                                    ? pItrig ? "-$psvminValue" : "$psvminValue"
-                                    : psvTi
-                                        ? getTiValue(psvminValue).toString()
-                                        : psvminValue.toString()),
-                            Text(
-                              psvItrig
-                                  ? pItrig ? psvparameterUnits : "lpm"
-                                  : psvparameterUnits,
-                              style: TextStyle(fontSize: 16),
+                                                                            : psvBackupRr
+                                                                                ? psvBackupRrValue.toDouble()
+                                                                                : psvMinTe ? psvMinTeValue.toDouble() : psvVt ? psvVtValue.toDouble() : "",
+                              )),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 45.0, right: 45.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(psvIe
+                                    ? getIeData(psvminValue, 1)
+                                    : psvItrig
+                                        ? pItrig
+                                            ? "-$psvminValue"
+                                            : "$psvminValue"
+                                        : psvTi
+                                            ? getTiValue(psvminValue).toString()
+                                            : psvminValue.toString()),
+                                Text(
+                                  psvItrig
+                                      ? pItrig ? psvparameterUnits : "lpm"
+                                      : psvparameterUnits,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(psvIe
+                                    ? getIeData(psvmaxValue, 1)
+                                    : psvItrig
+                                        ? pItrig
+                                            ? "-$psvmaxValue"
+                                            : "$psvmaxValue"
+                                        : psvTi
+                                            ? getTiValue(psvmaxValue).toString()
+                                            : psvmaxValue.toString())
+                              ],
                             ),
-                            Text(psvIe
-                                ? getIeData(psvmaxValue, 1)
-                                : psvItrig
-                                    ? pItrig ? "-$psvmaxValue" : "$psvmaxValue"
-                                    : psvTi
-                                        ? getTiValue(psvmaxValue).toString()
-                                        : psvmaxValue.toString())
-                          ],
-                        ),
-                      ),
-                       Row(
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
@@ -16261,9 +16258,10 @@ class _CheckPageState extends State<Dashboard> {
                               ),
                             ],
                           )
-                    ],
-                  ),
-                )):Container(),
+                        ],
+                      ),
+                    ))
+                : Container(),
           ],
         ),
       ],
@@ -16641,20 +16639,20 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  pacvmaxValue = 10;
-                  pacvminValue = 1;
-                  pacvparameterName = "I Trig";
-                  pacvparameterUnits = "cmH\u2082O Below PEEP";
-                  pacvItrig = true;
-                  pacvRr = false;
-                  pacvIe = false;
-                  pacvPeep = false;
-                  pacvPc = false;
-                  pacvVtMin = false;
-                  pacvVtMax = false;
-                  pacvFio2 = false;
-                  pacvFlowRamp = false;
-                });
+                    pacvmaxValue = 10;
+                    pacvminValue = 1;
+                    pacvparameterName = "I Trig";
+                    pacvparameterUnits = "cmH\u2082O Below PEEP";
+                    pacvItrig = true;
+                    pacvRr = false;
+                    pacvIe = false;
+                    pacvPeep = false;
+                    pacvPc = false;
+                    pacvVtMin = false;
+                    pacvVtMax = false;
+                    pacvFio2 = false;
+                    pacvFlowRamp = false;
+                  });
                 }
               },
               child: Center(
@@ -16758,21 +16756,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  pacvmaxValue = _isTab10 ? 85 : 60;
-                  pacvminValue = 5;
-                  pacvparameterName = "PC";
-                  pacvparameterUnits = "cmH\u2082O above PEEP";
-                  pacvItrig = false;
-                  pacvRr = false;
-                  pacvIe = false;
-                  pacvPeep = false;
-                  pacvPc = true;
-                  pacvVtMin = false;
-                  pacvVtMax = false;
-                  pacvFio2 = false;
-                  pacvFlowRamp = false;
-                });
-              }
+                    pacvmaxValue = _isTab10 ? 85 : 60;
+                    pacvminValue = 5;
+                    pacvparameterName = "PC";
+                    pacvparameterUnits = "cmH\u2082O above PEEP";
+                    pacvItrig = false;
+                    pacvRr = false;
+                    pacvIe = false;
+                    pacvPeep = false;
+                    pacvPc = true;
+                    pacvVtMin = false;
+                    pacvVtMax = false;
+                    pacvFio2 = false;
+                    pacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -16874,24 +16872,24 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-               if (_parameterChangeEnabled == true) {
+                if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  pacvmaxValue = 100;
-                  pacvminValue = 21;
-                  pacvparameterName = "FiO\u2082";
-                  pacvparameterUnits = "%";
-                  pacvItrig = false;
-                  pacvRr = false;
-                  pacvIe = false;
-                  pacvPeep = false;
-                  pacvPc = false;
-                  pacvVtMin = false;
-                  pacvVtMax = false;
-                  pacvFio2 = true;
-                  pacvFlowRamp = false;
-                });
-              }
+                    pacvmaxValue = 100;
+                    pacvminValue = 21;
+                    pacvparameterName = "FiO\u2082";
+                    pacvparameterUnits = "%";
+                    pacvItrig = false;
+                    pacvRr = false;
+                    pacvIe = false;
+                    pacvPeep = false;
+                    pacvPc = false;
+                    pacvVtMin = false;
+                    pacvVtMax = false;
+                    pacvFio2 = true;
+                    pacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -17609,363 +17607,371 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-             _parameterChangeEnabled == false
+            _parameterChangeEnabled == false
                 ? Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xFFE0E0E0)),
-                width: 400,
-                height: 246,
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (pacvItrig == true &&
-                                    pacvItrigValue != pacvminValue) {
-                                  setState(() {
-                                    pacvItrigValue = pacvItrigValue - 1;
-                                  });
-                                }
-                                // else if (pacvPeep == true &&
-                                //     pacvPeepValue != pacvminValue) {
-                                //   setState(() {
-                                //     pacvPeepValue = pacvPeepValue - 1;
-                                //     if (pacvItrigValue > 1 &&
-                                //         pacvItrigValue > pacvPeepValue) {
-                                //       pacvItrigValue = pacvPeepValue;
-                                //     }
-                                //   });
-                                // }
-
-                                else if (pacvPeep == true &&
-                                    pacvPeepValue != pacvminValue) {
-                                  setState(() {
-                                    pacvPeepValue = pacvPeepValue - 1;
-                                  });
-                                } else if (pacvRr == true &&
-                                    pacvRrValue != pacvminValue) {
-                                  setState(() {
-                                    pacvRrValue = pacvRrValue - 1;
-                                  });
-                                } else if (pacvIe == true &&
-                                    pacvIeValue != pacvminValue) {
-                                  setState(() {
-                                    pacvIeValue = pacvIeValue - 1;
-                                  });
-                                } else if (pacvPc == true &&
-                                    pacvPcValue != pacvminValue) {
-                                  setState(() {
-                                    pacvPcValue = pacvPcValue - 1;
-                                  });
-                                } else if (pacvVtMin == true &&
-                                    pacvVtMinValue != pacvminValue) {
-                                  setState(() {
-                                    pacvVtMinValue = pacvVtMinValue - 1;
-                                  });
-                                } else if (pacvVtMax == true &&
-                                    pacvVtMaxValue != pacvVtMinValue + 1) {
-                                  pacvVtMaxValue = pacvVtMaxValue - 1;
-                                } else if (pacvFio2 == true &&
-                                    pacvFio2Value != pacvminValue) {
-                                  setState(() {
-                                    pacvFio2Value = pacvFio2Value - 1;
-                                  });
-                                } else if (pacvFlowRamp == true &&
-                                    pacvFlowRampValue != pacvminValue) {
-                                  setState(() {
-                                    pacvFlowRampValue = pacvFlowRampValue - 1;
-                                  });
-                                }
-                              });
-                            },
-                          ),
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFFE0E0E0)),
+                    width: 400,
+                    height: 246,
+                    child: Center(
+                      child: Column(
+                        children: [
                           SizedBox(
-                            width: 60,
+                            height: 5,
                           ),
-                          Text(
-                            pacvparameterName,
-                            style: TextStyle(
-                                fontSize: 36, fontWeight: FontWeight.normal),
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                // if (pacvItrig == true &&
-                                //     pacvItrigValue != pacvmaxValue) {
-                                //   setState(() {
-                                //     pacvItrigValue = pacvItrigValue + 1;
-                                //     if (pacvPeepValue <= pacvItrigValue) {
-                                //       if (pacvPeepValue == 0) {
-                                //         pacvItrigValue = 1;
-                                //       } else {
-                                //         pacvItrigValue = pacvPeepValue;
-                                //       }
-                                //     }
-                                //   });
-                                // }
-                                int maxValue = _isTab10 ? 90 : 65;
-                                int maxPeep = _isTab10 ? 45 : 30;
-                                int maxValuepcValue, maxValuepeepValue;
-                                maxValuepcValue = maxValue - pacvPeepValue;
-                                if ((maxValue - pacvPcValue) >= maxPeep) {
-                                  maxValuepeepValue = maxPeep;
-                                } else {
-                                  maxValuepeepValue = maxValue - pacvPcValue;
-                                }
-                                if (pacvItrig == true &&
-                                    pacvItrigValue != pacvmaxValue) {
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    pacvItrigValue = pacvItrigValue + 1;
-                                  });
-                                } else if (pacvPeep == true &&
-                                    pacvPeepValue != pacvmaxValue &&
-                                    pacvPeepValue < maxValuepeepValue) {
-                                  setState(() {
-                                    pacvPeepValue = pacvPeepValue + 1;
-                                    // if (pacvPcValue <= pacvPeepValue) {
-                                    //   pacvPcValue = pacvPeepValue + 1;
+                                    if (pacvItrig == true &&
+                                        pacvItrigValue != pacvminValue) {
+                                      setState(() {
+                                        pacvItrigValue = pacvItrigValue - 1;
+                                      });
+                                    }
+                                    // else if (pacvPeep == true &&
+                                    //     pacvPeepValue != pacvminValue) {
+                                    //   setState(() {
+                                    //     pacvPeepValue = pacvPeepValue - 1;
+                                    //     if (pacvItrigValue > 1 &&
+                                    //         pacvItrigValue > pacvPeepValue) {
+                                    //       pacvItrigValue = pacvPeepValue;
+                                    //     }
+                                    //   });
                                     // }
-                                  });
-                                } else if (pacvRr == true &&
-                                    pacvRrValue != pacvmaxValue) {
-                                  setState(() {
-                                    pacvRrValue = pacvRrValue + 1;
-                                  });
-                                } else if (pacvIe == true &&
-                                    pacvIeValue != pacvmaxValue) {
-                                  setState(() {
-                                    pacvIeValue = pacvIeValue + 1;
-                                  });
-                                } else if (pacvPc == true &&
-                                    pacvPcValue != pacvmaxValue &&
-                                    pacvPcValue < maxValuepcValue) {
-                                  setState(() {
-                                    pacvPcValue = pacvPcValue + 1;
-                                  });
-                                } else if (pacvVtMin == true &&
-                                    pacvVtMinValue != pacvmaxValue) {
-                                  setState(() {
-                                    if (pacvVtMaxValue != 1190 &&
-                                        pacvVtMinValue != 1189) {
-                                      pacvVtMinValue = pacvVtMinValue + 1;
-                                      pacvVtMaxValue = pacvVtMinValue + 1;
+
+                                    else if (pacvPeep == true &&
+                                        pacvPeepValue != pacvminValue) {
+                                      setState(() {
+                                        pacvPeepValue = pacvPeepValue - 1;
+                                      });
+                                    } else if (pacvRr == true &&
+                                        pacvRrValue != pacvminValue) {
+                                      setState(() {
+                                        pacvRrValue = pacvRrValue - 1;
+                                      });
+                                    } else if (pacvIe == true &&
+                                        pacvIeValue != pacvminValue) {
+                                      setState(() {
+                                        pacvIeValue = pacvIeValue - 1;
+                                      });
+                                    } else if (pacvPc == true &&
+                                        pacvPcValue != pacvminValue) {
+                                      setState(() {
+                                        pacvPcValue = pacvPcValue - 1;
+                                      });
+                                    } else if (pacvVtMin == true &&
+                                        pacvVtMinValue != pacvminValue) {
+                                      setState(() {
+                                        pacvVtMinValue = pacvVtMinValue - 1;
+                                      });
+                                    } else if (pacvVtMax == true &&
+                                        pacvVtMaxValue != pacvVtMinValue + 1) {
+                                      pacvVtMaxValue = pacvVtMaxValue - 1;
+                                    } else if (pacvFio2 == true &&
+                                        pacvFio2Value != pacvminValue) {
+                                      setState(() {
+                                        pacvFio2Value = pacvFio2Value - 1;
+                                      });
+                                    } else if (pacvFlowRamp == true &&
+                                        pacvFlowRampValue != pacvminValue) {
+                                      setState(() {
+                                        pacvFlowRampValue =
+                                            pacvFlowRampValue - 1;
+                                      });
                                     }
                                   });
-                                } else if (pacvVtMax == true &&
-                                    pacvVtMaxValue != pacvmaxValue) {
+                                },
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              Text(
+                                pacvparameterName,
+                                style: TextStyle(
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    if (pacvVtMinValue < pacvVtMaxValue)
-                                      pacvVtMaxValue = pacvVtMaxValue + 1;
+                                    // if (pacvItrig == true &&
+                                    //     pacvItrigValue != pacvmaxValue) {
+                                    //   setState(() {
+                                    //     pacvItrigValue = pacvItrigValue + 1;
+                                    //     if (pacvPeepValue <= pacvItrigValue) {
+                                    //       if (pacvPeepValue == 0) {
+                                    //         pacvItrigValue = 1;
+                                    //       } else {
+                                    //         pacvItrigValue = pacvPeepValue;
+                                    //       }
+                                    //     }
+                                    //   });
+                                    // }
+                                    int maxValue = _isTab10 ? 90 : 65;
+                                    int maxPeep = _isTab10 ? 45 : 30;
+                                    int maxValuepcValue, maxValuepeepValue;
+                                    maxValuepcValue = maxValue - pacvPeepValue;
+                                    if ((maxValue - pacvPcValue) >= maxPeep) {
+                                      maxValuepeepValue = maxPeep;
+                                    } else {
+                                      maxValuepeepValue =
+                                          maxValue - pacvPcValue;
+                                    }
+                                    if (pacvItrig == true &&
+                                        pacvItrigValue != pacvmaxValue) {
+                                      setState(() {
+                                        pacvItrigValue = pacvItrigValue + 1;
+                                      });
+                                    } else if (pacvPeep == true &&
+                                        pacvPeepValue != pacvmaxValue &&
+                                        pacvPeepValue < maxValuepeepValue) {
+                                      setState(() {
+                                        pacvPeepValue = pacvPeepValue + 1;
+                                        // if (pacvPcValue <= pacvPeepValue) {
+                                        //   pacvPcValue = pacvPeepValue + 1;
+                                        // }
+                                      });
+                                    } else if (pacvRr == true &&
+                                        pacvRrValue != pacvmaxValue) {
+                                      setState(() {
+                                        pacvRrValue = pacvRrValue + 1;
+                                      });
+                                    } else if (pacvIe == true &&
+                                        pacvIeValue != pacvmaxValue) {
+                                      setState(() {
+                                        pacvIeValue = pacvIeValue + 1;
+                                      });
+                                    } else if (pacvPc == true &&
+                                        pacvPcValue != pacvmaxValue &&
+                                        pacvPcValue < maxValuepcValue) {
+                                      setState(() {
+                                        pacvPcValue = pacvPcValue + 1;
+                                      });
+                                    } else if (pacvVtMin == true &&
+                                        pacvVtMinValue != pacvmaxValue) {
+                                      setState(() {
+                                        if (pacvVtMaxValue != 1190 &&
+                                            pacvVtMinValue != 1189) {
+                                          pacvVtMinValue = pacvVtMinValue + 1;
+                                          pacvVtMaxValue = pacvVtMinValue + 1;
+                                        }
+                                      });
+                                    } else if (pacvVtMax == true &&
+                                        pacvVtMaxValue != pacvmaxValue) {
+                                      setState(() {
+                                        if (pacvVtMinValue < pacvVtMaxValue)
+                                          pacvVtMaxValue = pacvVtMaxValue + 1;
+                                      });
+                                    } else if (pacvFio2 == true &&
+                                        pacvFio2Value != pacvmaxValue) {
+                                      setState(() {
+                                        pacvFio2Value = pacvFio2Value + 1;
+                                      });
+                                    } else if (pacvFlowRamp == true &&
+                                        pacvFlowRampValue != pacvmaxValue) {
+                                      setState(() {
+                                        pacvFlowRampValue =
+                                            pacvFlowRampValue + 1;
+                                      });
+                                    }
                                   });
-                                } else if (pacvFio2 == true &&
-                                    pacvFio2Value != pacvmaxValue) {
-                                  setState(() {
-                                    pacvFio2Value = pacvFio2Value + 1;
-                                  });
-                                } else if (pacvFlowRamp == true &&
-                                    pacvFlowRampValue != pacvmaxValue) {
-                                  setState(() {
-                                    pacvFlowRampValue = pacvFlowRampValue + 1;
-                                  });
-                                }
-                              });
-                            },
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              pacvItrig
-                                  ? pItrig
-                                      ? "-$pacvItrigValue"
-                                      : "$pacvItrigValue"
-                                  : pacvPeep
-                                      ? pacvPeepValue.toInt().toString()
-                                      : pacvRr
-                                          ? pacvRrValue.toInt().toString()
-                                          : pacvIe
-                                              ? getIeData(pacvIeValue, 1)
-                                              : pacvPc
-                                                  ? pacvPcValue
-                                                      .toInt()
-                                                      .toString()
-                                                  : pacvVtMin
-                                                      ? pacvVtMinValue
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  pacvItrig
+                                      ? pItrig
+                                          ? "-$pacvItrigValue"
+                                          : "$pacvItrigValue"
+                                      : pacvPeep
+                                          ? pacvPeepValue.toInt().toString()
+                                          : pacvRr
+                                              ? pacvRrValue.toInt().toString()
+                                              : pacvIe
+                                                  ? getIeData(pacvIeValue, 1)
+                                                  : pacvPc
+                                                      ? pacvPcValue
                                                           .toInt()
                                                           .toString()
-                                                      : pacvVtMax
-                                                          ? pacvVtMaxValue
+                                                      : pacvVtMin
+                                                          ? pacvVtMinValue
                                                               .toInt()
                                                               .toString()
-                                                          : pacvFio2
-                                                              ? pacvFio2Value
+                                                          : pacvVtMax
+                                                              ? pacvVtMaxValue
                                                                   .toInt()
                                                                   .toString()
-                                                              : pacvFlowRamp
-                                                                  ? pacvFlowRampValue
+                                                              : pacvFio2
+                                                                  ? pacvFio2Value
                                                                       .toInt()
                                                                       .toString()
-                                                                  : "",
-                              style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                                                                  : pacvFlowRamp
+                                                                      ? pacvFlowRampValue
+                                                                          .toInt()
+                                                                          .toString()
+                                                                      : "",
+                                  style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      // pacvFio2
-                      //     ? Container()
-                      //     :
-                      Container(
-                          width: 350,
-                          child: Slider(
-                            min: pacvminValue.toDouble() ?? 0,
-                            max: pacvmaxValue.toDouble() ?? 0,
-                            onChanged: (double value) {
-                              int maxPeep = _isTab10 ? 45 : 30;
-                              int maxPValue = _isTab10 ? 90 : 65;
-                              int maxValuepcValue, maxValuepeepValue;
-                              setState(() {
-                                maxValuepcValue = maxPValue - pacvPeepValue;
-                                if ((maxPValue - pacvPcValue) >= maxPeep) {
-                                  maxValuepeepValue = maxPeep;
-                                } else {
-                                  maxValuepeepValue = maxPValue - pacvPcValue;
-                                }
-                              });
-                              if (pacvItrig == true) {
-                                setState(() {
-                                  pacvItrigValue = value.toInt();
-                                });
-                              } else if (pacvPeep == true) {
-                                if (value.toInt() >= maxValuepeepValue) {
-                                  pacvPeepValue = maxValuepeepValue;
-                                } else {
-                                  pacvPeepValue = value.toInt();
-                                }
-                              } else if (pacvRr == true) {
-                                setState(() {
-                                  pacvRrValue = value.toInt();
-                                });
-                              } else if (pacvIe == true) {
-                                setState(() {
-                                  pacvIeValue = value.toInt();
-                                });
-                              } else if (pacvPc == true) {
-                                setState(() {
-                                  if (value.toInt() >= maxValuepcValue) {
-                                    pacvPcValue = maxValuepcValue;
-                                  } else {
-                                    pacvPcValue = value.toInt();
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          // pacvFio2
+                          //     ? Container()
+                          //     :
+                          Container(
+                              width: 350,
+                              child: Slider(
+                                min: pacvminValue.toDouble() ?? 0,
+                                max: pacvmaxValue.toDouble() ?? 0,
+                                onChanged: (double value) {
+                                  int maxPeep = _isTab10 ? 45 : 30;
+                                  int maxPValue = _isTab10 ? 90 : 65;
+                                  int maxValuepcValue, maxValuepeepValue;
+                                  setState(() {
+                                    maxValuepcValue = maxPValue - pacvPeepValue;
+                                    if ((maxPValue - pacvPcValue) >= maxPeep) {
+                                      maxValuepeepValue = maxPeep;
+                                    } else {
+                                      maxValuepeepValue =
+                                          maxPValue - pacvPcValue;
+                                    }
+                                  });
+                                  if (pacvItrig == true) {
+                                    setState(() {
+                                      pacvItrigValue = value.toInt();
+                                    });
+                                  } else if (pacvPeep == true) {
+                                    if (value.toInt() >= maxValuepeepValue) {
+                                      pacvPeepValue = maxValuepeepValue;
+                                    } else {
+                                      pacvPeepValue = value.toInt();
+                                    }
+                                  } else if (pacvRr == true) {
+                                    setState(() {
+                                      pacvRrValue = value.toInt();
+                                    });
+                                  } else if (pacvIe == true) {
+                                    setState(() {
+                                      pacvIeValue = value.toInt();
+                                    });
+                                  } else if (pacvPc == true) {
+                                    setState(() {
+                                      if (value.toInt() >= maxValuepcValue) {
+                                        pacvPcValue = maxValuepcValue;
+                                      } else {
+                                        pacvPcValue = value.toInt();
+                                      }
+                                    });
+                                  } else if (pacvVtMin == true) {
+                                    if (value.toInt() < 1190) {
+                                      pacvVtMinValue = value.toInt();
+                                      pacvVtMaxValue = pacvVtMinValue + 1;
+                                    }
+                                  } else if (pacvVtMax == true) {
+                                    setState(() {
+                                      if (value.toInt() <= pacvVtMinValue + 1) {
+                                        pacvVtMaxValue = pacvVtMinValue + 1;
+                                      } else {
+                                        pacvVtMaxValue = value.toInt();
+                                      }
+                                    });
+                                  } else if (pacvFio2 == true) {
+                                    setState(() {
+                                      pacvFio2Value = value.toInt();
+                                    });
+                                  } else if (pacvFlowRamp == true) {
+                                    setState(() {
+                                      pacvFlowRampValue = value.toInt();
+                                    });
                                   }
-                                });
-                              } else if (pacvVtMin == true) {
-                                if (value.toInt() < 1190) {
-                                  pacvVtMinValue = value.toInt();
-                                  pacvVtMaxValue = pacvVtMinValue + 1;
-                                }
-                              } else if (pacvVtMax == true) {
-                                setState(() {
-                                  if (value.toInt() <= pacvVtMinValue + 1) {
-                                    pacvVtMaxValue = pacvVtMinValue + 1;
-                                  } else {
-                                    pacvVtMaxValue = value.toInt();
-                                  }
-                                });
-                              } else if (pacvFio2 == true) {
-                                setState(() {
-                                  pacvFio2Value = value.toInt();
-                                });
-                              } else if (pacvFlowRamp == true) {
-                                setState(() {
-                                  pacvFlowRampValue = value.toInt();
-                                });
-                              }
-                            },
-                            value: pacvItrig
-                                ? pacvItrigValue.toDouble()
-                                : pacvPeep
-                                    ? pacvPeepValue.toDouble()
-                                    : pacvRr
-                                        ? pacvRrValue.toDouble()
-                                        : pacvIe
-                                            ? pacvIeValue.toDouble()
-                                            : pacvPc
-                                                ? pacvPcValue.toDouble()
-                                                : pacvVtMin
-                                                    ? pacvVtMinValue.toDouble()
-                                                    : pacvVtMax
-                                                        ? pacvVtMaxValue
+                                },
+                                value: pacvItrig
+                                    ? pacvItrigValue.toDouble()
+                                    : pacvPeep
+                                        ? pacvPeepValue.toDouble()
+                                        : pacvRr
+                                            ? pacvRrValue.toDouble()
+                                            : pacvIe
+                                                ? pacvIeValue.toDouble()
+                                                : pacvPc
+                                                    ? pacvPcValue.toDouble()
+                                                    : pacvVtMin
+                                                        ? pacvVtMinValue
                                                             .toDouble()
-                                                        : pacvFio2
-                                                            ? pacvFio2Value
+                                                        : pacvVtMax
+                                                            ? pacvVtMaxValue
                                                                 .toDouble()
-                                                            : pacvFlowRamp
-                                                                ? pacvFlowRampValue
+                                                            : pacvFio2
+                                                                ? pacvFio2Value
                                                                     .toDouble()
-                                                                : "",
-                          )),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45.0, right: 45.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(pacvIe
-                                ? getIeData(pacvminValue, 1)
-                                : pacvItrig
-                                    ? pItrig
-                                        ? "-$pacvminValue"
-                                        : "$pacvminValue"
-                                    : pacvminValue.toString()),
-                            Text(
-                              pacvItrig
-                                  ? pItrig ? pacvparameterUnits : "lpm"
-                                  : pacvparameterUnits,
-                              style: TextStyle(fontSize: 16),
+                                                                : pacvFlowRamp
+                                                                    ? pacvFlowRampValue
+                                                                        .toDouble()
+                                                                    : "",
+                              )),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 45.0, right: 45.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(pacvIe
+                                    ? getIeData(pacvminValue, 1)
+                                    : pacvItrig
+                                        ? pItrig
+                                            ? "-$pacvminValue"
+                                            : "$pacvminValue"
+                                        : pacvminValue.toString()),
+                                Text(
+                                  pacvItrig
+                                      ? pItrig ? pacvparameterUnits : "lpm"
+                                      : pacvparameterUnits,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(pacvIe
+                                    ? getIeData(pacvmaxValue, 1)
+                                    : pacvItrig
+                                        ? pItrig
+                                            ? "-$pacvmaxValue"
+                                            : "$pacvmaxValue"
+                                        : pacvmaxValue.toString()),
+                              ],
                             ),
-                            Text(pacvIe
-                                ? getIeData(pacvmaxValue, 1)
-                                : pacvItrig
-                                    ? pItrig
-                                        ? "-$pacvmaxValue"
-                                        : "$pacvmaxValue"
-                                    : pacvmaxValue.toString()),
-                          ],
-                        ),
-                      ), Row(
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
@@ -17996,9 +18002,10 @@ class _CheckPageState extends State<Dashboard> {
                               ),
                             ],
                           )
-                    ],
-                  ),
-                )):Container(),
+                        ],
+                      ),
+                    ))
+                : Container(),
           ],
         ),
       ],
@@ -18016,24 +18023,24 @@ class _CheckPageState extends State<Dashboard> {
           children: [
             InkWell(
               onTap: () {
-               if (_parameterChangeEnabled == true) {
+                if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  prvcmaxValue = 30;
-                  prvcminValue = 1;
-                  prvcparameterName = "RR";
-                  prvcparameterUnits = "bpm";
-                  prvcItrig = false;
-                  prvcRr = true;
-                  prvcIe = false;
-                  prvcPeep = false;
-                  prvcVt = false;
-                  prvcPcMin = false;
-                  prvcPcMax = false;
-                  prvcFio2 = false;
-                  prvcFlowRamp = false;
-                });
-              }
+                    prvcmaxValue = 30;
+                    prvcminValue = 1;
+                    prvcparameterName = "RR";
+                    prvcparameterUnits = "bpm";
+                    prvcItrig = false;
+                    prvcRr = true;
+                    prvcIe = false;
+                    prvcPeep = false;
+                    prvcVt = false;
+                    prvcPcMin = false;
+                    prvcPcMax = false;
+                    prvcFio2 = false;
+                    prvcFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -18135,21 +18142,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  prvcmaxValue = 61;
-                  prvcminValue = 1;
-                  prvcparameterName = "I:E";
-                  prvcparameterUnits = "";
-                  prvcItrig = false;
-                  prvcRr = false;
-                  prvcIe = true;
-                  prvcPeep = false;
-                  prvcVt = false;
-                  prvcPcMin = false;
-                  prvcPcMax = false;
-                  prvcFio2 = false;
-                  prvcFlowRamp = false;
-                });
-              }
+                    prvcmaxValue = 61;
+                    prvcminValue = 1;
+                    prvcparameterName = "I:E";
+                    prvcparameterUnits = "";
+                    prvcItrig = false;
+                    prvcRr = false;
+                    prvcIe = true;
+                    prvcPeep = false;
+                    prvcVt = false;
+                    prvcPcMin = false;
+                    prvcPcMax = false;
+                    prvcFio2 = false;
+                    prvcFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -18249,24 +18256,24 @@ class _CheckPageState extends State<Dashboard> {
             ),
             InkWell(
               onTap: () {
-               if (_parameterChangeEnabled == true) {
+                if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  prvcmaxValue = _isTab10 ? 45 : 30;
-                  prvcminValue = 0;
-                  prvcparameterName = "PEEP";
-                  prvcparameterUnits = "cmH\u2082O";
-                  prvcItrig = false;
-                  prvcRr = false;
-                  prvcIe = false;
-                  prvcPeep = true;
-                  prvcVt = false;
-                  prvcPcMin = false;
-                  prvcPcMax = false;
-                  prvcFio2 = false;
-                  prvcFlowRamp = false;
-                });
-              }
+                    prvcmaxValue = _isTab10 ? 45 : 30;
+                    prvcminValue = 0;
+                    prvcparameterName = "PEEP";
+                    prvcparameterUnits = "cmH\u2082O";
+                    prvcItrig = false;
+                    prvcRr = false;
+                    prvcIe = false;
+                    prvcPeep = true;
+                    prvcVt = false;
+                    prvcPcMin = false;
+                    prvcPcMax = false;
+                    prvcFio2 = false;
+                    prvcFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -18377,21 +18384,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  prvcmaxValue = 1200;
-                  prvcminValue = 200;
-                  prvcparameterName = "Target Vt";
-                  prvcparameterUnits = "mL";
-                  prvcItrig = false;
-                  prvcRr = false;
-                  prvcIe = false;
-                  prvcPeep = false;
-                  prvcVt = true;
-                  prvcPcMin = false;
-                  prvcPcMax = false;
-                  prvcFio2 = false;
-                  prvcFlowRamp = false;
-                });
-              }
+                    prvcmaxValue = 1200;
+                    prvcminValue = 200;
+                    prvcparameterName = "Target Vt";
+                    prvcparameterUnits = "mL";
+                    prvcItrig = false;
+                    prvcRr = false;
+                    prvcIe = false;
+                    prvcPeep = false;
+                    prvcVt = true;
+                    prvcPcMin = false;
+                    prvcPcMax = false;
+                    prvcFio2 = false;
+                    prvcFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -18494,21 +18501,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  prvcmaxValue = 100;
-                  prvcminValue = 21;
-                  prvcparameterName = "FiO\u2082";
-                  prvcparameterUnits = "%";
-                  prvcItrig = false;
-                  prvcRr = false;
-                  prvcIe = false;
-                  prvcPeep = false;
-                  prvcVt = false;
-                  prvcPcMin = false;
-                  prvcPcMax = false;
-                  prvcFio2 = true;
-                  prvcFlowRamp = false;
-                });
-              }
+                    prvcmaxValue = 100;
+                    prvcminValue = 21;
+                    prvcparameterName = "FiO\u2082";
+                    prvcparameterUnits = "%";
+                    prvcItrig = false;
+                    prvcRr = false;
+                    prvcIe = false;
+                    prvcPeep = false;
+                    prvcVt = false;
+                    prvcPcMin = false;
+                    prvcPcMax = false;
+                    prvcFio2 = true;
+                    prvcFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -18611,21 +18618,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  prvcmaxValue = 10;
-                  prvcminValue = 1;
-                  prvcparameterName = "I Trig";
-                  prvcparameterUnits = "cmH\u2082O Below PEEP";
-                  prvcItrig = true;
-                  prvcRr = false;
-                  prvcIe = false;
-                  prvcPeep = false;
-                  prvcVt = false;
-                  prvcPcMin = false;
-                  prvcPcMax = false;
-                  prvcFio2 = false;
-                  prvcFlowRamp = false;
-                });
-              }
+                    prvcmaxValue = 10;
+                    prvcminValue = 1;
+                    prvcparameterName = "I Trig";
+                    prvcparameterUnits = "cmH\u2082O Below PEEP";
+                    prvcItrig = true;
+                    prvcRr = false;
+                    prvcIe = false;
+                    prvcPeep = false;
+                    prvcVt = false;
+                    prvcPcMin = false;
+                    prvcPcMax = false;
+                    prvcFio2 = false;
+                    prvcFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -18734,21 +18741,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  prvcmaxValue = 100;
-                  prvcminValue = 10;
-                  prvcparameterName = "PC Max";
-                  prvcparameterUnits = "cmH\u2082O above PEEP";
-                  prvcItrig = false;
-                  prvcRr = false;
-                  prvcIe = false;
-                  prvcPeep = false;
-                  prvcVt = false;
-                  prvcPcMin = false;
-                  prvcPcMax = true;
-                  prvcFio2 = false;
-                  prvcFlowRamp = false;
-                });
-              }
+                    prvcmaxValue = 100;
+                    prvcminValue = 10;
+                    prvcparameterName = "PC Max";
+                    prvcparameterUnits = "cmH\u2082O above PEEP";
+                    prvcItrig = false;
+                    prvcRr = false;
+                    prvcIe = false;
+                    prvcPeep = false;
+                    prvcVt = false;
+                    prvcPcMin = false;
+                    prvcPcMax = true;
+                    prvcFio2 = false;
+                    prvcFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -19142,342 +19149,348 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-              _parameterChangeEnabled == false
+            _parameterChangeEnabled == false
                 ? Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xFFE0E0E0)),
-                width: 400,
-                height: 246,
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (prvcItrig == true &&
-                                    prvcItrigValue != prvcminValue) {
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFFE0E0E0)),
+                    width: 400,
+                    height: 246,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    prvcItrigValue = prvcItrigValue - 1;
-                                  });
-                                } else if (prvcPeep == true &&
-                                    prvcPeepValue != prvcminValue) {
-                                  setState(() {
-                                    prvcPeepValue = prvcPeepValue - 1;
-                                    if (prvcItrigValue > 1 &&
-                                        prvcItrigValue > prvcPeepValue) {
-                                      prvcItrigValue = prvcPeepValue;
+                                    if (prvcItrig == true &&
+                                        prvcItrigValue != prvcminValue) {
+                                      setState(() {
+                                        prvcItrigValue = prvcItrigValue - 1;
+                                      });
+                                    } else if (prvcPeep == true &&
+                                        prvcPeepValue != prvcminValue) {
+                                      setState(() {
+                                        prvcPeepValue = prvcPeepValue - 1;
+                                        if (prvcItrigValue > 1 &&
+                                            prvcItrigValue > prvcPeepValue) {
+                                          prvcItrigValue = prvcPeepValue;
+                                        }
+                                      });
+                                    } else if (prvcRr == true &&
+                                        prvcRrValue != prvcminValue) {
+                                      setState(() {
+                                        prvcRrValue = prvcRrValue - 1;
+                                      });
+                                    } else if (prvcIe == true &&
+                                        prvcIeValue != prvcminValue) {
+                                      setState(() {
+                                        prvcIeValue = prvcIeValue - 1;
+                                      });
+                                    } else if (prvcVt == true &&
+                                        prvcVtValue != prvcminValue) {
+                                      setState(() {
+                                        prvcVtValue = prvcVtValue - 1;
+                                      });
+                                    } else if (prvcPcMin == true &&
+                                        prvcPcMinValue != prvcminValue) {
+                                      setState(() {
+                                        prvcPcMinValue = prvcPcMinValue - 1;
+                                        // if (prvcPcMinValue >= prvcPcMaxValue) {
+                                        //   prvcPcMaxValue = prvcPcMaxValue - 1;
+                                        // }
+                                      });
+                                    } else if (prvcPcMax == true &&
+                                        prvcPcMaxValue != prvcminValue) {
+                                      prvcPcMaxValue = prvcPcMaxValue - 1;
+                                    } else if (prvcFio2 == true &&
+                                        prvcFio2Value != prvcminValue) {
+                                      setState(() {
+                                        prvcFio2Value = prvcFio2Value - 1;
+                                      });
+                                    } else if (prvcFlowRamp == true &&
+                                        prvcFlowRampValue != prvcminValue) {
+                                      setState(() {
+                                        prvcFlowRampValue =
+                                            prvcFlowRampValue - 1;
+                                      });
                                     }
                                   });
-                                } else if (prvcRr == true &&
-                                    prvcRrValue != prvcminValue) {
+                                },
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              Text(
+                                prvcparameterName,
+                                style: TextStyle(
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    prvcRrValue = prvcRrValue - 1;
+                                    if (prvcItrig == true &&
+                                        prvcItrigValue != prvcmaxValue) {
+                                      setState(() {
+                                        prvcItrigValue = prvcItrigValue + 1;
+                                        if (prvcPeepValue <= prvcItrigValue) {
+                                          if (prvcPeepValue == 0) {
+                                            prvcItrigValue = 1;
+                                          } else {
+                                            prvcItrigValue = prvcPeepValue;
+                                          }
+                                        }
+                                      });
+                                    } else if (prvcPeep == true &&
+                                        prvcPeepValue != prvcmaxValue) {
+                                      setState(() {
+                                        prvcPeepValue = prvcPeepValue + 1;
+                                        // if (prvcPcMinValue <= prvcPeepValue) {
+                                        //   prvcPcMinValue = prvcPeepValue + 1;
+                                        //   if (prvcPcMaxValue <= prvcPcMinValue) {
+                                        //     prvcPcMaxValue = prvcPcMinValue + 1;
+                                        //   }
+                                        // }
+                                      });
+                                    } else if (prvcRr == true &&
+                                        prvcRrValue != prvcmaxValue) {
+                                      setState(() {
+                                        prvcRrValue = prvcRrValue + 1;
+                                      });
+                                    } else if (prvcIe == true &&
+                                        prvcIeValue != prvcmaxValue) {
+                                      setState(() {
+                                        prvcIeValue = prvcIeValue + 1;
+                                      });
+                                    } else if (prvcVt == true &&
+                                        prvcVtValue != prvcmaxValue) {
+                                      setState(() {
+                                        prvcVtValue = prvcVtValue + 1;
+                                      });
+                                    } else if (prvcPcMin == true &&
+                                        prvcPcMinValue != prvcmaxValue) {
+                                      setState(() {
+                                        // if (prvcPcMaxValue < 90) {
+                                        // prvcPcMinValue = prvcPcMinValue + 1;
+                                        prvcPcMaxValue = prvcPcMaxValue + 1;
+                                        // }
+                                      });
+                                    } else if (prvcPcMax == true &&
+                                        prvcPcMaxValue != prvcmaxValue) {
+                                      setState(() {
+                                        prvcPcMaxValue = prvcPcMaxValue + 1;
+                                      });
+                                    } else if (prvcFio2 == true &&
+                                        prvcFio2Value != prvcmaxValue) {
+                                      setState(() {
+                                        prvcFio2Value = prvcFio2Value + 1;
+                                      });
+                                    } else if (prvcFlowRamp == true &&
+                                        prvcFlowRampValue != prvcmaxValue) {
+                                      setState(() {
+                                        prvcFlowRampValue =
+                                            prvcFlowRampValue + 1;
+                                      });
+                                    }
                                   });
-                                } else if (prvcIe == true &&
-                                    prvcIeValue != prvcminValue) {
-                                  setState(() {
-                                    prvcIeValue = prvcIeValue - 1;
-                                  });
-                                } else if (prvcVt == true &&
-                                    prvcVtValue != prvcminValue) {
-                                  setState(() {
-                                    prvcVtValue = prvcVtValue - 1;
-                                  });
-                                } else if (prvcPcMin == true &&
-                                    prvcPcMinValue != prvcminValue) {
-                                  setState(() {
-                                    prvcPcMinValue = prvcPcMinValue - 1;
-                                    // if (prvcPcMinValue >= prvcPcMaxValue) {
-                                    //   prvcPcMaxValue = prvcPcMaxValue - 1;
-                                    // }
-                                  });
-                                } else if (prvcPcMax == true &&
-                                    prvcPcMaxValue != prvcminValue) {
-                                  prvcPcMaxValue = prvcPcMaxValue - 1;
-                                } else if (prvcFio2 == true &&
-                                    prvcFio2Value != prvcminValue) {
-                                  setState(() {
-                                    prvcFio2Value = prvcFio2Value - 1;
-                                  });
-                                } else if (prvcFlowRamp == true &&
-                                    prvcFlowRampValue != prvcminValue) {
-                                  setState(() {
-                                    prvcFlowRampValue = prvcFlowRampValue - 1;
-                                  });
-                                }
-                              });
-                            },
+                                },
+                              ),
+                            ],
                           ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          Text(
-                            prvcparameterName,
-                            style: TextStyle(
-                                fontSize: 36, fontWeight: FontWeight.normal),
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 45,
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  prvcItrig
+                                      ? pItrig
+                                          ? "-$prvcItrigValue"
+                                          : "$prvcItrigValue"
+                                      : prvcPeep
+                                          ? prvcPeepValue.toInt().toString()
+                                          : prvcRr
+                                              ? prvcRrValue.toInt().toString()
+                                              : prvcIe
+                                                  ? getIeData(prvcIeValue, 1)
+                                                  : prvcVt
+                                                      ? prvcVtValue
+                                                          .toInt()
+                                                          .toString()
+                                                      : prvcPcMin
+                                                          ? prvcPcMinValue
+                                                              .toInt()
+                                                              .toString()
+                                                          : prvcPcMax
+                                                              ? prvcPcMaxValue
+                                                                  .toInt()
+                                                                  .toString()
+                                                              : prvcFio2
+                                                                  ? prvcFio2Value
+                                                                      .toInt()
+                                                                      .toString()
+                                                                  : prvcFlowRamp
+                                                                      ? prvcFlowRampValue
+                                                                          .toInt()
+                                                                          .toString()
+                                                                      : "",
+                                  style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                              ],
                             ),
-                            onPressed: () {
-                              setState(() {
-                                if (prvcItrig == true &&
-                                    prvcItrigValue != prvcmaxValue) {
-                                  setState(() {
-                                    prvcItrigValue = prvcItrigValue + 1;
-                                    if (prvcPeepValue <= prvcItrigValue) {
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          // prvcFio2
+                          //     ? Container()
+                          //     :
+                          Container(
+                              width: 350,
+                              child: Slider(
+                                min: prvcminValue.toDouble(),
+                                max: prvcmaxValue.toDouble(),
+                                onChanged: (double value) {
+                                  if (prvcItrig == true &&
+                                      prvcItrigValue != 10) {
+                                    setState(() {
                                       if (prvcPeepValue == 0) {
                                         prvcItrigValue = 1;
                                       } else {
-                                        prvcItrigValue = prvcPeepValue;
+                                        if (value.toInt() > prvcPeepValue) {
+                                          prvcItrigValue = prvcPeepValue;
+                                        } else {
+                                          prvcItrigValue = value.toInt();
+                                        }
                                       }
+                                    });
+                                  } else if (prvcPeep == true) {
+                                    setState(() {
+                                      prvcPeepValue = value.toInt();
+                                      if (prvcItrigValue > 1 &&
+                                          prvcItrigValue > prvcPeepValue) {
+                                        if (prvcPeepValue == 0) {
+                                          prvcItrigValue = 1;
+                                        } else {
+                                          prvcItrigValue = prvcPeepValue;
+                                        }
+                                      }
+                                    });
+                                  } else if (prvcRr == true) {
+                                    setState(() {
+                                      prvcRrValue = value.toInt();
+                                    });
+                                  } else if (prvcIe == true) {
+                                    setState(() {
+                                      prvcIeValue = value.toInt();
+                                    });
+                                  } else if (prvcVt == true) {
+                                    setState(() {
+                                      prvcVtValue = value.toInt();
+                                    });
+                                  } else if (prvcPcMin == true) {
+                                    if (value.toInt() < 90) {
+                                      prvcPcMinValue = value.toInt();
+                                      prvcPcMaxValue = prvcPcMinValue + 1;
                                     }
-                                  });
-                                } else if (prvcPeep == true &&
-                                    prvcPeepValue != prvcmaxValue) {
-                                  setState(() {
-                                    prvcPeepValue = prvcPeepValue + 1;
-                                    // if (prvcPcMinValue <= prvcPeepValue) {
-                                    //   prvcPcMinValue = prvcPeepValue + 1;
-                                    //   if (prvcPcMaxValue <= prvcPcMinValue) {
-                                    //     prvcPcMaxValue = prvcPcMinValue + 1;
-                                    //   }
-                                    // }
-                                  });
-                                } else if (prvcRr == true &&
-                                    prvcRrValue != prvcmaxValue) {
-                                  setState(() {
-                                    prvcRrValue = prvcRrValue + 1;
-                                  });
-                                } else if (prvcIe == true &&
-                                    prvcIeValue != prvcmaxValue) {
-                                  setState(() {
-                                    prvcIeValue = prvcIeValue + 1;
-                                  });
-                                } else if (prvcVt == true &&
-                                    prvcVtValue != prvcmaxValue) {
-                                  setState(() {
-                                    prvcVtValue = prvcVtValue + 1;
-                                  });
-                                } else if (prvcPcMin == true &&
-                                    prvcPcMinValue != prvcmaxValue) {
-                                  setState(() {
-                                    // if (prvcPcMaxValue < 90) {
-                                    // prvcPcMinValue = prvcPcMinValue + 1;
-                                    prvcPcMaxValue = prvcPcMaxValue + 1;
-                                    // }
-                                  });
-                                } else if (prvcPcMax == true &&
-                                    prvcPcMaxValue != prvcmaxValue) {
-                                  setState(() {
-                                    prvcPcMaxValue = prvcPcMaxValue + 1;
-                                  });
-                                } else if (prvcFio2 == true &&
-                                    prvcFio2Value != prvcmaxValue) {
-                                  setState(() {
-                                    prvcFio2Value = prvcFio2Value + 1;
-                                  });
-                                } else if (prvcFlowRamp == true &&
-                                    prvcFlowRampValue != prvcmaxValue) {
-                                  setState(() {
-                                    prvcFlowRampValue = prvcFlowRampValue + 1;
-                                  });
-                                }
-                              });
-                            },
-                          ),
-                        ],
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              prvcItrig
-                                  ? pItrig
-                                      ? "-$prvcItrigValue"
-                                      : "$prvcItrigValue"
-                                  : prvcPeep
-                                      ? prvcPeepValue.toInt().toString()
-                                      : prvcRr
-                                          ? prvcRrValue.toInt().toString()
-                                          : prvcIe
-                                              ? getIeData(prvcIeValue, 1)
-                                              : prvcVt
-                                                  ? prvcVtValue
-                                                      .toInt()
-                                                      .toString()
-                                                  : prvcPcMin
-                                                      ? prvcPcMinValue
-                                                          .toInt()
-                                                          .toString()
-                                                      : prvcPcMax
-                                                          ? prvcPcMaxValue
-                                                              .toInt()
-                                                              .toString()
-                                                          : prvcFio2
-                                                              ? prvcFio2Value
-                                                                  .toInt()
-                                                                  .toString()
-                                                              : prvcFlowRamp
-                                                                  ? prvcFlowRampValue
-                                                                      .toInt()
-                                                                      .toString()
-                                                                  : "",
-                              style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      // prvcFio2
-                      //     ? Container()
-                      //     :
-                      Container(
-                          width: 350,
-                          child: Slider(
-                            min: prvcminValue.toDouble(),
-                            max: prvcmaxValue.toDouble(),
-                            onChanged: (double value) {
-                              if (prvcItrig == true && prvcItrigValue != 10) {
-                                setState(() {
-                                  if (prvcPeepValue == 0) {
-                                    prvcItrigValue = 1;
-                                  } else {
-                                    if (value.toInt() > prvcPeepValue) {
-                                      prvcItrigValue = prvcPeepValue;
-                                    } else {
-                                      prvcItrigValue = value.toInt();
-                                    }
+                                  } else if (prvcPcMax == true) {
+                                    setState(() {
+                                      // if (value.toInt() <= prvcminValue ) {
+                                      //   prvcPcMaxValue = prvcPcMinValue + 1;
+                                      // } else {
+                                      prvcPcMaxValue = value.toInt();
+                                      // }
+                                    });
+                                  } else if (prvcFio2 == true) {
+                                    setState(() {
+                                      prvcFio2Value = value.toInt();
+                                    });
+                                  } else if (prvcFlowRamp == true) {
+                                    setState(() {
+                                      prvcFlowRampValue = value.toInt();
+                                    });
                                   }
-                                });
-                              } else if (prvcPeep == true) {
-                                setState(() {
-                                  prvcPeepValue = value.toInt();
-                                  if (prvcItrigValue > 1 &&
-                                      prvcItrigValue > prvcPeepValue) {
-                                    if (prvcPeepValue == 0) {
-                                      prvcItrigValue = 1;
-                                    } else {
-                                      prvcItrigValue = prvcPeepValue;
-                                    }
-                                  }
-                                });
-                              } else if (prvcRr == true) {
-                                setState(() {
-                                  prvcRrValue = value.toInt();
-                                });
-                              } else if (prvcIe == true) {
-                                setState(() {
-                                  prvcIeValue = value.toInt();
-                                });
-                              } else if (prvcVt == true) {
-                                setState(() {
-                                  prvcVtValue = value.toInt();
-                                });
-                              } else if (prvcPcMin == true) {
-                                if (value.toInt() < 90) {
-                                  prvcPcMinValue = value.toInt();
-                                  prvcPcMaxValue = prvcPcMinValue + 1;
-                                }
-                              } else if (prvcPcMax == true) {
-                                setState(() {
-                                  // if (value.toInt() <= prvcminValue ) {
-                                  //   prvcPcMaxValue = prvcPcMinValue + 1;
-                                  // } else {
-                                  prvcPcMaxValue = value.toInt();
-                                  // }
-                                });
-                              } else if (prvcFio2 == true) {
-                                setState(() {
-                                  prvcFio2Value = value.toInt();
-                                });
-                              } else if (prvcFlowRamp == true) {
-                                setState(() {
-                                  prvcFlowRampValue = value.toInt();
-                                });
-                              }
-                            },
-                            value: prvcItrig
-                                ? prvcItrigValue.toDouble()
-                                : prvcPeep
-                                    ? prvcPeepValue.toDouble()
-                                    : prvcRr
-                                        ? prvcRrValue.toDouble()
-                                        : prvcIe
-                                            ? prvcIeValue.toDouble()
-                                            : prvcVt
-                                                ? prvcVtValue.toDouble()
-                                                : prvcPcMin
-                                                    ? prvcPcMinValue.toDouble()
-                                                    : prvcPcMax
-                                                        ? prvcPcMaxValue
+                                },
+                                value: prvcItrig
+                                    ? prvcItrigValue.toDouble()
+                                    : prvcPeep
+                                        ? prvcPeepValue.toDouble()
+                                        : prvcRr
+                                            ? prvcRrValue.toDouble()
+                                            : prvcIe
+                                                ? prvcIeValue.toDouble()
+                                                : prvcVt
+                                                    ? prvcVtValue.toDouble()
+                                                    : prvcPcMin
+                                                        ? prvcPcMinValue
                                                             .toDouble()
-                                                        : prvcFio2
-                                                            ? prvcFio2Value
+                                                        : prvcPcMax
+                                                            ? prvcPcMaxValue
                                                                 .toDouble()
-                                                            : prvcFlowRamp
-                                                                ? prvcFlowRampValue
+                                                            : prvcFio2
+                                                                ? prvcFio2Value
                                                                     .toDouble()
-                                                                : "",
-                          )),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45.0, right: 45.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(prvcIe
-                                ? getIeData(prvcminValue, 1)
-                                : prvcItrig
-                                    ? pItrig
-                                        ? "-$prvcminValue"
-                                        : "$prvcminValue"
-                                    : prvcminValue.toString()),
-                            Text(
-                              prvcItrig
-                                  ? pItrig ? prvcparameterUnits : "lpm"
-                                  : prvcparameterUnits,
-                              style: TextStyle(fontSize: 16),
+                                                                : prvcFlowRamp
+                                                                    ? prvcFlowRampValue
+                                                                        .toDouble()
+                                                                    : "",
+                              )),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 45.0, right: 45.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(prvcIe
+                                    ? getIeData(prvcminValue, 1)
+                                    : prvcItrig
+                                        ? pItrig
+                                            ? "-$prvcminValue"
+                                            : "$prvcminValue"
+                                        : prvcminValue.toString()),
+                                Text(
+                                  prvcItrig
+                                      ? pItrig ? prvcparameterUnits : "lpm"
+                                      : prvcparameterUnits,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(prvcIe
+                                    ? getIeData(prvcminValue, 1)
+                                    : prvcItrig
+                                        ? pItrig
+                                            ? "-$prvcmaxValue"
+                                            : "$prvcmaxValue"
+                                        : prvcmaxValue.toString())
+                              ],
                             ),
-                            Text(prvcIe
-                                ? getIeData(prvcminValue, 1)
-                                : prvcItrig
-                                    ? pItrig
-                                        ? "-$prvcmaxValue"
-                                        : "$prvcmaxValue"
-                                    : prvcmaxValue.toString())
-                          ],
-                        ),
-                      ),
-                      Row(
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
@@ -19508,9 +19521,10 @@ class _CheckPageState extends State<Dashboard> {
                               ),
                             ],
                           )
-                    ],
-                  ),
-                )):Container(),
+                        ],
+                      ),
+                    ))
+                : Container(),
           ],
         ),
       ],
@@ -19531,21 +19545,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  psimvmaxValue = 30;
-                  psimvminValue = 1;
-                  psimvparameterName = "RR";
-                  psimvparameterUnits = "bpm";
-                  psimvItrig = false;
-                  psimvRr = true;
-                  psimvIe = false;
-                  psimvPeep = false;
-                  psimvPc = false;
-                  psimvVtMin = false;
-                  psimvVtMax = false;
-                  psimvFio2 = false;
-                  psimvFlowRamp = false;
-                  psimvPs = false;
-                });
+                    psimvmaxValue = 30;
+                    psimvminValue = 1;
+                    psimvparameterName = "RR";
+                    psimvparameterUnits = "bpm";
+                    psimvItrig = false;
+                    psimvRr = true;
+                    psimvIe = false;
+                    psimvPeep = false;
+                    psimvPc = false;
+                    psimvVtMin = false;
+                    psimvVtMax = false;
+                    psimvFio2 = false;
+                    psimvFlowRamp = false;
+                    psimvPs = false;
+                  });
                 }
               },
               child: Center(
@@ -19649,22 +19663,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  psimvmaxValue = 61;
-                  psimvminValue = 1;
-                  psimvparameterName = "I:E";
-                  psimvparameterUnits = "";
-                  psimvItrig = false;
-                  psimvRr = false;
-                  psimvIe = true;
-                  psimvPeep = false;
-                  psimvPc = false;
-                  psimvVtMin = false;
-                  psimvVtMax = false;
-                  psimvFio2 = false;
-                  psimvFlowRamp = false;
-                  psimvPs = false;
-                });
-              }
+                    psimvmaxValue = 61;
+                    psimvminValue = 1;
+                    psimvparameterName = "I:E";
+                    psimvparameterUnits = "";
+                    psimvItrig = false;
+                    psimvRr = false;
+                    psimvIe = true;
+                    psimvPeep = false;
+                    psimvPc = false;
+                    psimvVtMin = false;
+                    psimvVtMax = false;
+                    psimvFio2 = false;
+                    psimvFlowRamp = false;
+                    psimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -19767,23 +19781,23 @@ class _CheckPageState extends State<Dashboard> {
               onTap: () {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
-                  _parameterChangeEnabled = false;
-                  psimvmaxValue = _isTab10 ? 45 : 30;
-                  psimvminValue = 0;
-                  psimvparameterName = "PEEP";
-                  psimvparameterUnits = "cmH\u2082O";
-                  psimvItrig = false;
-                  psimvRr = false;
-                  psimvIe = false;
-                  psimvPeep = true;
-                  psimvPc = false;
-                  psimvVtMin = false;
-                  psimvVtMax = false;
-                  psimvFio2 = false;
-                  psimvFlowRamp = false;
-                  psimvPs = false;
-                });
-              }
+                    _parameterChangeEnabled = false;
+                    psimvmaxValue = _isTab10 ? 45 : 30;
+                    psimvminValue = 0;
+                    psimvparameterName = "PEEP";
+                    psimvparameterUnits = "cmH\u2082O";
+                    psimvItrig = false;
+                    psimvRr = false;
+                    psimvIe = false;
+                    psimvPeep = true;
+                    psimvPc = false;
+                    psimvVtMin = false;
+                    psimvVtMax = false;
+                    psimvFio2 = false;
+                    psimvFlowRamp = false;
+                    psimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -19894,22 +19908,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  psimvmaxValue = _isTab10 ? 85 : 60;
-                  psimvminValue = 5;
-                  psimvparameterName = "PC";
-                  psimvparameterUnits = "cmH\u2082O above PEEP";
-                  psimvItrig = false;
-                  psimvRr = false;
-                  psimvIe = false;
-                  psimvPeep = false;
-                  psimvPc = true;
-                  psimvVtMin = false;
-                  psimvVtMax = false;
-                  psimvFio2 = false;
-                  psimvFlowRamp = false;
-                  psimvPs = false;
-                });
-              }
+                    psimvmaxValue = _isTab10 ? 85 : 60;
+                    psimvminValue = 5;
+                    psimvparameterName = "PC";
+                    psimvparameterUnits = "cmH\u2082O above PEEP";
+                    psimvItrig = false;
+                    psimvRr = false;
+                    psimvIe = false;
+                    psimvPeep = false;
+                    psimvPc = true;
+                    psimvVtMin = false;
+                    psimvVtMax = false;
+                    psimvFio2 = false;
+                    psimvFlowRamp = false;
+                    psimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -20014,22 +20028,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  psimvmaxValue = 100;
-                  psimvminValue = 21;
-                  psimvparameterName = "FiO\u2082";
-                  psimvparameterUnits = "%";
-                  psimvItrig = false;
-                  psimvRr = false;
-                  psimvIe = false;
-                  psimvPeep = false;
-                  psimvPc = false;
-                  psimvVtMin = false;
-                  psimvVtMax = false;
-                  psimvFio2 = true;
-                  psimvFlowRamp = false;
-                  psimvPs = false;
-                });
-              }
+                    psimvmaxValue = 100;
+                    psimvminValue = 21;
+                    psimvparameterName = "FiO\u2082";
+                    psimvparameterUnits = "%";
+                    psimvItrig = false;
+                    psimvRr = false;
+                    psimvIe = false;
+                    psimvPeep = false;
+                    psimvPc = false;
+                    psimvVtMin = false;
+                    psimvVtMax = false;
+                    psimvFio2 = true;
+                    psimvFlowRamp = false;
+                    psimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -20132,22 +20146,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  psimvmaxValue = 10;
-                  psimvminValue = 1;
-                  psimvparameterName = "I Trig";
-                  psimvparameterUnits = "cmH\u2082O Below PEEP";
-                  psimvItrig = true;
-                  psimvRr = false;
-                  psimvIe = false;
-                  psimvPeep = false;
-                  psimvPc = false;
-                  psimvPs = false;
-                  psimvVtMin = false;
-                  psimvVtMax = false;
-                  psimvFio2 = false;
-                  psimvFlowRamp = false;
-                });
-              }
+                    psimvmaxValue = 10;
+                    psimvminValue = 1;
+                    psimvparameterName = "I Trig";
+                    psimvparameterUnits = "cmH\u2082O Below PEEP";
+                    psimvItrig = true;
+                    psimvRr = false;
+                    psimvIe = false;
+                    psimvPeep = false;
+                    psimvPc = false;
+                    psimvPs = false;
+                    psimvVtMin = false;
+                    psimvVtMax = false;
+                    psimvFio2 = false;
+                    psimvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -20490,22 +20504,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  psimvmaxValue = 65;
-                  psimvminValue = 0;
-                  psimvparameterName = "PS";
-                  psimvparameterUnits = "cmH\u2082O above PEEP";
-                  psimvItrig = false;
-                  psimvRr = false;
-                  psimvIe = false;
-                  psimvPeep = false;
-                  psimvPc = false;
-                  psimvVtMin = false;
-                  psimvVtMax = false;
-                  psimvFio2 = false;
-                  psimvFlowRamp = false;
-                  psimvPs = true;
-                });
-              }
+                    psimvmaxValue = 65;
+                    psimvminValue = 0;
+                    psimvparameterName = "PS";
+                    psimvparameterUnits = "cmH\u2082O above PEEP";
+                    psimvItrig = false;
+                    psimvRr = false;
+                    psimvIe = false;
+                    psimvPeep = false;
+                    psimvPc = false;
+                    psimvVtMin = false;
+                    psimvVtMax = false;
+                    psimvFio2 = false;
+                    psimvFlowRamp = false;
+                    psimvPs = true;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -20903,397 +20917,406 @@ class _CheckPageState extends State<Dashboard> {
             ),
             _parameterChangeEnabled == false
                 ? Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xFFE0E0E0)),
-                width: 400,
-                height: 246,
-                child: Center(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (psimvItrig == true &&
-                                    psimvItrigValue != psimvminValue) {
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFFE0E0E0)),
+                    width: 400,
+                    height: 246,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    psimvItrigValue = psimvItrigValue - 1;
-                                  });
-                                }
-                                // else if (psimvPeep == true &&
-                                //     psimvPeepValue != psimvminValue) {
-                                //   setState(() {
-                                //     psimvPeepValue = psimvPeepValue - 1;
-                                //     if (psimvItrigValue > 1 &&
-                                //         psimvItrigValue > psimvPeepValue) {
-                                //       psimvItrigValue = psimvPeepValue;
-                                //     }
-                                //   });
-                                // }
-                                else if (psimvPeep == true &&
-                                    psimvPeepValue != psimvminValue) {
-                                  setState(() {
-                                    psimvPeepValue = psimvPeepValue - 1;
-                                  });
-                                } else if (psimvRr == true &&
-                                    psimvRrValue != psimvminValue) {
-                                  setState(() {
-                                    psimvRrValue = psimvRrValue - 1;
-                                  });
-                                } else if (psimvIe == true &&
-                                    psimvIeValue != psimvminValue) {
-                                  setState(() {
-                                    psimvIeValue = psimvIeValue - 1;
-                                  });
-                                } else if (psimvPc == true &&
-                                    psimvPcValue != psimvminValue &&
-                                    psimvPcValue != 5) {
-                                  setState(() {
-                                    psimvPcValue = psimvPcValue - 1;
-                                    if (psimvPcValue < psimvPsValue) {
-                                      psimvPsValue = psimvPcValue;
+                                    if (psimvItrig == true &&
+                                        psimvItrigValue != psimvminValue) {
+                                      setState(() {
+                                        psimvItrigValue = psimvItrigValue - 1;
+                                      });
+                                    }
+                                    // else if (psimvPeep == true &&
+                                    //     psimvPeepValue != psimvminValue) {
+                                    //   setState(() {
+                                    //     psimvPeepValue = psimvPeepValue - 1;
+                                    //     if (psimvItrigValue > 1 &&
+                                    //         psimvItrigValue > psimvPeepValue) {
+                                    //       psimvItrigValue = psimvPeepValue;
+                                    //     }
+                                    //   });
+                                    // }
+                                    else if (psimvPeep == true &&
+                                        psimvPeepValue != psimvminValue) {
+                                      setState(() {
+                                        psimvPeepValue = psimvPeepValue - 1;
+                                      });
+                                    } else if (psimvRr == true &&
+                                        psimvRrValue != psimvminValue) {
+                                      setState(() {
+                                        psimvRrValue = psimvRrValue - 1;
+                                      });
+                                    } else if (psimvIe == true &&
+                                        psimvIeValue != psimvminValue) {
+                                      setState(() {
+                                        psimvIeValue = psimvIeValue - 1;
+                                      });
+                                    } else if (psimvPc == true &&
+                                        psimvPcValue != psimvminValue &&
+                                        psimvPcValue != 5) {
+                                      setState(() {
+                                        psimvPcValue = psimvPcValue - 1;
+                                        if (psimvPcValue < psimvPsValue) {
+                                          psimvPsValue = psimvPcValue;
+                                        }
+                                      });
+                                    } else if (psimvVtMin == true &&
+                                        psimvVtMinValue != psimvminValue) {
+                                      setState(() {
+                                        psimvVtMinValue = psimvVtMinValue - 1;
+                                        //  if (psimvVtMinValue >= psimvVtMaxValue) {
+                                        //    psimvVtMaxValue = psimvVtMaxValue - 1;
+                                        //  }
+                                      });
+                                    } else if (psimvVtMax == true &&
+                                        psimvVtMaxValue !=
+                                            psimvVtMinValue + 1) {
+                                      psimvVtMaxValue = psimvVtMaxValue - 1;
+                                    } else if (psimvFio2 == true &&
+                                        psimvFio2Value != psimvminValue) {
+                                      setState(() {
+                                        psimvFio2Value = psimvFio2Value - 1;
+                                      });
+                                    } else if (psimvFlowRamp == true &&
+                                        psimvFlowRampValue != psimvminValue) {
+                                      setState(() {
+                                        psimvFlowRampValue =
+                                            psimvFlowRampValue - 1;
+                                      });
+                                    } else if (psimvPs == true &&
+                                        psimvPsValue != psimvPcValue + 1 &&
+                                        psimvPsValue != 0) {
+                                      setState(() {
+                                        psimvPsValue = psimvPsValue - 1;
+                                      });
                                     }
                                   });
-                                } else if (psimvVtMin == true &&
-                                    psimvVtMinValue != psimvminValue) {
+                                },
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              Text(
+                                psimvparameterName,
+                                style: TextStyle(
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
+                                  int maxPeep = _isTab10 ? 45 : 30;
+                                  int maxValue = _isTab10 ? 90 : 65;
+                                  int maxValuepcValue, maxValuepeepValue;
                                   setState(() {
-                                    psimvVtMinValue = psimvVtMinValue - 1;
-                                    //  if (psimvVtMinValue >= psimvVtMaxValue) {
-                                    //    psimvVtMaxValue = psimvVtMaxValue - 1;
-                                    //  }
-                                  });
-                                } else if (psimvVtMax == true &&
-                                    psimvVtMaxValue != psimvVtMinValue + 1) {
-                                  psimvVtMaxValue = psimvVtMaxValue - 1;
-                                } else if (psimvFio2 == true &&
-                                    psimvFio2Value != psimvminValue) {
-                                  setState(() {
-                                    psimvFio2Value = psimvFio2Value - 1;
-                                  });
-                                } else if (psimvFlowRamp == true &&
-                                    psimvFlowRampValue != psimvminValue) {
-                                  setState(() {
-                                    psimvFlowRampValue = psimvFlowRampValue - 1;
-                                  });
-                                } else if (psimvPs == true &&
-                                    psimvPsValue != psimvPcValue + 1 &&
-                                    psimvPsValue != 0) {
-                                  setState(() {
-                                    psimvPsValue = psimvPsValue - 1;
-                                  });
-                                }
-                              });
-                            },
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          Text(
-                            psimvparameterName,
-                            style: TextStyle(
-                                fontSize: 36, fontWeight: FontWeight.normal),
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              int maxPeep = _isTab10 ? 45 : 30;
-                              int maxValue = _isTab10 ? 90 : 65;
-                              int maxValuepcValue, maxValuepeepValue;
-                              setState(() {
-                                // if (psimvItrig == true &&
-                                //     psimvItrigValue != psimvmaxValue) {
-                                //   setState(() {
-                                //     psimvItrigValue = psimvItrigValue + 1;
-                                //     if (psimvPeepValue <= psimvItrigValue) {
-                                //       if (psimvPeepValue == 0) {
-                                //         psimvItrigValue = 1;
-                                //       } else {
-                                //         psimvItrigValue = psimvPeepValue;
-                                //       }
-                                //     }
-                                //   });
-                                // }
+                                    // if (psimvItrig == true &&
+                                    //     psimvItrigValue != psimvmaxValue) {
+                                    //   setState(() {
+                                    //     psimvItrigValue = psimvItrigValue + 1;
+                                    //     if (psimvPeepValue <= psimvItrigValue) {
+                                    //       if (psimvPeepValue == 0) {
+                                    //         psimvItrigValue = 1;
+                                    //       } else {
+                                    //         psimvItrigValue = psimvPeepValue;
+                                    //       }
+                                    //     }
+                                    //   });
+                                    // }
 
-                                maxValuepcValue = maxValue - psimvPeepValue;
-                                if ((maxValue - psimvPcValue) >= maxPeep) {
-                                  maxValuepeepValue = maxPeep;
-                                } else {
-                                  maxValuepeepValue = maxValue - psimvPcValue;
-                                }
-                                if (psimvItrig == true &&
-                                    psimvItrigValue != psimvmaxValue) {
-                                  setState(() {
-                                    psimvItrigValue = psimvItrigValue + 1;
-                                  });
-                                } else if (psimvPeep == true &&
-                                    psimvPeepValue != psimvmaxValue &&
-                                    psimvPeepValue < maxValuepeepValue) {
-                                  setState(() {
-                                    psimvPeepValue = psimvPeepValue + 1;
-                                  });
-                                } else if (psimvRr == true &&
-                                    psimvRrValue != psimvmaxValue) {
-                                  setState(() {
-                                    psimvRrValue = psimvRrValue + 1;
-                                  });
-                                } else if (psimvIe == true &&
-                                    psimvIeValue != psimvmaxValue) {
-                                  setState(() {
-                                    psimvIeValue = psimvIeValue + 1;
-                                  });
-                                } else if (psimvPc == true &&
-                                    psimvPcValue != psvmaxValue &&
-                                    psimvPcValue < maxValuepcValue) {
-                                  setState(() {
-                                    psimvPcValue = psimvPcValue + 1;
-                                  });
-                                } else if (psimvVtMin == true &&
-                                    psimvVtMinValue != psimvmaxValue) {
-                                  setState(() {
-                                    if (psimvVtMaxValue != 1190 &&
-                                        psimvVtMinValue != 1189) {
-                                      psimvVtMinValue = psimvVtMinValue + 1;
-                                      psimvVtMaxValue = psimvVtMinValue + 1;
+                                    maxValuepcValue = maxValue - psimvPeepValue;
+                                    if ((maxValue - psimvPcValue) >= maxPeep) {
+                                      maxValuepeepValue = maxPeep;
+                                    } else {
+                                      maxValuepeepValue =
+                                          maxValue - psimvPcValue;
+                                    }
+                                    if (psimvItrig == true &&
+                                        psimvItrigValue != psimvmaxValue) {
+                                      setState(() {
+                                        psimvItrigValue = psimvItrigValue + 1;
+                                      });
+                                    } else if (psimvPeep == true &&
+                                        psimvPeepValue != psimvmaxValue &&
+                                        psimvPeepValue < maxValuepeepValue) {
+                                      setState(() {
+                                        psimvPeepValue = psimvPeepValue + 1;
+                                      });
+                                    } else if (psimvRr == true &&
+                                        psimvRrValue != psimvmaxValue) {
+                                      setState(() {
+                                        psimvRrValue = psimvRrValue + 1;
+                                      });
+                                    } else if (psimvIe == true &&
+                                        psimvIeValue != psimvmaxValue) {
+                                      setState(() {
+                                        psimvIeValue = psimvIeValue + 1;
+                                      });
+                                    } else if (psimvPc == true &&
+                                        psimvPcValue != psvmaxValue &&
+                                        psimvPcValue < maxValuepcValue) {
+                                      setState(() {
+                                        psimvPcValue = psimvPcValue + 1;
+                                      });
+                                    } else if (psimvVtMin == true &&
+                                        psimvVtMinValue != psimvmaxValue) {
+                                      setState(() {
+                                        if (psimvVtMaxValue != 1190 &&
+                                            psimvVtMinValue != 1189) {
+                                          psimvVtMinValue = psimvVtMinValue + 1;
+                                          psimvVtMaxValue = psimvVtMinValue + 1;
+                                        }
+                                      });
+                                    } else if (psimvVtMax == true &&
+                                        psimvVtMaxValue != psimvmaxValue) {
+                                      setState(() {
+                                        psimvVtMaxValue = psimvVtMaxValue + 1;
+                                      });
+                                    } else if (psimvFlowRamp == true &&
+                                        psimvFlowRampValue != psimvmaxValue) {
+                                      setState(() {
+                                        psimvFlowRampValue =
+                                            psimvFlowRampValue + 1;
+                                      });
+                                    } else if (psimvPs == true &&
+                                        psimvPsValue != psimvPcValue) {
+                                      setState(() {
+                                        psimvPsValue = psimvPsValue + 1;
+                                      });
+                                    } else if (psimvFio2 == true &&
+                                        psimvFio2Value != psimvmaxValue) {
+                                      setState(() {
+                                        psimvFio2Value = psimvFio2Value + 1;
+                                      });
                                     }
                                   });
-                                } else if (psimvVtMax == true &&
-                                    psimvVtMaxValue != psimvmaxValue) {
-                                  setState(() {
-                                    psimvVtMaxValue = psimvVtMaxValue + 1;
-                                  });
-                                } else if (psimvFlowRamp == true &&
-                                    psimvFlowRampValue != psimvmaxValue) {
-                                  setState(() {
-                                    psimvFlowRampValue = psimvFlowRampValue + 1;
-                                  });
-                                } else if (psimvPs == true &&
-                                    psimvPsValue != psimvPcValue) {
-                                  setState(() {
-                                    psimvPsValue = psimvPsValue + 1;
-                                  });
-                                } else if (psimvFio2 == true &&
-                                    psimvFio2Value != psimvmaxValue) {
-                                  setState(() {
-                                    psimvFio2Value = psimvFio2Value + 1;
-                                  });
-                                }
-                              });
-                            },
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              psimvItrig
-                                  ? pItrig
-                                      ? "-$psimvItrigValue"
-                                      : "$psimvItrigValue"
-                                  : psimvPeep
-                                      ? psimvPeepValue.toInt().toString()
-                                      : psimvRr
-                                          ? psimvRrValue.toInt().toString()
-                                          : psimvIe
-                                              ? getIeData(psimvIeValue, 1)
-                                              : psimvPc
-                                                  ? psimvPcValue
-                                                      .toInt()
-                                                      .toString()
-                                                  : psimvVtMin
-                                                      ? psimvVtMinValue
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  psimvItrig
+                                      ? pItrig
+                                          ? "-$psimvItrigValue"
+                                          : "$psimvItrigValue"
+                                      : psimvPeep
+                                          ? psimvPeepValue.toInt().toString()
+                                          : psimvRr
+                                              ? psimvRrValue.toInt().toString()
+                                              : psimvIe
+                                                  ? getIeData(psimvIeValue, 1)
+                                                  : psimvPc
+                                                      ? psimvPcValue
                                                           .toInt()
                                                           .toString()
-                                                      : psimvVtMax
-                                                          ? psimvVtMaxValue
+                                                      : psimvVtMin
+                                                          ? psimvVtMinValue
                                                               .toInt()
                                                               .toString()
-                                                          : psimvFio2
-                                                              ? psimvFio2Value
+                                                          : psimvVtMax
+                                                              ? psimvVtMaxValue
                                                                   .toInt()
                                                                   .toString()
-                                                              : psimvFlowRamp
-                                                                  ? psimvFlowRampValue
+                                                              : psimvFio2
+                                                                  ? psimvFio2Value
                                                                       .toInt()
                                                                       .toString()
-                                                                  : psimvPs
-                                                                      ? psimvPsValue
+                                                                  : psimvFlowRamp
+                                                                      ? psimvFlowRampValue
                                                                           .toInt()
                                                                           .toString()
-                                                                      : "",
-                              style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                                                                      : psimvPs
+                                                                          ? psimvPsValue
+                                                                              .toInt()
+                                                                              .toString()
+                                                                          : "",
+                                  style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                          width: 350,
-                          child: Slider(
-                            min: psimvminValue.toDouble() ?? 0,
-                            max: psimvmaxValue.toDouble(),
-                            onChanged: (double value) {
-                              int maxPeep = _isTab10 ? 45 : 30;
-                              int maxValue = _isTab10 ? 90 : 65;
-                              int maxValuepcValue, maxValuepeepValue;
-                              setState(() {
-                                maxValuepcValue = maxValue - psimvPeepValue;
-                                if ((maxValue - psimvPcValue) >= maxPeep) {
-                                  maxValuepeepValue = maxPeep;
-                                } else {
-                                  maxValuepeepValue = maxValue - psimvPcValue;
-                                }
-                              });
-                              if (psimvItrig == true) {
-                                setState(() {
-                                  psimvItrigValue = value.toInt();
-                                });
-                              } else if (psimvPeep == true) {
-                                setState(() {
-                                  if (value.toInt() >= maxValuepeepValue) {
-                                    psimvPeepValue = maxValuepeepValue;
-                                  } else {
-                                    psimvPeepValue = value.toInt();
-                                  }
-                                });
-                              } else if (psimvRr == true) {
-                                setState(() {
-                                  psimvRrValue = value.toInt();
-                                });
-                              } else if (psimvIe == true) {
-                                setState(() {
-                                  psimvIeValue = value.toInt();
-                                });
-                              } else if (psimvPc == true) {
-                                setState(() {
-                                  if (value.toInt() < psimvPsValue) {
-                                    if (value.toInt() >= maxValuepcValue) {
-                                      psimvPcValue = maxValuepcValue;
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                              width: 350,
+                              child: Slider(
+                                min: psimvminValue.toDouble() ?? 0,
+                                max: psimvmaxValue.toDouble(),
+                                onChanged: (double value) {
+                                  int maxPeep = _isTab10 ? 45 : 30;
+                                  int maxValue = _isTab10 ? 90 : 65;
+                                  int maxValuepcValue, maxValuepeepValue;
+                                  setState(() {
+                                    maxValuepcValue = maxValue - psimvPeepValue;
+                                    if ((maxValue - psimvPcValue) >= maxPeep) {
+                                      maxValuepeepValue = maxPeep;
                                     } else {
-                                      psimvPcValue = value.toInt();
+                                      maxValuepeepValue =
+                                          maxValue - psimvPcValue;
                                     }
-                                    psimvPsValue = psimvPcValue;
-                                  } else {
-                                    if (value.toInt() >= maxValuepcValue) {
-                                      psimvPcValue = maxValuepcValue;
-                                    } else {
-                                      psimvPcValue = value.toInt();
+                                  });
+                                  if (psimvItrig == true) {
+                                    setState(() {
+                                      psimvItrigValue = value.toInt();
+                                    });
+                                  } else if (psimvPeep == true) {
+                                    setState(() {
+                                      if (value.toInt() >= maxValuepeepValue) {
+                                        psimvPeepValue = maxValuepeepValue;
+                                      } else {
+                                        psimvPeepValue = value.toInt();
+                                      }
+                                    });
+                                  } else if (psimvRr == true) {
+                                    setState(() {
+                                      psimvRrValue = value.toInt();
+                                    });
+                                  } else if (psimvIe == true) {
+                                    setState(() {
+                                      psimvIeValue = value.toInt();
+                                    });
+                                  } else if (psimvPc == true) {
+                                    setState(() {
+                                      if (value.toInt() < psimvPsValue) {
+                                        if (value.toInt() >= maxValuepcValue) {
+                                          psimvPcValue = maxValuepcValue;
+                                        } else {
+                                          psimvPcValue = value.toInt();
+                                        }
+                                        psimvPsValue = psimvPcValue;
+                                      } else {
+                                        if (value.toInt() >= maxValuepcValue) {
+                                          psimvPcValue = maxValuepcValue;
+                                        } else {
+                                          psimvPcValue = value.toInt();
+                                        }
+                                      }
+                                      // if(value.toInt())
+                                    });
+                                  } else if (psimvVtMin == true) {
+                                    if (value.toInt() < 1190) {
+                                      psimvVtMinValue = value.toInt();
+                                      psimvVtMaxValue = psimvVtMinValue + 1;
                                     }
+                                  } else if (psimvVtMax == true) {
+                                    setState(() {
+                                      if (value.toInt() <=
+                                          psimvVtMinValue + 1) {
+                                        psimvVtMaxValue = psimvVtMinValue + 1;
+                                      } else {
+                                        psimvVtMaxValue = value.toInt();
+                                      }
+                                    });
+                                  } else if (psimvFio2 == true) {
+                                    setState(() {
+                                      psimvFio2Value = value.toInt();
+                                    });
+                                  } else if (psimvFlowRamp == true) {
+                                    setState(() {
+                                      psimvFlowRampValue = value.toInt();
+                                    });
+                                  } else if (psimvPs == true) {
+                                    setState(() {
+                                      if (value.toInt() >= psimvPcValue) {
+                                        psimvPsValue = psimvPcValue;
+                                      } else {
+                                        psimvPsValue = value.toInt();
+                                      }
+                                    });
                                   }
-                                  // if(value.toInt())
-                                });
-                              } else if (psimvVtMin == true) {
-                                if (value.toInt() < 1190) {
-                                  psimvVtMinValue = value.toInt();
-                                  psimvVtMaxValue = psimvVtMinValue + 1;
-                                }
-                              } else if (psimvVtMax == true) {
-                                setState(() {
-                                  if (value.toInt() <= psimvVtMinValue + 1) {
-                                    psimvVtMaxValue = psimvVtMinValue + 1;
-                                  } else {
-                                    psimvVtMaxValue = value.toInt();
-                                  }
-                                });
-                              } else if (psimvFio2 == true) {
-                                setState(() {
-                                  psimvFio2Value = value.toInt();
-                                });
-                              } else if (psimvFlowRamp == true) {
-                                setState(() {
-                                  psimvFlowRampValue = value.toInt();
-                                });
-                              } else if (psimvPs == true) {
-                                setState(() {
-                                  if (value.toInt() >= psimvPcValue) {
-                                    psimvPsValue = psimvPcValue;
-                                  } else {
-                                    psimvPsValue = value.toInt();
-                                  }
-                                });
-                              }
-                            },
-                            value: psimvItrig
-                                ? psimvItrigValue.toDouble()
-                                : psimvPeep
-                                    ? psimvPeepValue.toDouble()
-                                    : psimvRr
-                                        ? psimvRrValue.toDouble()
-                                        : psimvIe
-                                            ? psimvIeValue.toDouble()
-                                            : psimvPc
-                                                ? psimvPcValue.toDouble()
-                                                : psimvVtMin
-                                                    ? psimvVtMinValue.toDouble()
-                                                    : psimvVtMax
-                                                        ? psimvVtMaxValue
+                                },
+                                value: psimvItrig
+                                    ? psimvItrigValue.toDouble()
+                                    : psimvPeep
+                                        ? psimvPeepValue.toDouble()
+                                        : psimvRr
+                                            ? psimvRrValue.toDouble()
+                                            : psimvIe
+                                                ? psimvIeValue.toDouble()
+                                                : psimvPc
+                                                    ? psimvPcValue.toDouble()
+                                                    : psimvVtMin
+                                                        ? psimvVtMinValue
                                                             .toDouble()
-                                                        : psimvFio2
-                                                            ? psimvFio2Value
+                                                        : psimvVtMax
+                                                            ? psimvVtMaxValue
                                                                 .toDouble()
-                                                            : psimvFlowRamp
-                                                                ? psimvFlowRampValue
+                                                            : psimvFio2
+                                                                ? psimvFio2Value
                                                                     .toDouble()
-                                                                : psimvPs
-                                                                    ? psimvPsValue
+                                                                : psimvFlowRamp
+                                                                    ? psimvFlowRampValue
                                                                         .toDouble()
-                                                                    : "",
-                          )),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45.0, right: 45.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(psimvIe
-                                ? getIeData(psimvminValue, 1)
-                                : psimvItrig
-                                    ? pItrig
-                                        ? "-$psimvminValue"
-                                        : "$psimvminValue"
-                                    : psimvminValue.toString()),
-                            Text(
-                              psimvItrig
-                                  ? pItrig ? psimvparameterUnits : "lpm"
-                                  : psimvparameterUnits,
-                              style: TextStyle(fontSize: 16),
+                                                                    : psimvPs
+                                                                        ? psimvPsValue
+                                                                            .toDouble()
+                                                                        : "",
+                              )),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 45.0, right: 45.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(psimvIe
+                                    ? getIeData(psimvminValue, 1)
+                                    : psimvItrig
+                                        ? pItrig
+                                            ? "-$psimvminValue"
+                                            : "$psimvminValue"
+                                        : psimvminValue.toString()),
+                                Text(
+                                  psimvItrig
+                                      ? pItrig ? psimvparameterUnits : "lpm"
+                                      : psimvparameterUnits,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(psimvIe
+                                    ? getIeData(psimvmaxValue, 1)
+                                    : psimvItrig
+                                        ? pItrig
+                                            ? "-$psimvmaxValue"
+                                            : "$psimvmaxValue"
+                                        : psimvmaxValue.toString())
+                              ],
                             ),
-                            Text(psimvIe
-                                ? getIeData(psimvmaxValue, 1)
-                                : psimvItrig
-                                    ? pItrig
-                                        ? "-$psimvmaxValue"
-                                        : "$psimvmaxValue"
-                                    : psimvmaxValue.toString())
-                          ],
-                        ),
-                      ),
-                       Row(
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
@@ -21324,9 +21347,10 @@ class _CheckPageState extends State<Dashboard> {
                               ),
                             ],
                           )
-                    ],
-                  ),
-                )):Container(),
+                        ],
+                      ),
+                    ))
+                : Container(),
           ],
         ),
       ],
@@ -24262,22 +24286,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vsimvmaxValue = 30;
-                  vsimvminValue = 1;
-                  vsimvparameterName = "RR";
-                  vsimvparameterUnits = "bpm";
-                  vsimvItrig = false;
-                  vsimvRr = true;
-                  vsimvIe = false;
-                  vsimvPeep = false;
-                  vsimvVt = false;
-                  vsimvPcMin = false;
-                  vsimvPcMax = false;
-                  vsimvFio2 = false;
-                  vsimvFlowRamp = false;
-                  vsimvPs = false;
-                });
-              }
+                    vsimvmaxValue = 30;
+                    vsimvminValue = 1;
+                    vsimvparameterName = "RR";
+                    vsimvparameterUnits = "bpm";
+                    vsimvItrig = false;
+                    vsimvRr = true;
+                    vsimvIe = false;
+                    vsimvPeep = false;
+                    vsimvVt = false;
+                    vsimvPcMin = false;
+                    vsimvPcMax = false;
+                    vsimvFio2 = false;
+                    vsimvFlowRamp = false;
+                    vsimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -24380,22 +24404,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vsimvmaxValue = 61;
-                  vsimvminValue = 1;
-                  vsimvparameterName = "I:E";
-                  vsimvparameterUnits = "";
-                  vsimvItrig = false;
-                  vsimvRr = false;
-                  vsimvIe = true;
-                  vsimvPeep = false;
-                  vsimvVt = false;
-                  vsimvPcMin = false;
-                  vsimvPcMax = false;
-                  vsimvFio2 = false;
-                  vsimvFlowRamp = false;
-                  vsimvPs = false;
-                });
-              }
+                    vsimvmaxValue = 61;
+                    vsimvminValue = 1;
+                    vsimvparameterName = "I:E";
+                    vsimvparameterUnits = "";
+                    vsimvItrig = false;
+                    vsimvRr = false;
+                    vsimvIe = true;
+                    vsimvPeep = false;
+                    vsimvVt = false;
+                    vsimvPcMin = false;
+                    vsimvPcMax = false;
+                    vsimvFio2 = false;
+                    vsimvFlowRamp = false;
+                    vsimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -24499,22 +24523,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vsimvmaxValue = _isTab10 ? 45 : 30;
-                  vsimvminValue = 0;
-                  vsimvparameterName = "PEEP";
-                  vsimvparameterUnits = "cmH\u2082O";
-                  vsimvItrig = false;
-                  vsimvRr = false;
-                  vsimvIe = false;
-                  vsimvPeep = true;
-                  vsimvVt = false;
-                  vsimvPcMin = false;
-                  vsimvPcMax = false;
-                  vsimvFio2 = false;
-                  vsimvFlowRamp = false;
-                  vsimvPs = false;
-                });
-              }
+                    vsimvmaxValue = _isTab10 ? 45 : 30;
+                    vsimvminValue = 0;
+                    vsimvparameterName = "PEEP";
+                    vsimvparameterUnits = "cmH\u2082O";
+                    vsimvItrig = false;
+                    vsimvRr = false;
+                    vsimvIe = false;
+                    vsimvPeep = true;
+                    vsimvVt = false;
+                    vsimvPcMin = false;
+                    vsimvPcMax = false;
+                    vsimvFio2 = false;
+                    vsimvFlowRamp = false;
+                    vsimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -24625,22 +24649,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vsimvmaxValue = _isTab10 ? 2500 : 600;
-                  vsimvminValue = _isTab10 ? 50 : 200;
-                  vsimvparameterName = "Vt";
-                  vsimvparameterUnits = "mL";
-                  vsimvItrig = false;
-                  vsimvRr = false;
-                  vsimvIe = false;
-                  vsimvPeep = false;
-                  vsimvVt = true;
-                  vsimvPcMin = false;
-                  vsimvPcMax = false;
-                  vsimvFio2 = false;
-                  vsimvFlowRamp = false;
-                  vsimvPs = false;
-                });
-              }
+                    vsimvmaxValue = _isTab10 ? 2500 : 600;
+                    vsimvminValue = _isTab10 ? 50 : 200;
+                    vsimvparameterName = "Vt";
+                    vsimvparameterUnits = "mL";
+                    vsimvItrig = false;
+                    vsimvRr = false;
+                    vsimvIe = false;
+                    vsimvPeep = false;
+                    vsimvVt = true;
+                    vsimvPcMin = false;
+                    vsimvPcMax = false;
+                    vsimvFio2 = false;
+                    vsimvFlowRamp = false;
+                    vsimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -24743,22 +24767,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vsimvmaxValue = 100;
-                  vsimvminValue = 21;
-                  vsimvparameterName = "FiO\u2082";
-                  vsimvparameterUnits = "%";
-                  vsimvItrig = false;
-                  vsimvRr = false;
-                  vsimvIe = false;
-                  vsimvPeep = false;
-                  vsimvVt = false;
-                  vsimvPcMin = false;
-                  vsimvPcMax = false;
-                  vsimvFio2 = true;
-                  vsimvFlowRamp = false;
-                  vsimvPs = false;
-                });
-              }
+                    vsimvmaxValue = 100;
+                    vsimvminValue = 21;
+                    vsimvparameterName = "FiO\u2082";
+                    vsimvparameterUnits = "%";
+                    vsimvItrig = false;
+                    vsimvRr = false;
+                    vsimvIe = false;
+                    vsimvPeep = false;
+                    vsimvVt = false;
+                    vsimvPcMin = false;
+                    vsimvPcMax = false;
+                    vsimvFio2 = true;
+                    vsimvFlowRamp = false;
+                    vsimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -24861,22 +24885,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vsimvmaxValue = 10;
-                  vsimvminValue = 1;
-                  vsimvparameterName = "I Trig";
-                  vsimvparameterUnits = "cmH\u2082O Below PEEP";
-                  vsimvItrig = true;
-                  vsimvRr = false;
-                  vsimvIe = false;
-                  vsimvPeep = false;
-                  vsimvVt = false;
-                  vsimvPcMin = false;
-                  vsimvPcMax = false;
-                  vsimvFio2 = false;
-                  vsimvFlowRamp = false;
-                  vsimvPs = false;
-                });
-              }
+                    vsimvmaxValue = 10;
+                    vsimvminValue = 1;
+                    vsimvparameterName = "I Trig";
+                    vsimvparameterUnits = "cmH\u2082O Below PEEP";
+                    vsimvItrig = true;
+                    vsimvRr = false;
+                    vsimvIe = false;
+                    vsimvPeep = false;
+                    vsimvVt = false;
+                    vsimvPcMin = false;
+                    vsimvPcMax = false;
+                    vsimvFio2 = false;
+                    vsimvFlowRamp = false;
+                    vsimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -25099,25 +25123,25 @@ class _CheckPageState extends State<Dashboard> {
             // ),
             InkWell(
               onTap: () {
-               if (_parameterChangeEnabled == true) {
+                if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vsimvmaxValue = 100;
-                  vsimvminValue = 0;
-                  vsimvparameterName = "PC Max";
-                  vsimvparameterUnits = "cmH\u2082O above PEEP";
-                  vsimvItrig = false;
-                  vsimvRr = false;
-                  vsimvIe = false;
-                  vsimvPeep = false;
-                  vsimvVt = false;
-                  vsimvPcMin = false;
-                  vsimvPcMax = true;
-                  vsimvFio2 = false;
-                  vsimvFlowRamp = false;
-                  vsimvPs = false;
-                });
-              }
+                    vsimvmaxValue = 100;
+                    vsimvminValue = 0;
+                    vsimvparameterName = "PC Max";
+                    vsimvparameterUnits = "cmH\u2082O above PEEP";
+                    vsimvItrig = false;
+                    vsimvRr = false;
+                    vsimvIe = false;
+                    vsimvPeep = false;
+                    vsimvVt = false;
+                    vsimvPcMin = false;
+                    vsimvPcMax = true;
+                    vsimvFio2 = false;
+                    vsimvFlowRamp = false;
+                    vsimvPs = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -25221,22 +25245,22 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vsimvmaxValue = 65;
-                  vsimvminValue = 0;
-                  vsimvparameterName = "PS";
-                  vsimvparameterUnits = "cmH\u2082O above PEEP";
-                  vsimvItrig = false;
-                  vsimvRr = false;
-                  vsimvIe = false;
-                  vsimvPeep = false;
-                  vsimvVt = false;
-                  vsimvPs = true;
-                  vsimvPcMin = false;
-                  vsimvPcMax = false;
-                  vsimvFio2 = false;
-                  vsimvFlowRamp = false;
-                });
-              }
+                    vsimvmaxValue = 65;
+                    vsimvminValue = 0;
+                    vsimvparameterName = "PS";
+                    vsimvparameterUnits = "cmH\u2082O above PEEP";
+                    vsimvItrig = false;
+                    vsimvRr = false;
+                    vsimvIe = false;
+                    vsimvPeep = false;
+                    vsimvVt = false;
+                    vsimvPs = true;
+                    vsimvPcMin = false;
+                    vsimvPcMax = false;
+                    vsimvFio2 = false;
+                    vsimvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -25629,365 +25653,375 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-             _parameterChangeEnabled == false
+            _parameterChangeEnabled == false
                 ? Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xFFE0E0E0)),
-                width: 400,
-                height: 246,
-                child: Center(
-                  child: Column(
-                    children: [
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (vsimvItrig == true &&
-                                    vsimvItrigValue != vsimvminValue) {
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFFE0E0E0)),
+                    width: 400,
+                    height: 246,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    vsimvItrigValue = vsimvItrigValue - 1;
-                                  });
-                                }
-                                // else if (vsimvPeep == true &&
-                                //     vsimvPeepValue != vsimvminValue) {
-                                //   setState(() {
-                                //     vsimvPeepValue = vsimvPeepValue - 1;
-                                //     if (vsimvItrigValue > 1 &&
-                                //         vsimvItrigValue > vsimvPeepValue) {
-                                //       vsimvItrigValue = vsimvPeepValue;
-                                //     }
-                                //   });
-                                // }
-                                else if (vsimvPeep == true &&
-                                    vsimvPeepValue != vsimvminValue) {
-                                  setState(() {
-                                    vsimvPeepValue = vsimvPeepValue - 1;
-                                  });
-                                } else if (vsimvRr == true &&
-                                    vsimvRrValue != vsimvminValue) {
-                                  setState(() {
-                                    vsimvRrValue = vsimvRrValue - 1;
-                                  });
-                                } else if (vsimvIe == true &&
-                                    vsimvIeValue != vsimvminValue) {
-                                  setState(() {
-                                    vsimvIeValue = vsimvIeValue - 1;
-                                  });
-                                } else if (vsimvVt == true &&
-                                    vsimvVtValue != vsimvminValue) {
-                                  setState(() {
-                                    vsimvVtValue = vsimvVtValue - 1;
-                                  });
-                                } else if (vsimvPcMin == true &&
-                                    vsimvPcMinValue != vsimvminValue) {
-                                  setState(() {
-                                    vsimvPcMinValue = vsimvPcMinValue - 1;
-                                    // if (vsimvPcMinValue >= vsimvPcMaxValue) {
-                                    //   vsimvPcMaxValue = vsimvPcMaxValue - 1;
+                                    if (vsimvItrig == true &&
+                                        vsimvItrigValue != vsimvminValue) {
+                                      setState(() {
+                                        vsimvItrigValue = vsimvItrigValue - 1;
+                                      });
+                                    }
+                                    // else if (vsimvPeep == true &&
+                                    //     vsimvPeepValue != vsimvminValue) {
+                                    //   setState(() {
+                                    //     vsimvPeepValue = vsimvPeepValue - 1;
+                                    //     if (vsimvItrigValue > 1 &&
+                                    //         vsimvItrigValue > vsimvPeepValue) {
+                                    //       vsimvItrigValue = vsimvPeepValue;
+                                    //     }
+                                    //   });
                                     // }
-                                  });
-                                } else if (vsimvPcMax == true &&
-                                    vsimvPcMaxValue != vsimvminValue) {
-                                  vsimvPcMaxValue = vsimvPcMaxValue - 1;
-                                } else if (vsimvFio2 == true &&
-                                    vsimvFio2Value != vsimvminValue) {
-                                  setState(() {
-                                    vsimvFio2Value = vsimvFio2Value - 1;
-                                  });
-                                } else if (vsimvFlowRamp == true &&
-                                    vsimvFlowRampValue != vsimvminValue) {
-                                  setState(() {
-                                    vsimvFlowRampValue = vsimvFlowRampValue - 1;
-                                  });
-                                } else if (vsimvPs == true &&
-                                    vsimvPsValue != vsimvminValue) {
-                                  setState(() {
-                                    vsimvPsValue = vsimvPsValue - 1;
-                                  });
-                                }
-                              });
-                            },
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          Text(
-                            vsimvparameterName,
-                            style: TextStyle(
-                                fontSize: 36, fontWeight: FontWeight.normal),
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              int vmaxValuepsValue, vmaxValuepeepValue;
-                              setState(() {
-                                vmaxValuepsValue = 65 - vsimvPeepValue;
-                                if ((65.0 - vsimvPsValue) >= 30) {
-                                  vmaxValuepeepValue = 30;
-                                } else {
-                                  vmaxValuepeepValue = 65 - vsimvPsValue;
-                                }
-                                // if (vsimvItrig == true &&
-                                //     vsimvItrigValue != vsimvmaxValue) {
-                                //   setState(() {
-                                //     vsimvItrigValue = vsimvItrigValue + 1;
-                                //     if (vsimvPeepValue <= vsimvItrigValue) {
-                                //       if (vsimvPeepValue == 0) {
-                                //         vsimvItrigValue = 1;
-                                //       } else {
-                                //         vsimvItrigValue = vsimvPeepValue;
-                                //       }
-                                //     }
-                                //   });
-                                // }
-                                if (vsimvItrig == true &&
-                                    vsimvItrigValue != vsimvmaxValue) {
-                                  setState(() {
-                                    vsimvItrigValue = vsimvItrigValue + 1;
-                                  });
-                                } else if (vsimvPeep == true &&
-                                    vsimvPeepValue != vsimvmaxValue &&
-                                    vsimvPeepValue < vmaxValuepeepValue) {
-                                  setState(() {
-                                    vsimvPeepValue = vsimvPeepValue + 1;
-                                  });
-                                } else if (vsimvRr == true &&
-                                    vsimvRrValue != vsimvmaxValue) {
-                                  setState(() {
-                                    vsimvRrValue = vsimvRrValue + 1;
-                                  });
-                                } else if (vsimvIe == true &&
-                                    vsimvIeValue != vsimvmaxValue) {
-                                  setState(() {
-                                    vsimvIeValue = vsimvIeValue + 1;
-                                  });
-                                } else if (vsimvVt == true &&
-                                    vsimvVtValue != vsimvmaxValue) {
-                                  setState(() {
-                                    vsimvVtValue = vsimvVtValue + 1;
-                                  });
-                                } else if (vsimvPcMin == true &&
-                                    vsimvPcMinValue != vsimvmaxValue) {
-                                  setState(() {
-                                    if (vsimvPcMaxValue < 90) {
-                                      vsimvPcMinValue = vsimvPcMinValue + 1;
-                                      vsimvPcMaxValue = vsimvPcMinValue + 1;
+                                    else if (vsimvPeep == true &&
+                                        vsimvPeepValue != vsimvminValue) {
+                                      setState(() {
+                                        vsimvPeepValue = vsimvPeepValue - 1;
+                                      });
+                                    } else if (vsimvRr == true &&
+                                        vsimvRrValue != vsimvminValue) {
+                                      setState(() {
+                                        vsimvRrValue = vsimvRrValue - 1;
+                                      });
+                                    } else if (vsimvIe == true &&
+                                        vsimvIeValue != vsimvminValue) {
+                                      setState(() {
+                                        vsimvIeValue = vsimvIeValue - 1;
+                                      });
+                                    } else if (vsimvVt == true &&
+                                        vsimvVtValue != vsimvminValue) {
+                                      setState(() {
+                                        vsimvVtValue = vsimvVtValue - 1;
+                                      });
+                                    } else if (vsimvPcMin == true &&
+                                        vsimvPcMinValue != vsimvminValue) {
+                                      setState(() {
+                                        vsimvPcMinValue = vsimvPcMinValue - 1;
+                                        // if (vsimvPcMinValue >= vsimvPcMaxValue) {
+                                        //   vsimvPcMaxValue = vsimvPcMaxValue - 1;
+                                        // }
+                                      });
+                                    } else if (vsimvPcMax == true &&
+                                        vsimvPcMaxValue != vsimvminValue) {
+                                      vsimvPcMaxValue = vsimvPcMaxValue - 1;
+                                    } else if (vsimvFio2 == true &&
+                                        vsimvFio2Value != vsimvminValue) {
+                                      setState(() {
+                                        vsimvFio2Value = vsimvFio2Value - 1;
+                                      });
+                                    } else if (vsimvFlowRamp == true &&
+                                        vsimvFlowRampValue != vsimvminValue) {
+                                      setState(() {
+                                        vsimvFlowRampValue =
+                                            vsimvFlowRampValue - 1;
+                                      });
+                                    } else if (vsimvPs == true &&
+                                        vsimvPsValue != vsimvminValue) {
+                                      setState(() {
+                                        vsimvPsValue = vsimvPsValue - 1;
+                                      });
                                     }
                                   });
-                                } else if (vsimvPcMax == true &&
-                                    vsimvPcMaxValue != vsimvmaxValue) {
+                                },
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              Text(
+                                vsimvparameterName,
+                                style: TextStyle(
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
+                                  int vmaxValuepsValue, vmaxValuepeepValue;
                                   setState(() {
-                                    vsimvPcMaxValue = vsimvPcMaxValue + 1;
+                                    vmaxValuepsValue = 65 - vsimvPeepValue;
+                                    if ((65.0 - vsimvPsValue) >= 30) {
+                                      vmaxValuepeepValue = 30;
+                                    } else {
+                                      vmaxValuepeepValue = 65 - vsimvPsValue;
+                                    }
+                                    // if (vsimvItrig == true &&
+                                    //     vsimvItrigValue != vsimvmaxValue) {
+                                    //   setState(() {
+                                    //     vsimvItrigValue = vsimvItrigValue + 1;
+                                    //     if (vsimvPeepValue <= vsimvItrigValue) {
+                                    //       if (vsimvPeepValue == 0) {
+                                    //         vsimvItrigValue = 1;
+                                    //       } else {
+                                    //         vsimvItrigValue = vsimvPeepValue;
+                                    //       }
+                                    //     }
+                                    //   });
+                                    // }
+                                    if (vsimvItrig == true &&
+                                        vsimvItrigValue != vsimvmaxValue) {
+                                      setState(() {
+                                        vsimvItrigValue = vsimvItrigValue + 1;
+                                      });
+                                    } else if (vsimvPeep == true &&
+                                        vsimvPeepValue != vsimvmaxValue &&
+                                        vsimvPeepValue < vmaxValuepeepValue) {
+                                      setState(() {
+                                        vsimvPeepValue = vsimvPeepValue + 1;
+                                      });
+                                    } else if (vsimvRr == true &&
+                                        vsimvRrValue != vsimvmaxValue) {
+                                      setState(() {
+                                        vsimvRrValue = vsimvRrValue + 1;
+                                      });
+                                    } else if (vsimvIe == true &&
+                                        vsimvIeValue != vsimvmaxValue) {
+                                      setState(() {
+                                        vsimvIeValue = vsimvIeValue + 1;
+                                      });
+                                    } else if (vsimvVt == true &&
+                                        vsimvVtValue != vsimvmaxValue) {
+                                      setState(() {
+                                        vsimvVtValue = vsimvVtValue + 1;
+                                      });
+                                    } else if (vsimvPcMin == true &&
+                                        vsimvPcMinValue != vsimvmaxValue) {
+                                      setState(() {
+                                        if (vsimvPcMaxValue < 90) {
+                                          vsimvPcMinValue = vsimvPcMinValue + 1;
+                                          vsimvPcMaxValue = vsimvPcMinValue + 1;
+                                        }
+                                      });
+                                    } else if (vsimvPcMax == true &&
+                                        vsimvPcMaxValue != vsimvmaxValue) {
+                                      setState(() {
+                                        vsimvPcMaxValue = vsimvPcMaxValue + 1;
+                                      });
+                                    } else if (vsimvFio2 == true &&
+                                        vsimvFio2Value != vsimvmaxValue) {
+                                      setState(() {
+                                        vsimvFio2Value = vsimvFio2Value + 1;
+                                      });
+                                    } else if (vsimvFlowRamp == true &&
+                                        vsimvFlowRampValue != vsimvmaxValue) {
+                                      setState(() {
+                                        vsimvFlowRampValue =
+                                            vsimvFlowRampValue + 1;
+                                      });
+                                    } else if (vsimvPs == true &&
+                                        vsimvPsValue != vsimvmaxValue &&
+                                        vsimvPsValue < vmaxValuepsValue) {
+                                      setState(() {
+                                        vsimvPsValue = vsimvPsValue + 1;
+                                      });
+                                    }
                                   });
-                                } else if (vsimvFio2 == true &&
-                                    vsimvFio2Value != vsimvmaxValue) {
-                                  setState(() {
-                                    vsimvFio2Value = vsimvFio2Value + 1;
-                                  });
-                                } else if (vsimvFlowRamp == true &&
-                                    vsimvFlowRampValue != vsimvmaxValue) {
-                                  setState(() {
-                                    vsimvFlowRampValue = vsimvFlowRampValue + 1;
-                                  });
-                                } else if (vsimvPs == true &&
-                                    vsimvPsValue != vsimvmaxValue &&
-                                    vsimvPsValue < vmaxValuepsValue) {
-                                  setState(() {
-                                    vsimvPsValue = vsimvPsValue + 1;
-                                  });
-                                }
-                              });
-                            },
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              vsimvItrig
-                                  ? pItrig
-                                      ? "-$vsimvItrigValue"
-                                      : "$vsimvItrigValue"
-                                  : vsimvPeep
-                                      ? vsimvPeepValue.toInt().toString()
-                                      : vsimvRr
-                                          ? vsimvRrValue.toInt().toString()
-                                          : vsimvIe
-                                              ? getIeData(vsimvIeValue, 1)
-                                                  .toString()
-                                              : vsimvVt
-                                                  ? vsimvVtValue
-                                                      .toInt()
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  vsimvItrig
+                                      ? pItrig
+                                          ? "-$vsimvItrigValue"
+                                          : "$vsimvItrigValue"
+                                      : vsimvPeep
+                                          ? vsimvPeepValue.toInt().toString()
+                                          : vsimvRr
+                                              ? vsimvRrValue.toInt().toString()
+                                              : vsimvIe
+                                                  ? getIeData(vsimvIeValue, 1)
                                                       .toString()
-                                                  : vsimvPcMin
-                                                      ? vsimvPcMinValue
+                                                  : vsimvVt
+                                                      ? vsimvVtValue
                                                           .toInt()
                                                           .toString()
-                                                      : vsimvPcMax
-                                                          ? vsimvPcMaxValue
+                                                      : vsimvPcMin
+                                                          ? vsimvPcMinValue
                                                               .toInt()
                                                               .toString()
-                                                          : vsimvFio2
-                                                              ? vsimvFio2Value
+                                                          : vsimvPcMax
+                                                              ? vsimvPcMaxValue
                                                                   .toInt()
                                                                   .toString()
-                                                              : vsimvFlowRamp
-                                                                  ? vsimvFlowRampValue
+                                                              : vsimvFio2
+                                                                  ? vsimvFio2Value
                                                                       .toInt()
                                                                       .toString()
-                                                                  : vsimvPs
-                                                                      ? vsimvPsValue
+                                                                  : vsimvFlowRamp
+                                                                      ? vsimvFlowRampValue
                                                                           .toInt()
                                                                           .toString()
-                                                                      : "",
-                              style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                                                                      : vsimvPs
+                                                                          ? vsimvPsValue
+                                                                              .toInt()
+                                                                              .toString()
+                                                                          : "",
+                                  style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Container(
-                          width: 350,
-                          child: Slider(
-                            min: vsimvminValue.toDouble() ?? 0,
-                            max: vsimvmaxValue.toDouble(),
-                            onChanged: (double value) {
-                              int vmaxValuepsValue, vmaxValuepeepValue;
-                              vmaxValuepsValue = 65 - vsimvPeepValue;
-                              if ((65.0 - vsimvPsValue) >= 30) {
-                                vmaxValuepeepValue = 30;
-                              } else {
-                                vmaxValuepeepValue = 65 - vsimvPsValue;
-                              }
-                              if (vsimvItrig == true && vsimvItrigValue != 10) {
-                                setState(() {
-                                  vsimvItrigValue = value.toInt();
-                                });
-                              } else if (vsimvPeep == true) {
-                                setState(() {
-                                  if (value.toInt() >= vmaxValuepeepValue) {
-                                    vsimvPeepValue = vmaxValuepeepValue;
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Container(
+                              width: 350,
+                              child: Slider(
+                                min: vsimvminValue.toDouble() ?? 0,
+                                max: vsimvmaxValue.toDouble(),
+                                onChanged: (double value) {
+                                  int vmaxValuepsValue, vmaxValuepeepValue;
+                                  vmaxValuepsValue = 65 - vsimvPeepValue;
+                                  if ((65.0 - vsimvPsValue) >= 30) {
+                                    vmaxValuepeepValue = 30;
                                   } else {
-                                    vsimvPeepValue = value.toInt();
+                                    vmaxValuepeepValue = 65 - vsimvPsValue;
                                   }
-                                });
-                              } else if (vsimvRr == true) {
-                                setState(() {
-                                  vsimvRrValue = value.toInt();
-                                });
-                              } else if (vsimvIe == true) {
-                                setState(() {
-                                  vsimvIeValue = value.toInt();
-                                });
-                              } else if (vsimvVt == true) {
-                                setState(() {
-                                  vsimvVtValue = value.toInt();
-                                });
-                              } else if (vsimvPcMin == true) {
-                                if (value.toInt() < 90) {
-                                  vsimvPcMinValue = value.toInt();
-                                  vsimvPcMaxValue = vsimvPcMinValue + 1;
-                                }
-                              } else if (vsimvPcMax == true) {
-                                setState(() {
-                                  // if (value.toInt() <= vsimvPcMinValue + 1) {
-                                  //   vsimvPcMaxValue = vsimvPcMinValue + 1;
-                                  // } else {
-                                  vsimvPcMaxValue = value.toInt();
-                                  // }
-                                });
-                              } else if (vsimvFio2 == true) {
-                                setState(() {
-                                  vsimvFio2Value = value.toInt();
-                                });
-                              } else if (vsimvFlowRamp == true) {
-                                setState(() {
-                                  vsimvFlowRampValue = value.toInt();
-                                });
-                              } else if (vsimvPs == true) {
-                                setState(() {
-                                  if (value.toInt() >= vmaxValuepsValue) {
-                                    vsimvPsValue = vmaxValuepsValue;
-                                  } else {
-                                    vsimvPsValue = value.toInt();
+                                  if (vsimvItrig == true &&
+                                      vsimvItrigValue != 10) {
+                                    setState(() {
+                                      vsimvItrigValue = value.toInt();
+                                    });
+                                  } else if (vsimvPeep == true) {
+                                    setState(() {
+                                      if (value.toInt() >= vmaxValuepeepValue) {
+                                        vsimvPeepValue = vmaxValuepeepValue;
+                                      } else {
+                                        vsimvPeepValue = value.toInt();
+                                      }
+                                    });
+                                  } else if (vsimvRr == true) {
+                                    setState(() {
+                                      vsimvRrValue = value.toInt();
+                                    });
+                                  } else if (vsimvIe == true) {
+                                    setState(() {
+                                      vsimvIeValue = value.toInt();
+                                    });
+                                  } else if (vsimvVt == true) {
+                                    setState(() {
+                                      vsimvVtValue = value.toInt();
+                                    });
+                                  } else if (vsimvPcMin == true) {
+                                    if (value.toInt() < 90) {
+                                      vsimvPcMinValue = value.toInt();
+                                      vsimvPcMaxValue = vsimvPcMinValue + 1;
+                                    }
+                                  } else if (vsimvPcMax == true) {
+                                    setState(() {
+                                      // if (value.toInt() <= vsimvPcMinValue + 1) {
+                                      //   vsimvPcMaxValue = vsimvPcMinValue + 1;
+                                      // } else {
+                                      vsimvPcMaxValue = value.toInt();
+                                      // }
+                                    });
+                                  } else if (vsimvFio2 == true) {
+                                    setState(() {
+                                      vsimvFio2Value = value.toInt();
+                                    });
+                                  } else if (vsimvFlowRamp == true) {
+                                    setState(() {
+                                      vsimvFlowRampValue = value.toInt();
+                                    });
+                                  } else if (vsimvPs == true) {
+                                    setState(() {
+                                      if (value.toInt() >= vmaxValuepsValue) {
+                                        vsimvPsValue = vmaxValuepsValue;
+                                      } else {
+                                        vsimvPsValue = value.toInt();
+                                      }
+                                    });
                                   }
-                                });
-                              }
-                            },
-                            value: vsimvItrig
-                                ? vsimvItrigValue.toDouble()
-                                : vsimvPeep
-                                    ? vsimvPeepValue.toDouble()
-                                    : vsimvRr
-                                        ? vsimvRrValue.toDouble()
-                                        : vsimvIe
-                                            ? vsimvIeValue.toDouble()
-                                            : vsimvVt
-                                                ? vsimvVtValue.toDouble()
-                                                : vsimvPcMin
-                                                    ? vsimvPcMinValue.toDouble()
-                                                    : vsimvPcMax
-                                                        ? vsimvPcMaxValue
+                                },
+                                value: vsimvItrig
+                                    ? vsimvItrigValue.toDouble()
+                                    : vsimvPeep
+                                        ? vsimvPeepValue.toDouble()
+                                        : vsimvRr
+                                            ? vsimvRrValue.toDouble()
+                                            : vsimvIe
+                                                ? vsimvIeValue.toDouble()
+                                                : vsimvVt
+                                                    ? vsimvVtValue.toDouble()
+                                                    : vsimvPcMin
+                                                        ? vsimvPcMinValue
                                                             .toDouble()
-                                                        : vsimvFio2
-                                                            ? vsimvFio2Value
+                                                        : vsimvPcMax
+                                                            ? vsimvPcMaxValue
                                                                 .toDouble()
-                                                            : vsimvFlowRamp
-                                                                ? vsimvFlowRampValue
+                                                            : vsimvFio2
+                                                                ? vsimvFio2Value
                                                                     .toDouble()
-                                                                : vsimvPs
-                                                                    ? vsimvPsValue
+                                                                : vsimvFlowRamp
+                                                                    ? vsimvFlowRampValue
                                                                         .toDouble()
-                                                                    : "",
-                          )),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45.0, right: 45.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(vsimvItrig
-                                ? pItrig ? "-$vsimvminValue" : "$vsimvminValue"
-                                : vsimvminValue.toString()),
-                            Text(
-                              vsimvItrig
-                                  ? pItrig ? vsimvparameterUnits : "lpm"
-                                  : vsimvparameterUnits,
-                              style: TextStyle(fontSize: 16),
+                                                                    : vsimvPs
+                                                                        ? vsimvPsValue
+                                                                            .toDouble()
+                                                                        : "",
+                              )),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 45.0, right: 45.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(vsimvItrig
+                                    ? pItrig
+                                        ? "-$vsimvminValue"
+                                        : "$vsimvminValue"
+                                    : vsimvminValue.toString()),
+                                Text(
+                                  vsimvItrig
+                                      ? pItrig ? vsimvparameterUnits : "lpm"
+                                      : vsimvparameterUnits,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(vsimvItrig
+                                    ? pItrig
+                                        ? "-$vsimvmaxValue"
+                                        : "$vsimvmaxValue"
+                                    : vsimvmaxValue.toString())
+                              ],
                             ),
-                            Text(vsimvItrig
-                                ? pItrig ? "-$vsimvmaxValue" : "$vsimvmaxValue"
-                                : vsimvmaxValue.toString())
-                          ],
-                        ),
-                      ),
-                      Row(
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
@@ -26018,9 +26052,10 @@ class _CheckPageState extends State<Dashboard> {
                               ),
                             ],
                           )
-                    ],
-                  ),
-                )):Container(),
+                        ],
+                      ),
+                    ))
+                : Container(),
           ],
         ),
       ],
@@ -26041,21 +26076,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vacvmaxValue = 60;
-                  vacvminValue = 1;
-                  vacvparameterName = "RR";
-                  vacvparameterUnits = "bpm";
-                  vacvItrig = false;
-                  vacvRr = true;
-                  vacvIe = false;
-                  vacvPeep = false;
-                  vacvVt = false;
-                  vacvPcMin = false;
-                  vacvPcMax = false;
-                  vacvFio2 = false;
-                  vacvFlowRamp = false;
-                });
-              }
+                    vacvmaxValue = 60;
+                    vacvminValue = 1;
+                    vacvparameterName = "RR";
+                    vacvparameterUnits = "bpm";
+                    vacvItrig = false;
+                    vacvRr = true;
+                    vacvIe = false;
+                    vacvPeep = false;
+                    vacvVt = false;
+                    vacvPcMin = false;
+                    vacvPcMax = false;
+                    vacvFio2 = false;
+                    vacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -26157,21 +26192,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vacvmaxValue = 61;
-                  vacvminValue = 1;
-                  vacvparameterName = "I:E";
-                  vacvparameterUnits = "";
-                  vacvItrig = false;
-                  vacvRr = false;
-                  vacvIe = true;
-                  vacvPeep = false;
-                  vacvVt = false;
-                  vacvPcMin = false;
-                  vacvPcMax = false;
-                  vacvFio2 = false;
-                  vacvFlowRamp = false;
-                });
-              }
+                    vacvmaxValue = 61;
+                    vacvminValue = 1;
+                    vacvparameterName = "I:E";
+                    vacvparameterUnits = "";
+                    vacvItrig = false;
+                    vacvRr = false;
+                    vacvIe = true;
+                    vacvPeep = false;
+                    vacvVt = false;
+                    vacvPcMin = false;
+                    vacvPcMax = false;
+                    vacvFio2 = false;
+                    vacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -26274,21 +26309,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vacvmaxValue = _isTab10 ? 45 : 30;
-                  vacvminValue = 0;
-                  vacvparameterName = "PEEP";
-                  vacvparameterUnits = "cmH\u2082O";
-                  vacvItrig = false;
-                  vacvRr = false;
-                  vacvIe = false;
-                  vacvPeep = true;
-                  vacvVt = false;
-                  vacvPcMin = false;
-                  vacvPcMax = false;
-                  vacvFio2 = false;
-                  vacvFlowRamp = false;
-                });
-              }
+                    vacvmaxValue = _isTab10 ? 45 : 30;
+                    vacvminValue = 0;
+                    vacvparameterName = "PEEP";
+                    vacvparameterUnits = "cmH\u2082O";
+                    vacvItrig = false;
+                    vacvRr = false;
+                    vacvIe = false;
+                    vacvPeep = true;
+                    vacvVt = false;
+                    vacvPcMin = false;
+                    vacvPcMax = false;
+                    vacvFio2 = false;
+                    vacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -26399,21 +26434,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vacvmaxValue = _isTab10 ? 2500 : 600;
-                  vacvminValue = _isTab10 ? 50 : 200;
-                  vacvparameterName = "Vt";
-                  vacvparameterUnits = "mL";
-                  vacvItrig = false;
-                  vacvRr = false;
-                  vacvIe = false;
-                  vacvPeep = false;
-                  vacvVt = true;
-                  vacvPcMin = false;
-                  vacvPcMax = false;
-                  vacvFio2 = false;
-                  vacvFlowRamp = false;
-                });
-              }
+                    vacvmaxValue = _isTab10 ? 2500 : 600;
+                    vacvminValue = _isTab10 ? 50 : 200;
+                    vacvparameterName = "Vt";
+                    vacvparameterUnits = "mL";
+                    vacvItrig = false;
+                    vacvRr = false;
+                    vacvIe = false;
+                    vacvPeep = false;
+                    vacvVt = true;
+                    vacvPcMin = false;
+                    vacvPcMax = false;
+                    vacvFio2 = false;
+                    vacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -26518,21 +26553,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vacvmaxValue = 100;
-                  vacvminValue = 21;
-                  vacvparameterName = "FiO\u2082";
-                  vacvparameterUnits = "%";
-                  vacvItrig = false;
-                  vacvRr = false;
-                  vacvIe = false;
-                  vacvPeep = false;
-                  vacvVt = false;
-                  vacvPcMin = false;
-                  vacvPcMax = false;
-                  vacvFio2 = true;
-                  vacvFlowRamp = false;
-                });
-              }
+                    vacvmaxValue = 100;
+                    vacvminValue = 21;
+                    vacvparameterName = "FiO\u2082";
+                    vacvparameterUnits = "%";
+                    vacvItrig = false;
+                    vacvRr = false;
+                    vacvIe = false;
+                    vacvPeep = false;
+                    vacvVt = false;
+                    vacvPcMin = false;
+                    vacvPcMax = false;
+                    vacvFio2 = true;
+                    vacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -26635,21 +26670,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vacvmaxValue = 10;
-                  vacvminValue = 1;
-                  vacvparameterName = "I Trig";
-                  vacvparameterUnits = "cmH\u2082O Below PEEP";
-                  vacvItrig = true;
-                  vacvRr = false;
-                  vacvIe = false;
-                  vacvPeep = false;
-                  vacvVt = false;
-                  vacvPcMin = false;
-                  vacvPcMax = false;
-                  vacvFio2 = false;
-                  vacvFlowRamp = false;
-                });
-              }
+                    vacvmaxValue = 10;
+                    vacvminValue = 1;
+                    vacvparameterName = "I Trig";
+                    vacvparameterUnits = "cmH\u2082O Below PEEP";
+                    vacvItrig = true;
+                    vacvRr = false;
+                    vacvIe = false;
+                    vacvPeep = false;
+                    vacvVt = false;
+                    vacvPcMin = false;
+                    vacvPcMax = false;
+                    vacvFio2 = false;
+                    vacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -26872,21 +26907,21 @@ class _CheckPageState extends State<Dashboard> {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
                     _parameterChangeEnabled = false;
-                  vacvmaxValue = 100;
-                  vacvminValue = 0;
-                  vacvparameterName = "PC Max";
-                  vacvparameterUnits = "cmH\u2082O above PEEP";
-                  vacvItrig = false;
-                  vacvRr = false;
-                  vacvIe = false;
-                  vacvPeep = false;
-                  vacvVt = false;
-                  vacvPcMin = false;
-                  vacvPcMax = true;
-                  vacvFio2 = false;
-                  vacvFlowRamp = false;
-                });
-              }
+                    vacvmaxValue = 100;
+                    vacvminValue = 0;
+                    vacvparameterName = "PC Max";
+                    vacvparameterUnits = "cmH\u2082O above PEEP";
+                    vacvItrig = false;
+                    vacvRr = false;
+                    vacvIe = false;
+                    vacvPeep = false;
+                    vacvVt = false;
+                    vacvPcMin = false;
+                    vacvPcMax = true;
+                    vacvFio2 = false;
+                    vacvFlowRamp = false;
+                  });
+                }
               },
               child: Center(
                 child: Container(
@@ -27449,235 +27484,238 @@ class _CheckPageState extends State<Dashboard> {
             SizedBox(
               height: 5,
             ),
-              _parameterChangeEnabled == false
+            _parameterChangeEnabled == false
                 ? Container(
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Color(0xFFE0E0E0)),
-                width: 400,
-                height: 246,
-                child: Center(
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: <Widget>[
-                          IconButton(
-                            icon: Icon(
-                              Icons.remove,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (vacvItrig == true &&
-                                    vacvItrigValue != vacvminValue) {
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(20),
+                        color: Color(0xFFE0E0E0)),
+                    width: 400,
+                    height: 246,
+                    child: Center(
+                      child: Column(
+                        children: [
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: <Widget>[
+                              IconButton(
+                                icon: Icon(
+                                  Icons.remove,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    vacvItrigValue = vacvItrigValue - 1;
-                                  });
-                                }
-                                //  else if (vacvPeep == true &&
-                                //     vacvPeepValue != vacvminValue) {
-                                //   setState(() {
-                                //     vacvPeepValue = vacvPeepValue - 1;
-                                //     if (vacvItrigValue > 1 &&
-                                //         vacvItrigValue > vacvPeepValue) {
-                                //       vacvItrigValue = vacvPeepValue;
-                                //     }
-                                //   }); //peep negative
-                                // }
-                                else if (vacvPeep == true &&
-                                    vacvPeepValue != vacvminValue) {
-                                  setState(() {
-                                    vacvPeepValue = vacvPeepValue - 1;
-                                  }); //peep negative
-                                } else if (vacvRr == true &&
-                                    vacvRrValue != vacvminValue) {
-                                  setState(() {
-                                    vacvRrValue = vacvRrValue - 1;
-                                  });
-                                } else if (vacvIe == true &&
-                                    vacvIeValue != vacvminValue) {
-                                  setState(() {
-                                    vacvIeValue = vacvIeValue - 1;
-                                  });
-                                } else if (vacvVt == true &&
-                                    vacvVtValue != vacvminValue) {
-                                  setState(() {
-                                    vacvVtValue = vacvVtValue - 1;
-                                  });
-                                } else if (vacvPcMin == true &&
-                                    vacvPcMinValue != vacvminValue) {
-                                  setState(() {
-                                    vacvPcMinValue = vacvPcMinValue - 1;
-                                    // if (vacvPcMinValue >= vacvPcMaxValue) {
-                                    //   vacvPcMaxValue = vacvPcMaxValue - 1;
+                                    if (vacvItrig == true &&
+                                        vacvItrigValue != vacvminValue) {
+                                      setState(() {
+                                        vacvItrigValue = vacvItrigValue - 1;
+                                      });
+                                    }
+                                    //  else if (vacvPeep == true &&
+                                    //     vacvPeepValue != vacvminValue) {
+                                    //   setState(() {
+                                    //     vacvPeepValue = vacvPeepValue - 1;
+                                    //     if (vacvItrigValue > 1 &&
+                                    //         vacvItrigValue > vacvPeepValue) {
+                                    //       vacvItrigValue = vacvPeepValue;
+                                    //     }
+                                    //   }); //peep negative
                                     // }
-                                  });
-                                } else if (vacvPcMax == true &&
-                                    vacvPcMaxValue != vacvminValue) {
-                                  vacvPcMaxValue = vacvPcMaxValue - 1;
-                                } else if (vacvFio2 == true &&
-                                    vacvFio2Value != vacvminValue) {
-                                  setState(() {
-                                    vacvFio2Value = vacvFio2Value - 1;
-                                  });
-                                } else if (vacvFlowRamp == true &&
-                                    vacvFlowRampValue != vacvminValue) {
-                                  setState(() {
-                                    vacvFlowRampValue = vacvFlowRampValue - 1;
-                                  });
-                                }
-                              });
-                            },
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          Text(
-                            vacvparameterName,
-                            style: TextStyle(
-                                fontSize: 36, fontWeight: FontWeight.normal),
-                          ),
-                          SizedBox(
-                            width: 60,
-                          ),
-                          IconButton(
-                            icon: Icon(
-                              Icons.add,
-                              color: Colors.black,
-                              size: 45,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                // if (vacvItrig == true &&
-                                //     vacvItrigValue != vacvmaxValue) {
-                                //   setState(() {
-                                //     vacvItrigValue = vacvItrigValue + 1;
-                                //     if (vacvPeepValue <= vacvItrigValue) {
-                                //       if (vacvPeepValue == 0) {
-                                //         vacvItrigValue = 1;
-                                //       } else {
-                                //         vacvItrigValue = vacvPeepValue;
-                                //       }
-                                //     }
-                                //   }); //itrig positive
-                                // }
-                                if (vacvItrig == true &&
-                                    vacvItrigValue != vacvmaxValue) {
-                                  setState(() {
-                                    vacvItrigValue = vacvItrigValue + 1;
-                                  }); //itrig positive
-                                } else if (vacvPeep == true &&
-                                    vacvPeepValue != vacvmaxValue) {
-                                  setState(() {
-                                    vacvPeepValue = vacvPeepValue + 1;
-                                  });
-                                } else if (vacvRr == true &&
-                                    vacvRrValue != vacvmaxValue) {
-                                  setState(() {
-                                    vacvRrValue = vacvRrValue + 1;
-                                  });
-                                } else if (vacvIe == true &&
-                                    vacvIeValue != vacvmaxValue) {
-                                  setState(() {
-                                    vacvIeValue = vacvIeValue + 1;
-                                  });
-                                } else if (vacvVt == true &&
-                                    vacvVtValue != vacvmaxValue) {
-                                  setState(() {
-                                    vacvVtValue = vacvVtValue + 1;
-                                  });
-                                } else if (vacvPcMin == true &&
-                                    vacvPcMinValue != pacvmaxValue) {
-                                  setState(() {
-                                    if (vacvPcMaxValue < 90) {
-                                      vacvPcMinValue = vacvPcMinValue + 1;
-                                      vacvPcMaxValue = vacvPcMinValue + 1;
+                                    else if (vacvPeep == true &&
+                                        vacvPeepValue != vacvminValue) {
+                                      setState(() {
+                                        vacvPeepValue = vacvPeepValue - 1;
+                                      }); //peep negative
+                                    } else if (vacvRr == true &&
+                                        vacvRrValue != vacvminValue) {
+                                      setState(() {
+                                        vacvRrValue = vacvRrValue - 1;
+                                      });
+                                    } else if (vacvIe == true &&
+                                        vacvIeValue != vacvminValue) {
+                                      setState(() {
+                                        vacvIeValue = vacvIeValue - 1;
+                                      });
+                                    } else if (vacvVt == true &&
+                                        vacvVtValue != vacvminValue) {
+                                      setState(() {
+                                        vacvVtValue = vacvVtValue - 1;
+                                      });
+                                    } else if (vacvPcMin == true &&
+                                        vacvPcMinValue != vacvminValue) {
+                                      setState(() {
+                                        vacvPcMinValue = vacvPcMinValue - 1;
+                                        // if (vacvPcMinValue >= vacvPcMaxValue) {
+                                        //   vacvPcMaxValue = vacvPcMaxValue - 1;
+                                        // }
+                                      });
+                                    } else if (vacvPcMax == true &&
+                                        vacvPcMaxValue != vacvminValue) {
+                                      vacvPcMaxValue = vacvPcMaxValue - 1;
+                                    } else if (vacvFio2 == true &&
+                                        vacvFio2Value != vacvminValue) {
+                                      setState(() {
+                                        vacvFio2Value = vacvFio2Value - 1;
+                                      });
+                                    } else if (vacvFlowRamp == true &&
+                                        vacvFlowRampValue != vacvminValue) {
+                                      setState(() {
+                                        vacvFlowRampValue =
+                                            vacvFlowRampValue - 1;
+                                      });
                                     }
                                   });
-                                } else if (vacvPcMax == true &&
-                                    vacvPcMaxValue != 100) {
+                                },
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              Text(
+                                vacvparameterName,
+                                style: TextStyle(
+                                    fontSize: 36,
+                                    fontWeight: FontWeight.normal),
+                              ),
+                              SizedBox(
+                                width: 60,
+                              ),
+                              IconButton(
+                                icon: Icon(
+                                  Icons.add,
+                                  color: Colors.black,
+                                  size: 45,
+                                ),
+                                onPressed: () {
                                   setState(() {
-                                    vacvPcMaxValue = vacvPcMaxValue + 1;
+                                    // if (vacvItrig == true &&
+                                    //     vacvItrigValue != vacvmaxValue) {
+                                    //   setState(() {
+                                    //     vacvItrigValue = vacvItrigValue + 1;
+                                    //     if (vacvPeepValue <= vacvItrigValue) {
+                                    //       if (vacvPeepValue == 0) {
+                                    //         vacvItrigValue = 1;
+                                    //       } else {
+                                    //         vacvItrigValue = vacvPeepValue;
+                                    //       }
+                                    //     }
+                                    //   }); //itrig positive
+                                    // }
+                                    if (vacvItrig == true &&
+                                        vacvItrigValue != vacvmaxValue) {
+                                      setState(() {
+                                        vacvItrigValue = vacvItrigValue + 1;
+                                      }); //itrig positive
+                                    } else if (vacvPeep == true &&
+                                        vacvPeepValue != vacvmaxValue) {
+                                      setState(() {
+                                        vacvPeepValue = vacvPeepValue + 1;
+                                      });
+                                    } else if (vacvRr == true &&
+                                        vacvRrValue != vacvmaxValue) {
+                                      setState(() {
+                                        vacvRrValue = vacvRrValue + 1;
+                                      });
+                                    } else if (vacvIe == true &&
+                                        vacvIeValue != vacvmaxValue) {
+                                      setState(() {
+                                        vacvIeValue = vacvIeValue + 1;
+                                      });
+                                    } else if (vacvVt == true &&
+                                        vacvVtValue != vacvmaxValue) {
+                                      setState(() {
+                                        vacvVtValue = vacvVtValue + 1;
+                                      });
+                                    } else if (vacvPcMin == true &&
+                                        vacvPcMinValue != pacvmaxValue) {
+                                      setState(() {
+                                        if (vacvPcMaxValue < 90) {
+                                          vacvPcMinValue = vacvPcMinValue + 1;
+                                          vacvPcMaxValue = vacvPcMinValue + 1;
+                                        }
+                                      });
+                                    } else if (vacvPcMax == true &&
+                                        vacvPcMaxValue != 100) {
+                                      setState(() {
+                                        vacvPcMaxValue = vacvPcMaxValue + 1;
+                                      });
+                                    } else if (vacvFio2 == true &&
+                                        vacvFio2Value != vacvmaxValue) {
+                                      setState(() {
+                                        vacvFio2Value = vacvFio2Value + 1;
+                                      });
+                                    } else if (vacvFlowRamp == true &&
+                                        vacvFlowRampValue != vacvmaxValue) {
+                                      setState(() {
+                                        vacvFlowRampValue =
+                                            vacvFlowRampValue + 1;
+                                      });
+                                    }
                                   });
-                                } else if (vacvFio2 == true &&
-                                    vacvFio2Value != vacvmaxValue) {
-                                  setState(() {
-                                    vacvFio2Value = vacvFio2Value + 1;
-                                  });
-                                } else if (vacvFlowRamp == true &&
-                                    vacvFlowRampValue != vacvmaxValue) {
-                                  setState(() {
-                                    vacvFlowRampValue = vacvFlowRampValue + 1;
-                                  });
-                                }
-                              });
-                            },
+                                },
+                              ),
+                            ],
                           ),
-                        ],
-                      ),
-                      Center(
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Text(
-                              vacvItrig
-                                  ? pItrig
-                                      ? "-$vacvItrigValue"
-                                      : "$vacvItrigValue"
-                                  : vacvPeep
-                                      ? vacvPeepValue.toInt().toString()
-                                      : vacvRr
-                                          ? vacvRrValue.toInt().toString()
-                                          : vacvIe
-                                              ? getIeData(vacvIeValue, 1)
-                                              : vacvVt
-                                                  ? vacvVtValue
-                                                      .toInt()
-                                                      .toString()
-                                                  : vacvPcMin
-                                                      ? vacvPcMinValue
+                          Center(
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              children: [
+                                Text(
+                                  vacvItrig
+                                      ? pItrig
+                                          ? "-$vacvItrigValue"
+                                          : "$vacvItrigValue"
+                                      : vacvPeep
+                                          ? vacvPeepValue.toInt().toString()
+                                          : vacvRr
+                                              ? vacvRrValue.toInt().toString()
+                                              : vacvIe
+                                                  ? getIeData(vacvIeValue, 1)
+                                                  : vacvVt
+                                                      ? vacvVtValue
                                                           .toInt()
                                                           .toString()
-                                                      : vacvPcMax
-                                                          ? vacvPcMaxValue
+                                                      : vacvPcMin
+                                                          ? vacvPcMinValue
                                                               .toInt()
                                                               .toString()
-                                                          : vacvFio2
-                                                              ? vacvFio2Value
+                                                          : vacvPcMax
+                                                              ? vacvPcMaxValue
                                                                   .toInt()
                                                                   .toString()
-                                                              : vacvFlowRamp
-                                                                  ? vacvFlowRampValue
+                                                              : vacvFio2
+                                                                  ? vacvFio2Value
                                                                       .toInt()
                                                                       .toString()
-                                                                  : "",
-                              style: TextStyle(
-                                  fontSize: 40,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black),
+                                                                  : vacvFlowRamp
+                                                                      ? vacvFlowRampValue
+                                                                          .toInt()
+                                                                          .toString()
+                                                                      : "",
+                                  style: TextStyle(
+                                      fontSize: 40,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black),
+                                ),
+                              ],
                             ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      // vacvFio2
-                      //     ? Container()
-                      //     :
-                      Container(
-                          width: 350,
-                          child: Slider(
-                            min: vacvminValue.toDouble(),
-                            max: vacvmaxValue.toDouble(),
-                            onChanged: (double value) {
+                          ),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          // vacvFio2
+                          //     ? Container()
+                          //     :
+                          Container(
+                              width: 350,
+                              child: Slider(
+                                min: vacvminValue.toDouble(),
+                                max: vacvmaxValue.toDouble(),
+                                onChanged: (double value) {
 // if (vacvItrig == true) {
 //   setState(() {
 //     if (vacvPeepValue == 0) {
@@ -27704,104 +27742,106 @@ class _CheckPageState extends State<Dashboard> {
 //     }
 //   });
 // }
-                              if (vacvItrig == true) {
-                                setState(() {
-                                  vacvItrigValue = value.toInt();
-                                }); // slider itrig
-                              } else if (vacvPeep == true) {
-                                setState(() {
-                                  vacvPeepValue = value.toInt();
-                                });
-                              } else if (vacvRr == true) {
-                                setState(() {
-                                  vacvRrValue = value.toInt();
-                                });
-                              } else if (vacvIe == true) {
-                                setState(() {
-                                  vacvIeValue = value.toInt();
-                                });
-                              } else if (vacvVt == true) {
-                                setState(() {
-                                  vacvVtValue = value.toInt();
-                                });
-                              } else if (vacvPcMin == true) {
-                                if (value.toInt() < 90) {
-                                  vacvPcMinValue = value.toInt();
-                                  vacvPcMaxValue = vacvPcMinValue + 1;
-                                }
-                              } else if (vacvPcMax == true) {
-                                setState(() {
-                                  // if (value.toInt() <= vacvPcMinValue + 1) {
-                                  //   vacvPcMaxValue = vacvPcMinValue + 1;
-                                  // } else {
-                                  vacvPcMaxValue = value.toInt();
-                                  // }
-                                });
-                              } else if (vacvFio2 == true) {
-                                setState(() {
-                                  vacvFio2Value = value.toInt();
-                                });
-                              } else if (vacvFlowRamp == true) {
-                                setState(() {
-                                  vacvFlowRampValue = value.toInt();
-                                });
-                              }
-                            },
-                            value: vacvItrig
-                                ? vacvItrigValue.toDouble()
-                                : vacvPeep
-                                    ? vacvPeepValue.toDouble()
-                                    : vacvRr
-                                        ? vacvRrValue.toDouble()
-                                        : vacvIe
-                                            ? vacvIeValue.toDouble()
-                                            : vacvVt
-                                                ? vacvVtValue.toDouble()
-                                                : vacvPcMin
-                                                    ? vacvPcMinValue.toDouble()
-                                                    : vacvPcMax
-                                                        ? vacvPcMaxValue
+                                  if (vacvItrig == true) {
+                                    setState(() {
+                                      vacvItrigValue = value.toInt();
+                                    }); // slider itrig
+                                  } else if (vacvPeep == true) {
+                                    setState(() {
+                                      vacvPeepValue = value.toInt();
+                                    });
+                                  } else if (vacvRr == true) {
+                                    setState(() {
+                                      vacvRrValue = value.toInt();
+                                    });
+                                  } else if (vacvIe == true) {
+                                    setState(() {
+                                      vacvIeValue = value.toInt();
+                                    });
+                                  } else if (vacvVt == true) {
+                                    setState(() {
+                                      vacvVtValue = value.toInt();
+                                    });
+                                  } else if (vacvPcMin == true) {
+                                    if (value.toInt() < 90) {
+                                      vacvPcMinValue = value.toInt();
+                                      vacvPcMaxValue = vacvPcMinValue + 1;
+                                    }
+                                  } else if (vacvPcMax == true) {
+                                    setState(() {
+                                      // if (value.toInt() <= vacvPcMinValue + 1) {
+                                      //   vacvPcMaxValue = vacvPcMinValue + 1;
+                                      // } else {
+                                      vacvPcMaxValue = value.toInt();
+                                      // }
+                                    });
+                                  } else if (vacvFio2 == true) {
+                                    setState(() {
+                                      vacvFio2Value = value.toInt();
+                                    });
+                                  } else if (vacvFlowRamp == true) {
+                                    setState(() {
+                                      vacvFlowRampValue = value.toInt();
+                                    });
+                                  }
+                                },
+                                value: vacvItrig
+                                    ? vacvItrigValue.toDouble()
+                                    : vacvPeep
+                                        ? vacvPeepValue.toDouble()
+                                        : vacvRr
+                                            ? vacvRrValue.toDouble()
+                                            : vacvIe
+                                                ? vacvIeValue.toDouble()
+                                                : vacvVt
+                                                    ? vacvVtValue.toDouble()
+                                                    : vacvPcMin
+                                                        ? vacvPcMinValue
                                                             .toDouble()
-                                                        : vacvFio2
-                                                            ? vacvFio2Value
+                                                        : vacvPcMax
+                                                            ? vacvPcMaxValue
                                                                 .toDouble()
-                                                            : vacvFlowRamp
-                                                                ? vacvFlowRampValue
+                                                            : vacvFio2
+                                                                ? vacvFio2Value
                                                                     .toDouble()
-                                                                : "",
-                          )),
-                      SizedBox(
-                        height: 5,
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 45.0, right: 45.0),
-                        child: Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            Text(vacvIe
-                                ? getIeData(vacvminValue, 1)
-                                : vacvItrig
-                                    ? pItrig
-                                        ? "-$vacvminValue"
-                                        : "$vacvminValue"
-                                    : vacvminValue.toString()),
-                            Text(
-                              vacvItrig
-                                  ? pItrig ? vacvparameterUnits : "lpm"
-                                  : vacvparameterUnits,
-                              style: TextStyle(fontSize: 16),
+                                                                : vacvFlowRamp
+                                                                    ? vacvFlowRampValue
+                                                                        .toDouble()
+                                                                    : "",
+                              )),
+                          SizedBox(
+                            height: 5,
+                          ),
+                          Padding(
+                            padding:
+                                const EdgeInsets.only(left: 45.0, right: 45.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                Text(vacvIe
+                                    ? getIeData(vacvminValue, 1)
+                                    : vacvItrig
+                                        ? pItrig
+                                            ? "-$vacvminValue"
+                                            : "$vacvminValue"
+                                        : vacvminValue.toString()),
+                                Text(
+                                  vacvItrig
+                                      ? pItrig ? vacvparameterUnits : "lpm"
+                                      : vacvparameterUnits,
+                                  style: TextStyle(fontSize: 16),
+                                ),
+                                Text(vacvIe
+                                    ? getIeData(vacvminValue, 1)
+                                    : vacvItrig
+                                        ? pItrig
+                                            ? "-$vacvmaxValue"
+                                            : "$vacvmaxValue"
+                                        : vacvmaxValue.toString())
+                              ],
                             ),
-                            Text(vacvIe
-                                ? getIeData(vacvminValue, 1)
-                                : vacvItrig
-                                    ? pItrig
-                                        ? "-$vacvmaxValue"
-                                        : "$vacvmaxValue"
-                                    : vacvmaxValue.toString())
-                          ],
-                        ),
-                      ),
-                      Row(
+                          ),
+                          Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             crossAxisAlignment: CrossAxisAlignment.end,
                             children: <Widget>[
@@ -27832,9 +27872,10 @@ class _CheckPageState extends State<Dashboard> {
                               ),
                             ],
                           )
-                    ],
-                  ),
-                )):Container(),
+                        ],
+                      ),
+                    ))
+                : Container(),
           ],
         ),
       ],
@@ -29286,12 +29327,12 @@ class _CheckPageState extends State<Dashboard> {
         // // // // print(modeWriteList.toString());
         // sendDataUsbConnection(modeWriteList,1);
       } else if (psvEnabled == true) {
-        int temp = int.tryParse(result.split("ab")[0]);
-        modeWriteList[14] = ((temp & 0xFF00) >> 8);
-        modeWriteList[15] = (temp & 0xFF);
-        modeWriteList[41] = (8);
-        modeWriteList[42] = (0);
-        preferences.setInt('psvPcValue', temp);
+        // int temp = int.tryParse(result.split("ab")[0]);
+        // modeWriteList[14] = ((temp & 0xFF00) >> 8);
+        // modeWriteList[15] = (temp & 0xFF);
+        // modeWriteList[41] = (8);
+        // modeWriteList[42] = (0);
+        // preferences.setInt('psvPcValue', temp);
 
         // if (receivedps > temp) {
         //   modeWriteList[16] = ((temp & 0xFF00) >> 8);
@@ -29628,6 +29669,8 @@ class _CheckPageState extends State<Dashboard> {
         modeWriteList[41] = (16);
         modeWriteList[42] = (0);
 
+        preferences.setInt('psvVtValue', temp);
+
         // // // print(modeWriteList.toString());
         sendDataUsbConnection(modeWriteList, 1);
       } else if (prvcEnabled == true) {
@@ -29715,8 +29758,14 @@ class _CheckPageState extends State<Dashboard> {
         modeWriteList[42] = (4);
 
         preferences.setInt('psvPsValue', temp);
+        if (pControl == true) {
+          modeWriteList[14] = ((temp & 0xFF00) >> 8);
+          modeWriteList[15] = (temp & 0xFF);
+          modeWriteList[41] = (8);
+          preferences.setInt('psvPcValue', temp);
+        }
         getData();
-        // // // print(modeWriteList.toString());
+        // Fluttertoast.showToast(msg: modeWriteList.toString());
         sendDataUsbConnection(modeWriteList, 1);
       } else if (prvcEnabled == true) {
         // int temp = int.tryParse(result.split("ab")[0]);
@@ -31639,7 +31688,7 @@ class _CheckPageState extends State<Dashboard> {
         psvPeepValue = 10;
         psvIeValue = 51;
         psvPsValue = 25;
-        psvTiValue = 1;
+        psvTiValue = 6;
         psvVtMinValue = 0;
         psvVtMaxValue = 2400;
         psvFio2Value = 21;
@@ -31650,6 +31699,7 @@ class _CheckPageState extends State<Dashboard> {
         psvPcValue = 25;
         psvVtValue = 300;
 
+        psvmaxValue = 65;
         psvmaxValue = 65;
         psvminValue = 0;
         psvdefaultValue = 25;
@@ -34255,7 +34305,7 @@ class _CheckPageState extends State<Dashboard> {
           ioreDisplayParamter = "";
           amsDisplayParamter = "";
         });
-      }else{}
+      } else {}
 
       if ((((finalList[68] << 8) + finalList[69]) / 100).round().toInt() >= 0 &&
           (((finalList[68] << 8) + finalList[69]) / 100).round().toInt() <=
@@ -34416,7 +34466,7 @@ class _CheckPageState extends State<Dashboard> {
           // receivedvtmax = ((finalList[134] << 8) + finalList[135]);
           // receivedminte = ((finalList[136] << 8) + finalList[137]);
           var recepc = ((finalList[138] << 8) + finalList[139]);
-          if (recepc >= 5 && recepc <= 85) {
+          if (recepc >= 0 && recepc <= 85) {
             receivedpc = recepc;
           } else {
             receivedpc = pcValue;
@@ -34767,6 +34817,7 @@ class _CheckPageState extends State<Dashboard> {
               teValue.toString(),
               atimeValue.toString(),
               tipsvValue.toString(),
+              pplateauDisplay.toStringAsFixed(0),
               temp,
               temp3,
               temp1,
@@ -34803,6 +34854,7 @@ class _CheckPageState extends State<Dashboard> {
             teValue.toString(),
             atimeValue.toString(),
             tipsvValue.toString(),
+            pplateauDisplay.toStringAsFixed(0),
             temp,
             temp3,
             temp1,
@@ -34974,7 +35026,6 @@ class _CheckPageState extends State<Dashboard> {
     setState(() {
       acknowReceivedValue = 0;
       ackPacket = 0;
-      // playOnEnabled = true;
       finalListSend.clear();
     });
   }
@@ -34983,7 +35034,6 @@ class _CheckPageState extends State<Dashboard> {
     setState(() {
       acknowReceivedValue = 0;
       ackPacket = 0;
-      // playOnEnabled = false;
       finalListSend.clear();
     });
   }

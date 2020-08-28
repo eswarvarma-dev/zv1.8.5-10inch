@@ -24,6 +24,7 @@ import 'package:flutter/material.dart';
 /// The [padding] argument allows space to be set around the display (this defaults to 10.0 if not specified)
 ///
 /// NB: This is not a Time Domain trace, the update frequency of the supplied [dataSet] determines the trace speed.
+// ignore: must_be_immutable
 class OscilloscopeBig extends StatefulWidget {
   List<double> dataSet;
   double yAxisMin;

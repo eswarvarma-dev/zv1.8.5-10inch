@@ -1,14 +1,11 @@
-import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:intl/intl.dart';
 import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:splashscreen/splashscreen.dart';
 import 'package:usb_serial/usb_serial.dart';
 import 'package:ventilator/activity/Dashboard.dart';
-import 'package:ventilator/calibration/CalibrationPage.dart';
 import 'package:ventilator/database/ADatabaseHelper.dart';
 import 'package:ventilator/database/DatabaseHelper.dart';
 
@@ -22,7 +19,6 @@ class SplashPage extends StatefulWidget {
 class _SplashPageState extends State<SplashPage> {
   DatabaseHelper dbHelper;
   ADatabaseHelper dbHelper1;
-  bool _isTab10 = true;
   static const shutdownChannel = const MethodChannel("shutdown");
   UsbPort port;
   // int counter=0;
@@ -44,11 +40,9 @@ class _SplashPageState extends State<SplashPage> {
     try {
       Screen.setBrightness(1.0);
       Screen.keepOn(true);
-      var result = await shutdownChannel.invokeMethod('turnOnScreen');
-
-      // print(result);
+      await shutdownChannel.invokeMethod('turnOnScreen');
     } on PlatformException catch (e) {
-      // print(e);
+      print(e);
     }
   }
 
@@ -97,7 +91,7 @@ class _SplashPageState extends State<SplashPage> {
     preferences.setInt('minrr', 1);
     preferences.setInt('maxrr', 70);
     preferences.setInt('minvte', 0);
-    preferences.setInt('maxvte', 3000 );
+    preferences.setInt('maxvte', 3000);
     preferences.setInt('minppeak', 0);
     preferences.setInt('maxppeak', 100);
     preferences.setInt('minpeep', 0);

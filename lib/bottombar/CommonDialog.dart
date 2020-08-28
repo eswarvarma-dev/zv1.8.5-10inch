@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+// ignore: must_be_immutable
 class CommonDialog extends StatefulWidget {
   String value, status;
   CommonDialog(this.value, this.status, {Key key}) : super(key: key);
@@ -242,7 +243,7 @@ class _CommonDialogState extends State<CommonDialog> {
         commomValue = preferences.getInt("pc").toDouble();
         checkValue = preferences.getInt("pc").toDouble();
         _psCheckValue = preferences.getInt("ps").toDouble();
-        min = 5;
+        min = 0;
         max = maxValuepcValue;
         prefix = false;
         suffix = false;

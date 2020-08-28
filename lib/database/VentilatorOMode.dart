@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 class VentilatorOMode {
   int id;
   String operatingMode,
@@ -26,6 +24,7 @@ class VentilatorOMode {
       atimeS,
       tipsvS,
       globalCounterNo,
+      pplateauDisplay,
       vtValue;
   double pressureValues, flowValues, volumeValues;
   String dateTime;
@@ -55,6 +54,7 @@ class VentilatorOMode {
       this.teS,
       this.atimeS,
       this.tipsvS,
+      this.pplateauDisplay,
       this.pressureValues,
       this.flowValues,
       this.volumeValues,
@@ -122,6 +122,7 @@ class VentilatorOMode {
     teS = map['teS'];
     atimeS = map['atimeS'];
     tipsvS = map['tipsvS'];
+    pplateauDisplay = map['pplateauDisplay'];
     pressureValues = map['pressureP'];
     flowValues = map['flowP'];
     volumeValues = map['volumeP'];
@@ -159,6 +160,7 @@ class VentilatorOMode {
         teS = json['teS'],
         atimeS = json['atimeS'],
         tipsvS = json['tipsvS'],
+        pplateauDisplay = json['pplateauDisplay'],
         pressureValues = json['pressureValues'],
         flowValues = json['flowValues'],
         volumeValues = json['volumeValues'],
@@ -190,6 +192,7 @@ class VentilatorOMode {
     this.teS = obj['teS'];
     this.atimeS = obj['atimeS'];
     this.tipsvS = obj['tipsvS'];
+    this.pplateauDisplay = obj['pplateauDisplay'];
     this.pressureValues = obj['pressureValues'];
     this.flowValues = obj['flowValues'];
     this.volumeValues = obj['volumeValues'];

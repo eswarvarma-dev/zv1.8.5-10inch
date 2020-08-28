@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:screen/screen.dart';
-import 'package:ventilator/activity/Dashboard.dart';
 import 'package:ventilator/database/DatabaseHelper.dart';
 import 'package:ventilator/database/VentilatorOMode.dart';
 import 'package:ventilator/viewlog/ViewLogPatientList.dart';
@@ -9,6 +8,7 @@ import 'package:ventilator/viewlog/ViewLogPatientList.dart';
 import 'AlarmLog.dart';
 import 'ViewLogDataDisplayPage.dart';
 
+// ignore: must_be_immutable
 class PatientsDatainSlots extends StatefulWidget {
   String minTime,maxTime,minT,maxT;
   PatientsDatainSlots(this.minTime,this.maxTime, this.minT, this.maxT);

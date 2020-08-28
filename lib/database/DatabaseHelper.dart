@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:fluttertoast/fluttertoast.dart';
 import 'package:intl/intl.dart';
 import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
@@ -43,6 +42,7 @@ class DatabaseHelper {
   static const String PAW = 'paw';
   static const String GLOBAL_COUNTER_NO = 'globalCounterNo';
   static const String ALARM_ACTIVE = 'alarmActive';
+  static const String PLATEAU = 'pplateauDisplay';
 
   static const String COUNTER_NO = 'counterNo';
   // static const String DATE_TIME = 'datetime';
@@ -52,10 +52,10 @@ class DatabaseHelper {
   static const String PATIENT_GENDER = 'patientGender';
   static const String PATIENT_HEIGHT = 'patientHeight';
   static const String TABLE_PATIENT = 'apatientTb';
-  static const String TABLE_NAME = 'acounterV';
-  static const String TABLE_ALARM = 'balarms';
-  static const String TABLE = 'bgraphPoints';
-  static const String DATABASE = 'bdb';
+  static const String TABLE_NAME = 'ccounterV';
+  static const String TABLE_ALARM = 'calarms';
+  static const String TABLE = 'cgraphPoints';
+  static const String DATABASE = 'cdb';
 
   Future<Database> get db async {
     if (_db != null) {
@@ -74,7 +74,7 @@ class DatabaseHelper {
 
   _onCreate(Database db, int version) async {
     await db.execute(
-        'CREATE TABLE $TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $PATIENTID TEXT, $PATIENTNAME TEXT,$PIPD TEXT, $VTD TEXT,$PEEPD TEXT, $RRD TEXT,$FIO2D TEXT,$VT_VALUE TEXT,$MAPD TEXT,$MVD TEXT,$COMPLAINCED TEXT, $IED TEXT,$RRS TEXT,$IES TEXT,$PEEPS TEXT,$PCS TEXT,$PSS TEXT,$ITRIGS TEXT,$FIO2S TEXT,$TIS TEXT,$ATIMES TEXT,$TIPSVS TEXT,$TES TEXT,$PRESSURE_POINTS REAL, $FLOW_POINTS REAL, $VOLUME_POINTS REAL, $DATE_TIME TEXT,$OPERATING_MODE TEXT,$LUNG_IMAGE TEXT,$PAW TEXT,$GLOBAL_COUNTER_NO TEXT,$ALARM,$ALARM_PRIORITY,$ALARM_ACTIVE)');
+        'CREATE TABLE $TABLE($ID INTEGER PRIMARY KEY AUTOINCREMENT, $PATIENTID TEXT, $PATIENTNAME TEXT,$PIPD TEXT, $VTD TEXT,$PEEPD TEXT, $RRD TEXT,$FIO2D TEXT,$VT_VALUE TEXT,$MAPD TEXT,$MVD TEXT,$COMPLAINCED TEXT, $IED TEXT,$RRS TEXT,$IES TEXT,$PEEPS TEXT,$PCS TEXT,$PSS TEXT,$ITRIGS TEXT,$FIO2S TEXT,$TIS TEXT,$ATIMES TEXT,$TIPSVS TEXT,$TES TEXT,$PLATEAU TEXT,$PRESSURE_POINTS REAL, $FLOW_POINTS REAL, $VOLUME_POINTS REAL, $DATE_TIME TEXT,$OPERATING_MODE TEXT,$LUNG_IMAGE TEXT,$PAW TEXT,$GLOBAL_COUNTER_NO TEXT,$ALARM,$ALARM_PRIORITY,$ALARM_ACTIVE)');
     // await db.execute('CREATE TABLE $TABLE_ALARM($ID INTERGER PRIMARY KEY AUTOINCREMENT,$ALARM TEXT,$DATE_TIME TEXT)');
     await db.execute(
         'CREATE TABLE $TABLE_NAME($ID INTERGER PRIMARY KEY,$COUNTER_NO TEXT,$DATE_TIME TEXT)');
@@ -110,7 +110,7 @@ class DatabaseHelper {
     try {
       var dbClient = await db;
       var res = await dbClient.rawInsert(
-          "INSERT into $TABLE ($PATIENTID,$PATIENTNAME,$PIPD,$VTD, $PEEPD, $RRD, $FIO2D, $MAPD, $MVD, $COMPLAINCED,$IED, $RRS, $IES, $PEEPS,$PCS, $PSS,$ITRIGS, $FIO2S,$VT_VALUE,$TIS, $TES,$ATIMES,$TIPSVS,$PRESSURE_POINTS,$FLOW_POINTS, $VOLUME_POINTS,$DATE_TIME,$OPERATING_MODE,$LUNG_IMAGE,$PAW,$GLOBAL_COUNTER_NO,$ALARM,$ALARM_PRIORITY,$ALARM_ACTIVE) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+          "INSERT into $TABLE ($PATIENTID,$PATIENTNAME,$PIPD,$VTD, $PEEPD, $RRD, $FIO2D, $MAPD, $MVD, $COMPLAINCED,$IED, $RRS, $IES, $PEEPS,$PCS, $PSS,$ITRIGS, $FIO2S,$VT_VALUE,$TIS, $TES,$ATIMES,$TIPSVS,$PLATEAU,$PRESSURE_POINTS,$FLOW_POINTS, $VOLUME_POINTS,$DATE_TIME,$OPERATING_MODE,$LUNG_IMAGE,$PAW,$GLOBAL_COUNTER_NO,$ALARM,$ALARM_PRIORITY,$ALARM_ACTIVE) VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
           [
             vom.patientId,
             vom.patientName,
@@ -135,6 +135,7 @@ class DatabaseHelper {
             vom.teS,
             vom.atimeS,
             vom.tipsvS,
+            vom.pplateauDisplay,
             vom.pressureValues,
             vom.flowValues,
             vom.volumeValues,
@@ -262,11 +263,10 @@ class DatabaseHelper {
   }
 
   Future<int> delete7Daysdata(String dateS) async {
-   
     // var now = new DateTime.now();
     var now = DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.parse(dateS));
     var dbClient = await db;
-    
+
     String sql =
         "DELETE FROM $TABLE WHERE $DATE_TIME <= date(\'$now\', '-2 day')";
     // DELETE FROM graphPoints WHERE datetimeP <= date('2020-06-19 20:20:12.00', '-1 day')

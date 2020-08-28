@@ -1,10 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:screen/screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ventilator/activity/Dashboard.dart';
 import 'package:ventilator/activity/SplashPage.dart';
-import 'package:ventilator/viewlog/ViewLogPatientList.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
