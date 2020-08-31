@@ -7653,7 +7653,7 @@ class _CheckPageState extends State<Dashboard> {
                             });
                             if (modeWriteList.isNotEmpty) {
                               lockEnabled
-                                  ? playOnEnabled ? "" : CommonClick("PCV")
+                                  ? playOnEnabled ? "" : CommonClick("PPCV")
                                   : "";
                             }
                           }
@@ -7666,7 +7666,7 @@ class _CheckPageState extends State<Dashboard> {
                             });
                             if (modeWriteList.isNotEmpty) {
                               lockEnabled
-                                  ? playOnEnabled ? "" : CommonClick("PCV")
+                                  ? playOnEnabled ? "" : CommonClick("PPCV")
                                   : "";
                             }
                           }
@@ -7678,7 +7678,7 @@ class _CheckPageState extends State<Dashboard> {
                             child: Card(
                               elevation: 40,
                               color:
-                                  lockEnabled ? Color(0xFF213855) : Colors.grey,
+                                  lockEnabled ? psvPsValue != 0? Colors.grey:Color(0xFF213855) : Colors.grey,
                               child: Padding(
                                 padding: const EdgeInsets.all(12.0),
                                 child: Center(
@@ -29327,12 +29327,12 @@ class _CheckPageState extends State<Dashboard> {
         // // // // print(modeWriteList.toString());
         // sendDataUsbConnection(modeWriteList,1);
       } else if (psvEnabled == true) {
-        // int temp = int.tryParse(result.split("ab")[0]);
-        // modeWriteList[14] = ((temp & 0xFF00) >> 8);
-        // modeWriteList[15] = (temp & 0xFF);
-        // modeWriteList[41] = (8);
-        // modeWriteList[42] = (0);
-        // preferences.setInt('psvPcValue', temp);
+        int temp = int.tryParse(result.split("ab")[0]);
+        modeWriteList[14] = ((temp & 0xFF00) >> 8);
+        modeWriteList[15] = (temp & 0xFF);
+        modeWriteList[41] = (8);
+        modeWriteList[42] = (0);
+        preferences.setInt('psvPcValue', temp);
 
         // if (receivedps > temp) {
         //   modeWriteList[16] = ((temp & 0xFF00) >> 8);

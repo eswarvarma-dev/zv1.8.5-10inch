@@ -243,6 +243,17 @@ class _CommonDialogState extends State<CommonDialog> {
         commomValue = preferences.getInt("pc").toDouble();
         checkValue = preferences.getInt("pc").toDouble();
         _psCheckValue = preferences.getInt("ps").toDouble();
+        min = 5;
+        max = maxValuepcValue;
+        prefix = false;
+        suffix = false;
+        units = true;
+      });
+    }else if (widget.value.toString() == "PPCV") {
+      setState(() {
+        commomValue = preferences.getInt("pc").toDouble();
+        checkValue = preferences.getInt("pc").toDouble();
+        _psCheckValue = preferences.getInt("ps").toDouble();
         min = 0;
         max = maxValuepcValue;
         prefix = false;
@@ -482,6 +493,8 @@ class _CommonDialogState extends State<CommonDialog> {
                                     : widget.value.toString() == "PPSV"
                                     ? "PS"
                                     : widget.value.toString() == "PCV"
+                                        ? "PC"
+                                        : widget.value.toString() == "PPCV"
                                         ? "PC"
                                         : widget.value.toString() == "VPEEP"
                                             ? "PEEP"
@@ -892,7 +905,12 @@ class _CommonDialogState extends State<CommonDialog> {
         preferences.setInt("pc", value.ceil());
       });
       Navigator.pop(context, value.ceil().toString() + "ab" + "pc");
-    } else if (widget.value.toString() == "PCV") {
+    } else if (widget.value.toString() == "PPCV") {
+      setState(() {
+        preferences.setInt("pc", value.ceil());
+      });
+      Navigator.pop(context, value.ceil().toString() + "ab" + "pc");
+    }else if (widget.value.toString() == "PCV") {
       setState(() {
         preferences.setInt("pc", value.ceil());
         // print(value.ceil().toString() + " " + _psCheckValue.ceil().toString());
