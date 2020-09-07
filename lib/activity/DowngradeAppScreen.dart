@@ -33,8 +33,7 @@ class _DowngradeAppScreenState extends State<DowngradeAppScreen> {
       "urlFlutter": dataUrl
     };
     try {
-      var result =
-          await shutdownChannel.invokeMethod('checkforUpdates', params);
+      var result = await shutdownChannel.invokeMethod('checkforUpdates', params);
       print(result);
     } on PlatformException catch (e) {
       print(e);

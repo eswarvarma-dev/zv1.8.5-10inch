@@ -39,8 +39,7 @@ class _AboutState extends State<About> {
   Future<void> checkforUpdates(String downlrl) async {
     var params = <String, dynamic>{"urlFlutter": downlrl};
     try {
-      var result =
-          await shutdownChannel.invokeMethod('checkforUpdates', params);
+      var result = await shutdownChannel.invokeMethod('checkforUpdates', params);
       print(result);
     } on PlatformException catch (e) {
       print(e);

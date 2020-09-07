@@ -110,6 +110,15 @@ class _SplashPageState extends State<SplashPage> {
     preferences.setBool("flag1", true);
     preferences.setBool('pControl', true);
     preferences.setBool('first', true);
+
+    preferences.setInt('pccmvFio2Value', 21);
+            preferences.setInt('vccmvFio2Value', 21);
+            preferences.setInt('pacvFio2Value', 21);
+            preferences.setInt('vacvFio2Value', 21);
+            preferences.setInt('psimvFio2Value', 21);
+            preferences.setInt('vsimvFio2Value', 21);
+            preferences.setInt('psvFio2Value', 21);
+            preferences.setInt('prvcFio2Value', 21);
     //  var now = new DateTime.now();
     // var o2Time = DateFormat("dd/MM/yyyy").format(now);
     //  preferences.setString("o2time", o2Time.toString());

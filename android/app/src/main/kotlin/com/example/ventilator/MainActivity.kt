@@ -3,17 +3,18 @@ package com.example.ventilator
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.admin.DevicePolicyManager
+import android.app.admin.SystemUpdatePolicy
 import android.content.*
 import android.media.AudioManager
 import android.media.MediaPlayer
 import android.os.BatteryManager
 import android.os.Build
 import android.os.PowerManager
+import android.os.UserManager
+import android.provider.Settings
 import android.util.Log
 import android.view.View
-import android.view.ViewTreeObserver
 import android.view.WindowManager
-
 import androidx.annotation.NonNull
 import androidx.annotation.Nullable
 import androidx.annotation.RequiresApi
@@ -49,16 +50,14 @@ class MainActivity: FlutterActivity() {
         window.setStatusBarColor(0x00000000);
         GeneratedPluginRegistrant.registerWith(flutterEngine)
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_HIDE_NAVIGATION);
+//        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN);
 
         mAdminComponentName = MyDeviceAdminReceiver.getComponentName(this)
         mDevicePolicyManager = getSystemService(Context.DEVICE_POLICY_SERVICE) as DevicePolicyManager
 
-
         MethodChannel(flutterEngine.getDartExecutor(), CHANNEL).setMethodCallHandler { call, result ->
-
             val params = call.arguments as? Map<String, Any>
-
-
 
             if(call.method == "sendPlayAudioStartH"){
                 try {
@@ -178,10 +177,7 @@ class MainActivity: FlutterActivity() {
                         intent.putExtra(DevicePolicyManager.EXTRA_ADD_EXPLANATION, "Please Click On Activate")
                         startActivityForResult(intent, RESULT_ENABLE)
                     }
-//                    mWakeLock = mPowerManager?.newWakeLock(PowerManager.PROXIMITY_SCREEN_OFF_WAKE_LOCK, "tag");
-//                    mWakeLock?.acquire();
                     finish()
-//                  System.exit(0)
                 } catch (ex: Exception) {
                     ex.printStackTrace()
                 }
@@ -273,11 +269,17 @@ class MainActivity: FlutterActivity() {
             }
         }
 
+        var isAdmin = false
+        if (mDevicePolicyManager.isDeviceOwnerApp(packageName)) {
+//            Toast.makeText(applicationContext, R.string.device_owner, Toast.LENGTH_SHORT).show()
+            isAdmin = true
+
+        } else {
+//            Toast.makeText(applicationContext, R.string.not_device_owner, Toast.LENGTH_SHORT).show()
+        }
+        setKioskPolicies(true, isAdmin)
+
     }
-
-
-
-
 
     private fun getBatteryLevel(): Int {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -289,10 +291,6 @@ class MainActivity: FlutterActivity() {
         }
     }
 
-    fun getFlutterView(): BinaryMessenger? {
-        return flutterEngine!!.dartExecutor.binaryMessenger
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, @Nullable data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (requestCode == RESULT_ENABLE) {
@@ -300,10 +298,112 @@ class MainActivity: FlutterActivity() {
 //
 //            } else {
             finish()
+//            android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(0)
             //            }
             return
         }
     }
+
+    @SuppressLint("NewApi")
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun setKioskPolicies(enable: Boolean, isAdmin: Boolean) {
+        if (isAdmin) {
+            setRestrictions(enable)
+            enableStayOnWhilePluggedIn(enable)
+            setUpdatePolicy(enable)
+            setAsHomeApp(enable)
+            setKeyGuardEnabled(enable)
+        }
+        setLockTask(enable, isAdmin)
+        setImmersiveMode(enable)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun setRestrictions(disallow: Boolean) {
+        setUserRestriction(UserManager.DISALLOW_SAFE_BOOT, disallow)
+        setUserRestriction(UserManager.DISALLOW_FACTORY_RESET, disallow)
+        setUserRestriction(UserManager.DISALLOW_ADD_USER, disallow)
+//        setUserRestriction(UserManager.DISALLOW_USB_FILE_TRANSFER,disallow)
+//        setUserRestriction(UserManager.DISALLOW_MOUNT_PHYSICAL_MEDIA, disallow)
+        setUserRestriction(UserManager.DISALLOW_ADJUST_VOLUME, disallow)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun setUserRestriction(restriction: String, disallow: Boolean) = if (disallow) {
+        mDevicePolicyManager.addUserRestriction(mAdminComponentName, restriction)
+    } else {
+        mDevicePolicyManager.clearUserRestriction(mAdminComponentName, restriction)
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun enableStayOnWhilePluggedIn(active: Boolean) = if (active) {
+        mDevicePolicyManager.setGlobalSetting(mAdminComponentName,
+                Settings.Global.STAY_ON_WHILE_PLUGGED_IN,
+                Integer.toString(BatteryManager.BATTERY_PLUGGED_AC
+                        or BatteryManager.BATTERY_PLUGGED_WIRELESS))
+    } else {
+        mDevicePolicyManager.setGlobalSetting(mAdminComponentName, Settings.Global.STAY_ON_WHILE_PLUGGED_IN, "0")
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun setLockTask(start: Boolean, isAdmin: Boolean) {
+        if (isAdmin) {
+            mDevicePolicyManager.setLockTaskPackages(mAdminComponentName, if (start) arrayOf(packageName) else arrayOf())
+        }
+        if (start) {
+            startLockTask()
+        } else {
+            stopLockTask()
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun setUpdatePolicy(enable: Boolean) {
+        if (enable) {
+            mDevicePolicyManager.setSystemUpdatePolicy(mAdminComponentName,
+                    SystemUpdatePolicy.createWindowedInstallPolicy(60, 120))
+        } else {
+            mDevicePolicyManager.setSystemUpdatePolicy(mAdminComponentName, null)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
+    private fun setAsHomeApp(enable: Boolean) {
+        if (enable) {
+            val intentFilter = IntentFilter(Intent.ACTION_MAIN).apply {
+                addCategory(Intent.CATEGORY_HOME)
+                addCategory(Intent.CATEGORY_DEFAULT)
+            }
+            mDevicePolicyManager.addPersistentPreferredActivity(
+                    mAdminComponentName, intentFilter, ComponentName(packageName, MainActivity::class.java.name))
+        } else {
+            mDevicePolicyManager.clearPackagePersistentPreferredActivities(
+                    mAdminComponentName, packageName)
+        }
+    }
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun setKeyGuardEnabled(enable: Boolean) {
+        mDevicePolicyManager.setKeyguardDisabled(mAdminComponentName, !enable)
+    }
+
+    private fun setImmersiveMode(enable: Boolean) {
+        if (enable) {
+            val flags = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_FULLSCREEN
+                    or View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY)
+            window.decorView.systemUiVisibility = flags
+        } else {
+            val flags = (View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    or View.SYSTEM_UI_FLAG_LAYOUT_HIDE_NAVIGATION
+                    or View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN)
+            window.decorView.systemUiVisibility = flags
+        }
+    }
+
 
 }

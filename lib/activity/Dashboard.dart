@@ -1426,6 +1426,15 @@ class _CheckPageState extends State<Dashboard> {
       playpauseButtonEnabled = preferences.getBool('playpauseButtonEnabled');
       calculateTiTeValue(rrValue, double.tryParse(i), double.tryParse(e));
 
+      pacvFio2Value = preferences.getInt('pacvFio2Value');
+      pccmvFio2Value = preferences.getInt('pccmvFio2Value');
+      vccmvFio2Value = preferences.getInt('vccmvFio2Value');
+      vacvFio2Value = preferences.getInt('vacvFio2Value');
+      psimvFio2Value = preferences.getInt('psimvFio2Value');
+      vsimvFio2Value = preferences.getInt('vsimvFio2Value');
+      psvFio2Value = preferences.getInt('psvFio2Value');
+      prvcFio2Value = preferences.getInt('prvcFio2Value');
+
       pControl = preferences.getBool("pControl");
 
       if (checkData == "0") {
@@ -4973,7 +4982,7 @@ class _CheckPageState extends State<Dashboard> {
                                                         padding:
                                                             const EdgeInsets
                                                                 .all(8.0),
-                                                        child: Text("PSV",
+                                                        child: Text("PSV/CPAP",
                                                             style: TextStyle(
                                                                 fontSize: 20,
                                                                 color: psvEnabled
@@ -6016,7 +6025,7 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                 ),
                 Text(
-                  "v1.8.5r",
+                  "v1.8.5t",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: _isTab10 ? 18 : 10,
@@ -6198,9 +6207,9 @@ class _CheckPageState extends State<Dashboard> {
                   ),
                 ),
                 InkWell(
-                  onTap: () {
+                  onTap: () async {
+                     await getData();
                     setState(() {
-                      getData();
                       _setValuesonClick = false;
                       lockEnabled ? modesEnabled = true : "";
                       if (_status == "Connected") {}
@@ -31573,7 +31582,7 @@ class _CheckPageState extends State<Dashboard> {
         pacvPcValue = 25;
         pacvVtMinValue = 0;
         pacvVtMaxValue = 2400;
-        pacvFio2Value = 21;
+        // pacvFio2Value = 21;
         pacvFlowRampValue = 3;
         pacvmaxValue = 60;
         pacvminValue = 1;
@@ -31596,7 +31605,7 @@ class _CheckPageState extends State<Dashboard> {
         pccmvIeValue = 51;
         pccmvPeepValue = 10;
         pccmvPcValue = 25;
-        pccmvFio2Value = 21;
+        // pccmvFio2Value = 21;
         pccmvVtminValue = 0;
         pccmvVtmaxValue = 2400;
         pccmvTihValue = 50;
@@ -31604,7 +31613,7 @@ class _CheckPageState extends State<Dashboard> {
         pccmvIeValueTemp = 51;
         pccmvPeepValueTemp = 10;
         pccmvPcValueTemp = 30;
-        pccmvFio2ValueTemp = 21;
+        // pccmvFio2ValueTemp = 21;
         pccmvVtminValueTemp = 100;
         pccmvVtmaxValueTemp = 400;
         pccmvTihValueTemp = 50;
@@ -31631,7 +31640,7 @@ class _CheckPageState extends State<Dashboard> {
         vccmvPeepValue = 10;
         vccmvPcMinValue = 20;
         vccmvPcMaxValue = 100;
-        vccmvFio2Value = 21;
+        // vccmvFio2Value = 21;
         vccmvVtValue = 300;
         vccmvTihValue = 50;
         vccmvFlowRampValue = 4;
@@ -31659,7 +31668,7 @@ class _CheckPageState extends State<Dashboard> {
         vacvVtValue = 300;
         vacvPcMinValue = 20;
         vacvPcMaxValue = 100;
-        vacvFio2Value = 21;
+        // vacvFio2Value = 21;
         vacvFlowRampValue = 4;
         vacvmaxValue = 60;
         vacvminValue = 1;
@@ -31691,7 +31700,7 @@ class _CheckPageState extends State<Dashboard> {
         psvTiValue = 6;
         psvVtMinValue = 0;
         psvVtMaxValue = 2400;
-        psvFio2Value = 21;
+        // psvFio2Value = 21;
         psvAtimeValue = 10;
         psvEtrigValue = 10;
         psvBackupRrValue = 20;
@@ -31727,7 +31736,7 @@ class _CheckPageState extends State<Dashboard> {
         vsimvPsValue = 25;
         vsimvPcMinValue = 20;
         vsimvPcMaxValue = 100;
-        vsimvFio2Value = 21;
+        // vsimvFio2Value = 21;
         vsimvFlowRampValue = 4;
 
         vsimvmaxValue = 30;
@@ -31757,7 +31766,7 @@ class _CheckPageState extends State<Dashboard> {
         psimvPcValue = 25;
         psimvVtMinValue = 0;
         psimvVtMaxValue = 2400;
-        psimvFio2Value = 21;
+        // psimvFio2Value = 21;
         psimvFlowRampValue = 3;
 
         psimvmaxValue = 30;
@@ -31784,7 +31793,7 @@ class _CheckPageState extends State<Dashboard> {
       prvcVtValue = 400;
       prvcPcMinValue = 20;
       prvcPcMaxValue = 60;
-      prvcFio2Value = 21;
+      // prvcFio2Value = 21;
       prvcFlowRampValue = 4;
 
       prvcmaxValue = 30;
@@ -31803,7 +31812,7 @@ class _CheckPageState extends State<Dashboard> {
       cpappItrigValue = 3;
       cpappPeepValue = 10;
       cpappcpappalue = 25;
-      cpappFio2Value = 21;
+      // cpappFio2Value = 21;
       cpappBackupRrValue = 20;
       cpappAtimeValue = 10;
       cpappPcValue = 25;
@@ -31836,7 +31845,7 @@ class _CheckPageState extends State<Dashboard> {
       autoTiValue = 1;
       autoVtMinValue = 0;
       autoVtMaxValue = 2400;
-      autoFio2Value = 21;
+      // autoFio2Value = 21;
       autoAtimeValue = 10;
       autoEtrigValue = 10;
       autoBackupRrValue = 20;
@@ -34088,7 +34097,10 @@ class _CheckPageState extends State<Dashboard> {
         if (finalList[108] == 1) {
           setState(() {
             if (finalList[109] == 0) {
-              ((finalList[106] << 8) + finalList[107]) == 24
+              ((finalList[106] << 8) + finalList[107]) == 29
+                  ? alarmMessage =
+                      "Critical Battery."
+             : ((finalList[106] << 8) + finalList[107]) == 24
                   ? alarmMessage =
                       "Blender Malfunction. \nOxygen blending not possible."
                   : ((finalList[106] << 8) + finalList[107]) == 17
@@ -34262,7 +34274,7 @@ class _CheckPageState extends State<Dashboard> {
         });
       } else if (operatinModeR == 3) {
         setState(() {
-          modeName = "PSV";
+          modeName = "PSV/CPAP";
           selfTestingButtonEnabled = false;
         });
       } else if (operatinModeR == 4) {
@@ -34454,7 +34466,7 @@ class _CheckPageState extends State<Dashboard> {
           if (receti >= 500 && receti <= receti * 5500) {
             receivedti = receti;
           } else {
-            receivedti = tipsvValue;
+            // receivedti = tipsvValue;
           }
           var recebackrr = ((finalList[130] << 8) + finalList[131]);
           if (recebackrr >= 1 && recebackrr <= 60) {
@@ -34542,6 +34554,13 @@ class _CheckPageState extends State<Dashboard> {
                     (receivede / 10).toString()));
             preferences.setInt('pccmvPeepValue', receivedpeep);
             preferences.setInt('pccmvFio2Value', receivedfio2);
+            preferences.setInt('vccmvFio2Value', receivedfio2);
+            preferences.setInt('pacvFio2Value', receivedfio2);
+            preferences.setInt('vacvFio2Value', receivedfio2);
+            preferences.setInt('psimvFio2Value', receivedfio2);
+            preferences.setInt('vsimvFio2Value', receivedfio2);
+            preferences.setInt('psvFio2Value', receivedfio2);
+            preferences.setInt('prvcFio2Value', receivedfio2);
             preferences.setInt('pccmvPcValue', receivedpc); //7
 
             preferences.setInt("rr", receivedrr);
@@ -34562,7 +34581,14 @@ class _CheckPageState extends State<Dashboard> {
                     ":" +
                     (receivede / 10).toString()));
             preferences.setInt('vccmvPeepValue', receivedpeep);
+            preferences.setInt('pccmvFio2Value', receivedfio2);
             preferences.setInt('vccmvFio2Value', receivedfio2);
+            preferences.setInt('pacvFio2Value', receivedfio2);
+            preferences.setInt('vacvFio2Value', receivedfio2);
+            preferences.setInt('psimvFio2Value', receivedfio2);
+            preferences.setInt('vsimvFio2Value', receivedfio2);
+            preferences.setInt('psvFio2Value', receivedfio2);
+            preferences.setInt('prvcFio2Value', receivedfio2);
             preferences.setInt('vccmvVtValue', receivedvt); //7
 
             preferences.setInt("rr", receivedrr);
@@ -34584,7 +34610,14 @@ class _CheckPageState extends State<Dashboard> {
                     (receivede / 10).toString()));
             preferences.setInt('pacvPeepValue', receivedpeep);
             preferences.setInt('pacvPcValue', receivedpc);
-            preferences.setInt('pacvFio2Value', receivedfio2); //2
+            preferences.setInt('pccmvFio2Value', receivedfio2);
+            preferences.setInt('vccmvFio2Value', receivedfio2);
+            preferences.setInt('pacvFio2Value', receivedfio2);
+            preferences.setInt('vacvFio2Value', receivedfio2);
+            preferences.setInt('psimvFio2Value', receivedfio2);
+            preferences.setInt('vsimvFio2Value', receivedfio2);
+            preferences.setInt('psvFio2Value', receivedfio2);
+            preferences.setInt('prvcFio2Value', receivedfio2);
 
             preferences.setInt("rr", receivedrr);
             preferences.setString("i", (receivedi / 10).toString());
@@ -34606,7 +34639,14 @@ class _CheckPageState extends State<Dashboard> {
                     (receivede / 10).toString()));
             preferences.setInt('vacvPeepValue', receivedpeep);
             preferences.setInt('vacvVtValue', receivedvt);
-            preferences.setInt('vacvFio2Value', receivedfio2); //1
+            preferences.setInt('pccmvFio2Value', receivedfio2);
+            preferences.setInt('vccmvFio2Value', receivedfio2);
+            preferences.setInt('pacvFio2Value', receivedfio2);
+            preferences.setInt('vacvFio2Value', receivedfio2);
+            preferences.setInt('psimvFio2Value', receivedfio2);
+            preferences.setInt('vsimvFio2Value', receivedfio2);
+            preferences.setInt('psvFio2Value', receivedfio2);
+            preferences.setInt('prvcFio2Value', receivedfio2);
 
             preferences.setInt("rr", receivedrr);
             preferences.setString("i", (receivedi / 10).toString());
@@ -34628,7 +34668,14 @@ class _CheckPageState extends State<Dashboard> {
                     (receivede / 10).toString()));
             preferences.setInt('psimvPeepValue', receivedpeep);
             preferences.setInt('psimvPcValue', receivedpc);
-            preferences.setInt('psimvFio2Value', receivedfio2); //4
+            preferences.setInt('pccmvFio2Value', receivedfio2);
+            preferences.setInt('vccmvFio2Value', receivedfio2);
+            preferences.setInt('pacvFio2Value', receivedfio2);
+            preferences.setInt('vacvFio2Value', receivedfio2);
+            preferences.setInt('psimvFio2Value', receivedfio2);
+            preferences.setInt('vsimvFio2Value', receivedfio2);
+            preferences.setInt('psvFio2Value', receivedfio2);
+            preferences.setInt('prvcFio2Value', receivedfio2);
             preferences.setInt('psimvItrigValue', receivedItrig);
 
             preferences.setInt("rr", receivedrr);
@@ -34652,7 +34699,14 @@ class _CheckPageState extends State<Dashboard> {
             preferences.setInt('vsimvPeepValue', receivedpeep);
             preferences.setInt('vsimvVtValue', receivedvt);
             preferences.setInt('vsimvPsValue', receivedps);
+            preferences.setInt('pccmvFio2Value', receivedfio2);
+            preferences.setInt('vccmvFio2Value', receivedfio2);
+            preferences.setInt('pacvFio2Value', receivedfio2);
+            preferences.setInt('vacvFio2Value', receivedfio2);
+            preferences.setInt('psimvFio2Value', receivedfio2);
             preferences.setInt('vsimvFio2Value', receivedfio2);
+            preferences.setInt('psvFio2Value', receivedfio2);
+            preferences.setInt('prvcFio2Value', receivedfio2);
             preferences.setInt('vsimvItrigValue', receivedItrig);
             preferences.setInt('vsimvPcMaxValue', (receivedpcmax).toInt());
 
@@ -34677,7 +34731,14 @@ class _CheckPageState extends State<Dashboard> {
                     (receivede / 10).toString()));
             preferences.setInt('psvPsValue', receivedps);
             preferences.setInt('psvVtValue', receivedvt);
+            preferences.setInt('pccmvFio2Value', receivedfio2);
+            preferences.setInt('vccmvFio2Value', receivedfio2);
+            preferences.setInt('pacvFio2Value', receivedfio2);
+            preferences.setInt('vacvFio2Value', receivedfio2);
+            preferences.setInt('psimvFio2Value', receivedfio2);
+            preferences.setInt('vsimvFio2Value', receivedfio2);
             preferences.setInt('psvFio2Value', receivedfio2);
+            preferences.setInt('prvcFio2Value', receivedfio2);
             preferences.setInt('psvBackupRrValue', receivedbackuprr);
             preferences.setInt('psvPcValue', receivedpc);
             preferences.setInt('psvAtimeValue', apneatimeCaal); //3
@@ -34716,10 +34777,17 @@ class _CheckPageState extends State<Dashboard> {
                     (receivede / 10).toString()));
             preferences.setInt('prvcPeepValue', receivedpeep);
             preferences.setInt('prvcVtValue', receivedvt);
+            preferences.setInt('pccmvFio2Value', receivedfio2);
+            preferences.setInt('vccmvFio2Value', receivedfio2);
+            preferences.setInt('pacvFio2Value', receivedfio2);
+            preferences.setInt('vacvFio2Value', receivedfio2);
+            preferences.setInt('psimvFio2Value', receivedfio2);
+            preferences.setInt('vsimvFio2Value', receivedfio2);
+            preferences.setInt('psvFio2Value', receivedfio2);
             preferences.setInt('prvcFio2Value', receivedfio2);
             preferences.setInt('prvcPcMaxValue', receivedpcmax);
           } else if (operatinModeR == 20 && receivedoperatingModeR == 20) {
-            var apneatimeCaal = (receivedapneaTime / 1000).toInt();
+            var apneatimeCaal = (receivedapneaTime ~/ 1000).toInt();
             preferences.setString("checkMode", "cpap");
             preferences.setInt('cpappItrigValue', receivedItrig);
             // preferences.setInt('psvTiValue', psvTiValue);
@@ -34751,7 +34819,7 @@ class _CheckPageState extends State<Dashboard> {
             preferences.setInt("ti",
                 getTiValueNumber(((receivedti / 1000).toDouble()).toString()));
           } else if (operatinModeR == 21 && receivedoperatingModeR == 21) {
-            var apneatimeCaal = (receivedapneaTime / 1000).toInt();
+            var apneatimeCaal = (receivedapneaTime ~/ 1000).toInt();
             preferences.setString("checkMode", "auto");
             preferences.setInt('autoItrigValue', receivedItrig);
             // preferences.setInt('autoTiValue', autoTiValue);

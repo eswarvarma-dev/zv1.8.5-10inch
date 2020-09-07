@@ -45,6 +45,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
       dateTime = "0";
 
   String ioreDisplayParamter = "I/E";
+  String amsDisplayParamter = "";
   DatabaseHelper dbHelper;
   List<VentilatorOMode> vomL;
   String operatinModeR,
@@ -63,7 +64,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
       itrigValue = "0",
       pplateauDisplay = "0",
       atime = "0",
-      tipsv = "0",
+      tipsv = "0", leakVolumeDisplay="0", peakFlowDisplay="0", spontaneousDisplay="0",
       vtValue = "0";
 
   int minRrtotal = 1,
@@ -78,6 +79,9 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
       maxpeep = 40,
       minfio2 = 21,
       maxfio2 = 100;
+  
+  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  
 
   @override
   void initState() {
@@ -158,7 +162,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
       tipsv = vomL[currentValue].tipsvS;
       atime = vomL[currentValue].atimeS;
       fio2Value = vomL[currentValue].fio2S;
-      pplateauDisplay = vomL[currentValue].pplateauDisplay??"0";
+      pplateauDisplay = vomL[currentValue].pplateauDisplay ?? "0";
       operatinModeR = vomL[currentValue]?.operatingMode ?? "0";
       patientName = vomL[currentValue]?.patientName ?? "";
       paw = vomL[currentValue]?.paw ?? "0";
@@ -444,6 +448,567 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
     //     dataSet: vtPoints);
 
     return Scaffold(
+       key: _scaffoldKey,
+       drawer: Container(
+          // width: 190,
+          child: Theme(
+            data: Theme.of(context).copyWith(
+              canvasColor: Colors.transparent,
+            ),
+            child: Container(
+              color: Colors.transparent,
+              child: Drawer(
+                child: Row(
+                  children: <Widget>[
+                    Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: <Widget>[
+                        SizedBox(height: 50),
+                        Container(
+                          color: Color(0xFF171e27),
+                          width: 190,
+                          height: 85,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 12, right: 12, top: 5),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text("",
+                                        style: TextStyle(
+                                            color: Colors.green, fontSize: 10)),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text(
+                                      "",
+                                      style: TextStyle(
+                                          color: Colors.green, fontSize: 10),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: Text(
+                                      cdisplayParameter.toString(),
+                                      style: TextStyle(
+                                          color: Colors.green, fontSize: 38),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 0.0, bottom: 65),
+                                    child: Text(
+                                      "Static Compliance",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "ml/cmH\u2082O",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 0),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        ),
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.green,
+                                              fontSize: 12),
+                                        ),
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 18.0),
+                                      child: Divider(
+                                        color: Colors.white,
+                                        height: 1,
+                                      ),
+                                    ))
+                              ],
+                            )),
+                          ),
+                        ),
+                        Container(
+                          color: Color(0xFF171e27),
+                          width: 190,
+                          height: 85,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 12, right: 12, top: 10),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text("",
+                                        style: TextStyle(
+                                            color: Colors.yellow,
+                                            fontSize: 10)),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text(
+                                      "",
+                                      style: TextStyle(
+                                          color: Colors.yellow, fontSize: 10),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: Text(
+                                      leakVolumeDisplay  == null
+                                          ? "0"
+                                          : (leakVolumeDisplay)
+                                              .toString(),
+                                      // "0000",
+                                      style: TextStyle(
+                                          color: Colors.yellow, fontSize: 35),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 0.0, bottom: 60),
+                                    child: Text(
+                                      "Leak Volume",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "ml",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 0),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        ),
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.yellow,
+                                              fontSize: 12),
+                                        ),
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 18.0),
+                                      child: Divider(
+                                        color: Colors.white,
+                                        height: 1,
+                                      ),
+                                    ))
+                              ],
+                            )),
+                          ),
+                        ),
+                        Container(
+                          color: Color(0xFF171e27),
+                          width: 190,
+                          height: 85,
+                          child: Padding(
+                            padding: const EdgeInsets.only(
+                                left: 12, right: 12, top: 5, bottom: 5),
+                            child: Center(
+                                child: Stack(
+                              children: [
+                                Align(
+                                  alignment: Alignment.topLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text("",
+                                        style: TextStyle(
+                                            color: Colors.pink, fontSize: 10)),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.bottomLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(2.0),
+                                    child: Text(
+                                      "",
+                                      style: TextStyle(
+                                          color: Colors.pink, fontSize: 10),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.center,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(right: 5.0),
+                                    child: Text(
+                                      peakFlowDisplay == null
+                                          ? "0"
+                                          : ((int.tryParse(peakFlowDisplay) * 60) / 1000)
+                                              .toStringAsFixed(3),
+                                      // "00",
+                                      style: TextStyle(
+                                          color: Colors.pink, fontSize: 35),
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                  alignment: Alignment.centerLeft,
+                                  child: Padding(
+                                    padding: const EdgeInsets.only(
+                                        left: 0.0, bottom: 60),
+                                    child: Text(
+                                      "Peak Flow",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Align(
+                                    alignment: Alignment.bottomLeft,
+                                    child: Text(
+                                      "lpm",
+                                      style: TextStyle(
+                                          color: Colors.white, fontSize: 12),
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(top: 0),
+                                  child: Align(
+                                    alignment: Alignment.topRight,
+                                    child: Column(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.start,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        ),
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.pink, fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(bottom: 5),
+                                  child: Align(
+                                    alignment: Alignment.bottomRight,
+                                    child: Column(
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      crossAxisAlignment:
+                                          CrossAxisAlignment.end,
+                                      children: <Widget>[
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.pink, fontSize: 12),
+                                        ),
+                                        Text(
+                                          "",
+                                          style: TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 12),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: Padding(
+                                      padding: const EdgeInsets.only(top: 18.0),
+                                      child: Divider(
+                                        color: Colors.white,
+                                        height: 1,
+                                      ),
+                                    )),
+                              ],
+                            )),
+                          ),
+                        ),
+                        operatinModeR == "4" ||
+                                operatinModeR == "5" ||
+                                operatinModeR == "3"
+                            ? Container(
+                                color: Color(0xFF171e27),
+                                width: 190,
+                                height: 85,
+                                child: Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 12, right: 12, top: 5, bottom: 5),
+                                  child: Center(
+                                      child: Stack(
+                                    children: [
+                                      Align(
+                                        alignment: Alignment.topLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text("",
+                                              style: TextStyle(
+                                                  color: Colors.pink,
+                                                  fontSize: 10)),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.bottomLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(2.0),
+                                          child: Text(
+                                            "",
+                                            style: TextStyle(
+                                                color: Colors.pink,
+                                                fontSize: 10),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.center,
+                                        child: Padding(
+                                          padding:
+                                              const EdgeInsets.only(right: 5.0),
+                                          child: Text(
+                                            spontaneousDisplay == null
+                                                ? "0"
+                                                : (int.tryParse(spontaneousDisplay)/ 1000)
+                                                    .toStringAsFixed(3),
+                                            style: TextStyle(
+                                                color: Colors.blue,
+                                                fontSize: 35),
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                        alignment: Alignment.centerLeft,
+                                        child: Padding(
+                                          padding: const EdgeInsets.only(
+                                              left: 0.0, bottom: 60),
+                                          child: Text(
+                                            "Spontaneous Volume",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 5),
+                                        child: Align(
+                                          alignment: Alignment.bottomLeft,
+                                          child: Text(
+                                            "ml",
+                                            style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 12),
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding: const EdgeInsets.only(top: 0),
+                                        child: Align(
+                                          alignment: Alignment.topRight,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.start,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              Text(
+                                                "",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12),
+                                              ),
+                                              Text(
+                                                "",
+                                                style: TextStyle(
+                                                    color: Colors.pink,
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Padding(
+                                        padding:
+                                            const EdgeInsets.only(bottom: 5),
+                                        child: Align(
+                                          alignment: Alignment.bottomRight,
+                                          child: Column(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.end,
+                                            children: <Widget>[
+                                              Text(
+                                                "",
+                                                style: TextStyle(
+                                                    color: Colors.pink,
+                                                    fontSize: 12),
+                                              ),
+                                              Text(
+                                                "",
+                                                style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 12),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                                      ),
+                                      Align(
+                                          alignment: Alignment.bottomCenter,
+                                          child: Padding(
+                                            padding: const EdgeInsets.only(
+                                                top: 18.0),
+                                            child: Divider(
+                                              color: Colors.white,
+                                              height: 1,
+                                            ),
+                                          )),
+                                    ],
+                                  )),
+                                ),
+                              )
+                            : Container(),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+        ),
         resizeToAvoidBottomPadding: false,
         // appBar: AppBar(title: Text(widget.patientID),),
         body: dataAvailable
@@ -463,7 +1028,7 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                         ? Align(
                             alignment: Alignment.topCenter,
                             child: Text(
-                             changeFormatDateTime(dateTime),
+                              changeFormatDateTime(dateTime),
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ))
@@ -504,9 +1069,15 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
   }
 
   changeFormatDateTime(datetime) {
-    if(datetime!=null){
-      return datetime.toString().split(" ")[0].toString().split("-")[2] + "-"+datetime.toString().split(" ")[0].toString().split("-")[1] +"-"+datetime.toString().split(" ")[0].toString().split("-")[0] +"  "+datetime.toString().split(" ")[01].toString();
-    }else{
+    if (datetime != null) {
+      return datetime.toString().split(" ")[0].toString().split("-")[2] +
+          "-" +
+          datetime.toString().split(" ")[0].toString().split("-")[1] +
+          "-" +
+          datetime.toString().split(" ")[0].toString().split("-")[0] +
+          "  " +
+          datetime.toString().split(" ")[01].toString();
+    } else {
       return "";
     }
   }
@@ -945,26 +1516,59 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                                                           "5"
                                                                       ? "assets/lungs/5.png"
                                                                       : "assets/lungs/1.png",
-                                                  width: 120),
+                                                  width: 120,
+                                                  color: amsDisplayParamter ==
+                                                          "A"
+                                                      ? Colors.pink[200]
+                                                      : amsDisplayParamter ==
+                                                              "S"
+                                                          ? Colors.green[200]
+                                                          : Colors.white),
                                             ],
                                           ),
-                                          Container(
-                                            height: 25,
-                                            width: 25,
-                                            decoration: new BoxDecoration(
-                                              borderRadius:
-                                                  new BorderRadius.circular(
-                                                      25.0),
-                                              border: new Border.all(
-                                                width: 2.0,
-                                                color: Colors.green,
+                                          Column(
+                                            children: <Widget>[
+                                              Container(
+                                                height: 40,
+                                                width: 40,
+                                                decoration: new BoxDecoration(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          25.0),
+                                                  border: new Border.all(
+                                                    width: 2.0,
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                    child: Text(
+                                                        ioreDisplayParamter,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 18))),
                                               ),
-                                            ),
-                                            child: Center(
-                                                child: Text(ioreDisplayParamter,
-                                                    style: TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 10))),
+                                              Container(
+                                                margin:
+                                                    EdgeInsets.only(top: 40),
+                                                height: 40,
+                                                width: 40,
+                                                decoration: new BoxDecoration(
+                                                  borderRadius:
+                                                      new BorderRadius.circular(
+                                                          25.0),
+                                                  border: new Border.all(
+                                                    width: 2.0,
+                                                    color: Colors.green,
+                                                  ),
+                                                ),
+                                                child: Center(
+                                                    child: Text(
+                                                        amsDisplayParamter,
+                                                        style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 18))),
+                                              ),
+                                            ],
                                           ),
                                         ],
                                       ),
@@ -2735,6 +3339,17 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
         crossAxisAlignment: CrossAxisAlignment.center,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
+          InkWell(
+                onTap: () {
+                  _scaffoldKey.currentState.openDrawer();
+                },
+                child: Container(
+                    decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(5),
+                        color: Colors.white),
+                    child: Icon(Icons.keyboard_arrow_right,
+                        size: 40, color: Colors.black.withOpacity(0.9))),
+              ),
           Row(
             children: [
               Container(

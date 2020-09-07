@@ -463,7 +463,7 @@ class _CommonDialogState extends State<CommonDialog> {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(20.0),
         ),
-        height: 400.0,
+        height: 450.0,
         width: 500.0,
         child: commomValue != null
             ? Stack(
@@ -703,12 +703,37 @@ class _CommonDialogState extends State<CommonDialog> {
                           SizedBox(
                             height: 0,
                           ),
-                          // units
-                          //     ? Text(
-                          //         "cmH2O",
-                          //         style: TextStyle(fontSize: 16),
-                          //       )
-                          //     : Text(""),
+                         widget.value.toString() == "FiO2"
+                              ?  Container(
+                                    margin:EdgeInsets.only(left:350),
+                                    decoration: BoxDecoration(borderRadius: BorderRadius.circular(10),color:Colors.black),
+                                  child: InkWell(
+                                    onTap:(){
+                                  setState(() {
+                                    commomValue = 100.0;
+                                    if (commomValue != checkValue) {
+                                      setState(() {
+                                        confirmButton = true;
+                                      });
+                                    } else {
+                                      setState(() {
+                                        confirmButton = false;
+                                      });
+                                    }
+                                  });
+                                },
+                                 child: Container(
+                                      child: Padding(
+                                        padding: const EdgeInsets.only(top:8.0,bottom:8.0,left:20,right:20),
+                                        child: Text(
+                                            "100",
+                                            style: TextStyle(fontSize: 30,color:Colors.white),
+                                          ),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                              : Text(""),
                         ],
                       ),
                     ),
