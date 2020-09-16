@@ -315,7 +315,7 @@ class MainActivity: FlutterActivity() {
             setAsHomeApp(enable)
             setKeyGuardEnabled(enable)
         }
-        setLockTask(enable, isAdmin)
+//        setLockTask(enable, isAdmin)
         setImmersiveMode(enable)
     }
 

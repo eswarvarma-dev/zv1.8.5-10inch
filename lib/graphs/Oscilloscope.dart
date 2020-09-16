@@ -97,13 +97,14 @@ class _TracePainter extends CustomPainter {
       this.yRange,
       this.yMin,
       this.dataSet,
-      this.xScale = 16.0,
+      this.xScale = 16,
       this.traceColor = Colors.white});
 
   @override
   void paint(Canvas canvas, Size size) {
     final tracePaint = Paint()
       ..strokeJoin = StrokeJoin.round
+      
       ..strokeWidth = 3.0
       ..color = traceColor
       ..style = PaintingStyle.stroke;
