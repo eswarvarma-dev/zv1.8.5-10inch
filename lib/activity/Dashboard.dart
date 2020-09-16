@@ -86,6 +86,7 @@ class _CheckPageState extends State<Dashboard> {
   double _progress = 50;
   Timer _timer, _timer1, _timer2, _timer3;
   List<int> list = [];
+  List<int> list1 = [];
 
   double radians = 0, radians1 = 0;
   int paw, mvValue = 0, rrtotalValue = 0, lastmvValue = 0;
@@ -129,6 +130,7 @@ class _CheckPageState extends State<Dashboard> {
   double peepHeight = 280, psHeight = 280;
   String modeName = "", dateandTime;
   double tiValue = 0, teValue = 0;
+  int previousPacket = 653499;
 
   double mode1rrval = 12,
       mode1ieval = 2,
@@ -557,6 +559,7 @@ class _CheckPageState extends State<Dashboard> {
   int powerIndication = 0, batteryPercentage, batteryStatus = 0;
   String sendBattery;
   List<int> listTemp = [];
+  List<int> listTemp1 = [];
   bool testingText = false;
   String textText = "Selftest starting..";
   String selfTexttext = "";
@@ -700,6 +703,7 @@ class _CheckPageState extends State<Dashboard> {
 
     Transaction<Uint8List> transaction =
         Transaction.terminated(_port.inputStream, Uint8List.fromList([127]));
+
 
     transaction.stream.listen((event) async {
       setState(() {
@@ -1300,7 +1304,7 @@ class _CheckPageState extends State<Dashboard> {
       if (resV == 1) {
         extractingData(obj);
       } else if (resV == 2) {
-        // extractingBreathData(obj);
+        extractingBreathData(obj);
       }
     } else if (crcData != uiCrc) {
       setState(() {
@@ -5879,10 +5883,6 @@ class _CheckPageState extends State<Dashboard> {
                     playOnEnabled
                         ? Navigator.push(context,
                             MaterialPageRoute(builder: (context) => About()))
-                        // ignore: unnecessary_statements
-                        // ignore: unnecessary_statements
-                        // ignore: unnecessary_statements
-                        // ignore: unnecessary_statements
                         : "";
                   },
                   child: _isTab10
@@ -5999,7 +5999,6 @@ class _CheckPageState extends State<Dashboard> {
                 SizedBox(
                   height: _isTab10 ? 270 : 130,
                 ),
-
                 playOnEnabled
                     ? Column(
                         children: [
@@ -6156,29 +6155,6 @@ class _CheckPageState extends State<Dashboard> {
                           ),
                         ),
                       ),
-                // Container(
-                //   height: 25,
-                //   width: 25,
-                //   margin: EdgeInsets.only(left: 80),
-                //   decoration: new BoxDecoration(
-                //     borderRadius: new BorderRadius.circular(25.0),
-                //     border: new Border.all(
-                //       width: 2.0,
-                //       color: Colors.green,
-                //     ),
-                //   ),
-                //   child: Center(
-                //       child: Text(
-                //     checkTempData == "1"
-                //         ? "L"
-                //         : checkTempData == "0"
-                //   ? "U"
-                //   : checkTempData == "2" ? "S" : "",
-                //     style: TextStyle(color: Colors.white),
-                //   )),
-                // ),
-
-                // Text(checkTempData=="1" ? "L" :checkTempData=="0" ? "U":"",style:TextStyle(color:Colors.red))
               ],
             ),
           ),
@@ -9539,31 +9515,31 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                       ),
                     ),
-              // SizedBox(width: 5),
-              // InkWell(
-              //   onTap: () {
-              //     setState(() {
-              //       _isLoopGraph = !_isLoopGraph;
-              //     });
-              //   },
-              //   child: Center(
-              //     child: Container(
-              //       width: 60,
-              //       child: Card(
-              //         color: _isLoopGraph ? Colors.green : Colors.white,
-              //         child: Padding(
-              //           padding: const EdgeInsets.only(
-              //               top: 0.0, left: 10, right: 10, bottom: 0.0),
-              //           child: Center(
-              //             child: Icon(Icons.timeline,
-              //                 color:
-              //                     _isLoopGraph ? Colors.white : Colors.black),
-              //           ),
-              //         ),
-              //       ),
-              //     ),
-              //   ),
-              // ),
+              SizedBox(width: 5),
+              InkWell(
+                onTap: () {
+                  setState(() {
+                    _isLoopGraph = !_isLoopGraph;
+                  });
+                },
+                child: Center(
+                  child: Container(
+                    width: 60,
+                    child: Card(
+                      color: _isLoopGraph ? Colors.green : Colors.white,
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            top: 0.0, left: 10, right: 10, bottom: 0.0),
+                        child: Center(
+                          child: Icon(Icons.timeline,
+                              color:
+                                  _isLoopGraph ? Colors.white : Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+              ),
               SizedBox(width: 5),
               Material(
                 borderRadius: BorderRadius.circular(5),
@@ -14349,8 +14325,8 @@ class _CheckPageState extends State<Dashboard> {
                 },
                 child: Center(
                   child: Container(
-                      width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
+                    width: _isTab10 ? 156 : 146,
+                    height: _isTab10 ? 130 : 130,
                     child: Card(
                       elevation: 40,
                       color: psvPs ? Color(0xFFE0E0E0) : Color(0xFF213855),
@@ -14471,8 +14447,8 @@ class _CheckPageState extends State<Dashboard> {
                       },
                       child: Center(
                         child: Container(
-                            width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
+                          width: _isTab10 ? 156 : 146,
+                          height: _isTab10 ? 130 : 130,
                           child: Card(
                             elevation: 40,
                             color:
@@ -14598,8 +14574,8 @@ class _CheckPageState extends State<Dashboard> {
                       },
                       child: Center(
                         child: Container(
-                           width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
+                          width: _isTab10 ? 156 : 146,
+                          height: _isTab10 ? 130 : 130,
                           child: Card(
                             elevation: 40,
                             color: psvPc
@@ -14727,8 +14703,8 @@ class _CheckPageState extends State<Dashboard> {
                 },
                 child: Center(
                   child: Container(
-                      width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
+                    width: _isTab10 ? 156 : 146,
+                    height: _isTab10 ? 130 : 130,
                     child: Card(
                       elevation: 40,
                       color: psvPeep ? Color(0xFFE0E0E0) : Color(0xFF213855),
@@ -14824,127 +14800,127 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
               InkWell(
-              onTap: () {
-                if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                    psvmaxValue = 55;
-                    psvminValue = 5;
-                    psvparameterName = "A Time";
-                    psvparameterUnits = "s";
-                    psvItrig = false;
-                    psvPeep = false;
-                    psvIe = false;
-                    psvPs = false;
-                    psvTi = false;
-                    psvPlateau = false;
-                    psvFlow = false;
-                    psvFio2 = false;
-                    psvAtime = true;
-                    psvEtrig = false;
-                    psvPc = false;
-                    psvVt = false;
-                    psvBackupRr = false;
-                    psvMinTe = false;
-                  });
-                }
-              },
-              child: Center(
-                child: Container(
+                onTap: () {
+                  if (_parameterChangeEnabled == true) {
+                    setState(() {
+                      _parameterChangeEnabled = false;
+                      psvmaxValue = 55;
+                      psvminValue = 5;
+                      psvparameterName = "A Time";
+                      psvparameterUnits = "s";
+                      psvItrig = false;
+                      psvPeep = false;
+                      psvIe = false;
+                      psvPs = false;
+                      psvTi = false;
+                      psvPlateau = false;
+                      psvFlow = false;
+                      psvFio2 = false;
+                      psvAtime = true;
+                      psvEtrig = false;
+                      psvPc = false;
+                      psvVt = false;
+                      psvBackupRr = false;
+                      psvMinTe = false;
+                    });
+                  }
+                },
+                child: Center(
+                  child: Container(
                     width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color: psvAtime ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Apnea Time",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: psvAtime
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "s",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: psvAtime
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              "55",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: psvAtime
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              "5",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: psvAtime
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 1.0),
+                    height: _isTab10 ? 130 : 130,
+                    child: Card(
+                      elevation: 40,
+                      color: psvAtime ? Color(0xFFE0E0E0) : Color(0xFF213855),
+                      child: Padding(
+                        padding: const EdgeInsets.all(6.0),
+                        child: Center(
+                            child: Stack(
+                          children: [
+                            Align(
+                              alignment: Alignment.topLeft,
                               child: Text(
-                                psvAtimeValue.toString(),
+                                "Apnea Time",
                                 style: TextStyle(
-                                    fontSize: 35,
+                                    fontSize: 15,
+                                    fontWeight: FontWeight.bold,
                                     color: psvAtime
                                         ? Color(0xFF213855)
                                         : Color(0xFFE0E0E0)),
                               ),
                             ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 20.0, left: 10, right: 10),
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: LinearProgressIndicator(
-                                backgroundColor: Colors.grey,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  psvAtime
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0),
-                                ),
-                                value: psvAtimeValue != null
-                                    ? psvAtimeValue / 55
-                                    : 0,
+                            Align(
+                              alignment: Alignment.topRight,
+                              child: Text(
+                                "s",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: psvAtime
+                                        ? Color(0xFF213855)
+                                        : Color(0xFFE0E0E0)),
                               ),
                             ),
-                          )
-                        ],
-                      )),
+                            Align(
+                              alignment: Alignment.bottomRight,
+                              child: Text(
+                                "55",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: psvAtime
+                                        ? Color(0xFF213855)
+                                        : Color(0xFFE0E0E0)),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.bottomLeft,
+                              child: Text(
+                                "5",
+                                style: TextStyle(
+                                    fontSize: 12,
+                                    color: psvAtime
+                                        ? Color(0xFF213855)
+                                        : Color(0xFFE0E0E0)),
+                              ),
+                            ),
+                            Align(
+                              alignment: Alignment.center,
+                              child: Padding(
+                                padding: const EdgeInsets.only(top: 1.0),
+                                child: Text(
+                                  psvAtimeValue.toString(),
+                                  style: TextStyle(
+                                      fontSize: 35,
+                                      color: psvAtime
+                                          ? Color(0xFF213855)
+                                          : Color(0xFFE0E0E0)),
+                                ),
+                              ),
+                            ),
+                            Padding(
+                              padding: const EdgeInsets.only(
+                                  bottom: 20.0, left: 10, right: 10),
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: LinearProgressIndicator(
+                                  backgroundColor: Colors.grey,
+                                  valueColor: AlwaysStoppedAnimation<Color>(
+                                    psvAtime
+                                        ? Color(0xFF213855)
+                                        : Color(0xFFE0E0E0),
+                                  ),
+                                  value: psvAtimeValue != null
+                                      ? psvAtimeValue / 55
+                                      : 0,
+                                ),
+                              ),
+                            )
+                          ],
+                        )),
+                      ),
                     ),
                   ),
                 ),
               ),
-            ),
             ]),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
@@ -14955,7 +14931,6 @@ class _CheckPageState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
@@ -14984,7 +14959,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                    width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -15106,7 +15081,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -15200,261 +15175,253 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-             InkWell(
-                onTap: () {
-                  if (_parameterChangeEnabled == true) {
-                    setState(() {
-                      _parameterChangeEnabled = false;
-                      psvmaxValue = 60;
-                      psvminValue = 1;
-                      psvparameterName = "Backup RR";
-                      psvparameterUnits = "bpm";
-                      psvItrig = false;
-                      psvPeep = false;
-                      psvIe = false;
-                      psvPs = false;
-                      psvTi = false;
-                      psvPlateau = false;
-                      psvFlow = false;
-                      psvFio2 = false;
-                      psvAtime = false;
-                      psvEtrig = false;
-                      psvPc = false;
-                      psvVt = false;
-                      psvBackupRr = true;
-                      psvMinTe = false;
-                    });
-                  }
-                },
-                child: Center(
-                  child: Container(
-                      width: _isTab10 ? 156 : 146,
+            InkWell(
+              onTap: () {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    psvmaxValue = 60;
+                    psvminValue = 1;
+                    psvparameterName = "Backup RR";
+                    psvparameterUnits = "bpm";
+                    psvItrig = false;
+                    psvPeep = false;
+                    psvIe = false;
+                    psvPs = false;
+                    psvTi = false;
+                    psvPlateau = false;
+                    psvFlow = false;
+                    psvFio2 = false;
+                    psvAtime = false;
+                    psvEtrig = false;
+                    psvPc = false;
+                    psvVt = false;
+                    psvBackupRr = true;
+                    psvMinTe = false;
+                  });
+                }
+              },
+              child: Center(
+                child: Container(
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
-                    child: Card(
-                      elevation: 40,
-                      color:
-                          psvBackupRr ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Center(
-                            child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
+                  child: Card(
+                    elevation: 40,
+                    color: psvBackupRr ? Color(0xFFE0E0E0) : Color(0xFF213855),
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Center(
+                          child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Backup RR",
+                              style: TextStyle(
+                                  fontSize: 13,
+                                  fontWeight: FontWeight.bold,
+                                  color: psvBackupRr
+                                      ? Color(0xFF213855)
+                                      : Color(0xFFE0E0E0)),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              "bpm",
+                              style: TextStyle(
+                                  fontSize: 10,
+                                  color: psvBackupRr
+                                      ? Color(0xFF213855)
+                                      : Color(0xFFE0E0E0)),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Text(
+                              "60",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: psvBackupRr
+                                      ? Color(0xFF213855)
+                                      : Color(0xFFE0E0E0)),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              "1",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: psvBackupRr
+                                      ? Color(0xFF213855)
+                                      : Color(0xFFE0E0E0)),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 1.0),
                               child: Text(
-                                "Backup RR",
+                                psvBackupRrValue.toString(),
                                 style: TextStyle(
-                                    fontSize: 13,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: 35,
                                     color: psvBackupRr
                                         ? Color(0xFF213855)
                                         : Color(0xFFE0E0E0)),
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Text(
-                                "bpm",
-                                style: TextStyle(
-                                    fontSize: 10,
-                                    color: psvBackupRr
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0)),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Text(
-                                "60",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: psvBackupRr
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0)),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Text(
-                                "1",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: psvBackupRr
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0)),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 1.0),
-                                child: Text(
-                                  psvBackupRrValue.toString(),
-                                  style: TextStyle(
-                                      fontSize: 35,
-                                      color: psvBackupRr
-                                          ? Color(0xFF213855)
-                                          : Color(0xFFE0E0E0)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 20.0, left: 10, right: 10),
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: LinearProgressIndicator(
+                                backgroundColor: Colors.grey,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  psvBackupRr
+                                      ? Color(0xFF213855)
+                                      : Color(0xFFE0E0E0),
                                 ),
+                                value: psvBackupRrValue != null
+                                    ? psvBackupRrValue / 60
+                                    : 0,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: 20.0, left: 10, right: 10),
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: LinearProgressIndicator(
-                                  backgroundColor: Colors.grey,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    psvBackupRr
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0),
-                                  ),
-                                  value: psvBackupRrValue != null
-                                      ? psvBackupRrValue / 60
-                                      : 0,
-                                ),
-                              ),
-                            )
-                          ],
-                        )),
-                      ),
+                          )
+                        ],
+                      )),
                     ),
                   ),
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  if (_parameterChangeEnabled == true) {
-                    setState(() {
-                      _parameterChangeEnabled = false;
-                      psvmaxValue = 61;
-                      psvminValue = 1;
-                      psvparameterName = "Backup I:E";
-                      psvparameterUnits = "";
-                      psvItrig = false;
-                      psvPeep = false;
-                      psvIe = false;
-                      psvPs = false;
-                      psvTi = false;
-                      psvPlateau = false;
-                      psvFlow = false;
-                      psvFio2 = false;
-                      psvAtime = false;
-                      psvIe = true;
-                      psvPc = false;
-                      psvVt = false;
-                      psvBackupRr = false;
-                      psvMinTe = false;
-                    });
-                  }
-                },
-                child: Center(
-                  child: Container(
-                      width: _isTab10 ? 156 : 146,
+            ),
+            InkWell(
+              onTap: () {
+                if (_parameterChangeEnabled == true) {
+                  setState(() {
+                    _parameterChangeEnabled = false;
+                    psvmaxValue = 61;
+                    psvminValue = 1;
+                    psvparameterName = "Backup I:E";
+                    psvparameterUnits = "";
+                    psvItrig = false;
+                    psvPeep = false;
+                    psvIe = false;
+                    psvPs = false;
+                    psvTi = false;
+                    psvPlateau = false;
+                    psvFlow = false;
+                    psvFio2 = false;
+                    psvAtime = false;
+                    psvIe = true;
+                    psvPc = false;
+                    psvVt = false;
+                    psvBackupRr = false;
+                    psvMinTe = false;
+                  });
+                }
+              },
+              child: Center(
+                child: Container(
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
-                    child: Card(
-                      elevation: 40,
-                      color: psvIe ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                      child: Padding(
-                        padding: const EdgeInsets.all(6.0),
-                        child: Center(
-                            child: Stack(
-                          children: [
-                            Align(
-                              alignment: Alignment.topLeft,
+                  child: Card(
+                    elevation: 40,
+                    color: psvIe ? Color(0xFFE0E0E0) : Color(0xFF213855),
+                    child: Padding(
+                      padding: const EdgeInsets.all(6.0),
+                      child: Center(
+                          child: Stack(
+                        children: [
+                          Align(
+                            alignment: Alignment.topLeft,
+                            child: Text(
+                              "Backup I:E",
+                              style: TextStyle(
+                                  fontSize: 15,
+                                  fontWeight: FontWeight.bold,
+                                  color: psvIe
+                                      ? Color(0xFF213855)
+                                      : Color(0xFFE0E0E0)),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.topRight,
+                            child: Text(
+                              "",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: psvIe
+                                      ? Color(0xFF213855)
+                                      : Color(0xFFE0E0E0)),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomRight,
+                            child: Text(
+                              "1:4.0",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: psvIe
+                                      ? Color(0xFF213855)
+                                      : Color(0xFFE0E0E0)),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Text(
+                              "4.0:1",
+                              style: TextStyle(
+                                  fontSize: 12,
+                                  color: psvIe
+                                      ? Color(0xFF213855)
+                                      : Color(0xFFE0E0E0)),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.center,
+                            child: Padding(
+                              padding: const EdgeInsets.only(top: 1.0),
                               child: Text(
-                                "Backup I:E",
+                                // psvIeValue,
+                                getIeData(psvIeValue, 1),
                                 style: TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.bold,
+                                    fontSize: 35,
                                     color: psvIe
                                         ? Color(0xFF213855)
                                         : Color(0xFFE0E0E0)),
                               ),
                             ),
-                            Align(
-                              alignment: Alignment.topRight,
-                              child: Text(
-                                "",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: psvIe
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0)),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomRight,
-                              child: Text(
-                                "1:4.0",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: psvIe
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0)),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.bottomLeft,
-                              child: Text(
-                                "4.0:1",
-                                style: TextStyle(
-                                    fontSize: 12,
-                                    color: psvIe
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0)),
-                              ),
-                            ),
-                            Align(
-                              alignment: Alignment.center,
-                              child: Padding(
-                                padding: const EdgeInsets.only(top: 1.0),
-                                child: Text(
-                                  // psvIeValue,
-                                  getIeData(psvIeValue, 1),
-                                  style: TextStyle(
-                                      fontSize: 35,
-                                      color: psvIe
-                                          ? Color(0xFF213855)
-                                          : Color(0xFFE0E0E0)),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.only(
+                                bottom: 20.0, left: 10, right: 10),
+                            child: Align(
+                              alignment: Alignment.bottomCenter,
+                              child: LinearProgressIndicator(
+                                backgroundColor: Colors.grey,
+                                valueColor: AlwaysStoppedAnimation<Color>(
+                                  psvIe ? Color(0xFF213855) : Color(0xFFE0E0E0),
                                 ),
+                                value: psvIeValue != null ? psvIeValue / 61 : 0,
                               ),
                             ),
-                            Padding(
-                              padding: const EdgeInsets.only(
-                                  bottom: 20.0, left: 10, right: 10),
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: LinearProgressIndicator(
-                                  backgroundColor: Colors.grey,
-                                  valueColor: AlwaysStoppedAnimation<Color>(
-                                    psvIe
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0),
-                                  ),
-                                  value:
-                                      psvIeValue != null ? psvIeValue / 61 : 0,
-                                ),
-                              ),
-                            )
-                          ],
-                        )),
-                      ),
+                          )
+                        ],
+                      )),
                     ),
                   ),
                 ),
               ),
+            ),
           ],
         ),
         Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              
-
-             
-             
               InkWell(
                 onTap: () {
                   if (_parameterChangeEnabled == true) {
@@ -15483,8 +15450,8 @@ class _CheckPageState extends State<Dashboard> {
                 },
                 child: Center(
                   child: Container(
-                      width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
+                    width: _isTab10 ? 156 : 146,
+                    height: _isTab10 ? 130 : 130,
                     child: Card(
                       elevation: 40,
                       color: psvTi ? Color(0xFFE0E0E0) : Color(0xFF213855),
@@ -15576,251 +15543,250 @@ class _CheckPageState extends State<Dashboard> {
                   ),
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  if (_parameterChangeEnabled == true) {
-                    setState(() {
-                      _parameterChangeEnabled = false;
-                    psvmaxValue = 50;
-                    psvminValue = 0;
-                    psvparameterName = "Plateau";
-                    psvparameterUnits = "L/m";
-                    psvItrig = false;
-                    psvPeep = false;
-                    psvIe = false;
-                    psvPs = false;
-                    psvTi = false;
-                    psvPlateau = true;
-                    psvFlow = false;
-                    psvFio2 = false;
-                    psvAtime = false;
-                    psvEtrig = false;
-                    psvBackupRr = false;
-                    psvPc = false;
-                    psvMinTe = false;
-                  });
-                }
-                },
-                child: Center(
-                  child: Container(
-                  width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                    child: Card(
-                      elevation: 40,
-                      color: psvPlateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                      child: Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Center(
-                  child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Plateau",
-                      style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: psvPlateau
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Text(
-                      "L/m",
-                      style: TextStyle(
-                fontSize: 12,
-                color: psvPlateau
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      "50",
-                      style: TextStyle(
-                fontSize: 12,
-                color: psvPlateau
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Text(
-                      "0",
-                      style: TextStyle(
-                fontSize: 12,
-                color: psvPlateau
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 1.0),
-                      child: Text(
-              psvPlateauValue.toString(),
-              style: TextStyle(
-                  fontSize: 35,
-                  color: psvPlateau
-                      ? Color(0xFF213855)
-                      : Color(0xFFE0E0E0)),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-              bottom: 20.0, left: 10, right: 10),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator(
-              backgroundColor: Colors.grey,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                psvPlateau
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0),
-              ),
-              value: psvPlateauValue != null
-                  ? psvPlateauValue / 50
-                  : 0,
-                      ),
-                    ),
-                  )
-                ],
-              )),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                   if (_parameterChangeEnabled == true) {
-                    setState(() {
-                      _parameterChangeEnabled = false;
-                    psvmaxValue = 150;
-                    psvminValue = 1;
-                    psvparameterName = "Flow";
-                    psvparameterUnits = "";
-                    psvItrig = false;
-                    psvPeep = false;
-                    psvIe = false;
-                    psvPs = false;
-                    psvTi = false;
-                    psvPlateau = false;
-                    psvFlow = true;
-                    psvBackupRr = false;
-                    psvFio2 = false;
-                    psvAtime = false;
-                    psvEtrig = false;
-                    psvPc = false;
-                    psvMinTe = false;
-                  });
-                }
-                },
-                child: Center(
-                  child: Container(
-                    width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                    child: Card(
-                      elevation: 40,
-                      color: psvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                      child: Padding(
-              padding: const EdgeInsets.all(6.0),
-              child: Center(
-                  child: Stack(
-                children: [
-                  Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      "Flow",
-                      style: TextStyle(
-                fontSize: 15,
-                fontWeight: FontWeight.bold,
-                color: psvFlow
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.topRight,
-                    child: Text(
-                      "",
-                      style: TextStyle(
-                fontSize: 12,
-                color: psvFlow
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomRight,
-                    child: Text(
-                      "150",
-                      style: TextStyle(
-                fontSize: 12,
-                color: psvFlow
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.bottomLeft,
-                    child: Text(
-                      "1",
-                      style: TextStyle(
-                fontSize: 12,
-                color: psvFlow
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                  Align(
-                    alignment: Alignment.center,
-                    child: Padding(
-                      padding: const EdgeInsets.only(top: 1.0),
-                      child: Text(
-              psvFlowValue.toString(),
-              style: TextStyle(
-                  fontSize: 35,
-                  color: psvFlow
-                      ? Color(0xFF213855)
-                      : Color(0xFFE0E0E0)),
-                      ),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(
-              bottom: 20.0, left: 10, right: 10),
-                    child: Align(
-                      alignment: Alignment.bottomCenter,
-                      child: LinearProgressIndicator(
-              backgroundColor: Colors.grey,
-              valueColor: AlwaysStoppedAnimation<Color>(
-                psvFlow
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0),
-              ),
-              value: psvFlowValue != null
-                  ? psvFlowValue / 150
-                  : 0,
-                      ),
-                    ),
-                  )
-                ],
-              )),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
-            
+              // InkWell(
+              //   onTap: () {
+              //     if (_parameterChangeEnabled == true) {
+              //       setState(() {
+              //         _parameterChangeEnabled = false;
+              //       psvmaxValue = 50;
+              //       psvminValue = 0;
+              //       psvparameterName = "Plateau";
+              //       psvparameterUnits = "L/m";
+              //       psvItrig = false;
+              //       psvPeep = false;
+              //       psvIe = false;
+              //       psvPs = false;
+              //       psvTi = false;
+              //       psvPlateau = true;
+              //       psvFlow = false;
+              //       psvFio2 = false;
+              //       psvAtime = false;
+              //       psvEtrig = false;
+              //       psvBackupRr = false;
+              //       psvPc = false;
+              //       psvMinTe = false;
+              //     });
+              //   }
+              //   },
+              //   child: Center(
+              //     child: Container(
+              //     width: _isTab10 ? 156 : 146,
+              //     height: _isTab10 ? 130 : 130,
+              //       child: Card(
+              //         elevation: 40,
+              //         color: psvPlateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
+              //         child: Padding(
+              // padding: const EdgeInsets.all(6.0),
+              // child: Center(
+              //     child: Stack(
+              //   children: [
+              //     Align(
+              //       alignment: Alignment.topLeft,
+              //       child: Text(
+              //         "Plateau",
+              //         style: TextStyle(
+              //   fontSize: 15,
+              //   fontWeight: FontWeight.bold,
+              //   color: psvPlateau
+              //       ? Color(0xFF213855)
+              //       : Color(0xFFE0E0E0)),
+              //       ),
+              //     ),
+              //     Align(
+              //       alignment: Alignment.topRight,
+              //       child: Text(
+              //         "L/m",
+              //         style: TextStyle(
+              //   fontSize: 12,
+              //   color: psvPlateau
+              //       ? Color(0xFF213855)
+              //       : Color(0xFFE0E0E0)),
+              //       ),
+              //     ),
+              //     Align(
+              //       alignment: Alignment.bottomRight,
+              //       child: Text(
+              //         "50",
+              //         style: TextStyle(
+              //   fontSize: 12,
+              //   color: psvPlateau
+              //       ? Color(0xFF213855)
+              //       : Color(0xFFE0E0E0)),
+              //       ),
+              //     ),
+              //     Align(
+              //       alignment: Alignment.bottomLeft,
+              //       child: Text(
+              //         "0",
+              //         style: TextStyle(
+              //   fontSize: 12,
+              //   color: psvPlateau
+              //       ? Color(0xFF213855)
+              //       : Color(0xFFE0E0E0)),
+              //       ),
+              //     ),
+              //     Align(
+              //       alignment: Alignment.center,
+              //       child: Padding(
+              //         padding: const EdgeInsets.only(top: 1.0),
+              //         child: Text(
+              // psvPlateauValue.toString(),
+              // style: TextStyle(
+              //     fontSize: 35,
+              //     color: psvPlateau
+              //         ? Color(0xFF213855)
+              //         : Color(0xFFE0E0E0)),
+              //         ),
+              //       ),
+              //     ),
+              //     Padding(
+              //       padding: const EdgeInsets.only(
+              // bottom: 20.0, left: 10, right: 10),
+              //       child: Align(
+              //         alignment: Alignment.bottomCenter,
+              //         child: LinearProgressIndicator(
+              // backgroundColor: Colors.grey,
+              // valueColor: AlwaysStoppedAnimation<Color>(
+              //   psvPlateau
+              //       ? Color(0xFF213855)
+              //       : Color(0xFFE0E0E0),
+              // ),
+              // value: psvPlateauValue != null
+              //     ? psvPlateauValue / 50
+              //     : 0,
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              // )),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
+              // InkWell(
+              //   onTap: () {
+              //      if (_parameterChangeEnabled == true) {
+              //       setState(() {
+              //         _parameterChangeEnabled = false;
+              //       psvmaxValue = 150;
+              //       psvminValue = 1;
+              //       psvparameterName = "Flow";
+              //       psvparameterUnits = "";
+              //       psvItrig = false;
+              //       psvPeep = false;
+              //       psvIe = false;
+              //       psvPs = false;
+              //       psvTi = false;
+              //       psvPlateau = false;
+              //       psvFlow = true;
+              //       psvBackupRr = false;
+              //       psvFio2 = false;
+              //       psvAtime = false;
+              //       psvEtrig = false;
+              //       psvPc = false;
+              //       psvMinTe = false;
+              //     });
+              //   }
+              //   },
+              //   child: Center(
+              //     child: Container(
+              //       width: _isTab10 ? 156 : 146,
+              //     height: _isTab10 ? 130 : 130,
+              //       child: Card(
+              //         elevation: 40,
+              //         color: psvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
+              //         child: Padding(
+              // padding: const EdgeInsets.all(6.0),
+              // child: Center(
+              //     child: Stack(
+              //   children: [
+              //     Align(
+              //       alignment: Alignment.topLeft,
+              //       child: Text(
+              //         "Flow",
+              //         style: TextStyle(
+              //   fontSize: 15,
+              //   fontWeight: FontWeight.bold,
+              //   color: psvFlow
+              //       ? Color(0xFF213855)
+              //       : Color(0xFFE0E0E0)),
+              //       ),
+              //     ),
+              //     Align(
+              //       alignment: Alignment.topRight,
+              //       child: Text(
+              //         "",
+              //         style: TextStyle(
+              //   fontSize: 12,
+              //   color: psvFlow
+              //       ? Color(0xFF213855)
+              //       : Color(0xFFE0E0E0)),
+              //       ),
+              //     ),
+              //     Align(
+              //       alignment: Alignment.bottomRight,
+              //       child: Text(
+              //         "150",
+              //         style: TextStyle(
+              //   fontSize: 12,
+              //   color: psvFlow
+              //       ? Color(0xFF213855)
+              //       : Color(0xFFE0E0E0)),
+              //       ),
+              //     ),
+              //     Align(
+              //       alignment: Alignment.bottomLeft,
+              //       child: Text(
+              //         "1",
+              //         style: TextStyle(
+              //   fontSize: 12,
+              //   color: psvFlow
+              //       ? Color(0xFF213855)
+              //       : Color(0xFFE0E0E0)),
+              //       ),
+              //     ),
+              //     Align(
+              //       alignment: Alignment.center,
+              //       child: Padding(
+              //         padding: const EdgeInsets.only(top: 1.0),
+              //         child: Text(
+              // psvFlowValue.toString(),
+              // style: TextStyle(
+              //     fontSize: 35,
+              //     color: psvFlow
+              //         ? Color(0xFF213855)
+              //         : Color(0xFFE0E0E0)),
+              //         ),
+              //       ),
+              //     ),
+              //     Padding(
+              //       padding: const EdgeInsets.only(
+              // bottom: 20.0, left: 10, right: 10),
+              //       child: Align(
+              //         alignment: Alignment.bottomCenter,
+              //         child: LinearProgressIndicator(
+              // backgroundColor: Colors.grey,
+              // valueColor: AlwaysStoppedAnimation<Color>(
+              //   psvFlow
+              //       ? Color(0xFF213855)
+              //       : Color(0xFFE0E0E0),
+              // ),
+              // value: psvFlowValue != null
+              //     ? psvFlowValue / 150
+              //     : 0,
+              //         ),
+              //       ),
+              //     )
+              //   ],
+              // )),
+              //         ),
+              //       ),
+              //     ),
+              //   ),
+              // ),
             ]),
-        SizedBox(width:  60),
+        SizedBox(width: 60),
         _isTab10
             ? Column(
                 children: <Widget>[
@@ -16248,8 +16214,8 @@ class _CheckPageState extends State<Dashboard> {
                                       setState(() {
                                         // if (psvFlowValue != 1190 &&
                                         //     psvPlateauValue != 1189) {
-                                          psvPlateauValue = psvPlateauValue + 1;
-                                          // psvFlowValue = psvPlateauValue + 1;
+                                        psvPlateauValue = psvPlateauValue + 1;
+                                        // psvFlowValue = psvPlateauValue + 1;
                                         // }
                                       });
                                     } else if (psvFlow == true &&
@@ -16408,15 +16374,15 @@ class _CheckPageState extends State<Dashboard> {
                                     });
                                   } else if (psvPlateau == true) {
                                     // if (value.toInt() < 1190) {
-                                      psvPlateauValue = value.toInt();
-                                      // psvFlowValue = psvPlateauValue + 1;
+                                    psvPlateauValue = value.toInt();
+                                    // psvFlowValue = psvPlateauValue + 1;
                                     // }
                                   } else if (psvFlow == true) {
                                     setState(() {
                                       // if (value.toInt() <= psvPlateauValue + 1) {
-                                        // psvFlowValue = psvPlateauValue + 1;
+                                      // psvFlowValue = psvPlateauValue + 1;
                                       // } else {
-                                        psvFlowValue = value.toInt();
+                                      psvFlowValue = value.toInt();
                                       // }
                                     });
                                   } else if (psvFio2 == true) {
@@ -16600,7 +16566,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                    width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -16716,7 +16682,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                    width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -16832,7 +16798,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -16951,7 +16917,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                    width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -17051,7 +17017,6 @@ class _CheckPageState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
@@ -17075,7 +17040,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                    width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -17194,7 +17159,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -17288,243 +17253,242 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                  pacvmaxValue = 50;
-                  pacvminValue = 0;
-                  pacvparameterName = "Plateau";
-                  pacvparameterUnits = "L/m";
-                  pacvItrig = false;
-                  pacvRr = false;
-                  pacvIe = false;
-                  pacvPeep = false;
-                  pacvPc = false;
-                  pacvPplateau = true;
-                  pacvFlow = false;
-                  pacvFio2 = false;
-                  pacvFlowRamp = false;
-                });
-              }
-              },
-              child: Center(
-                child: Container(
-                   width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color: pacvPplateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Plateau",
-                    style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: pacvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "L/m",
-                    style: TextStyle(
-              fontSize: 12,
-              color: pacvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "50",
-                    style: TextStyle(
-              fontSize: 12,
-              color: pacvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "0",
-                    style: TextStyle(
-              fontSize: 12,
-              color: pacvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text(
-            pacvPplateauValue.toString(),
-            style: TextStyle(
-                fontSize: 35,
-                color: pacvPplateau
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-            bottom: 20.0, left: 10, right: 10),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator(
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              pacvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0),
-            ),
-            value: pacvPplateauValue != null
-                ? pacvPplateauValue / 50
-                : 0,
-                    ),
-                  ),
-                )
-              ],
-            )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                  pacvmaxValue = 150;
-                  pacvminValue = 1;
-                  pacvparameterName = "Flow";
-                  pacvparameterUnits = "%";
-                  pacvItrig = false;
-                  pacvRr = false;
-                  pacvIe = false;
-                  pacvPeep = false;
-                  pacvPc = false;
-                  pacvPplateau = false;
-                  pacvFlow = true;
-                  pacvFio2 = false;
-                  pacvFlowRamp = false;
-                });
-              }
-              },
-              child: Center(
-                child: Container(
-                    width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color: pacvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Flow",
-                    style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: pacvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "%",
-                    style: TextStyle(
-              fontSize: 12,
-              color: pacvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "150",
-                    style: TextStyle(
-              fontSize: 12,
-              color: pacvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "1",
-                    style: TextStyle(
-              fontSize: 12,
-              color: pacvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text(
-            pacvFlowValue.toString(),
-            style: TextStyle(
-                fontSize: 35,
-                color: pacvFlow
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-            bottom: 20.0, left: 10, right: 10),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator(
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              pacvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0),
-            ),
-            value: pacvFlowValue != null
-                ? pacvFlowValue / 150
-                : 0,
-                    ),
-                  ),
-                )
-              ],
-            )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     if (_parameterChangeEnabled == true) {
+            //       setState(() {
+            //         _parameterChangeEnabled = false;
+            //       pacvmaxValue = 50;
+            //       pacvminValue = 0;
+            //       pacvparameterName = "Plateau";
+            //       pacvparameterUnits = "L/m";
+            //       pacvItrig = false;
+            //       pacvRr = false;
+            //       pacvIe = false;
+            //       pacvPeep = false;
+            //       pacvPc = false;
+            //       pacvPplateau = true;
+            //       pacvFlow = false;
+            //       pacvFio2 = false;
+            //       pacvFlowRamp = false;
+            //     });
+            //   }
+            //   },
+            //   child: Center(
+            //     child: Container(
+            //        width: _isTab10 ? 156 : 146,
+            //       height: _isTab10 ? 130 : 130,
+            //       child: Card(
+            //         elevation: 40,
+            //         color: pacvPplateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //         child: Padding(
+            // padding: const EdgeInsets.all(6.0),
+            // child: Center(
+            //     child: Stack(
+            //   children: [
+            //     Align(
+            //       alignment: Alignment.topLeft,
+            //       child: Text(
+            //         "Plateau",
+            //         style: TextStyle(
+            //   fontSize: 15,
+            //   fontWeight: FontWeight.bold,
+            //   color: pacvPplateau
+            //       ? Color(0xFF213855)
+            //       : Color(0xFFE0E0E0)),
+            //       ),
+            //     ),
+            //     Align(
+            //       alignment: Alignment.topRight,
+            //       child: Text(
+            //         "L/m",
+            //         style: TextStyle(
+            //   fontSize: 12,
+            //   color: pacvPplateau
+            //       ? Color(0xFF213855)
+            //       : Color(0xFFE0E0E0)),
+            //       ),
+            //     ),
+            //     Align(
+            //       alignment: Alignment.bottomRight,
+            //       child: Text(
+            //         "50",
+            //         style: TextStyle(
+            //   fontSize: 12,
+            //   color: pacvPplateau
+            //       ? Color(0xFF213855)
+            //       : Color(0xFFE0E0E0)),
+            //       ),
+            //     ),
+            //     Align(
+            //       alignment: Alignment.bottomLeft,
+            //       child: Text(
+            //         "0",
+            //         style: TextStyle(
+            //   fontSize: 12,
+            //   color: pacvPplateau
+            //       ? Color(0xFF213855)
+            //       : Color(0xFFE0E0E0)),
+            //       ),
+            //     ),
+            //     Align(
+            //       alignment: Alignment.center,
+            //       child: Padding(
+            //         padding: const EdgeInsets.only(top: 1.0),
+            //         child: Text(
+            // pacvPplateauValue.toString(),
+            // style: TextStyle(
+            //     fontSize: 35,
+            //     color: pacvPplateau
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0)),
+            //         ),
+            //       ),
+            //     ),
+            //     Padding(
+            //       padding: const EdgeInsets.only(
+            // bottom: 20.0, left: 10, right: 10),
+            //       child: Align(
+            //         alignment: Alignment.bottomCenter,
+            //         child: LinearProgressIndicator(
+            // backgroundColor: Colors.grey,
+            // valueColor: AlwaysStoppedAnimation<Color>(
+            //   pacvPplateau
+            //       ? Color(0xFF213855)
+            //       : Color(0xFFE0E0E0),
+            // ),
+            // value: pacvPplateauValue != null
+            //     ? pacvPplateauValue / 50
+            //     : 0,
+            //         ),
+            //       ),
+            //     )
+            //   ],
+            // )),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // InkWell(
+            //   onTap: () {
+            //     if (_parameterChangeEnabled == true) {
+            //       setState(() {
+            //         _parameterChangeEnabled = false;
+            //       pacvmaxValue = 150;
+            //       pacvminValue = 1;
+            //       pacvparameterName = "Flow";
+            //       pacvparameterUnits = "%";
+            //       pacvItrig = false;
+            //       pacvRr = false;
+            //       pacvIe = false;
+            //       pacvPeep = false;
+            //       pacvPc = false;
+            //       pacvPplateau = false;
+            //       pacvFlow = true;
+            //       pacvFio2 = false;
+            //       pacvFlowRamp = false;
+            //     });
+            //   }
+            //   },
+            //   child: Center(
+            //     child: Container(
+            //         width: _isTab10 ? 156 : 146,
+            //       height: _isTab10 ? 130 : 130,
+            //       child: Card(
+            //         elevation: 40,
+            //         color: pacvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //         child: Padding(
+            // padding: const EdgeInsets.all(6.0),
+            // child: Center(
+            //     child: Stack(
+            //   children: [
+            //     Align(
+            //       alignment: Alignment.topLeft,
+            //       child: Text(
+            //         "Flow",
+            //         style: TextStyle(
+            //   fontSize: 15,
+            //   fontWeight: FontWeight.bold,
+            //   color: pacvFlow
+            //       ? Color(0xFF213855)
+            //       : Color(0xFFE0E0E0)),
+            //       ),
+            //     ),
+            //     Align(
+            //       alignment: Alignment.topRight,
+            //       child: Text(
+            //         "%",
+            //         style: TextStyle(
+            //   fontSize: 12,
+            //   color: pacvFlow
+            //       ? Color(0xFF213855)
+            //       : Color(0xFFE0E0E0)),
+            //       ),
+            //     ),
+            //     Align(
+            //       alignment: Alignment.bottomRight,
+            //       child: Text(
+            //         "150",
+            //         style: TextStyle(
+            //   fontSize: 12,
+            //   color: pacvFlow
+            //       ? Color(0xFF213855)
+            //       : Color(0xFFE0E0E0)),
+            //       ),
+            //     ),
+            //     Align(
+            //       alignment: Alignment.bottomLeft,
+            //       child: Text(
+            //         "1",
+            //         style: TextStyle(
+            //   fontSize: 12,
+            //   color: pacvFlow
+            //       ? Color(0xFF213855)
+            //       : Color(0xFFE0E0E0)),
+            //       ),
+            //     ),
+            //     Align(
+            //       alignment: Alignment.center,
+            //       child: Padding(
+            //         padding: const EdgeInsets.only(top: 1.0),
+            //         child: Text(
+            // pacvFlowValue.toString(),
+            // style: TextStyle(
+            //     fontSize: 35,
+            //     color: pacvFlow
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0)),
+            //         ),
+            //       ),
+            //     ),
+            //     Padding(
+            //       padding: const EdgeInsets.only(
+            // bottom: 20.0, left: 10, right: 10),
+            //       child: Align(
+            //         alignment: Alignment.bottomCenter,
+            //         child: LinearProgressIndicator(
+            // backgroundColor: Colors.grey,
+            // valueColor: AlwaysStoppedAnimation<Color>(
+            //   pacvFlow
+            //       ? Color(0xFF213855)
+            //       : Color(0xFFE0E0E0),
+            // ),
+            // value: pacvFlowValue != null
+            //     ? pacvFlowValue / 150
+            //     : 0,
+            //         ),
+            //       ),
+            //     )
+            //   ],
+            // )),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
-        
         SizedBox(width: 140),
         Column(
           children: <Widget>[
@@ -17846,7 +17810,8 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (pacvPplateau == true &&
                                         pacvPplateauValue != pacvminValue) {
                                       setState(() {
-                                        pacvPplateauValue = pacvPplateauValue - 1;
+                                        pacvPplateauValue =
+                                            pacvPplateauValue - 1;
                                       });
                                     } else if (pacvFlow == true &&
                                         pacvFlowValue != pacvminValue) {
@@ -17944,15 +17909,16 @@ class _CheckPageState extends State<Dashboard> {
                                       setState(() {
                                         // if (pacvFlowValue != 1190 &&
                                         //     pacvPplateauValue != 1189) {
-                                          pacvPplateauValue = pacvPplateauValue + 1;
-                                          // pacvFlowValue = pacvPplateauValue + 1;
+                                        pacvPplateauValue =
+                                            pacvPplateauValue + 1;
+                                        // pacvFlowValue = pacvPplateauValue + 1;
                                         // }
                                       });
                                     } else if (pacvFlow == true &&
                                         pacvFlowValue != pacvmaxValue) {
                                       setState(() {
                                         // if (pacvPplateauValue < pacvFlowValue)
-                                          pacvFlowValue = pacvFlowValue + 1;
+                                        pacvFlowValue = pacvFlowValue + 1;
                                       });
                                     } else if (pacvFio2 == true &&
                                         pacvFio2Value != pacvmaxValue) {
@@ -18068,11 +18034,12 @@ class _CheckPageState extends State<Dashboard> {
                                     });
                                   } else if (pacvPplateau == true) {
                                     // if (value.toInt() < 1190) {
-                                      pacvPplateauValue = value.toInt();
+                                    pacvPplateauValue = value.toInt();
                                     // }
                                   } else if (pacvFlow == true) {
                                     setState(() {
-                                      if (value.toInt() <= pacvPplateauValue + 1) {
+                                      if (value.toInt() <=
+                                          pacvPplateauValue + 1) {
                                         pacvFlowValue = pacvPplateauValue + 1;
                                       } else {
                                         pacvFlowValue = value.toInt();
@@ -18217,7 +18184,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -18333,7 +18300,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                    width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -18450,7 +18417,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -18569,7 +18536,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -18669,7 +18636,6 @@ class _CheckPageState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
@@ -18693,7 +18659,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -18810,7 +18776,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -18904,7 +18870,7 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-             InkWell(
+            InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
@@ -18927,7 +18893,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                    width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -19021,248 +18987,246 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-             InkWell(
-              onTap: () {
-                setState(() {
-                  prvcmaxValue = 50;
-                  prvcminValue = 0;
-                  prvcparameterName = "Plateau";
-                  prvcparameterUnits = "";
-                  prvcItrig = false;
-                  prvcRr = false;
-                  prvcIe = false;
-                  prvcPeep = false;
-                  prvcVt = false;
-                  prvcPlateau = true;
-                  prvcPcMax = false;
-                  prvcFio2 = false;
-                  prvcFlow = false;
-                });
-              },
-              child: Center(
-                child: Container(
-                   width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color: prvcPlateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Plateau",
-                    style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: prvcPlateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "",
-                    style: TextStyle(
-              fontSize: 12,
-              color: prvcPlateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "50",
-                    style: TextStyle(
-              fontSize: 12,
-              color: prvcPlateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "0",
-                    style: TextStyle(
-              fontSize: 12,
-              color: prvcPlateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text(
-            prvcPlateauValue.toString(),
-            style: TextStyle(
-                fontSize: 35,
-                color: prvcPlateau
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-            bottom: 20.0, left: 10, right: 10),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator(
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              prvcPlateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0),
-            ),
-            value: prvcPlateauValue != null
-                ? prvcPlateauValue / 50
-                : 0,
-                    ),
-                  ),
-                )
-              ],
-            )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            //      InkWell(
+            //       onTap: () {
+            //         setState(() {
+            //           prvcmaxValue = 50;
+            //           prvcminValue = 0;
+            //           prvcparameterName = "Plateau";
+            //           prvcparameterUnits = "";
+            //           prvcItrig = false;
+            //           prvcRr = false;
+            //           prvcIe = false;
+            //           prvcPeep = false;
+            //           prvcVt = false;
+            //           prvcPlateau = true;
+            //           prvcPcMax = false;
+            //           prvcFio2 = false;
+            //           prvcFlow = false;
+            //         });
+            //       },
+            //       child: Center(
+            //         child: Container(
+            //            width: _isTab10 ? 156 : 146,
+            //           height: _isTab10 ? 130 : 130,
+            //           child: Card(
+            //             elevation: 40,
+            //             color: prvcPlateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //             child: Padding(
+            //     padding: const EdgeInsets.all(6.0),
+            //     child: Center(
+            //         child: Stack(
+            //       children: [
+            //         Align(
+            //           alignment: Alignment.topLeft,
+            //           child: Text(
+            //             "Plateau",
+            //             style: TextStyle(
+            //       fontSize: 15,
+            //       fontWeight: FontWeight.bold,
+            //       color: prvcPlateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.topRight,
+            //           child: Text(
+            //             "",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: prvcPlateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomRight,
+            //           child: Text(
+            //             "50",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: prvcPlateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomLeft,
+            //           child: Text(
+            //             "0",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: prvcPlateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.center,
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(top: 1.0),
+            //             child: Text(
+            //     prvcPlateauValue.toString(),
+            //     style: TextStyle(
+            //         fontSize: 35,
+            //         color: prvcPlateau
+            //             ? Color(0xFF213855)
+            //             : Color(0xFFE0E0E0)),
+            //             ),
+            //           ),
+            //         ),
+            //         Padding(
+            //           padding: const EdgeInsets.only(
+            //     bottom: 20.0, left: 10, right: 10),
+            //           child: Align(
+            //             alignment: Alignment.bottomCenter,
+            //             child: LinearProgressIndicator(
+            //     backgroundColor: Colors.grey,
+            //     valueColor: AlwaysStoppedAnimation<Color>(
+            //       prvcPlateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0),
+            //     ),
+            //     value: prvcPlateauValue != null
+            //         ? prvcPlateauValue / 50
+            //         : 0,
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     )),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
           ],
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           
-
-            InkWell(
-              onTap: () {
-                setState(() {
-                  prvcmaxValue = 4;
-                  prvcminValue = 0;
-                  prvcparameterName = "Flow";
-                  prvcparameterUnits = "";
-                  prvcItrig = false;
-                  prvcRr = false;
-                  prvcIe = false;
-                  prvcPeep = false;
-                  prvcVt = false;
-                  prvcPlateau = false;
-                  prvcPcMax = false;
-                  prvcFio2 = false;
-                  prvcFlow = true;
-                });
-              },
-              child: Center(
-                child: Container(
-                   width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color: prvcFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Flow",
-                    style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: prvcFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "",
-                    style: TextStyle(
-              fontSize: 12,
-              color: prvcFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "150",
-                    style: TextStyle(
-              fontSize: 12,
-              color: prvcFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "1",
-                    style: TextStyle(
-              fontSize: 12,
-              color: prvcFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text(
-            prvcFlowValue.toString(),
-            style: TextStyle(
-                fontSize: 35,
-                color: prvcFlow
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-            bottom: 20.0, left: 10, right: 10),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator(
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              prvcFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0),
-            ),
-            value: prvcFlowValue != null
-                ? prvcFlowValue / 150
-                : 0,
-                    ),
-                  ),
-                )
-              ],
-            )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            // Container(
-            //   width: 146,
-            // )
+            //     InkWell(
+            //       onTap: () {
+            //         setState(() {
+            //           prvcmaxValue = 4;
+            //           prvcminValue = 0;
+            //           prvcparameterName = "Flow";
+            //           prvcparameterUnits = "";
+            //           prvcItrig = false;
+            //           prvcRr = false;
+            //           prvcIe = false;
+            //           prvcPeep = false;
+            //           prvcVt = false;
+            //           prvcPlateau = false;
+            //           prvcPcMax = false;
+            //           prvcFio2 = false;
+            //           prvcFlow = true;
+            //         });
+            //       },
+            //       child: Center(
+            //         child: Container(
+            //            width: _isTab10 ? 156 : 146,
+            //           height: _isTab10 ? 130 : 130,
+            //           child: Card(
+            //             elevation: 40,
+            //             color: prvcFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //             child: Padding(
+            //     padding: const EdgeInsets.all(6.0),
+            //     child: Center(
+            //         child: Stack(
+            //       children: [
+            //         Align(
+            //           alignment: Alignment.topLeft,
+            //           child: Text(
+            //             "Flow",
+            //             style: TextStyle(
+            //       fontSize: 15,
+            //       fontWeight: FontWeight.bold,
+            //       color: prvcFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.topRight,
+            //           child: Text(
+            //             "",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: prvcFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomRight,
+            //           child: Text(
+            //             "150",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: prvcFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomLeft,
+            //           child: Text(
+            //             "1",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: prvcFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.center,
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(top: 1.0),
+            //             child: Text(
+            //     prvcFlowValue.toString(),
+            //     style: TextStyle(
+            //         fontSize: 35,
+            //         color: prvcFlow
+            //             ? Color(0xFF213855)
+            //             : Color(0xFFE0E0E0)),
+            //             ),
+            //           ),
+            //         ),
+            //         Padding(
+            //           padding: const EdgeInsets.only(
+            //     bottom: 20.0, left: 10, right: 10),
+            //           child: Align(
+            //             alignment: Alignment.bottomCenter,
+            //             child: LinearProgressIndicator(
+            //     backgroundColor: Colors.grey,
+            //     valueColor: AlwaysStoppedAnimation<Color>(
+            //       prvcFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0),
+            //     ),
+            //     value: prvcFlowValue != null
+            //         ? prvcFlowValue / 150
+            //         : 0,
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     )),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            Container(
+              width: 156,
+            )
           ],
         ),
-        SizedBox(width: _isTab10 ? 30 : 140),
+        SizedBox(width: 60),
         _isTab10
             ? Container(
                 margin: EdgeInsets.only(top: 160, bottom: 20),
@@ -19330,7 +19294,7 @@ class _CheckPageState extends State<Dashboard> {
                   ],
                 ))
             : Container(),
-        SizedBox(width: _isTab10 ? 30 : 0),
+        SizedBox(width: 60),
         Column(
           children: [
             Container(
@@ -19498,8 +19462,7 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (prvcFlow == true &&
                                         prvcFlowValue != prvcminValue) {
                                       setState(() {
-                                        prvcFlowValue =
-                                            prvcFlowValue - 1;
+                                        prvcFlowValue = prvcFlowValue - 1;
                                       });
                                     }
                                   });
@@ -19584,8 +19547,7 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (prvcFlow == true &&
                                         prvcFlowValue != prvcmaxValue) {
                                       setState(() {
-                                        prvcFlowValue =
-                                            prvcFlowValue + 1;
+                                        prvcFlowValue = prvcFlowValue + 1;
                                       });
                                     }
                                   });
@@ -19840,7 +19802,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -19958,7 +19920,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -20077,7 +20039,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -20197,7 +20159,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -20299,7 +20261,6 @@ class _CheckPageState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
@@ -20442,7 +20403,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -20538,7 +20499,7 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-             InkWell(
+            InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
@@ -20562,7 +20523,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -20656,251 +20617,252 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-               if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                  psimvmaxValue = 50;
-                  psimvminValue = 0;
-                  psimvparameterName = "Plateau";
-                  psimvparameterUnits = "L/m";
-                  psimvItrig = false;
-                  psimvRr = false;
-                  psimvIe = false;
-                  psimvPeep = false;
-                  psimvPc = false;
-                  psimvPplateau = true;
-                  psimvVtMax = false;
-                  psimvFio2 = false;
-                  psimvFlow = false;
-                  psimvPs = false;
-                });
-              }
-              },
-              child: Center(
-                child: Container(
-                   width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color: psimvPplateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Plateau",
-                    style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: psimvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "L/m",
-                    style: TextStyle(
-              fontSize: 12,
-              color: psimvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "50",
-                    style: TextStyle(
-              fontSize: 12,
-              color: psimvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "0",
-                    style: TextStyle(
-              fontSize: 12,
-              color: psimvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text(
-            psimvPplateauValue.toString(),
-            style: TextStyle(
-                fontSize: 35,
-                color: psimvPplateau
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-            bottom: 20.0, left: 10, right: 10),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator(
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              psimvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0),
-            ),
-            value: psimvPplateauValue != null
-                ? psimvPplateauValue / 50
-                : 0,
-                    ),
-                  ),
-                )
-              ],
-            )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            //     InkWell(
+            //       onTap: () {
+            //        if (_parameterChangeEnabled == true) {
+            //           setState(() {
+            //             _parameterChangeEnabled = false;
+            //           psimvmaxValue = 50;
+            //           psimvminValue = 0;
+            //           psimvparameterName = "Plateau";
+            //           psimvparameterUnits = "L/m";
+            //           psimvItrig = false;
+            //           psimvRr = false;
+            //           psimvIe = false;
+            //           psimvPeep = false;
+            //           psimvPc = false;
+            //           psimvPplateau = true;
+            //           psimvVtMax = false;
+            //           psimvFio2 = false;
+            //           psimvFlow = false;
+            //           psimvPs = false;
+            //         });
+            //       }
+            //       },
+            //       child: Center(
+            //         child: Container(
+            //            width: _isTab10 ? 156 : 146,
+            //           height: _isTab10 ? 130 : 130,
+            //           child: Card(
+            //             elevation: 40,
+            //             color: psimvPplateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //             child: Padding(
+            //     padding: const EdgeInsets.all(6.0),
+            //     child: Center(
+            //         child: Stack(
+            //       children: [
+            //         Align(
+            //           alignment: Alignment.topLeft,
+            //           child: Text(
+            //             "Plateau",
+            //             style: TextStyle(
+            //       fontSize: 15,
+            //       fontWeight: FontWeight.bold,
+            //       color: psimvPplateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.topRight,
+            //           child: Text(
+            //             "L/m",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: psimvPplateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomRight,
+            //           child: Text(
+            //             "50",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: psimvPplateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomLeft,
+            //           child: Text(
+            //             "0",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: psimvPplateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.center,
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(top: 1.0),
+            //             child: Text(
+            //     psimvPplateauValue.toString(),
+            //     style: TextStyle(
+            //         fontSize: 35,
+            //         color: psimvPplateau
+            //             ? Color(0xFF213855)
+            //             : Color(0xFFE0E0E0)),
+            //             ),
+            //           ),
+            //         ),
+            //         Padding(
+            //           padding: const EdgeInsets.only(
+            //     bottom: 20.0, left: 10, right: 10),
+            //           child: Align(
+            //             alignment: Alignment.bottomCenter,
+            //             child: LinearProgressIndicator(
+            //     backgroundColor: Colors.grey,
+            //     valueColor: AlwaysStoppedAnimation<Color>(
+            //       psimvPplateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0),
+            //     ),
+            //     value: psimvPplateauValue != null
+            //         ? psimvPplateauValue / 50
+            //         : 0,
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     )),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
           ],
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            InkWell(
-              onTap: () {
-                if (_parameterChangeEnabled == true) {
-                  setState(() {
-                  _parameterChangeEnabled = false;
-                  psimvmaxValue = 150;
-                  psimvminValue = 1;
-                  psimvparameterName = "Flow";
-                  psimvparameterUnits = "";
-                  psimvItrig = false;
-                  psimvRr = false;
-                  psimvIe = false;
-                  psimvPeep = false;
-                  psimvPc = false;
-                  psimvPplateau = false;
-                  psimvVtMax = false;
-                  psimvFio2 = false;
-                  psimvFlow = true;
-                });
-              }
-              },
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color:
-              psimvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Flow",
-                    style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: psimvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "",
-                    style: TextStyle(
-              fontSize: 12,
-              color: psimvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "150",
-                    style: TextStyle(
-              fontSize: 12,
-              color: psimvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "1",
-                    style: TextStyle(
-              fontSize: 12,
-              color: psimvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text(
-            psimvFlowValue.toString(),
-            style: TextStyle(
-                fontSize: 35,
-                color: psimvFlow
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-            bottom: 20.0, left: 10, right: 10),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator(
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              psimvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0),
-            ),
-            value: psimvFlowValue != null
-                ? psimvFlowValue / 150
-                : 0,
-                    ),
-                  ),
-                )
-              ],
-            )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            //     InkWell(
+            //       onTap: () {
+            //         if (_parameterChangeEnabled == true) {
+            //           setState(() {
+            //           _parameterChangeEnabled = false;
+            //           psimvmaxValue = 150;
+            //           psimvminValue = 1;
+            //           psimvparameterName = "Flow";
+            //           psimvparameterUnits = "";
+            //           psimvItrig = false;
+            //           psimvRr = false;
+            //           psimvIe = false;
+            //           psimvPeep = false;
+            //           psimvPc = false;
+            //           psimvPplateau = false;
+            //           psimvVtMax = false;
+            //           psimvFio2 = false;
+            //           psimvFlow = true;
+            //         });
+            //       }
+            //       },
+            //       child: Center(
+            //         child: Container(
+            //           width: _isTab10 ? 156 : 146,
+            //           height: _isTab10 ? 130 : 130,
+            //           child: Card(
+            //             elevation: 40,
+            //             color:
+            //       psimvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //             child: Padding(
+            //     padding: const EdgeInsets.all(6.0),
+            //     child: Center(
+            //         child: Stack(
+            //       children: [
+            //         Align(
+            //           alignment: Alignment.topLeft,
+            //           child: Text(
+            //             "Flow",
+            //             style: TextStyle(
+            //       fontSize: 15,
+            //       fontWeight: FontWeight.bold,
+            //       color: psimvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.topRight,
+            //           child: Text(
+            //             "",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: psimvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomRight,
+            //           child: Text(
+            //             "150",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: psimvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomLeft,
+            //           child: Text(
+            //             "1",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: psimvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.center,
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(top: 1.0),
+            //             child: Text(
+            //     psimvFlowValue.toString(),
+            //     style: TextStyle(
+            //         fontSize: 35,
+            //         color: psimvFlow
+            //             ? Color(0xFF213855)
+            //             : Color(0xFFE0E0E0)),
+            //             ),
+            //           ),
+            //         ),
+            //         Padding(
+            //           padding: const EdgeInsets.only(
+            //     bottom: 20.0, left: 10, right: 10),
+            //           child: Align(
+            //             alignment: Alignment.bottomCenter,
+            //             child: LinearProgressIndicator(
+            //     backgroundColor: Colors.grey,
+            //     valueColor: AlwaysStoppedAnimation<Color>(
+            //       psimvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0),
+            //     ),
+            //     value: psimvFlowValue != null
+            //         ? psimvFlowValue / 150
+            //         : 0,
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     )),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            Container(width: 156),
           ],
         ),
-        SizedBox(width:  60),
+        SizedBox(width: 60),
         _isTab10
             ? Container(
                 margin: EdgeInsets.only(top: 160, bottom: 20),
@@ -21130,11 +21092,11 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (psimvPplateau == true &&
                                         psimvPplateauValue != psimvminValue) {
                                       setState(() {
-                                        psimvPplateauValue = psimvPplateauValue - 1;
-                                       
+                                        psimvPplateauValue =
+                                            psimvPplateauValue - 1;
                                       });
                                     } else if (psimvVtMax == true &&
-                                        psimvVtMaxValue !=psimvminValue) {
+                                        psimvVtMaxValue != psimvminValue) {
                                       psimvVtMaxValue = psimvVtMaxValue - 1;
                                     } else if (psimvFio2 == true &&
                                         psimvFio2Value != psimvminValue) {
@@ -21144,8 +21106,7 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (psimvFlow == true &&
                                         psimvFlowValue != psimvminValue) {
                                       setState(() {
-                                        psimvFlowValue =
-                                            psimvFlowValue - 1;
+                                        psimvFlowValue = psimvFlowValue - 1;
                                       });
                                     } else if (psimvPs == true &&
                                         psimvPsValue != psimvPcValue + 1 &&
@@ -21231,7 +21192,8 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (psimvPplateau == true &&
                                         psimvPplateauValue != psimvmaxValue) {
                                       setState(() {
-                                          psimvPplateauValue = psimvPplateauValue + 1;
+                                        psimvPplateauValue =
+                                            psimvPplateauValue + 1;
                                       });
                                     } else if (psimvVtMax == true &&
                                         psimvVtMaxValue != psimvmaxValue) {
@@ -21241,8 +21203,7 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (psimvFlow == true &&
                                         psimvFlowValue != psimvmaxValue) {
                                       setState(() {
-                                        psimvFlowValue =
-                                            psimvFlowValue + 1;
+                                        psimvFlowValue = psimvFlowValue + 1;
                                       });
                                     } else if (psimvPs == true &&
                                         psimvPsValue != psimvPcValue) {
@@ -21369,10 +21330,10 @@ class _CheckPageState extends State<Dashboard> {
                                       // if(value.toInt())
                                     });
                                   } else if (psimvPplateau == true) {
-                                      psimvPplateauValue = value.toInt();
+                                    psimvPplateauValue = value.toInt();
                                   } else if (psimvVtMax == true) {
                                     setState(() {
-                                        psimvVtMaxValue = value.toInt();
+                                      psimvVtMaxValue = value.toInt();
                                     });
                                   } else if (psimvFio2 == true) {
                                     setState(() {
@@ -21526,7 +21487,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -21643,7 +21604,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -21760,7 +21721,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -21879,7 +21840,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -21981,7 +21942,6 @@ class _CheckPageState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
@@ -22005,7 +21965,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -22099,244 +22059,243 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-            InkWell(
-              onTap: () {
-                if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                    pccmvmaxValue = 50;
-                    pccmvminValue = 0;
-                    pccmvparameterName = "P Plateau";
-                    pccmvparameterUnits = "L/m";
-                    pccmvRR = false;
-                    pccmvIe = false;
-                    pccmvPeep = false;
-                    pccmvPc = false;
-                    pccmvFio2 = false;
-                    pccmvVtmin = false;
-                    pccmvPplateau = true;
-                    pccmvFlow = false;
-                    pccmvTih = false;
-                  });
-                }
-              },
-              child: Center(
-                child: Container(
-                   width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color:
-                        pccmvPplateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "P plateau",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: pccmvPplateau
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "L/m",
-                              style: TextStyle(
-                                  fontSize: 9,
-                                  color: pccmvPplateau
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              "50",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: pccmvPplateau
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              "0",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: pccmvPplateau
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 1.0),
-                              child: Text(
-                                pccmvPplateauValue.toString(),
-                                style: TextStyle(
-                                    fontSize: 35,
-                                    color: pccmvPplateau
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0)),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 20.0, left: 10, right: 10),
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: LinearProgressIndicator(
-                                backgroundColor: Colors.grey,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  pccmvPplateau
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0),
-                                ),
-                                value: pccmvPplateauValue != null
-                                    ? pccmvPplateauValue / 50
-                                    : 0,
-                              ),
-                            ),
-                          )
-                        ],
-                      )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                    pccmvmaxValue = 150;
-                    pccmvminValue = 1;
-                    pccmvparameterName = "Flow";
-                    pccmvparameterUnits = "";
-                    pccmvRR = false;
-                    pccmvIe = false;
-                    pccmvPeep = false;
-                    pccmvPc = false;
-                    pccmvFio2 = false;
-                    pccmvVtmin = false;
-                    pccmvPplateau = false;
-                    pccmvFlow = true;
-                    pccmvTih = false;
-                  });
-                }
-              },
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color: pccmvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Flow",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: pccmvFlow
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "",
-                              style: TextStyle(
-                                  fontSize: 9,
-                                  color: pccmvFlow
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              "150",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: pccmvFlow
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              "1",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: pccmvFlow
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 1.0),
-                              child: Text(
-                                pccmvFlowValue.toString(),
-                                style: TextStyle(
-                                    fontSize: 35,
-                                    color: pccmvFlow
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0)),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 20.0, left: 10, right: 10),
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: LinearProgressIndicator(
-                                backgroundColor: Colors.grey,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  pccmvFlow
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0),
-                                ),
-                                value: pccmvFlowValue != null
-                                    ? pccmvFlowValue / 150
-                                    : 0,
-                              ),
-                            ),
-                          )
-                        ],
-                      )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            // InkWell(
+            //   onTap: () {
+            //     if (_parameterChangeEnabled == true) {
+            //       setState(() {
+            //         _parameterChangeEnabled = false;
+            //         pccmvmaxValue = 50;
+            //         pccmvminValue = 0;
+            //         pccmvparameterName = "P Plateau";
+            //         pccmvparameterUnits = "L/m";
+            //         pccmvRR = false;
+            //         pccmvIe = false;
+            //         pccmvPeep = false;
+            //         pccmvPc = false;
+            //         pccmvFio2 = false;
+            //         pccmvVtmin = false;
+            //         pccmvPplateau = true;
+            //         pccmvFlow = false;
+            //         pccmvTih = false;
+            //       });
+            //     }
+            //   },
+            //   child: Center(
+            //     child: Container(
+            //        width: _isTab10 ? 156 : 146,
+            //       height: _isTab10 ? 130 : 130,
+            //       child: Card(
+            //         elevation: 40,
+            //         color:
+            //             pccmvPplateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //         child: Padding(
+            //           padding: const EdgeInsets.all(6.0),
+            //           child: Center(
+            //               child: Stack(
+            //             children: [
+            //               Align(
+            //                 alignment: Alignment.topLeft,
+            //                 child: Text(
+            //                   "P plateau",
+            //                   style: TextStyle(
+            //                       fontSize: 15,
+            //                       fontWeight: FontWeight.bold,
+            //                       color: pccmvPplateau
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.topRight,
+            //                 child: Text(
+            //                   "L/m",
+            //                   style: TextStyle(
+            //                       fontSize: 9,
+            //                       color: pccmvPplateau
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.bottomRight,
+            //                 child: Text(
+            //                   "50",
+            //                   style: TextStyle(
+            //                       fontSize: 12,
+            //                       color: pccmvPplateau
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.bottomLeft,
+            //                 child: Text(
+            //                   "0",
+            //                   style: TextStyle(
+            //                       fontSize: 12,
+            //                       color: pccmvPplateau
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.center,
+            //                 child: Padding(
+            //                   padding: const EdgeInsets.only(top: 1.0),
+            //                   child: Text(
+            //                     pccmvPplateauValue.toString(),
+            //                     style: TextStyle(
+            //                         fontSize: 35,
+            //                         color: pccmvPplateau
+            //                             ? Color(0xFF213855)
+            //                             : Color(0xFFE0E0E0)),
+            //                   ),
+            //                 ),
+            //               ),
+            //               Padding(
+            //                 padding: const EdgeInsets.only(
+            //                     bottom: 20.0, left: 10, right: 10),
+            //                 child: Align(
+            //                   alignment: Alignment.bottomCenter,
+            //                   child: LinearProgressIndicator(
+            //                     backgroundColor: Colors.grey,
+            //                     valueColor: AlwaysStoppedAnimation<Color>(
+            //                       pccmvPplateau
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0),
+            //                     ),
+            //                     value: pccmvPplateauValue != null
+            //                         ? pccmvPplateauValue / 50
+            //                         : 0,
+            //                   ),
+            //                 ),
+            //               )
+            //             ],
+            //           )),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // InkWell(
+            //   onTap: () {
+            //     if (_parameterChangeEnabled == true) {
+            //       setState(() {
+            //         _parameterChangeEnabled = false;
+            //         pccmvmaxValue = 150;
+            //         pccmvminValue = 1;
+            //         pccmvparameterName = "Flow";
+            //         pccmvparameterUnits = "";
+            //         pccmvRR = false;
+            //         pccmvIe = false;
+            //         pccmvPeep = false;
+            //         pccmvPc = false;
+            //         pccmvFio2 = false;
+            //         pccmvVtmin = false;
+            //         pccmvPplateau = false;
+            //         pccmvFlow = true;
+            //         pccmvTih = false;
+            //       });
+            //     }
+            //   },
+            //   child: Center(
+            //     child: Container(
+            //       width: _isTab10 ? 156 : 146,
+            //       height: _isTab10 ? 130 : 130,
+            //       child: Card(
+            //         elevation: 40,
+            //         color: pccmvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //         child: Padding(
+            //           padding: const EdgeInsets.all(6.0),
+            //           child: Center(
+            //               child: Stack(
+            //             children: [
+            //               Align(
+            //                 alignment: Alignment.topLeft,
+            //                 child: Text(
+            //                   "Flow",
+            //                   style: TextStyle(
+            //                       fontSize: 15,
+            //                       fontWeight: FontWeight.bold,
+            //                       color: pccmvFlow
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.topRight,
+            //                 child: Text(
+            //                   "",
+            //                   style: TextStyle(
+            //                       fontSize: 9,
+            //                       color: pccmvFlow
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.bottomRight,
+            //                 child: Text(
+            //                   "150",
+            //                   style: TextStyle(
+            //                       fontSize: 12,
+            //                       color: pccmvFlow
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.bottomLeft,
+            //                 child: Text(
+            //                   "1",
+            //                   style: TextStyle(
+            //                       fontSize: 12,
+            //                       color: pccmvFlow
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.center,
+            //                 child: Padding(
+            //                   padding: const EdgeInsets.only(top: 1.0),
+            //                   child: Text(
+            //                     pccmvFlowValue.toString(),
+            //                     style: TextStyle(
+            //                         fontSize: 35,
+            //                         color: pccmvFlow
+            //                             ? Color(0xFF213855)
+            //                             : Color(0xFFE0E0E0)),
+            //                   ),
+            //                 ),
+            //               ),
+            //               Padding(
+            //                 padding: const EdgeInsets.only(
+            //                     bottom: 20.0, left: 10, right: 10),
+            //                 child: Align(
+            //                   alignment: Alignment.bottomCenter,
+            //                   child: LinearProgressIndicator(
+            //                     backgroundColor: Colors.grey,
+            //                     valueColor: AlwaysStoppedAnimation<Color>(
+            //                       pccmvFlow
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0),
+            //                     ),
+            //                     value: pccmvFlowValue != null
+            //                         ? pccmvFlowValue / 150
+            //                         : 0,
+            //                   ),
+            //                 ),
+            //               )
+            //             ],
+            //           )),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
-        
         SizedBox(width: 140),
         Column(
           children: <Widget>[
@@ -22894,7 +22853,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -23129,7 +23088,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -23225,7 +23184,7 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-             InkWell(
+            InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
@@ -23248,7 +23207,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -23350,7 +23309,6 @@ class _CheckPageState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           
             InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
@@ -23491,7 +23449,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -23585,245 +23543,244 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-             InkWell(
-              onTap: () async {
-                if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                    vccmvmaxValue = 50;
-                    vccmvminValue = 0;
-                    vccmvparameterName = "P Plateau";
-                    vccmvparameterUnits = "L/m";
-                    vccmvRR = false;
-                    vccmvIe = false;
-                    vccmvPeep = false;
-                    vccmvVt = false;
-                    vccmvPcMax = false;
-                    vccmvPplateau = true;
-                    vccmvFio2 = false;
-                    vccmvFlow = false;
-                    vccmvTih = false;
-                  });
-                }
-                // sleep(const Duration(milliseconds: 200));
-              },
-              child: Center(
-                child: Container(
-                   width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color:
-                        vccmvPplateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "P Plateau",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: vccmvPplateau
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "",
-                              style: TextStyle(
-                                  fontSize: 9,
-                                  color: vccmvPplateau
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              "50",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: vccmvPplateau
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              "0",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: vccmvPplateau
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 1.0),
-                              child: Text(
-                                vccmvPplateauValue.toString(),
-                                style: TextStyle(
-                                    fontSize: 35,
-                                    color: vccmvPplateau
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0)),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 20.0, left: 10, right: 10),
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: LinearProgressIndicator(
-                                backgroundColor: Colors.grey,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  vccmvPplateau
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0),
-                                ),
-                                value: vccmvPplateauValue != null
-                                    ? vccmvPplateauValue / 50
-                                    : 0,
-                              ),
-                            ),
-                          )
-                        ],
-                      )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () async {
-                if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                    vccmvmaxValue = 150;
-                    vccmvminValue = 1;
-                    vccmvparameterName = "Flow";
-                    vccmvparameterUnits = "cmH\u2082O";
-                    vccmvRR = false;
-                    vccmvIe = false;
-                    vccmvPeep = false;
-                    vccmvVt = false;
-                    vccmvPcMax = false;
-                    vccmvFlow = true;
-                    vccmvFio2 = false;
-                    vccmvPplateau = false;
-                    vccmvTih = false;
-                  });
-                }
-              },
-              child: Center(
-                child: Container(
-                 width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color: vccmvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-                      padding: const EdgeInsets.all(6.0),
-                      child: Center(
-                          child: Stack(
-                        children: [
-                          Align(
-                            alignment: Alignment.topLeft,
-                            child: Text(
-                              "Flow",
-                              style: TextStyle(
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.bold,
-                                  color: vccmvFlow
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.topRight,
-                            child: Text(
-                              "",
-                              style: TextStyle(
-                                  fontSize: 9,
-                                  color: vccmvFlow
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomRight,
-                            child: Text(
-                              "150",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: vccmvFlow
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.bottomLeft,
-                            child: Text(
-                              "1",
-                              style: TextStyle(
-                                  fontSize: 12,
-                                  color: vccmvFlow
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0)),
-                            ),
-                          ),
-                          Align(
-                            alignment: Alignment.center,
-                            child: Padding(
-                              padding: const EdgeInsets.only(top: 1.0),
-                              child: Text(
-                                vccmvFlowValue.toString(),
-                                style: TextStyle(
-                                    fontSize: 35,
-                                    color: vccmvFlow
-                                        ? Color(0xFF213855)
-                                        : Color(0xFFE0E0E0)),
-                              ),
-                            ),
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 20.0, left: 10, right: 10),
-                            child: Align(
-                              alignment: Alignment.bottomCenter,
-                              child: LinearProgressIndicator(
-                                backgroundColor: Colors.grey,
-                                valueColor: AlwaysStoppedAnimation<Color>(
-                                  vccmvFlow
-                                      ? Color(0xFF213855)
-                                      : Color(0xFFE0E0E0),
-                                ),
-                                value: vccmvFlowValue != null
-                                    ? vccmvFlowValue / 150
-                                    : 0,
-                              ),
-                            ),
-                          )
-                        ],
-                      )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            //  InkWell(
+            //   onTap: () async {
+            //     if (_parameterChangeEnabled == true) {
+            //       setState(() {
+            //         _parameterChangeEnabled = false;
+            //         vccmvmaxValue = 50;
+            //         vccmvminValue = 0;
+            //         vccmvparameterName = "P Plateau";
+            //         vccmvparameterUnits = "L/m";
+            //         vccmvRR = false;
+            //         vccmvIe = false;
+            //         vccmvPeep = false;
+            //         vccmvVt = false;
+            //         vccmvPcMax = false;
+            //         vccmvPplateau = true;
+            //         vccmvFio2 = false;
+            //         vccmvFlow = false;
+            //         vccmvTih = false;
+            //       });
+            //     }
+            //     // sleep(const Duration(milliseconds: 200));
+            //   },
+            //   child: Center(
+            //     child: Container(
+            //        width: _isTab10 ? 156 : 146,
+            //       height: _isTab10 ? 130 : 130,
+            //       child: Card(
+            //         elevation: 40,
+            //         color:
+            //             vccmvPplateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //         child: Padding(
+            //           padding: const EdgeInsets.all(6.0),
+            //           child: Center(
+            //               child: Stack(
+            //             children: [
+            //               Align(
+            //                 alignment: Alignment.topLeft,
+            //                 child: Text(
+            //                   "P Plateau",
+            //                   style: TextStyle(
+            //                       fontSize: 15,
+            //                       fontWeight: FontWeight.bold,
+            //                       color: vccmvPplateau
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.topRight,
+            //                 child: Text(
+            //                   "",
+            //                   style: TextStyle(
+            //                       fontSize: 9,
+            //                       color: vccmvPplateau
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.bottomRight,
+            //                 child: Text(
+            //                   "50",
+            //                   style: TextStyle(
+            //                       fontSize: 12,
+            //                       color: vccmvPplateau
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.bottomLeft,
+            //                 child: Text(
+            //                   "0",
+            //                   style: TextStyle(
+            //                       fontSize: 12,
+            //                       color: vccmvPplateau
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.center,
+            //                 child: Padding(
+            //                   padding: const EdgeInsets.only(top: 1.0),
+            //                   child: Text(
+            //                     vccmvPplateauValue.toString(),
+            //                     style: TextStyle(
+            //                         fontSize: 35,
+            //                         color: vccmvPplateau
+            //                             ? Color(0xFF213855)
+            //                             : Color(0xFFE0E0E0)),
+            //                   ),
+            //                 ),
+            //               ),
+            //               Padding(
+            //                 padding: const EdgeInsets.only(
+            //                     bottom: 20.0, left: 10, right: 10),
+            //                 child: Align(
+            //                   alignment: Alignment.bottomCenter,
+            //                   child: LinearProgressIndicator(
+            //                     backgroundColor: Colors.grey,
+            //                     valueColor: AlwaysStoppedAnimation<Color>(
+            //                       vccmvPplateau
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0),
+            //                     ),
+            //                     value: vccmvPplateauValue != null
+            //                         ? vccmvPplateauValue / 50
+            //                         : 0,
+            //                   ),
+            //                 ),
+            //               )
+            //             ],
+            //           )),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
+            // InkWell(
+            //   onTap: () async {
+            //     if (_parameterChangeEnabled == true) {
+            //       setState(() {
+            //         _parameterChangeEnabled = false;
+            //         vccmvmaxValue = 150;
+            //         vccmvminValue = 1;
+            //         vccmvparameterName = "Flow";
+            //         vccmvparameterUnits = "cmH\u2082O";
+            //         vccmvRR = false;
+            //         vccmvIe = false;
+            //         vccmvPeep = false;
+            //         vccmvVt = false;
+            //         vccmvPcMax = false;
+            //         vccmvFlow = true;
+            //         vccmvFio2 = false;
+            //         vccmvPplateau = false;
+            //         vccmvTih = false;
+            //       });
+            //     }
+            //   },
+            //   child: Center(
+            //     child: Container(
+            //      width: _isTab10 ? 156 : 146,
+            //       height: _isTab10 ? 130 : 130,
+            //       child: Card(
+            //         elevation: 40,
+            //         color: vccmvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //         child: Padding(
+            //           padding: const EdgeInsets.all(6.0),
+            //           child: Center(
+            //               child: Stack(
+            //             children: [
+            //               Align(
+            //                 alignment: Alignment.topLeft,
+            //                 child: Text(
+            //                   "Flow",
+            //                   style: TextStyle(
+            //                       fontSize: 15,
+            //                       fontWeight: FontWeight.bold,
+            //                       color: vccmvFlow
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.topRight,
+            //                 child: Text(
+            //                   "",
+            //                   style: TextStyle(
+            //                       fontSize: 9,
+            //                       color: vccmvFlow
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.bottomRight,
+            //                 child: Text(
+            //                   "150",
+            //                   style: TextStyle(
+            //                       fontSize: 12,
+            //                       color: vccmvFlow
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.bottomLeft,
+            //                 child: Text(
+            //                   "1",
+            //                   style: TextStyle(
+            //                       fontSize: 12,
+            //                       color: vccmvFlow
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0)),
+            //                 ),
+            //               ),
+            //               Align(
+            //                 alignment: Alignment.center,
+            //                 child: Padding(
+            //                   padding: const EdgeInsets.only(top: 1.0),
+            //                   child: Text(
+            //                     vccmvFlowValue.toString(),
+            //                     style: TextStyle(
+            //                         fontSize: 35,
+            //                         color: vccmvFlow
+            //                             ? Color(0xFF213855)
+            //                             : Color(0xFFE0E0E0)),
+            //                   ),
+            //                 ),
+            //               ),
+            //               Padding(
+            //                 padding: const EdgeInsets.only(
+            //                     bottom: 20.0, left: 10, right: 10),
+            //                 child: Align(
+            //                   alignment: Alignment.bottomCenter,
+            //                   child: LinearProgressIndicator(
+            //                     backgroundColor: Colors.grey,
+            //                     valueColor: AlwaysStoppedAnimation<Color>(
+            //                       vccmvFlow
+            //                           ? Color(0xFF213855)
+            //                           : Color(0xFFE0E0E0),
+            //                     ),
+            //                     value: vccmvFlowValue != null
+            //                         ? vccmvFlowValue / 150
+            //                         : 0,
+            //                   ),
+            //                 ),
+            //               )
+            //             ],
+            //           )),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            // ),
           ],
         ),
-        
         SizedBox(width: 140),
         Column(
           children: <Widget>[
@@ -24498,7 +24455,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -24837,7 +24794,6 @@ class _CheckPageState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
             InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
@@ -24862,7 +24818,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -24980,7 +24936,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -25194,7 +25150,6 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-
             InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
@@ -25219,7 +25174,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -25315,245 +25270,249 @@ class _CheckPageState extends State<Dashboard> {
             ),
           ],
         ),
-       
-        Column(children: <Widget>[
-          InkWell(
-              onTap: () {
-                 if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                  vsimvmaxValue = 50;
-                  vsimvminValue = 0;
-                  vsimvparameterName = "Plateau";
-                  vsimvparameterUnits = "";
-                  vsimvItrig = false;
-                  vsimvRr = false;
-                  vsimvIe = false;
-                  vsimvPeep = false;
-                  vsimvVt = false;
-                  vsimvPlateau = true;
-                  vsimvPcMax = false;
-                  vsimvFio2 = false;
-                  vsimvFlow = false;
-                });
-              }
-              },
-              child: Center(
-                child: Container(
-                 width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color:
-              vsimvPlateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Flow",
-                    style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: vsimvPlateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vsimvPlateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "50",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vsimvPlateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "0",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vsimvPlateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text(
-            vsimvPlateauValue.toString(),
-            style: TextStyle(
-                fontSize: 35,
-                color: vsimvPlateau
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-            bottom: 20.0, left: 10, right: 10),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator(
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              vsimvPlateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0),
-            ),
-            value: vsimvPlateauValue != null
-                ? vsimvPlateauValue / 50
-                : 0,
-                    ),
-                  ),
-                )
-              ],
-            )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-            InkWell(
-              onTap: () {
-                 if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                  vsimvmaxValue = 150;
-                  vsimvminValue = 1;
-                  vsimvparameterName = "Flow";
-                  vsimvparameterUnits = "";
-                  vsimvItrig = false;
-                  vsimvRr = false;
-                  vsimvIe = false;
-                  vsimvPeep = false;
-                  vsimvVt = false;
-                  vsimvPlateau = false;
-                  vsimvPcMax = false;
-                  vsimvFio2 = false;
-                  vsimvFlow = true;
-                });
-              }
-              },
-              child: Center(
-                child: Container(
-                  width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color:
-              vsimvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Flow",
-                    style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: vsimvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vsimvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "150",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vsimvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "1",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vsimvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text(
-            vsimvFlowValue.toString(),
-            style: TextStyle(
-                fontSize: 35,
-                color: vsimvFlow
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-            bottom: 20.0, left: 10, right: 10),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator(
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              vsimvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0),
-            ),
-            value: vsimvFlowValue != null
-                ? vsimvFlowValue / 150
-                : 0,
-                    ),
-                  ),
-                )
-              ],
-            )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-        ],),
+        Column(
+          children: <Widget>[
+            // InkWell(
+            //     onTap: () {
+            //        if (_parameterChangeEnabled == true) {
+            //         setState(() {
+            //           _parameterChangeEnabled = false;
+            //         vsimvmaxValue = 50;
+            //         vsimvminValue = 0;
+            //         vsimvparameterName = "Plateau";
+            //         vsimvparameterUnits = "";
+            //         vsimvItrig = false;
+            //         vsimvRr = false;
+            //         vsimvIe = false;
+            //         vsimvPeep = false;
+            //         vsimvVt = false;
+            //         vsimvPlateau = true;
+            //         vsimvPcMax = false;
+            //         vsimvFio2 = false;
+            //         vsimvFlow = false;
+            //       });
+            //     }
+            //     },
+            //     child: Center(
+            //       child: Container(
+            //        width: _isTab10 ? 156 : 146,
+            //         height: _isTab10 ? 130 : 130,
+            //         child: Card(
+            //           elevation: 40,
+            //           color:
+            //     vsimvPlateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //           child: Padding(
+            //   padding: const EdgeInsets.all(6.0),
+            //   child: Center(
+            //       child: Stack(
+            //     children: [
+            //       Align(
+            //         alignment: Alignment.topLeft,
+            //         child: Text(
+            //           "Flow",
+            //           style: TextStyle(
+            //     fontSize: 15,
+            //     fontWeight: FontWeight.bold,
+            //     color: vsimvPlateau
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0)),
+            //         ),
+            //       ),
+            //       Align(
+            //         alignment: Alignment.topRight,
+            //         child: Text(
+            //           "",
+            //           style: TextStyle(
+            //     fontSize: 12,
+            //     color: vsimvPlateau
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0)),
+            //         ),
+            //       ),
+            //       Align(
+            //         alignment: Alignment.bottomRight,
+            //         child: Text(
+            //           "50",
+            //           style: TextStyle(
+            //     fontSize: 12,
+            //     color: vsimvPlateau
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0)),
+            //         ),
+            //       ),
+            //       Align(
+            //         alignment: Alignment.bottomLeft,
+            //         child: Text(
+            //           "0",
+            //           style: TextStyle(
+            //     fontSize: 12,
+            //     color: vsimvPlateau
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0)),
+            //         ),
+            //       ),
+            //       Align(
+            //         alignment: Alignment.center,
+            //         child: Padding(
+            //           padding: const EdgeInsets.only(top: 1.0),
+            //           child: Text(
+            //   vsimvPlateauValue.toString(),
+            //   style: TextStyle(
+            //       fontSize: 35,
+            //       color: vsimvPlateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.only(
+            //   bottom: 20.0, left: 10, right: 10),
+            //         child: Align(
+            //           alignment: Alignment.bottomCenter,
+            //           child: LinearProgressIndicator(
+            //   backgroundColor: Colors.grey,
+            //   valueColor: AlwaysStoppedAnimation<Color>(
+            //     vsimvPlateau
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0),
+            //   ),
+            //   value: vsimvPlateauValue != null
+            //       ? vsimvPlateauValue / 50
+            //       : 0,
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   )),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            //   InkWell(
+            //     onTap: () {
+            //        if (_parameterChangeEnabled == true) {
+            //         setState(() {
+            //           _parameterChangeEnabled = false;
+            //         vsimvmaxValue = 150;
+            //         vsimvminValue = 1;
+            //         vsimvparameterName = "Flow";
+            //         vsimvparameterUnits = "";
+            //         vsimvItrig = false;
+            //         vsimvRr = false;
+            //         vsimvIe = false;
+            //         vsimvPeep = false;
+            //         vsimvVt = false;
+            //         vsimvPlateau = false;
+            //         vsimvPcMax = false;
+            //         vsimvFio2 = false;
+            //         vsimvFlow = true;
+            //       });
+            //     }
+            //     },
+            //     child: Center(
+            //       child: Container(
+            //         width: _isTab10 ? 156 : 146,
+            //         height: _isTab10 ? 130 : 130,
+            //         child: Card(
+            //           elevation: 40,
+            //           color:
+            //     vsimvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //           child: Padding(
+            //   padding: const EdgeInsets.all(6.0),
+            //   child: Center(
+            //       child: Stack(
+            //     children: [
+            //       Align(
+            //         alignment: Alignment.topLeft,
+            //         child: Text(
+            //           "Flow",
+            //           style: TextStyle(
+            //     fontSize: 15,
+            //     fontWeight: FontWeight.bold,
+            //     color: vsimvFlow
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0)),
+            //         ),
+            //       ),
+            //       Align(
+            //         alignment: Alignment.topRight,
+            //         child: Text(
+            //           "",
+            //           style: TextStyle(
+            //     fontSize: 12,
+            //     color: vsimvFlow
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0)),
+            //         ),
+            //       ),
+            //       Align(
+            //         alignment: Alignment.bottomRight,
+            //         child: Text(
+            //           "150",
+            //           style: TextStyle(
+            //     fontSize: 12,
+            //     color: vsimvFlow
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0)),
+            //         ),
+            //       ),
+            //       Align(
+            //         alignment: Alignment.bottomLeft,
+            //         child: Text(
+            //           "1",
+            //           style: TextStyle(
+            //     fontSize: 12,
+            //     color: vsimvFlow
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0)),
+            //         ),
+            //       ),
+            //       Align(
+            //         alignment: Alignment.center,
+            //         child: Padding(
+            //           padding: const EdgeInsets.only(top: 1.0),
+            //           child: Text(
+            //   vsimvFlowValue.toString(),
+            //   style: TextStyle(
+            //       fontSize: 35,
+            //       color: vsimvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //       ),
+            //       Padding(
+            //         padding: const EdgeInsets.only(
+            //   bottom: 20.0, left: 10, right: 10),
+            //         child: Align(
+            //           alignment: Alignment.bottomCenter,
+            //           child: LinearProgressIndicator(
+            //   backgroundColor: Colors.grey,
+            //   valueColor: AlwaysStoppedAnimation<Color>(
+            //     vsimvFlow
+            //         ? Color(0xFF213855)
+            //         : Color(0xFFE0E0E0),
+            //   ),
+            //   value: vsimvFlowValue != null
+            //       ? vsimvFlowValue / 150
+            //       : 0,
+            //           ),
+            //         ),
+            //       )
+            //     ],
+            //   )),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            //   ),
+            Container(
+              width: _isTab10 ? 156 : 146,
+            )
+          ],
+        ),
         SizedBox(width: _isTab10 ? 60 : 140),
         _isTab10
             ? Container(
@@ -25778,7 +25737,8 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (vsimvPlateau == true &&
                                         vsimvPlateauValue != vsimvminValue) {
                                       setState(() {
-                                        vsimvPlateauValue = vsimvPlateauValue - 1;
+                                        vsimvPlateauValue =
+                                            vsimvPlateauValue - 1;
                                         // if (vsimvPlateauValue >= vsimvPcMaxValue) {
                                         //   vsimvPcMaxValue = vsimvPcMaxValue - 1;
                                         // }
@@ -25794,8 +25754,7 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (vsimvFlow == true &&
                                         vsimvFlowValue != vsimvminValue) {
                                       setState(() {
-                                        vsimvFlowValue =
-                                            vsimvFlowValue - 1;
+                                        vsimvFlowValue = vsimvFlowValue - 1;
                                       });
                                     } else if (vsimvPs == true &&
                                         vsimvPsValue != vsimvminValue) {
@@ -25875,9 +25834,8 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (vsimvPlateau == true &&
                                         vsimvPlateauValue != vsimvmaxValue) {
                                       setState(() {
-                                        
-                                          vsimvPlateauValue = vsimvPlateauValue + 1;
-                                        
+                                        vsimvPlateauValue =
+                                            vsimvPlateauValue + 1;
                                       });
                                     } else if (vsimvPcMax == true &&
                                         vsimvPcMaxValue != vsimvmaxValue) {
@@ -25892,8 +25850,7 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (vsimvFlow == true &&
                                         vsimvFlowValue != vsimvmaxValue) {
                                       setState(() {
-                                        vsimvFlowValue =
-                                            vsimvFlowValue + 1;
+                                        vsimvFlowValue = vsimvFlowValue + 1;
                                       });
                                     } else if (vsimvPs == true &&
                                         vsimvPsValue != vsimvmaxValue &&
@@ -25999,10 +25956,9 @@ class _CheckPageState extends State<Dashboard> {
                                       vsimvVtValue = value.toInt();
                                     });
                                   } else if (vsimvPlateau == true) {
-                                      vsimvPlateauValue = value.toInt();
+                                    vsimvPlateauValue = value.toInt();
                                   } else if (vsimvPcMax == true) {
                                     setState(() {
-                                     
                                       vsimvPcMaxValue = value.toInt();
                                     });
                                   } else if (vsimvFio2 == true) {
@@ -26151,7 +26107,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -26267,7 +26223,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                    width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -26384,7 +26340,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -26480,7 +26436,7 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-             InkWell(
+            InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
@@ -26503,7 +26459,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                    width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -26605,7 +26561,6 @@ class _CheckPageState extends State<Dashboard> {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           
             InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
@@ -26629,7 +26584,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                    width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -26746,7 +26701,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -26840,7 +26795,7 @@ class _CheckPageState extends State<Dashboard> {
                 ),
               ),
             ),
-             InkWell(
+            InkWell(
               onTap: () {
                 if (_parameterChangeEnabled == true) {
                   setState(() {
@@ -26863,7 +26818,7 @@ class _CheckPageState extends State<Dashboard> {
               },
               child: Center(
                 child: Container(
-                   width: _isTab10 ? 156 : 146,
+                  width: _isTab10 ? 156 : 146,
                   height: _isTab10 ? 130 : 130,
                   child: Card(
                     elevation: 40,
@@ -26958,254 +26913,253 @@ class _CheckPageState extends State<Dashboard> {
               ),
             ),
 
-            InkWell(
-              onTap: () {
-                if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                  vacvmaxValue = 50;
-                  vacvminValue = 0;
-                  vacvparameterName = "Plateau";
-                  vacvparameterUnits = "L/m";
-                  vacvItrig = false;
-                  vacvRr = false;
-                  vacvIe = false;
-                  vacvPeep = false;
-                  vacvVt = false;
-                  vacvPplateau = true;
-                  vacvPcMax = false;
-                  vacvFio2 = false;
-                  vacvFlow = false;
-                });
-              }
-              },
-              child: Center(
-                child: Container(
-                    width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color: vacvPplateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Plateau",
-                    style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: vacvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "L/m",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vacvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "50",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vacvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "0",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vacvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text(
-            vacvPplateauValue.toString(),
-            style: TextStyle(
-                fontSize: 35,
-                color: vacvPplateau
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-            bottom: 20.0, left: 10, right: 10),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator(
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              vacvPplateau
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0),
-            ),
-            value: vacvPplateauValue != null
-                ? vacvPplateauValue / 50
-                : 0,
-                    ),
-                  ),
-                )
-              ],
-            )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
+            //     InkWell(
+            //       onTap: () {
+            //         if (_parameterChangeEnabled == true) {
+            //           setState(() {
+            //             _parameterChangeEnabled = false;
+            //           vacvmaxValue = 50;
+            //           vacvminValue = 0;
+            //           vacvparameterName = "Plateau";
+            //           vacvparameterUnits = "L/m";
+            //           vacvItrig = false;
+            //           vacvRr = false;
+            //           vacvIe = false;
+            //           vacvPeep = false;
+            //           vacvVt = false;
+            //           vacvPplateau = true;
+            //           vacvPcMax = false;
+            //           vacvFio2 = false;
+            //           vacvFlow = false;
+            //         });
+            //       }
+            //       },
+            //       child: Center(
+            //         child: Container(
+            //             width: _isTab10 ? 156 : 146,
+            //           height: _isTab10 ? 130 : 130,
+            //           child: Card(
+            //             elevation: 40,
+            //             color: vacvPplateau ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //             child: Padding(
+            //     padding: const EdgeInsets.all(6.0),
+            //     child: Center(
+            //         child: Stack(
+            //       children: [
+            //         Align(
+            //           alignment: Alignment.topLeft,
+            //           child: Text(
+            //             "Plateau",
+            //             style: TextStyle(
+            //       fontSize: 15,
+            //       fontWeight: FontWeight.bold,
+            //       color: vacvPplateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.topRight,
+            //           child: Text(
+            //             "L/m",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: vacvPplateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomRight,
+            //           child: Text(
+            //             "50",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: vacvPplateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomLeft,
+            //           child: Text(
+            //             "0",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: vacvPplateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.center,
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(top: 1.0),
+            //             child: Text(
+            //     vacvPplateauValue.toString(),
+            //     style: TextStyle(
+            //         fontSize: 35,
+            //         color: vacvPplateau
+            //             ? Color(0xFF213855)
+            //             : Color(0xFFE0E0E0)),
+            //             ),
+            //           ),
+            //         ),
+            //         Padding(
+            //           padding: const EdgeInsets.only(
+            //     bottom: 20.0, left: 10, right: 10),
+            //           child: Align(
+            //             alignment: Alignment.bottomCenter,
+            //             child: LinearProgressIndicator(
+            //     backgroundColor: Colors.grey,
+            //     valueColor: AlwaysStoppedAnimation<Color>(
+            //       vacvPplateau
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0),
+            //     ),
+            //     value: vacvPplateauValue != null
+            //         ? vacvPplateauValue / 50
+            //         : 0,
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     )),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
           ],
         ),
         Column(
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            
-           
-
-            InkWell(
-              onTap: () {
-               if (_parameterChangeEnabled == true) {
-                  setState(() {
-                    _parameterChangeEnabled = false;
-                  vacvmaxValue = 150;
-                  vacvminValue = 1;
-                  vacvparameterName = "Flow";
-                  vacvparameterUnits = "";
-                  vacvItrig = false;
-                  vacvRr = false;
-                  vacvIe = false;
-                  vacvPeep = false;
-                  vacvVt = false;
-                  vacvPplateau = false;
-                  vacvPcMax = false;
-                  vacvFio2 = false;
-                  vacvFlow = true;
-                });
-              }
-              },
-              child: Center(
-                child: Container(
-                    width: _isTab10 ? 156 : 146,
-                  height: _isTab10 ? 130 : 130,
-                  child: Card(
-                    elevation: 40,
-                    color: vacvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
-                    child: Padding(
-            padding: const EdgeInsets.all(6.0),
-            child: Center(
-                child: Stack(
-              children: [
-                Align(
-                  alignment: Alignment.topLeft,
-                  child: Text(
-                    "Flow",
-                    style: TextStyle(
-              fontSize: 15,
-              fontWeight: FontWeight.bold,
-              color: vacvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.topRight,
-                  child: Text(
-                    "",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vacvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomRight,
-                  child: Text(
-                    "150",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vacvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.bottomLeft,
-                  child: Text(
-                    "1",
-                    style: TextStyle(
-              fontSize: 12,
-              color: vacvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0)),
-                  ),
-                ),
-                Align(
-                  alignment: Alignment.center,
-                  child: Padding(
-                    padding: const EdgeInsets.only(top: 1.0),
-                    child: Text(
-            vacvFlowValue.toString(),
-            style: TextStyle(
-                fontSize: 35,
-                color: vacvFlow
-                    ? Color(0xFF213855)
-                    : Color(0xFFE0E0E0)),
-                    ),
-                  ),
-                ),
-                Padding(
-                  padding: const EdgeInsets.only(
-            bottom: 20.0, left: 10, right: 10),
-                  child: Align(
-                    alignment: Alignment.bottomCenter,
-                    child: LinearProgressIndicator(
-            backgroundColor: Colors.grey,
-            valueColor: AlwaysStoppedAnimation<Color>(
-              vacvFlow
-                  ? Color(0xFF213855)
-                  : Color(0xFFE0E0E0),
+            //     InkWell(
+            //       onTap: () {
+            //        if (_parameterChangeEnabled == true) {
+            //           setState(() {
+            //             _parameterChangeEnabled = false;
+            //           vacvmaxValue = 150;
+            //           vacvminValue = 1;
+            //           vacvparameterName = "Flow";
+            //           vacvparameterUnits = "";
+            //           vacvItrig = false;
+            //           vacvRr = false;
+            //           vacvIe = false;
+            //           vacvPeep = false;
+            //           vacvVt = false;
+            //           vacvPplateau = false;
+            //           vacvPcMax = false;
+            //           vacvFio2 = false;
+            //           vacvFlow = true;
+            //         });
+            //       }
+            //       },
+            //       child: Center(
+            //         child: Container(
+            //             width: _isTab10 ? 156 : 146,
+            //           height: _isTab10 ? 130 : 130,
+            //           child: Card(
+            //             elevation: 40,
+            //             color: vacvFlow ? Color(0xFFE0E0E0) : Color(0xFF213855),
+            //             child: Padding(
+            //     padding: const EdgeInsets.all(6.0),
+            //     child: Center(
+            //         child: Stack(
+            //       children: [
+            //         Align(
+            //           alignment: Alignment.topLeft,
+            //           child: Text(
+            //             "Flow",
+            //             style: TextStyle(
+            //       fontSize: 15,
+            //       fontWeight: FontWeight.bold,
+            //       color: vacvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.topRight,
+            //           child: Text(
+            //             "",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: vacvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomRight,
+            //           child: Text(
+            //             "150",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: vacvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.bottomLeft,
+            //           child: Text(
+            //             "1",
+            //             style: TextStyle(
+            //       fontSize: 12,
+            //       color: vacvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0)),
+            //           ),
+            //         ),
+            //         Align(
+            //           alignment: Alignment.center,
+            //           child: Padding(
+            //             padding: const EdgeInsets.only(top: 1.0),
+            //             child: Text(
+            //     vacvFlowValue.toString(),
+            //     style: TextStyle(
+            //         fontSize: 35,
+            //         color: vacvFlow
+            //             ? Color(0xFF213855)
+            //             : Color(0xFFE0E0E0)),
+            //             ),
+            //           ),
+            //         ),
+            //         Padding(
+            //           padding: const EdgeInsets.only(
+            //     bottom: 20.0, left: 10, right: 10),
+            //           child: Align(
+            //             alignment: Alignment.bottomCenter,
+            //             child: LinearProgressIndicator(
+            //     backgroundColor: Colors.grey,
+            //     valueColor: AlwaysStoppedAnimation<Color>(
+            //       vacvFlow
+            //           ? Color(0xFF213855)
+            //           : Color(0xFFE0E0E0),
+            //     ),
+            //     value: vacvFlowValue != null
+            //         ? vacvFlowValue / 150
+            //         : 0,
+            //             ),
+            //           ),
+            //         )
+            //       ],
+            //     )),
+            //             ),
+            //           ),
+            //         ),
+            //       ),
+            //     ),
+            Container(
+              width: _isTab10 ? 156 : 146,
+              height: _isTab10 ? 130 : 130,
             ),
-            value: vacvFlowValue != null
-                ? vacvFlowValue / 150
-                : 0,
-                    ),
-                  ),
-                )
-              ],
-            )),
-                    ),
-                  ),
-                ),
-              ),
-            ),
-           
-            
           ],
         ),
-        SizedBox(width:50),
+        SizedBox(width: 50),
         _isTab10
             ? Column(
                 children: <Widget>[
@@ -27370,7 +27324,7 @@ class _CheckPageState extends State<Dashboard> {
                 ],
               )
             : Container(),
-        SizedBox(width: 70 ),
+        SizedBox(width: 70),
         Column(
           children: [
             Container(
@@ -27529,7 +27483,8 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (vacvPplateau == true &&
                                         vacvPplateauValue != vacvminValue) {
                                       setState(() {
-                                        vacvPplateauValue = vacvPplateauValue - 1;
+                                        vacvPplateauValue =
+                                            vacvPplateauValue - 1;
                                       });
                                     } else if (vacvPcMax == true &&
                                         vacvPcMaxValue != vacvminValue) {
@@ -27542,8 +27497,7 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (vacvFlow == true &&
                                         vacvFlowValue != vacvminValue) {
                                       setState(() {
-                                        vacvFlowValue =
-                                            vacvFlowValue - 1;
+                                        vacvFlowValue = vacvFlowValue - 1;
                                       });
                                     }
                                   });
@@ -27569,7 +27523,6 @@ class _CheckPageState extends State<Dashboard> {
                                 ),
                                 onPressed: () {
                                   setState(() {
-                                    
                                     if (vacvItrig == true &&
                                         vacvItrigValue != vacvmaxValue) {
                                       setState(() {
@@ -27598,7 +27551,8 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (vacvPplateau == true &&
                                         vacvPplateauValue != vacvmaxValue) {
                                       setState(() {
-                                          vacvPplateauValue = vacvPplateauValue + 1;
+                                        vacvPplateauValue =
+                                            vacvPplateauValue + 1;
                                       });
                                     } else if (vacvPcMax == true &&
                                         vacvPcMaxValue != 100) {
@@ -27613,8 +27567,7 @@ class _CheckPageState extends State<Dashboard> {
                                     } else if (vacvFlow == true &&
                                         vacvFlowValue != vacvmaxValue) {
                                       setState(() {
-                                        vacvFlowValue =
-                                            vacvFlowValue + 1;
+                                        vacvFlowValue = vacvFlowValue + 1;
                                       });
                                     }
                                   });
@@ -27679,7 +27632,6 @@ class _CheckPageState extends State<Dashboard> {
                                 min: vacvminValue.toDouble(),
                                 max: vacvmaxValue.toDouble(),
                                 onChanged: (double value) {
-
                                   if (vacvItrig == true) {
                                     setState(() {
                                       vacvItrigValue = value.toInt();
@@ -27701,7 +27653,7 @@ class _CheckPageState extends State<Dashboard> {
                                       vacvVtValue = value.toInt();
                                     });
                                   } else if (vacvPplateau == true) {
-                                      vacvPplateauValue = value.toInt();
+                                    vacvPplateauValue = value.toInt();
                                   } else if (vacvPcMax == true) {
                                     setState(() {
                                       vacvPcMaxValue = value.toInt();
@@ -30162,11 +30114,11 @@ class _CheckPageState extends State<Dashboard> {
         modeWriteList.add(1); //22 val
         modeWriteList.add(255); //23
 
-        modeWriteList.add((pccmvPplateauValue & 0xFF00) >> 8); 
-        modeWriteList.add((pccmvPplateauValue & 0x00FF)); 
+        modeWriteList.add((pccmvPplateauValue & 0xFF00) >> 8);
+        modeWriteList.add((pccmvPplateauValue & 0x00FF));
 
-        modeWriteList.add((pccmvFlowValue & 0xFF00) >> 8); 
-        modeWriteList.add((pccmvFlowValue & 0x00FF)); 
+        modeWriteList.add((pccmvFlowValue & 0xFF00) >> 8);
+        modeWriteList.add((pccmvFlowValue & 0x00FF));
 
         _isdatasendSuccess = false;
         // modeWriteList.add((pccmvFlowValue & 0xFF00) >> 8);
@@ -30296,7 +30248,6 @@ class _CheckPageState extends State<Dashboard> {
 
         modeWriteList.add((vccmvFlowValue & 0xFF00) >> 8); //13
         modeWriteList.add((vccmvFlowValue & 0x00FF));
-
 
         _isdatasendSuccess = false;
         // modeWriteList.add((vccmvFlowValue & 0xFF00) >> 8);
@@ -31890,7 +31841,6 @@ class _CheckPageState extends State<Dashboard> {
       prvcPcMaxValue = 60;
       // prvcFio2Value = 21;
       prvcFlowValue = 100;
-      
 
       prvcmaxValue = 30;
       prvcminValue = 1;
@@ -33715,14 +33665,33 @@ class _CheckPageState extends State<Dashboard> {
 
   serializeEventData(Uint8List event) async {
     if (event != null) {
-      _writeStringToTextFile(event.toString());
+      // _writeStringToTextFile(event.toString());
       setState(() {
-        totalCounter = totalCounter + 1;
+        // totalCounter = totalCounter + 1;
         // turnOnScreen();
         respiratoryEnable = true;
         powerButtonEnabled = false;
         // playOnEnabled= false;
       });
+      // if (event[0] == 126 && event[1] == 177) {
+      //   list1 = [];
+      //   listTemp1 = [];
+      //   int cIndex = 0;
+      //   list1.addAll(event);
+      //   list1.removeAt(0);
+      //   list1.removeAt(0);
+
+      //   for (int i = 0; i < list.length; i++) {
+      //     if (list[i] == 125) {
+      //       listTemp.insert(cIndex, list[i + 1] ^ 0x20);
+      //       i = i + 1;
+      //     } else {
+      //       listTemp.insert(cIndex, list[i]);
+      //     }
+      //     cIndex = cIndex + 1;
+      //   }
+      //   serialiseReceivedPacket(listTemp1);
+      // }else 
       if (event[0] == 126) {
         list = [];
         listTemp = [];
@@ -33740,8 +33709,9 @@ class _CheckPageState extends State<Dashboard> {
           cIndex = cIndex + 1;
         }
         serialiseReceivedPacket(listTemp);
-      } else {
+      }  else {
         list = [];
+        list1 = [];
       }
       event.clear();
     } else {
@@ -33773,10 +33743,9 @@ class _CheckPageState extends State<Dashboard> {
         acknowledgeData.clear();
       });
     } else {
-      // print(finalList);
-      if (_isLoopGraph == true) {
+      // if (_isLoopGraph == true) {
         // checkCrc(finalList, finalList.length, 2);
-      }
+      // }
     }
   }
 
@@ -33828,6 +33797,8 @@ class _CheckPageState extends State<Dashboard> {
     } else {
       flowPoints.add(temp3);
     }
+
+    
 
     if (((finalList[60] << 8) + finalList[61]).toInt() >= 0 &&
         ((finalList[60] << 8) + finalList[61]).toInt() <= 150) {
@@ -34929,90 +34900,69 @@ class _CheckPageState extends State<Dashboard> {
     });
   }
 
-  // extractingBreathData(List<int> breathList) {
-  //   var index = 0;
 
-  //   if (breathList[index++] == 2) {
-  //     List<int> pressureB = [];
-  //     List<int> flowB = [];
-  //     List<int> volumeB = [];
-  //     var lengthPacket = breathList[index++];
-  //     var pressurePostiveLength = breathList[index++];
+  _plotData(){
+     if (datapv.length > 10 && datapv.length != 0) {
+            //re-insti
+            _plotDataPv = [Point(peepDisplayValue.toDouble(), 2.0)];
+            //pressure volume
+            _plotDataPv.add(Point(peepDisplayValue.toDouble(), 2.0));
+            datapv.removeLast();
+            _plotDataPv.addAll(datapv);
+            _plotDataPv.add(Point(peepDisplayValue.toDouble(), 2.0));
+          } else {
+            datapv = [(Point(0.0, 0.0))];
+          }
 
-  //     var pressureNegativeLength;
-  //     var flowPostiveLength;
-  //     var flowNegativeLength;
-  //     var volumePostiveLength;
-  //     var volumeNegativeLength;
+          // pressure flow
+          if (datapf.length > 10 && datapf.length != 0) {
+            _plotDataPf = [(Point(0.0, 0.0))];
+            datapf.removeLast();
+            _plotDataPf.addAll(datapf);
+            _plotDataPf.add(Point(0.0, 0.0));
+          } else {
+             datapf = [(Point(0.0, 0.0))];
+          }
 
-  //     for (int i = 0; i < pressurePostiveLength; i++) {
-  //       pressureB.add(breathList[3 + i]);
-  //     }
+          // volume flow
+          if (datavf.length > 10 && datavf.length != 0) {
+            _plotDataVf = [(Point(0.0, 0.0))];
+            datavf.removeLast();
+            _plotDataVf.addAll(datavf);
+            _plotDataVf.add(Point(0.0, 0.0));
+          } else {
+             datavf = [(Point(0.0, 0.0))];
+          }       
+  }
 
-  //     index = index + pressurePostiveLength;
-  //     pressureNegativeLength = breathList[index];
-  //     print(breathList);
-
-  //     for (int i = index + 1; i < pressureNegativeLength + (index + 1); i++) {
-  //       pressureB.add(breathList[i]);
-  //     }
-
-  //     index = index + pressureNegativeLength + 1;
-  //     flowPostiveLength = breathList[index];
-  //     // print(breathList);
-
-  //     for (int i = index + 1; i < flowPostiveLength + (index + 1); i++) {
-  //       flowB.add(breathList[i]);
-  //     }
-
-  //     index = index + flowPostiveLength + 1;
-  //     flowNegativeLength = breathList[index];
-
-  //     for (int i = index + 1; i < flowNegativeLength + (index + 1); i++) {
-  //       flowB.add(-(breathList[i]));
-  //     }
-
-  //     index = index + flowNegativeLength + 1;
-  //     volumePostiveLength = breathList[index];
-  //     // print(breathList);
-
-  //     for (int i = index + 1; i < volumePostiveLength + (index + 1); i++) {
-  //       volumeB.add(breathList[i]);
-  //     }
-
-  //     index = index + volumePostiveLength + 1;
-  //     volumeNegativeLength = breathList[index];
-
-  //     for (int i = index + 1; i < volumeNegativeLength + (index + 1); i++) {
-  //       volumeB.add(breathList[i]);
-  //     }
-
-  //     print(pressureB.toString() + flowB.toString() + volumeB.toString());
-
-  //     _plotDataPv = [Point(peepDisplayValue.toDouble(), 2.0)];
-
-  //     ///pip,vti
-  //     _plotDataPf = [Point(0.0, peepDisplayValue.toDouble())];
-  //     _plotDataVf = [Point(0.0, 0.0)];
-
-  //     for (int i = 0; i < pressureB.length; i++) {
-  //       // datapv.add(Point(temp, temp1));
-  //       //     datapf.add(Point(temp3, temp));
-  //       //     datavf.add(Point(temp1, temp3));
-
-  //       _plotDataPv.add(Point(
-  //           ((((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()),
-  //           (volumeB[i] << 8) + volumeB[i + 1].toDouble()));
-  //       _plotDataPf.add(Point(
-  //           ((((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()),
-  //           (((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()));
-  //       _plotDataVf.add(Point((volumeB[i] << 8) + volumeB[i + 1].toDouble(),
-  //           (((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()));
-
-  //       i = i + 1;
-  //     }
-  //   }
-  // }
+  extractingBreathData(List<int> breathList) { // 2,3, pressure(temp) // 4,5 volume(temp1)  // 6,7 flow(temp3)
+    var currentPacket = breathList[1]; 
+  if (currentPacket!=previousPacket) {
+      setState((){
+        previousPacket = currentPacket;
+        _plotData();
+        setState((){
+          datapv.add(Point(((breathList[2] << 8) + breathList[3]), ((breathList[4] << 8) + breathList[5])));
+          datapf.add(Point(((breathList[6] << 8) + breathList[7]), ((breathList[2] << 8) + breathList[3])));
+          datavf.add(Point(((breathList[4] << 8) + breathList[5]), ((breathList[6] << 8) + breathList[7])));
+        });
+      });
+    } else {
+      if(breathList[0]==1){
+      setState((){
+          datapv.add(Point(((breathList[2] << 8) + breathList[3]), ((breathList[4] << 8) + breathList[5])));
+          datapf.add(Point(((breathList[6] << 8) + breathList[7]), ((breathList[2] << 8) + breathList[3])));
+          datavf.add(Point(((breathList[4] << 8) + breathList[5]), ((breathList[6] << 8) + breathList[7])));
+        });
+       }else if(breathList[0]==2){
+          setState((){
+          datapv.add(Point(((breathList[2] << 8) + breathList[2]), ((breathList[4] << 8) + breathList[5])));
+          datapf.add(Point(-((breathList[6] << 8) + breathList[7]), ((breathList[2] << 8) + breathList[3])));
+          datavf.add(Point(((breathList[4] << 8) + breathList[5]), -((breathList[6] << 8) + breathList[7])));
+        });
+       }
+    }
+  }
 
   sendData(List<int> listCrcDataC, checkValue) async {
     List<int> cfinalListSend = [];
