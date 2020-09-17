@@ -49,6 +49,7 @@ dependencies:
   pull_to_refresh: ^1.6.0
   flutter_plot: ^0.0.3
   flutter_sparkline: ^0.1.0
+  graph_widget: ^1.0.14
   fcharts: ^0.0.11
   flutter_native_splash: ^0.1.9
   flutter_datetime_picker:

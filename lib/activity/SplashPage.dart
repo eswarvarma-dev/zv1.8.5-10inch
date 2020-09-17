@@ -102,7 +102,7 @@ class _SplashPageState extends State<SplashPage> {
     preferences.setInt('maxmv', 25);
     preferences.setInt('minlv', 0);
     preferences.setInt('maxlv', 100);
-    preferences.setBool('calli', true);
+    preferences.setBool('calli', false);
     preferences.setBool('_isFlagTest', false);
     preferences.setBool('_setValuesonClick', true);
     preferences.setBool('playpauseButtonEnabled', false);
@@ -110,6 +110,7 @@ class _SplashPageState extends State<SplashPage> {
     preferences.setBool("flag1", true);
     preferences.setBool('pControl', true);
     preferences.setBool('first', true);
+    preferences.setBool('inhalationFlag', true);
 
     preferences.setInt('pccmvFio2Value', 21);
             preferences.setInt('vccmvFio2Value', 21);

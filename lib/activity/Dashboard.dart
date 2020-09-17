@@ -10,6 +10,7 @@ import 'package:flutter_datetime_picker/flutter_datetime_picker.dart';
 import 'package:flutter_plot/flutter_plot.dart';
 import 'package:flutter_sparkline/flutter_sparkline.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:graph_widget/GraphWidget.dart';
 import 'package:intl/intl.dart';
 import 'package:liquid_progress_indicator/liquid_progress_indicator.dart';
 import 'package:path_provider/path_provider.dart';
@@ -37,6 +38,7 @@ class Dashboard extends StatefulWidget {
 class _CheckPageState extends State<Dashboard> {
   static const shutdownChannel = const MethodChannel("shutdown");
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
+  GlobalKey<GraphWidgetInternalState> widgetKey = GlobalKey();
 
   Uint16List ulCrc16Table = Uint16List.fromList([
     0x0000,
@@ -56,15 +58,16 @@ class _CheckPageState extends State<Dashboard> {
     0x8801,
     0x4400
   ]);
+  double ptemp3, ntemp3;
   bool _isTab10 = true;
   bool getOpertingMode = false;
-  List<double> pressurePoints = [];
+  List<double> pressurePoints = [0.0, 0.0];
+  List<double> flowiPoints = [0.0, 0.0];
+  List<double> flowePoints = [0.0, 0.0];
+  List<double> volumePoints = [0.0, 0.0];
   List<double> pressurePointsPsv = [];
-
   int packetCounter = 0;
-  List<double> flowPoints = [];
   List<double> flowPointsPsv = [];
-  List<double> volumePoints = [];
   List<double> volumePointsPsv = [];
   Oscilloscope scopeOne, scopeOne1, scopeOne2;
   // OscilloscopePsv pscopeOne, pscopeOne1, pscopeOne2;
@@ -86,7 +89,6 @@ class _CheckPageState extends State<Dashboard> {
   double _progress = 50;
   Timer _timer, _timer1, _timer2, _timer3;
   List<int> list = [];
-  List<int> list1 = [];
 
   double radians = 0, radians1 = 0;
   int paw, mvValue = 0, rrtotalValue = 0, lastmvValue = 0;
@@ -130,7 +132,6 @@ class _CheckPageState extends State<Dashboard> {
   double peepHeight = 280, psHeight = 280;
   String modeName = "", dateandTime;
   double tiValue = 0, teValue = 0;
-  int previousPacket = 653499;
 
   double mode1rrval = 12,
       mode1ieval = 2,
@@ -509,6 +510,8 @@ class _CheckPageState extends State<Dashboard> {
       minlv = 0;
   int faultBatteryStatus = 0;
 
+  bool inhalationFlag = true;
+
   double prePressureValue = 0.0;
   double currentPressureValue = 0.0;
   double presVolumeValue = 0.0;
@@ -559,7 +562,6 @@ class _CheckPageState extends State<Dashboard> {
   int powerIndication = 0, batteryPercentage, batteryStatus = 0;
   String sendBattery;
   List<int> listTemp = [];
-  List<int> listTemp1 = [];
   bool testingText = false;
   String textText = "Selftest starting..";
   String selfTexttext = "";
@@ -654,14 +656,221 @@ class _CheckPageState extends State<Dashboard> {
   List<double> temp3List = [];
   List<double> l1 = [];
   List<double> l2 = [];
+  int pressureMax = 0, volumeMax = 0, flowIMax = 0, flowEMax = 0;
   int selfTestCounter = 0;
 
   Future<bool> _connectTo(device) async {
     list.clear();
 
-    pressurePoints.clear();
-    volumePoints.clear();
-    flowPoints.clear();
+    pressurePoints = [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ];
+    volumePoints = [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ];
+    flowiPoints = [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ];
+    flowePoints = [
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0,
+      0.0
+    ];
+
     pressurePointsPsv.clear();
     volumePointsPsv.clear();
     flowPointsPsv.clear();
@@ -704,12 +913,8 @@ class _CheckPageState extends State<Dashboard> {
     Transaction<Uint8List> transaction =
         Transaction.terminated(_port.inputStream, Uint8List.fromList([127]));
 
-
     transaction.stream.listen((event) async {
-      setState(() {
-        totalCounter = totalCounter + 1;
-      });
-      serializeEventData(event);
+      await serializeEventData(event);
     });
     setState(() {
       _status = "Connected";
@@ -784,8 +989,12 @@ class _CheckPageState extends State<Dashboard> {
     }
   }
 
+  Random random = new Random();
+  List<GraphPoint> pPoints = [GraphPoint(x: 0, y: 0)];
+
   bool _isFlagTest = false;
   bool getportsData = false;
+  TabController _controller;
   @override
   initState() {
     super.initState();
@@ -795,6 +1004,7 @@ class _CheckPageState extends State<Dashboard> {
     d = now.day;
     lastRecordTime = DateFormat("yyyy-MM-dd HH:mm:ss").format(now).toString();
     counterData();
+    
     getData();
     // getNoTimes();
     UsbSerial.usbEventStream.listen((UsbEvent event) {
@@ -1302,9 +1512,9 @@ class _CheckPageState extends State<Dashboard> {
     crcData = obj[length - 1] * 256 + obj[length - 2];
     if (crcData == uiCrc) {
       if (resV == 1) {
-        extractingData(obj);
+        await extractingData(obj);
       } else if (resV == 2) {
-        extractingBreathData(obj);
+        // extractingBreathData(obj);
       }
     } else if (crcData != uiCrc) {
       setState(() {
@@ -1359,6 +1569,7 @@ class _CheckPageState extends State<Dashboard> {
       // if (_status == "Connected") {
       callibrationEnabled = preferences.getBool("calli");
       // }v
+      inhalationFlag = preferences.getBool('inhalationFlag');
       var first = preferences.getBool("first");
       if (first == true) {
         countDownTimer1();
@@ -1749,35 +1960,57 @@ class _CheckPageState extends State<Dashboard> {
   Widget build(BuildContext context) {
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
-    scopeOne = Oscilloscope(
-        showYAxis: true,
-        yAxisColor: Colors.grey,
-        padding: 10.0,
-        backgroundColor: Color(0xFF171e27),
-        traceColor: Colors.yellow,
-        yAxisMax: 100,
-        yAxisMin: 0.0,
-        dataSet: pressurePoints);
 
-    scopeOne1 = Oscilloscope(
-        showYAxis: true,
-        yAxisColor: Colors.grey,
-        padding: 10.0,
-        backgroundColor: Color(0xFF171e27),
-        traceColor: Colors.green,
-        yAxisMax: 200.0,
-        yAxisMin: -90.0,
-        dataSet: flowPoints);
+    var data = pressurePoints;
+    var data1 = flowiPoints;
+    var data2 = flowePoints;
+    var data3 = volumePoints;
 
-    scopeOne2 = Oscilloscope(
-        showYAxis: true,
-        yAxisColor: Colors.grey,
-        padding: 10.0,
-        backgroundColor: Color(0xFF171e27),
-        traceColor: Colors.blue,
-        yAxisMax: 3000.0,
-        yAxisMin: 0.0,
-        dataSet: volumePoints);
+     GraphParams params = GraphParams(
+        graphPoints: pPoints,
+        height: 0.1,
+        width: 0.1,
+        top: 16.0,
+        yGridSize: 10,
+        yScale: GraphConst.AUTO,
+        xScale: 10,
+        startOverScroll: 0.0,
+        endOverScroll: 0.0,
+        enableRoundCorners: false,
+        enableFill: false,
+        enableMarks: false,
+        enableGrid: false,
+        enableScroll: true);
+
+    // scopeOne = Oscilloscope(
+    //     showYAxis: true,
+    //     yAxisColor: Colors.grey,
+    //     padding: 10.0,
+    //     backgroundColor: Color(0xFF171e27),
+    //     traceColor: Colors.yellow,
+    //     yAxisMax: 100,
+    //     yAxisMin: 0.0,
+    //     dataSet: pressurePoints);
+
+    // scopeOne1 = Oscilloscope(
+    //     showYAxis: true,
+    //     yAxisColor: Colors.grey,
+    //     padding: 10.0,
+    //     backgroundColor: Color(0xFF171e27),
+    //     traceColor: Colors.green,
+    //     yAxisMax: 200.0,
+    //     yAxisMin: -90.0,
+    //     dataSet: flowPoints);
+
+    // scopeOne2 = Oscilloscope(
+    //     showYAxis: true,
+    //     yAxisColor: Colors.grey,
+    //     padding: 10.0,
+    //     backgroundColor: Color(0xFF171e27),
+    //     traceColor: Colors.blue,
+    //     yAxisMax: 3000.0,
+    //     yAxisMin: 0.0,
+    //     dataSet: volumePoints);
 
     // pscopeOne = OscilloscopePsv(
     //     showYAxis: true,
@@ -1809,65 +2042,65 @@ class _CheckPageState extends State<Dashboard> {
     //     yAxisMin: 0.0,
     //     dataSet: volumePointsPsv);
 
-    mscopeOne = OscilloscopeBig(
-        showYAxis: true,
-        yAxisColor: Colors.grey,
-        padding: 10.0,
-        backgroundColor: Color(0xFF171e27),
-        traceColor: Colors.yellow,
-        yAxisMax: 100,
-        yAxisMin: 0.0,
-        dataSet: pressurePoints);
+    // mscopeOne = OscilloscopeBig(
+    //     showYAxis: true,
+    //     yAxisColor: Colors.grey,
+    //     padding: 10.0,
+    //     backgroundColor: Color(0xFF171e27),
+    //     traceColor: Colors.yellow,
+    //     yAxisMax: 100,
+    //     yAxisMin: 0.0,
+    //     dataSet: pressurePoints);
 
-    mscopeOne1 = OscilloscopeBig(
-        showYAxis: true,
-        yAxisColor: Colors.grey,
-        padding: 10.0,
-        backgroundColor: Color(0xFF171e27),
-        traceColor: Colors.green,
-        yAxisMax: 200.0,
-        yAxisMin: -90.0,
-        dataSet: flowPoints);
+    // mscopeOne1 = OscilloscopeBig(
+    //     showYAxis: true,
+    //     yAxisColor: Colors.grey,
+    //     padding: 10.0,
+    //     backgroundColor: Color(0xFF171e27),
+    //     traceColor: Colors.green,
+    //     yAxisMax: 200.0,
+    //     yAxisMin: -90.0,
+    //     dataSet: flowPoints);
 
-    mscopeOne2 = OscilloscopeBig(
-        showYAxis: true,
-        yAxisColor: Colors.grey,
-        padding: 10.0,
-        backgroundColor: Color(0xFF171e27),
-        traceColor: Colors.blue,
-        yAxisMax: 3000.0,
-        yAxisMin: 0.0,
-        dataSet: volumePoints);
+    // mscopeOne2 = OscilloscopeBig(
+    //     showYAxis: true,
+    //     yAxisColor: Colors.grey,
+    //     padding: 10.0,
+    //     backgroundColor: Color(0xFF171e27),
+    //     traceColor: Colors.blue,
+    //     yAxisMax: 3000.0,
+    //     yAxisMin: 0.0,
+    //     dataSet: volumePoints);
 
-    sscopeOne = OscilloscopeBig(
-        showYAxis: true,
-        yAxisColor: Colors.grey,
-        padding: 10.0,
-        backgroundColor: Colors.transparent,
-        traceColor: Colors.yellow,
-        yAxisMax: 100,
-        yAxisMin: 0.0,
-        dataSet: pressurePoints);
+    // sscopeOne = OscilloscopeBig(
+    //     showYAxis: true,
+    //     yAxisColor: Colors.grey,
+    //     padding: 10.0,
+    //     backgroundColor: Colors.transparent,
+    //     traceColor: Colors.yellow,
+    //     yAxisMax: 100,
+    //     yAxisMin: 0.0,
+    //     dataSet: pressurePoints);
 
-    sscopeOne1 = OscilloscopeBig(
-        showYAxis: true,
-        yAxisColor: Colors.grey,
-        padding: 10.0,
-        backgroundColor: Colors.transparent,
-        traceColor: Colors.green,
-        yAxisMax: 200.0,
-        yAxisMin: -90.0,
-        dataSet: flowPoints);
+    // sscopeOne1 = OscilloscopeBig(
+    //     showYAxis: true,
+    //     yAxisColor: Colors.grey,
+    //     padding: 10.0,
+    //     backgroundColor: Colors.transparent,
+    //     traceColor: Colors.green,
+    //     yAxisMax: 200.0,
+    //     yAxisMin: -90.0,
+    //     dataSet: flowPoints);
 
-    sscopeOne2 = OscilloscopeBig(
-        showYAxis: true,
-        yAxisColor: Colors.grey,
-        padding: 10.0,
-        backgroundColor: Colors.transparent,
-        traceColor: Colors.blue,
-        yAxisMax: 3000.0,
-        yAxisMin: 0.0,
-        dataSet: volumePoints);
+    // sscopeOne2 = OscilloscopeBig(
+    //     showYAxis: true,
+    //     yAxisColor: Colors.grey,
+    //     padding: 10.0,
+    //     backgroundColor: Colors.transparent,
+    //     traceColor: Colors.blue,
+    //     yAxisMax: 3000.0,
+    //     yAxisMin: 0.0,
+    //     dataSet: volumePoints);
 
     return Scaffold(
         resizeToAvoidBottomPadding: false,
@@ -2447,7 +2680,7 @@ class _CheckPageState extends State<Dashboard> {
               Container(
                 child: Row(
                   children: [
-                    main(),
+                    main(data, data1, data2, data3, params),
                     rightBar(),
                   ],
                 ),
@@ -6173,7 +6406,7 @@ class _CheckPageState extends State<Dashboard> {
     }
   }
 
-  main() {
+  main(data, data1, data2, data3, params) {
     return Stack(
       children: [
         topbar(),
@@ -6199,7 +6432,7 @@ class _CheckPageState extends State<Dashboard> {
                                   ? graphs10()
                                   : loopsGraphs()
                               : _isLoopGraph == false
-                                  ? graphsScale()
+                                  ? graphsScale(data, data1, data2, data3, params)
                                   //  : "",
                                   : loopsGraphs(),
                           SizedBox(width: _isTab10 ? 5 : 25),
@@ -27800,7 +28033,7 @@ class _CheckPageState extends State<Dashboard> {
                   color: Colors.grey,
                 ),
                 axis: Colors.blueGrey[600],
-                gridline: Colors.blueGrey[100],
+                // gridline: Colors.blueGrey[100],
               ),
               padding: const EdgeInsets.fromLTRB(40.0, 12.0, 40.0, 40.0),
               xTitle: 'Pressure',
@@ -27847,7 +28080,7 @@ class _CheckPageState extends State<Dashboard> {
                   color: Colors.grey,
                 ),
                 axis: Colors.blueGrey[600],
-                gridline: Colors.blueGrey[100],
+                // gridline: Colors.blueGrey[100],
               ),
               padding: const EdgeInsets.fromLTRB(40.0, 12.0, 40.0, 40.0),
               xTitle: 'Flow',
@@ -27888,7 +28121,7 @@ class _CheckPageState extends State<Dashboard> {
                   color: Colors.grey,
                 ),
                 axis: Colors.blueGrey[600],
-                gridline: Colors.blueGrey[100],
+                // gridline: Colors.blueGrey[100],
               ),
               padding: const EdgeInsets.fromLTRB(40.0, 12.0, 40.0, 40.0),
               xTitle: 'Volume',
@@ -27909,7 +28142,7 @@ class _CheckPageState extends State<Dashboard> {
   loopsGraphs() {
     return Container(
       margin: EdgeInsets.only(left: 174, right: 5, top: 30, bottom: 14),
-      child: Column(
+      child: Column(//TODO
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: <Widget>[
@@ -27952,10 +28185,10 @@ class _CheckPageState extends State<Dashboard> {
                       height: 150,
                       child: Stack(
                         children: [
-                          Container(
-                              margin:
-                                  EdgeInsets.only(left: 20, right: 10, top: 10),
-                              child: mscopeOne),
+                          // Container(
+                          //     margin:
+                          //         EdgeInsets.only(left: 20, right: 10, top: 10),
+                          //     child: mscopeOne),
                           Container(
                               margin: EdgeInsets.only(left: 10, top: 8),
                               child: Text(
@@ -28011,22 +28244,15 @@ class _CheckPageState extends State<Dashboard> {
                       height: 190,
                       child: Stack(
                         children: [
+                          
                           // Container(
                           //     margin: EdgeInsets.only(
                           //       left: 20,
-                          //       bottom: 56.5,
+                          //       bottom: 10,
                           //       top: 10,
                           //       right: 10,
                           //     ),
                           //     child: mscopeOne1),
-                          Container(
-                              margin: EdgeInsets.only(
-                                left: 20,
-                                bottom: 10,
-                                top: 10,
-                                right: 10,
-                              ),
-                              child: mscopeOne1),
                           Container(
                               margin: EdgeInsets.only(left: 10, top: 10),
                               child: Text(
@@ -28082,14 +28308,6 @@ class _CheckPageState extends State<Dashboard> {
                       height: 190,
                       child: Stack(
                         children: [
-                          Container(
-                              margin: EdgeInsets.only(
-                                left: 20,
-                                bottom: 10,
-                                top: 10,
-                                right: 10,
-                              ),
-                              child: mscopeOne2),
                           // Container(
                           //     margin: EdgeInsets.only(
                           //       left: 20,
@@ -28097,7 +28315,7 @@ class _CheckPageState extends State<Dashboard> {
                           //       top: 10,
                           //       right: 10,
                           //     ),
-                          //     child: sscopeOne1),
+                          //     child: mscopeOne2),
                           Container(
                               margin: EdgeInsets.only(left: 10, top: 8),
                               child: Text(
@@ -28152,14 +28370,14 @@ class _CheckPageState extends State<Dashboard> {
                     height: 150,
                     child: Stack(
                       children: [
-                        Container(
-                            margin:
-                                EdgeInsets.only(left: 20, right: 10, top: 10),
-                            child: mscopeOne),
-                        Container(
-                            margin:
-                                EdgeInsets.only(left: 20, right: 10, top: 10),
-                            child: sscopeOne2),
+                        // Container(
+                        //     margin:
+                        //         EdgeInsets.only(left: 20, right: 10, top: 10),
+                        //     child: mscopeOne),
+                        // Container(
+                        //     margin:
+                        //         EdgeInsets.only(left: 20, right: 10, top: 10),
+                        //     child: sscopeOne2),
                         Row(
                           children: <Widget>[
                             Container(
@@ -28239,22 +28457,22 @@ class _CheckPageState extends State<Dashboard> {
                     height: 190,
                     child: Stack(
                       children: [
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 20,
-                              bottom: 56.5,
-                              top: 10,
-                              right: 10,
-                            ),
-                            child: mscopeOne),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 20,
-                              bottom: 10,
-                              top: 10,
-                              right: 10,
-                            ),
-                            child: sscopeOne1),
+                        // Container(
+                        //     margin: EdgeInsets.only(
+                        //       left: 20,
+                        //       bottom: 56.5,
+                        //       top: 10,
+                        //       right: 10,
+                        //     ),
+                        //     child: mscopeOne),
+                        // Container(
+                        //     margin: EdgeInsets.only(
+                        //       left: 20,
+                        //       bottom: 10,
+                        //       top: 10,
+                        //       right: 10,
+                        //     ),
+                        //     child: sscopeOne1),
                         Row(
                           children: <Widget>[
                             Container(
@@ -28340,22 +28558,22 @@ class _CheckPageState extends State<Dashboard> {
                     height: 190,
                     child: Stack(
                       children: [
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 20,
-                              bottom: 55,
-                              top: 10,
-                              right: 10,
-                            ),
-                            child: mscopeOne2),
-                        Container(
-                            margin: EdgeInsets.only(
-                              left: 20,
-                              bottom: 10,
-                              top: 10,
-                              right: 10,
-                            ),
-                            child: sscopeOne1),
+                        // Container(
+                        //     margin: EdgeInsets.only(
+                        //       left: 20,
+                        //       bottom: 55,
+                        //       top: 10,
+                        //       right: 10,
+                        //     ),
+                        //     child: mscopeOne2),
+                        // Container(
+                        //     margin: EdgeInsets.only(
+                        //       left: 20,
+                        //       bottom: 10,
+                        //       top: 10,
+                        //       right: 10,
+                        //     ),
+                        //     child: sscopeOne1),
                         Row(
                           children: <Widget>[
                             Container(
@@ -28499,7 +28717,7 @@ class _CheckPageState extends State<Dashboard> {
     );
   }
 
-  graphsScale() {
+  graphsScale(data, data1, data2, data3, params) {
     return Container(
       padding: EdgeInsets.only(left: 170, right: 0, top: 45),
       child: Column(
@@ -28509,19 +28727,32 @@ class _CheckPageState extends State<Dashboard> {
             height: 150,
             child: Stack(
               children: [
-                // Container(child:Sparkline(
-                //   fillMode: FillMode.below,
-                //   data: pressurePointsPsv
-                //   ),),
+               Container(
+                  height: 108,
+                  width: 725,
+                  margin: EdgeInsets.only(
+                    left: 30,
+                    right: 2,
+                    top: 30,
+                  ),
+                  child: Sparkline(
+                    data: data ?? [0.0],
+                    lineColor: Colors.yellow,
+                    fillMode: FillMode.below,
+                    fillColor: Colors.yellow,
+                    pointsMode: PointsMode.none,
+                    pointSize: 5.0,
+                    pointColor: Colors.yellow,
+                  ),
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 20, right: 2, top: 10),
-                    child: scopeOne),
+                    height: 0,
+                    width: 0,
+                    child: GraphWidget(widgetKey: widgetKey, params: params)),
                 Container(
                     margin: EdgeInsets.only(left: 10, top: 8),
                     child: Text(
-                      operatinModeR == 3
-                          ? "40" + " cmH\u2082O"
-                          : "100" + " cmH\u2082O",
+                      pressureMax.toString() + " cmH\u2082O",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
@@ -28530,7 +28761,6 @@ class _CheckPageState extends State<Dashboard> {
                       "0",
                       style: TextStyle(color: Colors.grey),
                     )),
-
                 Container(
                     margin: EdgeInsets.only(left: 12, top: 99.5),
                     child: Text(
@@ -28586,23 +28816,58 @@ class _CheckPageState extends State<Dashboard> {
             child: Stack(
               children: [
                 Container(
-                    margin: EdgeInsets.only(
-                      left: 20,
-                      bottom: 10,
-                      top: 10,
-                      right: 2,
+                  height: 120,
+                  width: 729,
+                  margin: EdgeInsets.only(
+                    left: 30,
+                    bottom: 10,
+                    top: 18,
+                    right: 2,
+                  ),
+                  child: Sparkline(
+                    data: data1 ?? [0.0],
+                    lineColor: Colors.green,
+                    fillMode: FillMode.below,
+                    fillColor: Colors.green,
+                    pointsMode: PointsMode.none,
+                    pointSize: 5.0,
+                    pointColor: Colors.green,
+                  ),
+                ),
+                Container(
+                  height: 60,
+                  width: 729,
+                  margin: EdgeInsets.only(
+                    left: 30,
+                    bottom: 10,
+                    top: 168,
+                    right: 2,
+                  ),
+                  child: Transform(
+                    transform: Matrix4.rotationX(pi),
+                    child: Container(
+                      child: Sparkline(
+                        data: data2 ?? [0.0],
+                        lineColor: Colors.green,
+                        fillMode: FillMode.below,
+                        fillColor: Colors.green,
+                        pointsMode: PointsMode.none,
+                        pointSize: 5.0,
+                        pointColor: Colors.green,
+                      ),
                     ),
-                    child: scopeOne1),
+                  ),
+                ),
                 Container(
                     margin: EdgeInsets.only(left: 10, top: 5),
                     child: Text(
-                      "200 Lpm",
+                      flowIMax.toString() + " Lpm",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                    margin: EdgeInsets.only(left: 10, top: 195),
+                    margin: EdgeInsets.only(left: 8, top: 195),
                     child: Text(
-                      "-90 Lpm",
+                      "-" + flowEMax.toString() + " Lpm",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
@@ -28648,12 +28913,27 @@ class _CheckPageState extends State<Dashboard> {
             child: Stack(
               children: [
                 Container(
-                    margin: EdgeInsets.only(left: 20, right: 2, top: 10),
-                    child: scopeOne2),
+                  height: 108,
+                  width: 725,
+                  margin: EdgeInsets.only(
+                    left: 30,
+                    right: 2,
+                    top: 30,
+                  ),
+                  child: Sparkline(
+                    data: data3 ?? [0.0],
+                    lineColor: Colors.blue,
+                    fillMode: FillMode.below,
+                    fillColor: Colors.blue,
+                    pointsMode: PointsMode.none,
+                    pointSize: 5.0,
+                    pointColor: Colors.blue,
+                  ),
+                ),
                 Container(
-                    margin: EdgeInsets.only(left: 10, top: 8),
+                    margin: EdgeInsets.only(left: 10,top:15),
                     child: Text(
-                      "3000" + " mL",
+                      volumeMax.toString() + " mL",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
@@ -33667,31 +33947,13 @@ class _CheckPageState extends State<Dashboard> {
     if (event != null) {
       // _writeStringToTextFile(event.toString());
       setState(() {
-        // totalCounter = totalCounter + 1;
+        totalCounter = totalCounter + 1;
         // turnOnScreen();
         respiratoryEnable = true;
         powerButtonEnabled = false;
         // playOnEnabled= false;
       });
-      // if (event[0] == 126 && event[1] == 177) {
-      //   list1 = [];
-      //   listTemp1 = [];
-      //   int cIndex = 0;
-      //   list1.addAll(event);
-      //   list1.removeAt(0);
-      //   list1.removeAt(0);
-
-      //   for (int i = 0; i < list.length; i++) {
-      //     if (list[i] == 125) {
-      //       listTemp.insert(cIndex, list[i + 1] ^ 0x20);
-      //       i = i + 1;
-      //     } else {
-      //       listTemp.insert(cIndex, list[i]);
-      //     }
-      //     cIndex = cIndex + 1;
-      //   }
-      //   serialiseReceivedPacket(listTemp1);
-      // }else 
+      
       if (event[0] == 126) {
         list = [];
         listTemp = [];
@@ -33708,10 +33970,9 @@ class _CheckPageState extends State<Dashboard> {
           }
           cIndex = cIndex + 1;
         }
-        serialiseReceivedPacket(listTemp);
-      }  else {
+        await serialiseReceivedPacket(listTemp);
+      } else {
         list = [];
-        list1 = [];
       }
       event.clear();
     } else {
@@ -33731,7 +33992,7 @@ class _CheckPageState extends State<Dashboard> {
       preferences = await SharedPreferences.getInstance();
       preferences.setString("lastRecordTime", lastRecordTime);
 
-      checkCrc(finalList, finalList.length, 1);
+      await checkCrc(finalList, finalList.length, 1);
       // extractingData(finalList);
     } else if (finalList.isNotEmpty &&
         ((finalList[2] << 8) + finalList[3]) == 17) {
@@ -33743,62 +34004,188 @@ class _CheckPageState extends State<Dashboard> {
         acknowledgeData.clear();
       });
     } else {
-      // if (_isLoopGraph == true) {
+      // print(finalList);
+      if (_isLoopGraph == true) {
         // checkCrc(finalList, finalList.length, 2);
-      // }
+      }
     }
   }
 
-  extractingData(List<int> finalList) {
+  extractingData(List<int> finalList) async {
     // pressure graph
-    double temp = (((finalList[34] << 8) + finalList[35])).toDouble();
+     double temp, temp1, temp3;
 
-    if (temp > 40000) {
-      setState(() {
-        temp = -((65535 - temp) / 100);
-      });
-    } else {
-      setState(() {
-        temp = temp / 100;
-      });
-    }
+      var dataOperatingMode = ((finalList[104] << 8) + finalList[105]);
+      if (dataOperatingMode >= 1 && dataOperatingMode <= 21) {
+        setState(() {
+          operatinModeR = ((finalList[104] << 8) + finalList[105]);
+          getOpertingMode = true;
+        });
+      } else {
+        setState(() {
+          getOpertingMode = false;
+        });
+      }
 
-    if (pressurePoints.length >= 48) {
-      setState(() {
-        pressurePoints.removeAt(0);
-        pressurePoints.add(temp);
-      });
-    } else {
-      pressurePoints.add(temp);
-    }
+      if (operatinModeR == 1) {
+        setState(() {
+          modeName = "VACV";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 2) {
+        setState(() {
+          modeName = "PACV";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 3) {
+        setState(() {
+          modeName = "PSV/CPAP";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 4) {
+        setState(() {
+          modeName = "PSIMV";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 5) {
+        setState(() {
+          modeName = "VSIMV";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 6) {
+        setState(() {
+          modeName = "PC-CMV";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 7) {
+        setState(() {
+          modeName = "VC-CMV";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 14) {
+        setState(() {
+          modeName = "PRVC";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 20) {
+        setState(() {
+          modeName = "CPAP";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 21) {
+        setState(() {
+          modeName = "AUTO";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 22) {
+        setState(() {
+          modeName = "HFNO";
+          selfTestingButtonEnabled = false;
+        });
+      } else if (operatinModeR == 0) {
+        setState(() {
+          ioreDisplayParamter = "";
+          amsDisplayParamter = "";
+        });
+      }
 
-    double temp1 = ((finalList[58] << 8) + finalList[59])
-        .toDouble(); // volume points 59,60
+    // if (_startRecordData == true) {
+      // pressure graph
+      temp = (((finalList[34] << 8) + finalList[35]))
+          .toDouble(); // pressure points 35,36
 
-    if (volumePoints.length >= 48) {
-      setState(() {
-        volumePoints.removeAt(0);
-        volumePoints.add(temp1);
-      });
-    } else {
-      volumePoints.add(temp1);
-    }
-
-    double temp3 = ((((finalList[46] << 8) + finalList[47])) -
+      if (temp > 40000) {
+        setState(() {
+          temp = -((65535 - temp) / 100);
+        });
+      } else {
+        setState(() {
+          temp = temp / 100;
+        });
+      }
+      pPoints.add(GraphPoint(x: 0.0, y: random.nextInt(5).toDouble()));
+       temp1 = ((finalList[58] << 8) + finalList[59])
+          .toDouble(); // volume points 59,60
+           temp3 = ((((finalList[46] << 8) + finalList[47])) -
             (((finalList[48] << 8) + finalList[49])))
         .toDouble();
     temp3 = temp3 * 0.06;
 
-    if (flowPoints.length >= 48) {
-      setState(() {
-        flowPoints.removeAt(0);
-        flowPoints.add(temp3);
-      });
-    } else {
-      flowPoints.add(temp3);
-    }
+    double temp3I = ((finalList[46] << 8) + finalList[47]).toDouble() * 0.06;
+      double temp3E = ((finalList[48] << 8) + finalList[49]).toDouble() * 0.06;
+
+      if(getOpertingMode==true){
+      
+      if (pressurePoints.length >= 200) {
+        setState(() {
+          if (temp > pressureMax) {
+            pressureMax = temp.toInt() + 5;
+          }
+          pressurePoints.removeAt(0);
+          pressurePoints.add(temp);
+          // Fluttertoast.showToast(msg: temp.toString());
+        });
+      } else {
+        if (temp > pressureMax) {
+          pressureMax = temp.toInt() + 5;
+        }
+        pressurePoints.add(temp);
+      }
+
+     
+
+      if (volumePoints.length >= 200) {
+        setState(() {
+          if (temp1 > volumeMax) {
+            volumeMax = temp1.toInt() + 5;
+          }
+          volumePoints.removeAt(0);
+          volumePoints.add(temp1);
+        });
+      } else {
+        if (temp1 > volumeMax) {
+          volumeMax = temp1.toInt() + 5;
+        }
+        volumePoints.add(temp1);
+      }
+
+   
+
+    // if (flowPoints.length >= 48) {
+    //   setState(() {
+    //     flowPoints.removeAt(0);
+    //     flowPoints.add(temp3);
+    //   });
+    // } else {
+    //   flowPoints.add(temp3);
+    // }
 
     
+
+      if (flowiPoints.length >= 200) {
+        setState(() {
+          if (temp3I > flowIMax) {
+            flowIMax = temp.toInt() + 5;
+          }
+          if (temp3E > flowEMax) {
+            flowEMax = temp.toInt() + 5;
+          }
+          flowiPoints.removeAt(0);
+          flowePoints.removeAt(0);
+          flowiPoints.add(temp3I);
+          flowePoints.add(temp3E);
+        });
+      } else {
+        if (temp3I > flowIMax) {
+          flowIMax = temp.toInt() + 5;
+        }
+        if (temp3E > flowEMax) {
+          flowEMax = temp.toInt() + 5;
+        }
+        flowiPoints.add(temp3I);
+        flowePoints.add(temp3E);
+      }
+      }
 
     if (((finalList[60] << 8) + finalList[61]).toInt() >= 0 &&
         ((finalList[60] << 8) + finalList[61]).toInt() <= 150) {
@@ -33812,7 +34199,7 @@ class _CheckPageState extends State<Dashboard> {
       });
     }
 
-    setState(() {
+    setState(() async {
       setState(() {
         var now = new DateTime.now();
 
@@ -33887,7 +34274,7 @@ class _CheckPageState extends State<Dashboard> {
 
         // checkTempData = finalList[31].toString();
         setState(() {
-          check1 = finalList[32]; //TOOD
+          check1 = finalList[32];
           check2 = finalList[33];
         });
 
@@ -34251,79 +34638,7 @@ class _CheckPageState extends State<Dashboard> {
         });
       }
 
-      var dataOperatingMode = ((finalList[104] << 8) + finalList[105]);
-      if (dataOperatingMode >= 1 && dataOperatingMode <= 21) {
-        setState(() {
-          operatinModeR = ((finalList[104] << 8) + finalList[105]);
-          getOpertingMode = true;
-        });
-      } else {
-        setState(() {
-          getOpertingMode = false;
-        });
-      }
-
-      if (operatinModeR == 1) {
-        setState(() {
-          modeName = "VACV";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 2) {
-        setState(() {
-          modeName = "PACV";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 3) {
-        setState(() {
-          modeName = "PSV/CPAP";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 4) {
-        setState(() {
-          modeName = "PSIMV";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 5) {
-        setState(() {
-          modeName = "VSIMV";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 6) {
-        setState(() {
-          modeName = "PC-CMV";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 7) {
-        setState(() {
-          modeName = "VC-CMV";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 14) {
-        setState(() {
-          modeName = "PRVC";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 20) {
-        setState(() {
-          modeName = "CPAP";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 21) {
-        setState(() {
-          modeName = "AUTO";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 22) {
-        setState(() {
-          modeName = "HFNO";
-          selfTestingButtonEnabled = false;
-        });
-      } else if (operatinModeR == 0) {
-        setState(() {
-          ioreDisplayParamter = "";
-          amsDisplayParamter = "";
-        });
-      } else {}
+     
 
       if ((((finalList[68] << 8) + finalList[69]) / 100).round().toInt() >= 0 &&
           (((finalList[68] << 8) + finalList[69]) / 100).round().toInt() <=
@@ -34816,6 +35131,67 @@ class _CheckPageState extends State<Dashboard> {
         batteryPercentage = finalList[65];
         batteryStatus = finalList[78];
       });
+
+      if (finalList[84] == 1 &&
+          _isLoopGraph == true &&
+          getOpertingMode == true) {
+        //temp p temp1 v temp3 f
+        setState(() {
+          if (inhalationFlag == true) {
+            datapv.clear();
+            datapf.clear();
+            datavf.clear();
+            inhalationFlag = false;
+            preferences.setBool('inhalationFlag', false);
+          }
+          datapv.add(Point(temp, temp1));
+          datapf.add(Point(temp3, temp));
+          datavf.add(Point(temp1, temp3));
+          breathCycle = true;
+        });
+      } else if (finalList[84] == 2 &&
+          _isLoopGraph == true &&
+          getOpertingMode == true) {
+        setState(() {
+          if (breathCycle == true) {
+            if (datapv.length > 16 && datapv.length != 0) {
+              // re-insti
+              _plotDataPv.clear();
+              _plotDataPv.addAll(datapv);
+              _plotDataPv.add(datapv[0]);
+            } else {
+              datapv.clear();
+            }
+
+            // pressure flow
+            if (datapf.length > 16 && datapf.length != 0) {
+              _plotDataPf.clear();
+              _plotDataPf.addAll(datapf);
+              _plotDataPf.add(datapf[0]);
+            } else {
+              datapf.clear();
+            }
+
+            // volume flow
+            if (datavf.length > 16 && datavf.length != 0) {
+              _plotDataVf.clear();
+              _plotDataVf.addAll(datavf);
+              _plotDataVf.add(datavf[0]);
+            } else {
+              datavf.clear();
+            }
+
+            datavf.clear();
+            datapv.clear();
+            datapf.clear();
+            breathCycle = false;
+          }
+          datapv.add(Point(temp, temp1));
+          datapf.add(Point(temp3, temp));
+          datavf.add(Point(temp1, temp3));
+        });
+      }
+
       if (getOpertingMode != false) {
         if (patientId != "") {
           var data = VentilatorOMode(
@@ -34853,7 +35229,7 @@ class _CheckPageState extends State<Dashboard> {
               ((finalList[106] << 8) + finalList[107]).toString(),
               finalList[109].toString(),
               alarmActive);
-          saveData(data, patientId);
+          await saveData(data, patientId);
         } else {
           var data = VentilatorOMode(
             "SWASIT " + globalCounterNo.toString(),
@@ -34891,7 +35267,7 @@ class _CheckPageState extends State<Dashboard> {
             finalList[109].toString(),
             alarmActive,
           );
-          saveData(data, patientId);
+          await saveData(data, patientId);
         }
       }
       finalList = [];
@@ -34900,69 +35276,90 @@ class _CheckPageState extends State<Dashboard> {
     });
   }
 
+  // extractingBreathData(List<int> breathList) {
+  //   var index = 0;
 
-  _plotData(){
-     if (datapv.length > 10 && datapv.length != 0) {
-            //re-insti
-            _plotDataPv = [Point(peepDisplayValue.toDouble(), 2.0)];
-            //pressure volume
-            _plotDataPv.add(Point(peepDisplayValue.toDouble(), 2.0));
-            datapv.removeLast();
-            _plotDataPv.addAll(datapv);
-            _plotDataPv.add(Point(peepDisplayValue.toDouble(), 2.0));
-          } else {
-            datapv = [(Point(0.0, 0.0))];
-          }
+  //   if (breathList[index++] == 2) {
+  //     List<int> pressureB = [];
+  //     List<int> flowB = [];
+  //     List<int> volumeB = [];
+  //     var lengthPacket = breathList[index++];
+  //     var pressurePostiveLength = breathList[index++];
 
-          // pressure flow
-          if (datapf.length > 10 && datapf.length != 0) {
-            _plotDataPf = [(Point(0.0, 0.0))];
-            datapf.removeLast();
-            _plotDataPf.addAll(datapf);
-            _plotDataPf.add(Point(0.0, 0.0));
-          } else {
-             datapf = [(Point(0.0, 0.0))];
-          }
+  //     var pressureNegativeLength;
+  //     var flowPostiveLength;
+  //     var flowNegativeLength;
+  //     var volumePostiveLength;
+  //     var volumeNegativeLength;
 
-          // volume flow
-          if (datavf.length > 10 && datavf.length != 0) {
-            _plotDataVf = [(Point(0.0, 0.0))];
-            datavf.removeLast();
-            _plotDataVf.addAll(datavf);
-            _plotDataVf.add(Point(0.0, 0.0));
-          } else {
-             datavf = [(Point(0.0, 0.0))];
-          }       
-  }
+  //     for (int i = 0; i < pressurePostiveLength; i++) {
+  //       pressureB.add(breathList[3 + i]);
+  //     }
 
-  extractingBreathData(List<int> breathList) { // 2,3, pressure(temp) // 4,5 volume(temp1)  // 6,7 flow(temp3)
-    var currentPacket = breathList[1]; 
-  if (currentPacket!=previousPacket) {
-      setState((){
-        previousPacket = currentPacket;
-        _plotData();
-        setState((){
-          datapv.add(Point(((breathList[2] << 8) + breathList[3]), ((breathList[4] << 8) + breathList[5])));
-          datapf.add(Point(((breathList[6] << 8) + breathList[7]), ((breathList[2] << 8) + breathList[3])));
-          datavf.add(Point(((breathList[4] << 8) + breathList[5]), ((breathList[6] << 8) + breathList[7])));
-        });
-      });
-    } else {
-      if(breathList[0]==1){
-      setState((){
-          datapv.add(Point(((breathList[2] << 8) + breathList[3]), ((breathList[4] << 8) + breathList[5])));
-          datapf.add(Point(((breathList[6] << 8) + breathList[7]), ((breathList[2] << 8) + breathList[3])));
-          datavf.add(Point(((breathList[4] << 8) + breathList[5]), ((breathList[6] << 8) + breathList[7])));
-        });
-       }else if(breathList[0]==2){
-          setState((){
-          datapv.add(Point(((breathList[2] << 8) + breathList[2]), ((breathList[4] << 8) + breathList[5])));
-          datapf.add(Point(-((breathList[6] << 8) + breathList[7]), ((breathList[2] << 8) + breathList[3])));
-          datavf.add(Point(((breathList[4] << 8) + breathList[5]), -((breathList[6] << 8) + breathList[7])));
-        });
-       }
-    }
-  }
+  //     index = index + pressurePostiveLength;
+  //     pressureNegativeLength = breathList[index];
+  //     // print(breathList);
+
+  //     for (int i = index + 1; i < pressureNegativeLength + (index + 1); i++) {
+  //       pressureB.add(breathList[i]);
+  //     }
+
+  //     index = index + pressureNegativeLength + 1;
+  //     flowPostiveLength = breathList[index];
+  //     // print(breathList);
+
+  //     for (int i = index + 1; i < flowPostiveLength + (index + 1); i++) {
+  //       flowB.add(breathList[i]);
+  //     }
+
+  //     index = index + flowPostiveLength + 1;
+  //     flowNegativeLength = breathList[index];
+
+  //     for (int i = index + 1; i < flowNegativeLength + (index + 1); i++) {
+  //       flowB.add(-(breathList[i]));
+  //     }
+
+  //     index = index + flowNegativeLength + 1;
+  //     volumePostiveLength = breathList[index];
+  //     // print(breathList);
+
+  //     for (int i = index + 1; i < volumePostiveLength + (index + 1); i++) {
+  //       volumeB.add(breathList[i]);
+  //     }
+
+  //     index = index + volumePostiveLength + 1;
+  //     volumeNegativeLength = breathList[index];
+
+  //     for (int i = index + 1; i < volumeNegativeLength + (index + 1); i++) {
+  //       volumeB.add(breathList[i]);
+  //     }
+
+  //     // print(pressureB.toString() + flowB.toString() + volumeB.toString());
+
+  //     _plotDataPv = [Point(peepDisplayValue.toDouble(), 2.0)];
+
+  //     ///pip,vti
+  //     _plotDataPf = [Point(0.0, peepDisplayValue.toDouble())];
+  //     _plotDataVf = [Point(0.0, 0.0)];
+
+  //     for (int i = 0; i < pressureB.length; i++) {
+  //       // datapv.add(Point(temp, temp1));
+  //       //     datapf.add(Point(temp3, temp));
+  //       //     datavf.add(Point(temp1, temp3));
+
+  //       _plotDataPv.add(Point(
+  //           ((((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()),
+  //           (volumeB[i] << 8) + volumeB[i + 1].toDouble()));
+  //       _plotDataPf.add(Point(
+  //           ((((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()),
+  //           (((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()));
+  //       _plotDataVf.add(Point((volumeB[i] << 8) + volumeB[i + 1].toDouble(),
+  //           (((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()));
+
+  //       i = i + 1;
+  //     }
+  //   }
+  // }
 
   sendData(List<int> listCrcDataC, checkValue) async {
     List<int> cfinalListSend = [];
