@@ -663,214 +663,16 @@ class _CheckPageState extends State<Dashboard> {
   Future<bool> _connectTo(device) async {
     list.clear();
 
-    pressurePoints = [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
-    ];
-    volumePoints = [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
-    ];
-    flowiPoints = [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
-    ];
-    flowePoints = [
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0,
-      0.0
-    ];
+    // pressurePoints = [
+    //   0.0,
+    //   0.0,
+    // ];
+    // volumePoints = [
+    //   0.0,
+    //   0.0,
+    // ];
+    // flowiPoints = [0.0, 0.0];
+    // flowePoints = [0.0, 0.0];
 
     pressurePointsPsv.clear();
     volumePointsPsv.clear();
@@ -1526,6 +1328,24 @@ class _CheckPageState extends State<Dashboard> {
         o2Time = "--" + "/" + "--" + "/" + "----";
       } else {
         o2Time = otime;
+      }
+
+      var zeros = preferences.getBool('zeros');
+      int currenValue = 0;
+      if (zeros == true) {
+        pressurePoints.clear();
+        flowiPoints.clear();
+        flowePoints.clear();
+        volumePoints.clear();
+        for (currenValue; currenValue < 200;) {
+          pressurePoints.add(0);
+          flowiPoints.add(0);
+          flowePoints.add(0);
+          volumePoints.add(0);
+          print(i.toString());
+          currenValue = currenValue + 1;
+        }
+        preferences.setBool('zeros', false);
       }
       var checkData = preferences.getString('checkMode');
       // if (_status == "Connected") {
@@ -6289,11 +6109,11 @@ class _CheckPageState extends State<Dashboard> {
                 ),
                 InkWell(
                   onTap: () async {
-                    await getData();
+                      lockEnabled ? await getData() : "";
                     setState(() {
                       _setValuesonClick = false;
                       lockEnabled ? modesEnabled = true : "";
-                      if (_status == "Connected") {}
+                      
                     });
                   },
                   child: Center(
@@ -27962,20 +27782,22 @@ class _CheckPageState extends State<Dashboard> {
   pressureVolumeLoop() {
     return Container(
       padding: EdgeInsets.only(left: 10, right: 2, top: 45),
-      height: 513,
+      height: 413,
       width: 640,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          new Container(
-            color: Color(0xFF171e27),
-            padding: const EdgeInsets.only(top: 12.0),
-            child: new Text('Pressure & Volume',
-                style: TextStyle(color: Colors.white)),
-          ),
+          // new Container(
+          //   color: Color(0xFF171e27),
+          //   padding: const EdgeInsets.only(top: 12.0),
+          //   child: new Text('Pressure & Volume',
+          //       style: TextStyle(color: Colors.white)),
+          // ),
           new Container(
             color: Color(0xFF171e27),
             child: new Plot(
-              height: 420.0,
+              height: 320.0,
               data: _plotDataPv,
               gridSize: new Offset(50.0, 500.0),
               style: new PlotStyle(
@@ -28009,20 +27831,22 @@ class _CheckPageState extends State<Dashboard> {
   pressureFlowLoop() {
     return Container(
       padding: EdgeInsets.only(left: 10, right: 2, top: 45),
-      height: 513,
+      height: 413,
       width: 640,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          new Container(
-            color: Color(0xFF171e27),
-            padding: const EdgeInsets.only(top: 12.0),
-            child: new Text('Flow & Pressure',
-                style: TextStyle(color: Colors.white)),
-          ),
+          // new Container(
+          //   color: Color(0xFF171e27),
+          //   padding: const EdgeInsets.only(top: 12.0),
+          //   child: new Text('Flow & Pressure',
+          //       style: TextStyle(color: Colors.white)),
+          // ),
           new Container(
             color: Color(0xFF171e27),
             child: new Plot(
-              height: 420.0,
+              height: 320.0,
               data: _plotDataPf,
               gridSize: new Offset(-400.0, 50.0),
               style: new PlotStyle(
@@ -28056,20 +27880,22 @@ class _CheckPageState extends State<Dashboard> {
   volumeFlowLoop() {
     return Container(
       padding: EdgeInsets.only(left: 10, right: 2, top: 45),
-      height: 513,
+      height: 413,
       width: 640,
       child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        crossAxisAlignment: CrossAxisAlignment.center,
         children: <Widget>[
-          new Container(
-            color: Color(0xFF171e27),
-            padding: const EdgeInsets.only(top: 12.0),
-            child: new Text('Volume & Flow',
-                style: TextStyle(color: Colors.white)),
-          ),
+          // new Container(
+          //   color: Color(0xFF171e27),
+          //   padding: const EdgeInsets.only(top: 12.0),
+          //   child: new Text('Volume & Flow',
+          //       style: TextStyle(color: Colors.white)),
+          // ),
           new Container(
             color: Color(0xFF171e27),
             child: new Plot(
-              height: 420.0,
+              height: 320.0,
               data: _plotDataVf,
               gridSize: new Offset(600.0, -500.0),
               style: new PlotStyle(
@@ -28102,91 +27928,130 @@ class _CheckPageState extends State<Dashboard> {
 
   loopsGraphs() {
     return Container(
-      margin: EdgeInsets.only(left: 174, right: 5, top: 30, bottom: 14),
-      child: Stack(
-        children: [
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              _firstLoop != true
-                  ? IconButton(
-                      icon: Icon(Icons.arrow_back_ios,
-                          size: 60, color: Colors.white),
-                      onPressed: () {
-                        setState(() {
-                          if (_secondLoop == true) {
-                            _secondLoop = false;
-                            _firstLoop = true;
-                          } else if (_thirdLoop == true) {
-                            _thirdLoop = false;
-                            _secondLoop = true;
-                          }
-                        });
-                      })
-                  : Container(width: 48),
-              Column(
+      margin: EdgeInsets.only(left: 174, right: 5, top: 40, bottom: 5),
+      child: Column(
+        children: <Widget>[
+          Stack(
+            children: [
+              Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: <Widget>[
-                  _firstLoop
-                      ? pressureVolumeLoop()
-                      : _secondLoop
-                          ? pressureFlowLoop()
-                          : _thirdLoop
-                              ? volumeFlowLoop()
-                              : Container(
-                                  padding: EdgeInsets.only(
-                                      left: 10, right: 2, top: 45),
-                                  height: 545,
-                                  width: 644,
-                                ),
+                  _firstLoop != true
+                      ? IconButton(
+                          icon: Icon(Icons.arrow_back_ios,
+                              size: 60, color: Colors.white),
+                          onPressed: () {
+                            setState(() {
+                              if (_secondLoop == true) {
+                                _secondLoop = false;
+                                _firstLoop = true;
+                              } else if (_thirdLoop == true) {
+                                _thirdLoop = false;
+                                _secondLoop = true;
+                              }
+                            });
+                          })
+                      : Container(width: 48),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: <Widget>[
+                      _firstLoop
+                          ? pressureVolumeLoop()
+                          : _secondLoop
+                              ? pressureFlowLoop()
+                              : _thirdLoop
+                                  ? volumeFlowLoop()
+                                  : Container(
+                                      padding: EdgeInsets.only(
+                                          left: 10, right: 2, top: 45),
+                                      height: 545,
+                                      width: 644,
+                                    ),
+                    
+                    ],
+                  ),
+                  _thirdLoop != true
+                      ? IconButton(
+                          icon: Icon(Icons.arrow_forward_ios,
+                              size: 60, color: Colors.white),
+                          onPressed: () {
+                            setState(() {
+                              if (_firstLoop == true) {
+                                _firstLoop = false;
+                                _secondLoop = true;
+                              } else if (_secondLoop == true) {
+                                _secondLoop = false;
+                                _thirdLoop = true;
+                              }
+                            });
+                          })
+                      : Container(width: 48),
+                  SizedBox(width: 20),
                 ],
               ),
-              _thirdLoop != true
-                  ? IconButton(
-                      icon: Icon(Icons.arrow_forward_ios,
-                          size: 60, color: Colors.white),
-                      onPressed: () {
-                        setState(() {
-                          if (_firstLoop == true) {
-                            _firstLoop = false;
-                            _secondLoop = true;
-                          } else if (_secondLoop == true) {
-                            _secondLoop = false;
-                            _thirdLoop = true;
-                          }
-                        });
-                      })
-                  : Container(width: 48),
-              SizedBox(width: 20),
+              Container(
+                margin:EdgeInsets.only(top:350),
+                  height: 135,
+                  width: 644,
+                  child: Align(
+                      alignment: Alignment.center,
+                      child: Padding(
+                        padding: const EdgeInsets.only(left: 10.0),
+                        child: Text(
+                            _firstLoop
+                                ? "Pressure"
+                                : _secondLoop ? "Flow" : "Volume",
+                            style: TextStyle(color: Colors.white, fontSize: 24)),
+                      ))),
+              RotatedBox(
+                quarterTurns: 3,
+                child: Container(
+                    height: 150,
+                    width: 300,
+                    child: Align(
+                      alignment: Alignment.center,
+                      child: Text(
+                          _firstLoop ? "Volume" : _secondLoop ? "Pressure" : "Flow",
+                          style: TextStyle(color: Colors.white, fontSize: 24)),
+                    )),
+              ),
+              
             ],
           ),
-          Container(
-              height: 545,
-              width: 644,
-              child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Padding(
-                    padding: const EdgeInsets.only(left: 95.0),
-                    child: Text(
-                        _firstLoop
-                            ? "Pressure"
-                            : _secondLoop ? "Flow" : "Volume",
-                        style: TextStyle(color: Colors.white, fontSize: 24)),
-                  ))),
-          RotatedBox(
-            quarterTurns: 3,
-            child: Container(
-                height: 150,
-                width: 300,
-                child: Align(
-                  alignment: Alignment.center,
-                  child: Text(
-                      _firstLoop ? "Volume" : _secondLoop ? "Pressure" : "Flow",
-                      style: TextStyle(color: Colors.white, fontSize: 24)),
-                )),
-          )
+          SizedBox(height:45),
+          Center(
+                    child: Container(
+                      decoration:
+                          BoxDecoration(borderRadius: BorderRadius.circular(10)),
+                      margin: EdgeInsets.only(left: 0,),
+                      width: 675,
+                      height: 80,
+                      child: alarmActive == "1"
+                          ? Card(
+                              color: 
+                              alarmActive == "1"? 
+                              Colors.red
+                                  : Color(0xFF171e27),
+                              child: Center(
+                                  child: Align(
+                                alignment: Alignment.centerLeft,
+                                child: Center(
+                                  child: Text(
+                                    alarmActive == "1"
+                                        ? alarmMessage.toUpperCase()
+                                        : "",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 15),
+                                    textAlign: TextAlign.center,
+                                  ),
+                                ),
+                              )),
+                            )
+                          : Container(),
+                    ),
+                  ),
         ],
       ),
     );
@@ -35206,8 +35071,6 @@ class _CheckPageState extends State<Dashboard> {
               datavf.clear();
             }
 
-
-
             datavf.clear();
             datapv.clear();
             datapf.clear();
@@ -35504,3 +35367,4 @@ class _CheckPageState extends State<Dashboard> {
     });
   }
 }
+

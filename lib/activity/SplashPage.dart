@@ -110,6 +110,7 @@ class _SplashPageState extends State<SplashPage> {
     preferences.setBool("flag1", true);
     preferences.setBool('pControl', true);
     preferences.setBool('first', true);
+    preferences.setBool('zeros', true);
     preferences.setBool('inhalationFlag', true);
 
     preferences.setInt('pccmvFio2Value', 21);

@@ -5,12 +5,7 @@ import 'dart:typed_data';
 import 'package:usb_serial/transaction.dart';
 import 'package:usb_serial/usb_serial.dart';
 
-class ConnectionPage extends StatefulWidget {
-  @override
-  _ConnectionScreenState createState() => _ConnectionScreenState();
-}
-
-class _ConnectionScreenState extends State<ConnectionPage> {
+class ConnectionPage {
   UsbPort _port;
   // ignore: unused_field
   String _status = "Idle";
@@ -39,17 +34,13 @@ class _ConnectionScreenState extends State<ConnectionPage> {
 
     if (device == null) {
       _deviceId = null;
-      setState(() {
         _status = "Disconnected";
-      });
-      return true;
+      return false;
     }
 
     _port = await device.create();
     if (!await _port.open()) {
-      setState(() {
         _status = "Failed to open port";
-      });
       return false;
     }
 
@@ -59,16 +50,9 @@ class _ConnectionScreenState extends State<ConnectionPage> {
     await _port.setPortParameters(
         19200, UsbPort.DATABITS_8, UsbPort.STOPBITS_1, UsbPort.PARITY_NONE);
 
-    Transaction<Uint8List> transaction =
-        Transaction.terminated(_port.inputStream, Uint8List.fromList([127]));
+   
 
-    transaction.stream.listen((event) async {
-      eventSaveList(event);
-    });
-
-    setState(() {
-      _status = "Connected";
-    });
+    _status = "Connected";
     return true;
   }
 
@@ -78,22 +62,12 @@ class _ConnectionScreenState extends State<ConnectionPage> {
     _connectTo(devices[0]);
   }
 
-  @override
-  void initState() {
-    super.initState();
-    UsbSerial.usbEventStream.listen((UsbEvent event) {
-      _getPorts();
+  getData(){
+    Transaction<Uint8List> transaction = 
+    Transaction.terminated(_port.inputStream, Uint8List.fromList([127]));
+    transaction.stream.listen((event) async {
+     return  event;
     });
   }
 
-  @override
-  Widget build(BuildContext context) {
-    SystemChrome.setEnabledSystemUIOverlays([]);
-    return Scaffold(
-      resizeToAvoidBottomPadding: false,
-      body: Container(),
-    );
-  }
-
-  void eventSaveList(Uint8List event) {}
 }
