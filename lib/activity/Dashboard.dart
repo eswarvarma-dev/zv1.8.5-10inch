@@ -1013,7 +1013,7 @@ class _CheckPageState extends State<Dashboard> {
 
   saveData(VentilatorOMode data, String patientId) async {
     // // // // print("data saving id : " + patientId);
-    dbHelper.save(data);
+    await dbHelper.save(data);
   }
 
   Future<void> _sendShutdown() async {
@@ -1278,7 +1278,7 @@ class _CheckPageState extends State<Dashboard> {
       if (resV == 1) {
         await extractingData(obj);
       } else if (resV == 2) {
-        // extractingBreathData(obj);
+        extractingBreathData(obj);
       }
     } else if (crcData != uiCrc) {
       setState(() {
@@ -1337,12 +1337,12 @@ class _CheckPageState extends State<Dashboard> {
         flowiPoints.clear();
         flowePoints.clear();
         volumePoints.clear();
-        for (currenValue; currenValue < 200;) {
+        for (currenValue; currenValue < 60;) {
           pressurePoints.add(0);
           flowiPoints.add(0);
           flowePoints.add(0);
           volumePoints.add(0);
-          print(i.toString());
+          // print(i.toString());
           currenValue = currenValue + 1;
         }
         preferences.setBool('zeros', false);
@@ -27799,7 +27799,7 @@ class _CheckPageState extends State<Dashboard> {
             child: new Plot(
               height: 320.0,
               data: _plotDataPv,
-              gridSize: new Offset(50.0, 500.0),
+              gridSize: new Offset(50.0, 1000.0),
               style: new PlotStyle(
                 axisStrokeWidth: 1.0,
                 pointRadius: 1.0,
@@ -27848,7 +27848,7 @@ class _CheckPageState extends State<Dashboard> {
             child: new Plot(
               height: 320.0,
               data: _plotDataPf,
-              gridSize: new Offset(-400.0, 50.0),
+              gridSize: new Offset(-100.0, 100.0),
               style: new PlotStyle(
                 axisStrokeWidth: 1.0,
                 pointRadius: 1.0,
@@ -27897,7 +27897,7 @@ class _CheckPageState extends State<Dashboard> {
             child: new Plot(
               height: 320.0,
               data: _plotDataVf,
-              gridSize: new Offset(600.0, -500.0),
+              gridSize: new Offset(1000.0, -100.0),
               style: new PlotStyle(
                 axisStrokeWidth: 1.0,
                 pointRadius: 1.0,
@@ -33904,7 +33904,7 @@ class _CheckPageState extends State<Dashboard> {
     } else {
       // print(finalList);
       if (_isLoopGraph == true) {
-        // checkCrc(finalList, finalList.length, 2);
+        checkCrc(finalList, finalList.length, 2);
       }
     }
   }
@@ -34019,7 +34019,7 @@ class _CheckPageState extends State<Dashboard> {
     double temp3E = ((finalList[48] << 8) + finalList[49]).toDouble() * 0.06;
 
     if (getOpertingMode == true) {
-      if (pressurePoints.length >= 200) {
+      if (pressurePoints.length >= 60) {
         setState(() {
           if (temp > pressureMax) {
             pressureMax = temp.toInt() + 5;
@@ -34035,7 +34035,7 @@ class _CheckPageState extends State<Dashboard> {
         pressurePoints.add(temp);
       }
 
-      if (volumePoints.length >= 200) {
+      if (volumePoints.length >= 60) {
         setState(() {
           if (temp1 > volumeMax) {
             volumeMax = temp1.toInt() + 5;
@@ -34059,7 +34059,7 @@ class _CheckPageState extends State<Dashboard> {
       //   flowPoints.add(temp3);
       // }
 
-      if (flowiPoints.length >= 200) {
+      if (flowiPoints.length >= 60) {
         setState(() {
           if (temp3I > flowIMax) {
             flowIMax = temp.toInt() + 5;
@@ -34096,8 +34096,8 @@ class _CheckPageState extends State<Dashboard> {
       });
     }
 
-    setState(() async {
-      setState(() {
+    setState(()  {
+      
         var now = new DateTime.now();
 
         int vteValueCheck = ((finalList[4] << 8) + finalList[5]); //5 6
@@ -34561,7 +34561,7 @@ class _CheckPageState extends State<Dashboard> {
         } else {
           alarmActive = 0.toString();
         }
-      });
+    
 
       if (_setValuesonClick == true &&
           operatinModeR != 0 &&
@@ -35022,67 +35022,67 @@ class _CheckPageState extends State<Dashboard> {
         batteryStatus = finalList[78];
       });
 
-      if (finalList[84] == 1 &&
-          _isLoopGraph == true &&
-          getOpertingMode == true) {
-        //temp p temp1 v temp3 f
-        setState(() {
-          if (inhalationFlag == true) {
-            datapv.clear();
-            datapf.clear();
-            datavf.clear();
-            inhalationFlag = false;
-            preferences.setBool('inhalationFlag', false);
-          }
-          datapv.add(Point(temp, temp1));
-          datapf.add(Point(temp3, temp));
-          datavf.add(Point(temp1, temp3));
-          breathCycle = true;
-        });
-      } else if (finalList[84] == 2 &&
-          _isLoopGraph == true &&
-          getOpertingMode == true) {
-        setState(() {
-          if (breathCycle == true) {
-            if (datapv.length > 16 && datapv.length != 0) {
-              // re-insti
-              _plotDataPv.clear();
-              _plotDataPv.addAll(datapv);
-              _plotDataPv.add(datapv[0]);
-            } else {
-              datapv.clear();
-            }
+      // if (finalList[84] == 1 &&
+      //     _isLoopGraph == true &&
+      //     getOpertingMode == true) {
+      //   //temp p temp1 v temp3 f
+      //   setState(() {
+      //     if (inhalationFlag == true) {
+      //       datapv.clear();
+      //       datapf.clear();
+      //       datavf.clear();
+      //       inhalationFlag = false;
+      //       preferences.setBool('inhalationFlag', false);
+      //     }
+      //     datapv.add(Point(temp, temp1));
+      //     datapf.add(Point(temp3, temp));
+      //     datavf.add(Point(temp1, temp3));
+      //     breathCycle = true;
+      //   });
+      // } else if (finalList[84] == 2 &&
+      //     _isLoopGraph == true &&
+      //     getOpertingMode == true) {
+      //   setState(() {
+      //     if (breathCycle == true) {
+      //       if (datapv.length > 16 && datapv.length != 0) {
+      //         // re-insti
+      //         _plotDataPv.clear();
+      //         _plotDataPv.addAll(datapv);
+      //         _plotDataPv.add(datapv[0]);
+      //       } else {
+      //         datapv.clear();
+      //       }
 
-            // pressure flow
-            if (datapf.length > 16 && datapf.length != 0) {
-              _plotDataPf.clear();
-              _plotDataPf.addAll(datapf);
-              _plotDataPf.add(datapf[0]);
-            } else {
-              datapf.clear();
-            }
+      //       // pressure flow
+      //       if (datapf.length > 16 && datapf.length != 0) {
+      //         _plotDataPf.clear();
+      //         _plotDataPf.addAll(datapf);
+      //         _plotDataPf.add(datapf[0]);
+      //       } else {
+      //         datapf.clear();
+      //       }
 
-            // volume flow
-            if (datavf.length > 16 && datavf.length != 0) {
-              _plotDataVf.clear();
-              _plotDataVf.addAll(datavf);
-              _plotDataVf.add(datavf[0]);
-            } else {
-              datavf.clear();
-            }
+      //       // volume flow
+      //       if (datavf.length > 16 && datavf.length != 0) {
+      //         _plotDataVf.clear();
+      //         _plotDataVf.addAll(datavf);
+      //         _plotDataVf.add(datavf[0]);
+      //       } else {
+      //         datavf.clear();
+      //       }
 
-            datavf.clear();
-            datapv.clear();
-            datapf.clear();
-            breathCycle = false;
-          }
-          datapv.add(Point(temp, temp1));
-          datapf.add(Point(temp3, temp));
-          datavf.add(Point(temp1, temp3));
-        });
-      }
+      //       datavf.clear();
+      //       datapv.clear();
+      //       datapf.clear();
+      //       breathCycle = false;
+      //     }
+      //     datapv.add(Point(temp, temp1));
+      //     datapf.add(Point(temp3, temp));
+      //     datavf.add(Point(temp1, temp3));
+      //   });
+      // }
 
-      if (getOpertingMode != false) {
+      if (getOpertingMode != false)  {
         if (patientId != "") {
           var data = VentilatorOMode(
               patientId,
@@ -35119,7 +35119,7 @@ class _CheckPageState extends State<Dashboard> {
               ((finalList[106] << 8) + finalList[107]).toString(),
               finalList[109].toString(),
               alarmActive);
-          await saveData(data, patientId);
+          saveData(data, patientId);
         } else {
           var data = VentilatorOMode(
             "SWASIT " + globalCounterNo.toString(),
@@ -35157,7 +35157,7 @@ class _CheckPageState extends State<Dashboard> {
             finalList[109].toString(),
             alarmActive,
           );
-          await saveData(data, patientId);
+          saveData(data, patientId);
         }
       }
       finalList = [];
@@ -35166,90 +35166,90 @@ class _CheckPageState extends State<Dashboard> {
     });
   }
 
-  // extractingBreathData(List<int> breathList) {
-  //   var index = 0;
+  extractingBreathData(List<int> breathList) {
+    var index = 0;
 
-  //   if (breathList[index++] == 2) {
-  //     List<int> pressureB = [];
-  //     List<int> flowB = [];
-  //     List<int> volumeB = [];
-  //     var lengthPacket = breathList[index++];
-  //     var pressurePostiveLength = breathList[index++];
+    if (breathList[index++] == 2) {
+      List<int> pressureB = [];
+      List<int> flowB = [];
+      List<int> volumeB = [];
+      var lengthPacket = breathList[index++];
+      var pressurePostiveLength = breathList[index++];
 
-  //     var pressureNegativeLength;
-  //     var flowPostiveLength;
-  //     var flowNegativeLength;
-  //     var volumePostiveLength;
-  //     var volumeNegativeLength;
+      var pressureNegativeLength;
+      var flowPostiveLength;
+      var flowNegativeLength;
+      var volumePostiveLength;
+      var volumeNegativeLength;
 
-  //     for (int i = 0; i < pressurePostiveLength; i++) {
-  //       pressureB.add(breathList[3 + i]);
-  //     }
+      for (int i = 0; i < pressurePostiveLength; i++) {
+        pressureB.add(breathList[3 + i]);
+      }
 
-  //     index = index + pressurePostiveLength;
-  //     pressureNegativeLength = breathList[index];
-  //     // print(breathList);
+      index = index + pressurePostiveLength;
+      pressureNegativeLength = breathList[index];
+      // print(breathList);
 
-  //     for (int i = index + 1; i < pressureNegativeLength + (index + 1); i++) {
-  //       pressureB.add(breathList[i]);
-  //     }
+      for (int i = index + 1; i < pressureNegativeLength + (index + 1); i++) {
+        pressureB.add(breathList[i]);
+      }
 
-  //     index = index + pressureNegativeLength + 1;
-  //     flowPostiveLength = breathList[index];
-  //     // print(breathList);
+      index = index + pressureNegativeLength + 1;
+      flowPostiveLength = breathList[index];
+      // print(breathList);
 
-  //     for (int i = index + 1; i < flowPostiveLength + (index + 1); i++) {
-  //       flowB.add(breathList[i]);
-  //     }
+      for (int i = index + 1; i < flowPostiveLength + (index + 1); i++) {
+        flowB.add(breathList[i]);
+      }
 
-  //     index = index + flowPostiveLength + 1;
-  //     flowNegativeLength = breathList[index];
+      index = index + flowPostiveLength + 1;
+      flowNegativeLength = breathList[index];
 
-  //     for (int i = index + 1; i < flowNegativeLength + (index + 1); i++) {
-  //       flowB.add(-(breathList[i]));
-  //     }
+      for (int i = index + 1; i < flowNegativeLength + (index + 1); i++) {
+        flowB.add(-(breathList[i]));
+      }
 
-  //     index = index + flowNegativeLength + 1;
-  //     volumePostiveLength = breathList[index];
-  //     // print(breathList);
+      index = index + flowNegativeLength + 1;
+      volumePostiveLength = breathList[index];
+      // print(breathList);
 
-  //     for (int i = index + 1; i < volumePostiveLength + (index + 1); i++) {
-  //       volumeB.add(breathList[i]);
-  //     }
+      for (int i = index + 1; i < volumePostiveLength + (index + 1); i++) {
+        volumeB.add(breathList[i]);
+      }
 
-  //     index = index + volumePostiveLength + 1;
-  //     volumeNegativeLength = breathList[index];
+      index = index + volumePostiveLength + 1;
+      volumeNegativeLength = breathList[index];
 
-  //     for (int i = index + 1; i < volumeNegativeLength + (index + 1); i++) {
-  //       volumeB.add(breathList[i]);
-  //     }
+      for (int i = index + 1; i < volumeNegativeLength + (index + 1); i++) {
+        volumeB.add(breathList[i]);
+      }
 
-  //     // print(pressureB.toString() + flowB.toString() + volumeB.toString());
+      // print(pressureB.toString() + flowB.toString() + volumeB.toString());
 
-  //     _plotDataPv = [Point(peepDisplayValue.toDouble(), 2.0)];
+      _plotDataPv = [Point(peepDisplayValue.toDouble(), 2.0)];
 
-  //     ///pip,vti
-  //     _plotDataPf = [Point(0.0, peepDisplayValue.toDouble())];
-  //     _plotDataVf = [Point(0.0, 0.0)];
+      ///pip,vti
+      _plotDataPf = [Point(0.0, peepDisplayValue.toDouble())];
+      _plotDataVf = [Point(0.0, 0.0)];
 
-  //     for (int i = 0; i < pressureB.length; i++) {
-  //       // datapv.add(Point(temp, temp1));
-  //       //     datapf.add(Point(temp3, temp));
-  //       //     datavf.add(Point(temp1, temp3));
+      for (int i = 0; i < pressureB.length; i++) {
+        // datapv.add(Point(temp, temp1));
+        //     datapf.add(Point(temp3, temp));
+        //     datavf.add(Point(temp1, temp3));
 
-  //       _plotDataPv.add(Point(
-  //           ((((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()),
-  //           (volumeB[i] << 8) + volumeB[i + 1].toDouble()));
-  //       _plotDataPf.add(Point(
-  //           ((((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()),
-  //           (((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()));
-  //       _plotDataVf.add(Point((volumeB[i] << 8) + volumeB[i + 1].toDouble(),
-  //           (((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()));
+        _plotDataPv.add(Point(
+            ((((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()),
+            (volumeB[i] << 8) + volumeB[i + 1].toDouble()));
+        _plotDataPf.add(Point(
+            ((((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()),
+            (((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()));
+        _plotDataVf.add(Point((volumeB[i] << 8) + volumeB[i + 1].toDouble(),
+            (((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()));
 
-  //       i = i + 1;
-  //     }
-  //   }
-  // }
+        i = i + 1;
+      }
+    }
+  }
 
   Future sendData(List<int> listCrcDataC, checkValue) async {
     List<int> cfinalListSend = [];
