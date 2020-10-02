@@ -666,20 +666,9 @@ class _CheckPageState extends State<Dashboard> {
   Future<bool> _connectTo(device) async {
     list.clear();
 
-    // pressurePoints = [
-    //   0.0,
-    //   0.0,
-    // ];
-    // volumePoints = [
-    //   0.0,
-    //   0.0,
-    // ];
-    // flowiPoints = [0.0, 0.0];
-    // flowePoints = [0.0, 0.0];
-
-    pressurePointsPsv.clear();
-    volumePointsPsv.clear();
-    flowPointsPsv.clear();
+    // pressurePoints.clear();
+    // volumePoints.clear();
+    // flowPointsPsv.clear();
 
     if (_subscription != null) {
       _subscription.cancel();
@@ -1335,7 +1324,7 @@ class _CheckPageState extends State<Dashboard> {
         flowePoints.clear();
         volumePoints.clear();
         // ignore: unnecessary_statements
-        for (currenValue; currenValue < 48;) {
+        for (currenValue; currenValue < 250;) {
           pressurePoints.add(0);
           flowiPoints.add(0);
           flowePoints.add(0);
