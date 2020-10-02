@@ -11,14 +11,21 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="fb362ea0-1d3f-40da-912c-25d409e43da3" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/../.flutter-plugins-dependencies" beforeDir="false" afterPath="$PROJECT_DIR$/../.flutter-plugins-dependencies" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../.packages" beforeDir="false" afterPath="$PROJECT_DIR$/../.packages" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/modules/1546653868/pub.dartlang.org-fluttertoast-7.0.2-android-fluttertoast.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/modules/1546653868/pub.dartlang.org-fluttertoast-7.0.2-android-fluttertoast.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/app.iml" beforeDir="false" afterPath="$PROJECT_DIR$/app/app.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/kotlin/com/example/ventilator/MainActivity.kt" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/kotlin/com/example/ventilator/MainActivity.kt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/res/xml/device_filter.xml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/res/xml/device_filter.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../lib/activity/Dashboard.dart" beforeDir="false" afterPath="$PROJECT_DIR$/../lib/activity/Dashboard.dart" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
-  <component name="ExecutionTargetManager" SELECTED_TARGET="0902946a7d2a" />
+  <component name="ExecutionTargetManager" SELECTED_TARGET="HGAJHR32" />
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
@@ -66,10 +73,12 @@
     <property name="DEBUGGABLE_DEVICE" value="lenovo-lenovo_tb_7305f-0123456789ABCDEF" />
     <property name="DEBUGGABLE_PROCESS" value="com.example.ventilator" />
     <property name="DEBUGGER_ID" value="Auto" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectedDevice" value="HGAJHF7F" />
+    <property name="DeviceAndSnapshotComboBoxAction.selectionTime" value="2020-09-28T15:16:38.108Z" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="SHOW_ALL_PROCESSES" value="false" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/res/values" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/app/src/main/kotlin/com/example/ventilator" />
     <property name="memory.settings.postsync.last.time.stamp" value="1595567777208" />
     <property name="project.structure.last.edited" value="SDK Location" />
     <property name="project.structure.proportion" value="0.17" />
@@ -78,17 +87,18 @@
     <property name="show.migrate.to.gradle.popup" value="false" />
   </component>
   <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
-    </key>
     <key name="CopyKotlinDeclarationDialog.RECENTS_KEY">
       <recent name="com.example.ventilator" />
     </key>
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\zyna-ventilator-1.8.5 10inch\android\app\src\main\kotlin\com\example\ventilator" />
       <recent name="$PROJECT_DIR$/app/src/main/res/values" />
       <recent name="$PROJECT_DIR$/app/src/main/kotlin/com/example/ventilator" />
       <recent name="$PROJECT_DIR$/app/src/main/res/xml" />
       <recent name="$PROJECT_DIR$/app/src/main/res/raw" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/app/src/main/res/drawable" />
     </key>
   </component>
   <component name="RunManager">
@@ -201,19 +211,15 @@
     </state>
     <state x="397" y="210" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1366.728@0.0.1366.728" timestamp="1596369803873" />
     <state x="418" y="260" key="#com.intellij.fileTypes.FileTypeChooser/0.0.1440.900@0.0.1440.900" timestamp="1593423164511" />
-    <state x="499" y="173" key="#com.intellij.ide.util.MemberChooser" timestamp="1592544279667">
-      <screen x="0" y="0" width="1440" height="900" />
+    <state x="474" y="79" key="#com.intellij.ide.util.MemberChooser" timestamp="1601292150835">
+      <screen x="0" y="0" width="1366" height="728" />
     </state>
-    <state x="499" y="173" key="#com.intellij.ide.util.MemberChooser/0.0.1440.900@0.0.1440.900" timestamp="1592544279667" />
+    <state x="474" y="79" key="#com.intellij.ide.util.MemberChooser/0.0.1366.728@0.0.1366.728" timestamp="1601292150835" />
     <state x="387" y="150" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog" timestamp="1598681725358">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
     <state x="387" y="150" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1366.728@0.0.1366.728" timestamp="1598681725358" />
     <state x="408" y="185" key="#com.intellij.openapi.updateSettings.impl.PluginUpdateInfoDialog/0.0.1440.900@0.0.1440.900" timestamp="1594009071603" />
-    <state x="576" y="222" key="AndroidProcessChooserDialog" timestamp="1591603779576">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state x="576" y="222" key="AndroidProcessChooserDialog/0.0.1440.900@0.0.1440.900" timestamp="1591603779576" />
     <state width="1306" height="271" key="GridCell.Tab.0.bottom" timestamp="1599651748685">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -242,22 +248,6 @@
     <state width="1398" height="631" key="GridCell.Tab.0.right/0.0.1440.900@0.0.1440.900" timestamp="1594009056957" />
     <state width="679" height="194" key="GridCell.Tab.0.right/0.23.1440.830@0.23.1440.830" timestamp="1595688934458" />
     <state width="1398" height="202" key="GridCell.Tab.0.right/0.25.1440.823@0.25.1440.823" timestamp="1595490136994" />
-    <state width="1398" height="294" key="GridCell.Tab.1.bottom" timestamp="1591610425467">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state width="1398" height="294" key="GridCell.Tab.1.bottom/0.0.1440.900@0.0.1440.900" timestamp="1591610425467" />
-    <state width="1398" height="294" key="GridCell.Tab.1.center" timestamp="1591610425466">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state width="1398" height="294" key="GridCell.Tab.1.center/0.0.1440.900@0.0.1440.900" timestamp="1591610425466" />
-    <state width="1398" height="294" key="GridCell.Tab.1.left" timestamp="1591610425466">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state width="1398" height="294" key="GridCell.Tab.1.left/0.0.1440.900@0.0.1440.900" timestamp="1591610425466" />
-    <state width="1398" height="294" key="GridCell.Tab.1.right" timestamp="1591610425466">
-      <screen x="0" y="0" width="1440" height="900" />
-    </state>
-    <state width="1398" height="294" key="GridCell.Tab.1.right/0.0.1440.900@0.0.1440.900" timestamp="1591610425466" />
     <state x="263" y="106" key="IDE.errors.dialog" timestamp="1596170387240">
       <screen x="0" y="0" width="1366" height="728" />
     </state>
@@ -290,22 +280,22 @@
       <breakpoints>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/kotlin/com/example/ventilator/MainActivity.kt</url>
-          <line>188</line>
+          <line>190</line>
           <option name="timeStamp" value="1" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/kotlin/com/example/ventilator/MainActivity.kt</url>
-          <line>193</line>
+          <line>195</line>
           <option name="timeStamp" value="2" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/kotlin/com/example/ventilator/MainActivity.kt</url>
-          <line>191</line>
+          <line>193</line>
           <option name="timeStamp" value="3" />
         </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="kotlin-line">
           <url>file://$PROJECT_DIR$/app/src/main/kotlin/com/example/ventilator/MainActivity.kt</url>
-          <line>185</line>
+          <line>187</line>
           <option name="timeStamp" value="4" />
         </line-breakpoint>
       </breakpoints>

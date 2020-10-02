@@ -2,6 +2,7 @@ import 'dart:async';
 import 'dart:io';
 import 'dart:math';
 import 'dart:typed_data';
+import 'dart:isolate';
 import 'package:cupertino_range_slider/cupertino_range_slider.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -38,7 +39,7 @@ class Dashboard extends StatefulWidget {
 class _CheckPageState extends State<Dashboard> {
   static const shutdownChannel = const MethodChannel("shutdown");
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  GlobalKey<GraphWidgetInternalState> widgetKey = GlobalKey();
+  // GlobalKey<GraphWidgetInternalState> widgetKey = GlobalKey();
 
   Uint16List ulCrc16Table = Uint16List.fromList([
     0x0000,
@@ -62,6 +63,7 @@ class _CheckPageState extends State<Dashboard> {
   bool _isTab10 = true;
   bool getOpertingMode = false;
   List<double> pressurePoints = [0.0, 0.0];
+  List<double> flowPoints = [0.0, 0.0];
   List<double> flowiPoints = [0.0, 0.0];
   List<double> flowePoints = [0.0, 0.0];
   List<double> volumePoints = [0.0, 0.0];
@@ -128,6 +130,7 @@ class _CheckPageState extends State<Dashboard> {
       vteMeanValue,
       pawMeanValue,
       rateMeanValue;
+  double temp, temp1, temp3;
   int ieValue;
   double peepHeight = 280, psHeight = 280;
   String modeName = "", dateandTime;
@@ -743,7 +746,7 @@ class _CheckPageState extends State<Dashboard> {
       });
       // Fluttertoast.showToast(msg: _status);
     } else {}
-    // // // print(devices);
+    Fluttertoast.showToast(msg: devices[0].toString());
     _connectTo(devices[0]);
   }
 
@@ -942,14 +945,14 @@ class _CheckPageState extends State<Dashboard> {
   //       mode: FileMode.append);
   // }
 
-  Future<File> _writeStringToTextFile(String dataList) async {
-    var now = new DateTime.now();
-    var dateTimeWrite =
-        DateFormat("yyyy-MM-dd HH:mm:ss").format(now).toString();
-    final file = await _localFile;
-    return file.writeAsString('$dateTimeWrite => $dataList \n',
-        mode: FileMode.append);
-  }
+  // Future<File> _writeStringToTextFile(String dataList) async {
+  //   var now = new DateTime.now();
+  //   var dateTimeWrite =
+  //       DateFormat("yyyy-MM-dd HH:mm:ss").format(now).toString();
+  //   final file = await _localFile;
+  //   return file.writeAsString('$dateTimeWrite => $dataList \n',
+  //       mode: FileMode.append);
+  // }
 
   selftestRun(int res) {
     List<int> objSelfTestData = [];
@@ -1275,21 +1278,15 @@ class _CheckPageState extends State<Dashboard> {
 
     crcData = obj[length - 1] * 256 + obj[length - 2];
     if (crcData == uiCrc) {
-      if (resV == 1) {
-        await extractingData(obj);
-      } else if (resV == 2) {
-        extractingBreathData(obj);
-      }
+      // if (resV == 1) {
+      await extractingData(obj);
+      // } else if (resV == 2) {
+      //   extractingBreathData(obj);
+      // }
     } else if (crcData != uiCrc) {
       setState(() {
         missedCounter = missedCounter + 1;
       });
-      // _writeStringToTextFile(c.toString(), obj.toString());
-      // Fluttertoast.showToast(
-      //     msg: "counter: $c  expected_crc: $crcData  calculated_crc: $uiCrc",
-      //     toastLength: Toast.LENGTH_LONG);
-      // Fluttertoast.showToast(
-      //     msg: "Total Counter: $totalCounter   Missed Counter: $missedCounter");
       obj.clear();
     }
   }
@@ -1337,7 +1334,8 @@ class _CheckPageState extends State<Dashboard> {
         flowiPoints.clear();
         flowePoints.clear();
         volumePoints.clear();
-        for (currenValue; currenValue < 60;) {
+        // ignore: unnecessary_statements
+        for (currenValue; currenValue < 48;) {
           pressurePoints.add(0);
           flowiPoints.add(0);
           flowePoints.add(0);
@@ -1743,56 +1741,56 @@ class _CheckPageState extends State<Dashboard> {
     SystemChrome.setEnabledSystemUIOverlays([]);
     SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft]);
 
-    var data = pressurePoints;
-    var data1 = flowiPoints;
-    var data2 = flowePoints;
-    var data3 = volumePoints;
+    // var data = pressurePoints;
+    // var data1 = flowiPoints;
+    // var data2 = flowePoints;
+    // var data3 = volumePoints;
 
-    GraphParams params = GraphParams(
-        graphPoints: pPoints,
-        height: 0.1,
-        width: 0.1,
-        top: 16.0,
-        yGridSize: 10,
-        yScale: GraphConst.AUTO,
-        xScale: 10,
-        startOverScroll: 0.0,
-        endOverScroll: 0.0,
-        enableRoundCorners: false,
-        enableFill: false,
-        enableMarks: false,
-        enableGrid: false,
-        enableScroll: true);
+    // GraphParams params = GraphParams(
+    //     graphPoints: pPoints,
+    //     height: 0.1,
+    //     width: 0.1,
+    //     top: 16.0,
+    //     yGridSize: 10,
+    //     yScale: GraphConst.AUTO,
+    //     xScale: 10,
+    //     startOverScroll: 0.0,
+    //     endOverScroll: 0.0,
+    //     enableRoundCorners: false,
+    //     enableFill: false,
+    //     enableMarks: false,
+    //     enableGrid: false,
+    //     enableScroll: true);
 
-    // scopeOne = Oscilloscope(
-    //     showYAxis: true,
-    //     yAxisColor: Colors.grey,
-    //     padding: 10.0,
-    //     backgroundColor: Color(0xFF171e27),
-    //     traceColor: Colors.yellow,
-    //     yAxisMax: 100,
-    //     yAxisMin: 0.0,
-    //     dataSet: pressurePoints);
+    scopeOne = Oscilloscope(
+        showYAxis: true,
+        yAxisColor: Colors.grey,
+        padding: 10.0,
+        backgroundColor: Color(0xFF171e27),
+        traceColor: Colors.yellow,
+        yAxisMax: 100,
+        yAxisMin: 0.0,
+        dataSet: pressurePoints);
 
-    // scopeOne1 = Oscilloscope(
-    //     showYAxis: true,
-    //     yAxisColor: Colors.grey,
-    //     padding: 10.0,
-    //     backgroundColor: Color(0xFF171e27),
-    //     traceColor: Colors.green,
-    //     yAxisMax: 200.0,
-    //     yAxisMin: -90.0,
-    //     dataSet: flowPoints);
+    scopeOne1 = Oscilloscope(
+        showYAxis: true,
+        yAxisColor: Colors.grey,
+        padding: 10.0,
+        backgroundColor: Color(0xFF171e27),
+        traceColor: Colors.green,
+        yAxisMax: 200.0,
+        yAxisMin: -90.0,
+        dataSet: flowPoints);
 
-    // scopeOne2 = Oscilloscope(
-    //     showYAxis: true,
-    //     yAxisColor: Colors.grey,
-    //     padding: 10.0,
-    //     backgroundColor: Color(0xFF171e27),
-    //     traceColor: Colors.blue,
-    //     yAxisMax: 3000.0,
-    //     yAxisMin: 0.0,
-    //     dataSet: volumePoints);
+    scopeOne2 = Oscilloscope(
+        showYAxis: true,
+        yAxisColor: Colors.grey,
+        padding: 10.0,
+        backgroundColor: Color(0xFF171e27),
+        traceColor: Colors.blue,
+        yAxisMax: 3000.0,
+        yAxisMin: 0.0,
+        dataSet: volumePoints);
 
     // pscopeOne = OscilloscopePsv(
     //     showYAxis: true,
@@ -2462,7 +2460,8 @@ class _CheckPageState extends State<Dashboard> {
               Container(
                 child: Row(
                   children: [
-                    main(data, data1, data2, data3, params),
+                    // main(data, data1, data2, data3, params),
+                    main(),
                     rightBar(),
                   ],
                 ),
@@ -6109,11 +6108,10 @@ class _CheckPageState extends State<Dashboard> {
                 ),
                 InkWell(
                   onTap: () async {
-                      lockEnabled ? await getData() : "";
+                    lockEnabled ? await getData() : "";
                     setState(() {
                       _setValuesonClick = false;
                       lockEnabled ? modesEnabled = true : "";
-                      
                     });
                   },
                   child: Center(
@@ -6186,7 +6184,8 @@ class _CheckPageState extends State<Dashboard> {
     }
   }
 
-  main(data, data1, data2, data3, params) {
+  // main(data, data1, data2, data3, params) {
+  main() {
     return Stack(
       children: [
         topbar(),
@@ -6207,15 +6206,10 @@ class _CheckPageState extends State<Dashboard> {
                           SizedBox(width: _isTab10 ? 5 : 10),
                           // _isLoopGraph == true
                           //         ? loopsGraphs() : Container(),
-                          _isgraphFullScreen == false
-                              ? _isLoopGraph == false
-                                  ? graphs10()
-                                  : loopsGraphs()
-                              : _isLoopGraph == false
-                                  ? graphsScale(
-                                      data, data1, data2, data3, params)
-                                  //  : "",
-                                  : loopsGraphs(),
+                          _isLoopGraph == false
+                              // ? graphsScale(data, data1, data2, data3, params)
+                              ? graphs()
+                              : loopsGraphs(),
                           SizedBox(width: _isTab10 ? 5 : 25),
                           Container(
                             margin: EdgeInsets.only(top: 40),
@@ -27969,7 +27963,6 @@ class _CheckPageState extends State<Dashboard> {
                                       height: 545,
                                       width: 644,
                                     ),
-                    
                     ],
                   ),
                   _thirdLoop != true
@@ -27992,7 +27985,7 @@ class _CheckPageState extends State<Dashboard> {
                 ],
               ),
               Container(
-                margin:EdgeInsets.only(top:350),
+                  margin: EdgeInsets.only(top: 350),
                   height: 135,
                   width: 644,
                   child: Align(
@@ -28003,7 +27996,8 @@ class _CheckPageState extends State<Dashboard> {
                             _firstLoop
                                 ? "Pressure"
                                 : _secondLoop ? "Flow" : "Volume",
-                            style: TextStyle(color: Colors.white, fontSize: 24)),
+                            style:
+                                TextStyle(color: Colors.white, fontSize: 24)),
                       ))),
               RotatedBox(
                 quarterTurns: 3,
@@ -28013,602 +28007,389 @@ class _CheckPageState extends State<Dashboard> {
                     child: Align(
                       alignment: Alignment.center,
                       child: Text(
-                          _firstLoop ? "Volume" : _secondLoop ? "Pressure" : "Flow",
+                          _firstLoop
+                              ? "Volume"
+                              : _secondLoop ? "Pressure" : "Flow",
                           style: TextStyle(color: Colors.white, fontSize: 24)),
                     )),
               ),
-              
             ],
           ),
-          SizedBox(height:45),
+          SizedBox(height: 45),
           Center(
-                    child: Container(
-                      decoration:
-                          BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                      margin: EdgeInsets.only(left: 0,),
-                      width: 675,
-                      height: 80,
-                      child: alarmActive == "1"
-                          ? Card(
-                              color: 
-                              alarmActive == "1"? 
-                              Colors.red
-                                  : Color(0xFF171e27),
-                              child: Center(
-                                  child: Align(
-                                alignment: Alignment.centerLeft,
-                                child: Center(
-                                  child: Text(
-                                    alarmActive == "1"
-                                        ? alarmMessage.toUpperCase()
-                                        : "",
-                                    style: TextStyle(
-                                        color: Colors.white, fontSize: 15),
-                                    textAlign: TextAlign.center,
-                                  ),
-                                ),
-                              )),
-                            )
-                          : Container(),
-                    ),
-                  ),
-        ],
-      ),
-    );
-  }
-
-  graphs10() {
-    return Container(
-      padding: EdgeInsets.only(left: 170, right: 2, top: 45),
-      child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: <Widget>[
-          Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: <Widget>[
-              Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Container(
-                      width: 380,
-                      height: 150,
-                      child: Stack(
-                        children: [
-                          // Container(
-                          //     margin:
-                          //         EdgeInsets.only(left: 20, right: 10, top: 10),
-                          //     child: mscopeOne),
-                          Container(
-                              margin: EdgeInsets.only(left: 10, top: 8),
-                              child: Text(
-                                "100" + " cmH\u2082O",
-                                style: TextStyle(color: Colors.yellow),
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(left: 15, top: 133),
-                              child: Text(
-                                "0",
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                          Container(
-                            margin: EdgeInsets.only(left: 28, top: 24),
-                            width: 1,
-                            color: Colors.grey,
-                            height: 117,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: 28,
-                              top: 139,
-                            ),
-                            color: Colors.grey,
-                            height: 1,
-                            width: 328,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 12, top: 45),
-                            child: RotatedBox(
-                                quarterTurns: 3,
-                                child: Text("Pressure",
-                                    style: TextStyle(
-                                        color: Colors.yellow, fontSize: 10))),
-                          ), //
-                          Container(
-                              margin: EdgeInsets.only(left: 362, top: 130),
-                              child: Text(
-                                "s",
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(left: 200, top: 10),
-                              child: Text(
-                                "$displayApneaTime",
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 380,
-                      height: 190,
-                      child: Stack(
-                        children: [
-                          // Container(
-                          //     margin: EdgeInsets.only(
-                          //       left: 20,
-                          //       bottom: 10,
-                          //       top: 10,
-                          //       right: 10,
-                          //     ),
-                          //     child: mscopeOne1),
-                          Container(
-                              margin: EdgeInsets.only(left: 10, top: 10),
-                              child: Text(
-                                "200 Lpm",
-                                style: TextStyle(color: Colors.green),
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(left: 10, top: 174),
-                              child: Text(
-                                "-90 Lpm",
-                                style: TextStyle(color: Colors.green),
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(left: 15, top: 125),
-                              child: Text(
-                                "0",
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                          Container(
-                            margin: EdgeInsets.only(left: 28, top: 20),
-                            width: 1,
-                            color: Colors.grey,
-                            height: 156,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: 28,
-                              top: 123,
-                            ),
-                            color: Colors.grey,
-                            height: 1,
-                            width: 328,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 12, top: 35),
-                            child: RotatedBox(
-                                quarterTurns: 3,
-                                child: Text("Flow",
-                                    style: TextStyle(
-                                        color: Colors.green, fontSize: 10))),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(left: 362, top: 115),
-                              child: Text(
-                                "s",
-                                style: TextStyle(color: Colors.grey),
-                              ))
-                        ],
-                      ),
-                    ),
-                    Container(
-                      width: 380,
-                      height: 190,
-                      child: Stack(
-                        children: [
-                          // Container(
-                          //     margin: EdgeInsets.only(
-                          //       left: 20,
-                          //       bottom: 10,
-                          //       top: 10,
-                          //       right: 10,
-                          //     ),
-                          //     child: mscopeOne2),
-                          Container(
-                              margin: EdgeInsets.only(left: 10, top: 8),
-                              child: Text(
-                                "3000 mL",
-                                style: TextStyle(color: Colors.blue),
-                              )),
-                          Container(
-                              margin: EdgeInsets.only(left: 15, top: 155),
-                              child: Text(
-                                "0",
-                                style: TextStyle(color: Colors.grey),
-                              )),
-                          Container(
-                            margin: EdgeInsets.only(left: 28, top: 20),
-                            width: 1,
-                            color: Colors.grey,
-                            height: 150,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(
-                              left: 28,
-                              top: 168,
-                            ),
-                            color: Colors.grey,
-                            height: 1,
-                            width: 328,
-                          ),
-                          Container(
-                            margin: EdgeInsets.only(left: 12, top: 55),
-                            child: RotatedBox(
-                                quarterTurns: 3,
-                                child: Text("Volume",
-                                    style: TextStyle(
-                                        color: Colors.blue, fontSize: 10))),
-                          ),
-                          Container(
-                              margin: EdgeInsets.only(left: 362, top: 160),
-                              child: Text(
-                                "s",
-                                style: TextStyle(color: Colors.grey),
-                              ))
-                        ],
-                      ),
-                    ),
-                  ]),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  Container(
-                    width: 385,
-                    height: 150,
-                    child: Stack(
-                      children: [
-                        // Container(
-                        //     margin:
-                        //         EdgeInsets.only(left: 20, right: 10, top: 10),
-                        //     child: mscopeOne),
-                        // Container(
-                        //     margin:
-                        //         EdgeInsets.only(left: 20, right: 10, top: 10),
-                        //     child: sscopeOne2),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                margin: EdgeInsets.only(left: 10, top: 8),
-                                child: Text(
-                                  "100" + " cmH\u2082O",
-                                  style: TextStyle(color: Colors.yellow),
-                                )),
-                            Container(
-                                margin: EdgeInsets.only(left: 220, top: 10),
-                                child: Text(
-                                  "3000 mL",
-                                  style: TextStyle(color: Colors.blue),
-                                )),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 15, top: 133),
-                            child: Text(
-                              "0",
-                              style: TextStyle(color: Colors.grey),
-                            )),
-                        Container(
-                          margin: EdgeInsets.only(left: 28, top: 24),
-                          width: 1,
-                          color: Colors.grey,
-                          height: 117,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 28,
-                            top: 139,
-                          ),
-                          color: Colors.grey,
-                          height: 1,
-                          width: 328,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 25),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Volume",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(" & ",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Pressure",
-                                      style: TextStyle(
-                                          color: Colors.yellow, fontSize: 10))),
-                            ),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 365, top: 130),
-                            child: Text(
-                              "s",
-                              style: TextStyle(color: Colors.grey),
-                            )),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 385,
-                    height: 190,
-                    child: Stack(
-                      children: [
-                        // Container(
-                        //     margin: EdgeInsets.only(
-                        //       left: 20,
-                        //       bottom: 56.5,
-                        //       top: 10,
-                        //       right: 10,
-                        //     ),
-                        //     child: mscopeOne),
-                        // Container(
-                        //     margin: EdgeInsets.only(
-                        //       left: 20,
-                        //       bottom: 10,
-                        //       top: 10,
-                        //       right: 10,
-                        //     ),
-                        //     child: sscopeOne1),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                margin: EdgeInsets.only(left: 10, top: 8),
-                                child: Text(
-                                  "100" + " cmH\u2082O",
-                                  style: TextStyle(color: Colors.yellow),
-                                )),
-                            Container(
-                                margin: EdgeInsets.only(left: 220, top: 10),
-                                child: Text(
-                                  "200 Lpm",
-                                  style: TextStyle(color: Colors.green),
-                                )),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 300, top: 174),
-                            child: Text(
-                              "-90 Lpm",
-                              style: TextStyle(color: Colors.green),
-                            )),
-                        Container(
-                            margin: EdgeInsets.only(left: 15, top: 125),
-                            child: Text(
-                              "0",
-                              style: TextStyle(color: Colors.grey),
-                            )),
-                        Container(
-                          margin: EdgeInsets.only(left: 28, top: 20),
-                          width: 1,
-                          color: Colors.grey,
-                          height: 166,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 28,
-                            top: 123,
-                          ),
-                          color: Colors.grey,
-                          height: 1,
-                          width: 328,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 35),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Flow",
-                                      style: TextStyle(
-                                          color: Colors.green, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(" & ",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Pressure",
-                                      style: TextStyle(
-                                          color: Colors.yellow, fontSize: 10))),
-                            ),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 365, top: 115),
-                            child: Text(
-                              "s",
-                              style: TextStyle(color: Colors.grey),
-                            ))
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 385,
-                    height: 190,
-                    child: Stack(
-                      children: [
-                        // Container(
-                        //     margin: EdgeInsets.only(
-                        //       left: 20,
-                        //       bottom: 55,
-                        //       top: 10,
-                        //       right: 10,
-                        //     ),
-                        //     child: mscopeOne2),
-                        // Container(
-                        //     margin: EdgeInsets.only(
-                        //       left: 20,
-                        //       bottom: 10,
-                        //       top: 10,
-                        //       right: 10,
-                        //     ),
-                        //     child: sscopeOne1),
-                        Row(
-                          children: <Widget>[
-                            Container(
-                                margin: EdgeInsets.only(left: 10, top: 8),
-                                child: Text(
-                                  "3000 mL",
-                                  style: TextStyle(color: Colors.blue),
-                                )),
-                            Container(
-                                margin: EdgeInsets.only(left: 230, top: 10),
-                                child: Text(
-                                  "200 Lpm",
-                                  style: TextStyle(color: Colors.green),
-                                )),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 300, top: 174),
-                            child: Text(
-                              "-90 Lpm",
-                              style: TextStyle(color: Colors.green),
-                            )),
-                        Container(
-                            margin: EdgeInsets.only(left: 15, top: 125),
-                            child: Text(
-                              "0",
-                              style: TextStyle(color: Colors.grey),
-                            )),
-                        Container(
-                          margin: EdgeInsets.only(left: 28, top: 20),
-                          width: 1,
-                          color: Colors.grey,
-                          height: 166,
-                        ),
-                        Container(
-                          margin: EdgeInsets.only(
-                            left: 28,
-                            top: 123,
-                          ),
-                          color: Colors.grey,
-                          height: 1,
-                          width: 328,
-                        ),
-                        Column(
-                          children: <Widget>[
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 35),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Flow",
-                                      style: TextStyle(
-                                          color: Colors.green, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text(" & ",
-                                      style: TextStyle(
-                                          color: Colors.white, fontSize: 10))),
-                            ),
-                            Container(
-                              margin: EdgeInsets.only(left: 12, top: 5),
-                              child: RotatedBox(
-                                  quarterTurns: 3,
-                                  child: Text("Volume",
-                                      style: TextStyle(
-                                          color: Colors.blue, fontSize: 10))),
-                            ),
-                          ],
-                        ),
-                        Container(
-                            margin: EdgeInsets.only(left: 365, top: 115),
-                            child: Text(
-                              "s",
-                              style: TextStyle(color: Colors.grey),
-                            ))
-                      ],
-                    ),
-                  ),
-                ],
+            child: Container(
+              decoration:
+                  BoxDecoration(borderRadius: BorderRadius.circular(10)),
+              margin: EdgeInsets.only(
+                left: 0,
               ),
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: <Widget>[
-              Center(
-                child: Container(
-                  decoration:
-                      BoxDecoration(borderRadius: BorderRadius.circular(10)),
-                  margin: EdgeInsets.only(left: 40),
-                  width: 675,
-                  height: 80,
-                  child: alarmActive == "1"
-                      ? Card(
-                          color: alarmActive == "1"
-                              ? Colors.red
-                              : Color(0xFF171e27),
-                          child: Center(
-                              child: Align(
-                            alignment: Alignment.centerLeft,
-                            child: Center(
-                              child: Text(
-                                alarmActive == "1"
-                                    ? alarmMessage.toUpperCase()
-                                    : "",
-                                style: TextStyle(
-                                    color: Colors.white, fontSize: 15),
-                                textAlign: TextAlign.center,
-                              ),
-                            ),
-                          )),
-                        )
-                      : Container(),
-                ),
-              ),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _isgraphFullScreen = !_isgraphFullScreen;
-                  });
-                },
-                child: Container(
-                    margin: EdgeInsets.only(left: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white),
-                    child: Icon(
-                        _isgraphFullScreen
-                            ? Icons.keyboard_arrow_left
-                            : Icons.keyboard_arrow_right,
-                        size: 40,
-                        color: Colors.black.withOpacity(0.9))),
-              )
-            ],
+              width: 675,
+              height: 80,
+              child: alarmActive == "1"
+                  ? Card(
+                      color:
+                          alarmActive == "1" ? Colors.red : Color(0xFF171e27),
+                      child: Center(
+                          child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Center(
+                          child: Text(
+                            alarmActive == "1"
+                                ? alarmMessage.toUpperCase()
+                                : "",
+                            style: TextStyle(color: Colors.white, fontSize: 15),
+                            textAlign: TextAlign.center,
+                          ),
+                        ),
+                      )),
+                    )
+                  : Container(),
+            ),
           ),
         ],
       ),
     );
   }
 
-  graphsScale(data, data1, data2, data3, params) {
+  // graphsScale(data, data1, data2, data3, params) {
+  // graphsScale() {
+  //   return Container(
+  //     padding: EdgeInsets.only(left: 170, right: 0, top: 40),
+  //     child: Column(
+  //       children: [
+  //         Container(
+  //           width: 769,
+  //           height: 160,
+  //           child: Stack(
+  //             children: [
+  //               // Container(
+  //               //   height: 108,
+  //               //   width: 725,
+  //               //   margin: EdgeInsets.only(
+  //               //     left: 30,
+  //               //     right: 2,
+  //               //     top: 30,
+  //               //   ),
+  //               //   child: Sparkline(
+  //               //     data: data ?? [0.0],
+  //               //     lineColor: Colors.yellow,
+  //               //     fillMode: FillMode.below,
+  //               //     fillColor: Colors.yellow,
+  //               //     pointsMode: PointsMode.none,
+  //               //     pointSize: 5.0,
+  //               //     pointColor: Colors.yellow,
+  //               //   ),
+  //               // ),
+  //               Container(margin: EdgeInsets.only(
+  //                               left: 20,
+  //                               bottom: 10,
+  //                               top: 10,
+  //                               right: 10,
+  //                             ),
+  //                             child: scopeOne),
+  //               // Container(
+  //               //     height: 0,
+  //               //     width: 0,
+  //               //     child: GraphWidget(widgetKey: widgetKey, params: params)),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 10, top: 8),
+  //                   child: Text(
+  //                     pressureMax.toString() + " cmH\u2082O",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 15, top: 130),
+  //                   child: Text(
+  //                     "0",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 12, top: 99.5),
+  //                   child: Text(
+  //                     operatinModeR == 3 ? "10" : "",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 12, top: 69),
+  //                   child: Text(
+  //                     operatinModeR == 3 ? "20" : "",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 12, top: 38.5),
+  //                   child: Text(
+  //                     operatinModeR == 3 ? "30" : "",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //               Container(
+  //                 margin: EdgeInsets.only(left: 28, top: 24),
+  //                 width: 1,
+  //                 color: Colors.grey,
+  //                 height: 116,
+  //               ),
+  //               Container(
+  //                 margin: EdgeInsets.only(
+  //                   left: 28,
+  //                   top: 138,
+  //                 ),
+  //                 color: Colors.grey,
+  //                 height: 1,
+  //                 width: 728,
+  //               ),
+  //               // Container(
+  //               //   margin: EdgeInsets.only(left: 12, top: 35),
+  //               //   child: RotatedBox(
+  //               //       quarterTurns: 3,
+  //               //       child: Text("Pressure",
+  //               //           style: TextStyle(color: Colors.grey, fontSize: 10))),
+  //               // ),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 758, top: 128),
+  //                   child: Text(
+  //                     "s",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //             ],
+  //           ),
+  //         ),
+  //         Container(
+  //           width: 769,
+  //           height: 210,
+  //           child: Stack(
+  //             children: [
+  //               Container(margin: EdgeInsets.only(
+  //                               left: 20,
+  //                               bottom: 10,
+  //                               top: 10,
+  //                               right: 10,
+  //                             ),
+  //                             child: scopeOne1),
+  //               // Container(
+  //               //   height: 120,
+  //               //   width: 729,
+  //               //   margin: EdgeInsets.only(
+  //               //     left: 30,
+  //               //     bottom: 10,
+  //               //     top: 18,
+  //               //     right: 2,
+  //               //   ),
+  //               //   child: Sparkline(
+  //               //     data: data1 ?? [0.0],
+  //               //     lineColor: Colors.green,
+  //               //     fillMode: FillMode.below,
+  //               //     fillColor: Colors.green,
+  //               //     pointsMode: PointsMode.none,
+  //               //     pointSize: 5.0,
+  //               //     pointColor: Colors.green,
+  //               //   ),
+  //               // ),
+  //               // Container(
+  //               //   height: 60,
+  //               //   width: 729,
+  //               //   margin: EdgeInsets.only(
+  //               //     left: 30,
+  //               //     bottom: 10,
+  //               //     top: 168,
+  //               //     right: 2,
+  //               //   ),
+  //               //   child: Transform(
+  //               //     transform: Matrix4.rotationX(pi),
+  //               //     child: Container(
+  //               //       child: Sparkline(
+  //               //         data: data2 ?? [0.0],
+  //               //         lineColor: Colors.green,
+  //               //         fillMode: FillMode.below,
+  //               //         fillColor: Colors.green,
+  //               //         pointsMode: PointsMode.none,
+  //               //         pointSize: 5.0,
+  //               //         pointColor: Colors.green,
+  //               //       ),
+  //               //     ),
+  //               //   ),
+  //               // ),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 10, top: 5),
+  //                   child: Text(
+  //                     flowIMax.toString() + " Lpm",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 8, top: 195),
+  //                   child: Text(
+  //                     "-" + flowEMax.toString() + " Lpm",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 15, top: 128),
+  //                   child: Text(
+  //                     "0",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //               Container(
+  //                 margin: EdgeInsets.only(left: 28, top: 20),
+  //                 width: 1,
+  //                 color: Colors.grey,
+  //                 height: 185,
+  //               ),
+  //               Container(
+  //                 margin: EdgeInsets.only(
+  //                   left: 28,
+  //                   top: 138,
+  //                 ),
+  //                 color: Colors.grey,
+  //                 height: 1,
+  //                 width: 728,
+  //               ),
+  //               Container(
+  //                 margin: EdgeInsets.only(left: 12, top: 35),
+  //                 child: RotatedBox(
+  //                     quarterTurns: 3,
+  //                     child: Text("Flow",
+  //                         style: TextStyle(color: Colors.grey, fontSize: 10))),
+  //               ),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 759, top: 124),
+  //                   child: Text(
+  //                     "s",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   ))
+  //             ],
+  //           ),
+  //         ),
+  //         Container(
+  //           width: 769,
+  //           height: 160,
+  //           child: Stack(
+  //             children: [
+  //               Container(
+  //                  margin: EdgeInsets.only(
+  //                               left: 20,
+  //                               bottom: 10,
+  //                               top: 10,
+  //                               right: 10,),
+  //                child: scopeOne2),
+  //               // Container(
+  //               //   height: 108,
+  //               //   width: 725,
+  //               //   margin: EdgeInsets.only(
+  //               //     left: 30,
+  //               //     right: 2,
+  //               //     top: 30,
+  //               //   ),
+  //               //   child: Sparkline(
+  //               //     data: data3 ?? [0.0],
+  //               //     lineColor: Colors.blue,
+  //               //     fillMode: FillMode.below,
+  //               //     fillColor: Colors.blue,
+  //               //     pointsMode: PointsMode.none,
+  //               //     pointSize: 5.0,
+  //               //     pointColor: Colors.blue,
+  //               //   ),
+  //               // ),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 10, top: 15),
+  //                   child: Text(
+  //                     volumeMax.toString() + " mL",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 15, top: 130),
+  //                   child: Text(
+  //                     "0",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //               Container(
+  //                 margin: EdgeInsets.only(left: 28, top: 24),
+  //                 width: 1,
+  //                 color: Colors.grey,
+  //                 height: 116,
+  //               ),
+  //               Container(
+  //                 margin: EdgeInsets.only(
+  //                   left: 28,
+  //                   top: 138,
+  //                 ),
+  //                 color: Colors.grey,
+  //                 height: 1,
+  //                 width: 728,
+  //               ),
+  //               Container(
+  //                 margin: EdgeInsets.only(left: 12, top: 55),
+  //                 child: RotatedBox(
+  //                     quarterTurns: 3,
+  //                     child: Text("Volume",
+  //                         style: TextStyle(color: Colors.grey, fontSize: 10))),
+  //               ),
+  //               Container(
+  //                   margin: EdgeInsets.only(left: 758, top: 128),
+  //                   child: Text(
+  //                     "s",
+  //                     style: TextStyle(color: Colors.grey),
+  //                   )),
+  //             ],
+  //           ),
+  //         ),
+  //         SizedBox(height: 5),
+  //         Row(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           crossAxisAlignment: CrossAxisAlignment.center,
+  //           children: <Widget>[
+  //             Center(
+  //               child: Container(
+  //                 decoration:
+  //                     BoxDecoration(borderRadius: BorderRadius.circular(10)),
+  //                 margin: EdgeInsets.only(left: 40),
+  //                 width: 675,
+  //                 height: 80,
+  //                 child: alarmActive == "1"
+  //                     ? Card(
+  //                         color: alarmActive == "1"
+  //                             ? Colors.red
+  //                             : Color(0xFF171e27),
+  //                         child: Center(
+  //                             child: Align(
+  //                           alignment: Alignment.centerLeft,
+  //                           child: Center(
+  //                             child: Text(
+  //                               alarmActive == "1"
+  //                                   ? alarmMessage.toUpperCase()
+  //                                   : "",
+  //                               style: TextStyle(
+  //                                   color: Colors.white, fontSize: 15),
+  //                               textAlign: TextAlign.center,
+  //                             ),
+  //                           ),
+  //                         )),
+  //                       )
+  //                     : Container(),
+  //               ),
+  //             ),
+  //             // InkWell(
+  //             //   onTap: () {
+  //             //     setState(() {
+  //             //       _isgraphFullScreen = !_isgraphFullScreen;
+  //             //     });
+  //             //   },
+  //             //   child: Container(
+  //             //       margin: EdgeInsets.only(left: 10),
+  //             //       decoration: BoxDecoration(
+  //             //           borderRadius: BorderRadius.circular(5),
+  //             //           color: Colors.white),
+  //             //       child: Icon(
+  //             //           _isgraphFullScreen == false
+  //             //               ? Icons.keyboard_arrow_right
+  //             //               : Icons.keyboard_arrow_left,
+  //             //           size: 40,
+  //             //           color: Colors.black.withOpacity(0.9))),
+  //             // )
+  //           ],
+  //         ),
+  //       ],
+  //     ),
+  //   );
+  // }
+
+  graphs() {
     return Container(
       padding: EdgeInsets.only(left: 170, right: 0, top: 45),
       child: Column(
@@ -28618,32 +28399,19 @@ class _CheckPageState extends State<Dashboard> {
             height: 150,
             child: Stack(
               children: [
+                // Container(child:Sparkline(
+                //   fillMode: FillMode.below,
+                //   data: pressurePointsPsv
+                //   ),),
                 Container(
-                  height: 108,
-                  width: 725,
-                  margin: EdgeInsets.only(
-                    left: 30,
-                    right: 2,
-                    top: 30,
-                  ),
-                  child: Sparkline(
-                    data: data ?? [0.0],
-                    lineColor: Colors.yellow,
-                    fillMode: FillMode.below,
-                    fillColor: Colors.yellow,
-                    pointsMode: PointsMode.none,
-                    pointSize: 5.0,
-                    pointColor: Colors.yellow,
-                  ),
-                ),
-                Container(
-                    height: 0,
-                    width: 0,
-                    child: GraphWidget(widgetKey: widgetKey, params: params)),
+                    margin: EdgeInsets.only(left: 20, right: 2, top: 10),
+                    child: scopeOne),
                 Container(
                     margin: EdgeInsets.only(left: 10, top: 8),
                     child: Text(
-                      pressureMax.toString() + " cmH\u2082O",
+                      operatinModeR == 3
+                          ? "40" + " cmH\u2082O"
+                          : "100" + " cmH\u2082O",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
@@ -28652,6 +28420,7 @@ class _CheckPageState extends State<Dashboard> {
                       "0",
                       style: TextStyle(color: Colors.grey),
                     )),
+
                 Container(
                     margin: EdgeInsets.only(left: 12, top: 99.5),
                     child: Text(
@@ -28707,58 +28476,23 @@ class _CheckPageState extends State<Dashboard> {
             child: Stack(
               children: [
                 Container(
-                  height: 120,
-                  width: 729,
-                  margin: EdgeInsets.only(
-                    left: 30,
-                    bottom: 10,
-                    top: 18,
-                    right: 2,
-                  ),
-                  child: Sparkline(
-                    data: data1 ?? [0.0],
-                    lineColor: Colors.green,
-                    fillMode: FillMode.below,
-                    fillColor: Colors.green,
-                    pointsMode: PointsMode.none,
-                    pointSize: 5.0,
-                    pointColor: Colors.green,
-                  ),
-                ),
-                Container(
-                  height: 60,
-                  width: 729,
-                  margin: EdgeInsets.only(
-                    left: 30,
-                    bottom: 10,
-                    top: 168,
-                    right: 2,
-                  ),
-                  child: Transform(
-                    transform: Matrix4.rotationX(pi),
-                    child: Container(
-                      child: Sparkline(
-                        data: data2 ?? [0.0],
-                        lineColor: Colors.green,
-                        fillMode: FillMode.below,
-                        fillColor: Colors.green,
-                        pointsMode: PointsMode.none,
-                        pointSize: 5.0,
-                        pointColor: Colors.green,
-                      ),
+                    margin: EdgeInsets.only(
+                      left: 20,
+                      bottom: 10,
+                      top: 10,
+                      right: 2,
                     ),
-                  ),
-                ),
+                    child: scopeOne1),
                 Container(
                     margin: EdgeInsets.only(left: 10, top: 5),
                     child: Text(
-                      flowIMax.toString() + " Lpm",
+                      "200 Lpm",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
-                    margin: EdgeInsets.only(left: 8, top: 195),
+                    margin: EdgeInsets.only(left: 10, top: 195),
                     child: Text(
-                      "-" + flowEMax.toString() + " Lpm",
+                      "-90 Lpm",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
@@ -28804,27 +28538,12 @@ class _CheckPageState extends State<Dashboard> {
             child: Stack(
               children: [
                 Container(
-                  height: 108,
-                  width: 725,
-                  margin: EdgeInsets.only(
-                    left: 30,
-                    right: 2,
-                    top: 30,
-                  ),
-                  child: Sparkline(
-                    data: data3 ?? [0.0],
-                    lineColor: Colors.blue,
-                    fillMode: FillMode.below,
-                    fillColor: Colors.blue,
-                    pointsMode: PointsMode.none,
-                    pointSize: 5.0,
-                    pointColor: Colors.blue,
-                  ),
-                ),
+                    margin: EdgeInsets.only(left: 20, right: 2, top: 10),
+                    child: scopeOne2),
                 Container(
-                    margin: EdgeInsets.only(left: 10, top: 15),
+                    margin: EdgeInsets.only(left: 10, top: 8),
                     child: Text(
-                      volumeMax.toString() + " mL",
+                      "3000" + " mL",
                       style: TextStyle(color: Colors.grey),
                     )),
                 Container(
@@ -28899,24 +28618,24 @@ class _CheckPageState extends State<Dashboard> {
                       : Container(),
                 ),
               ),
-              InkWell(
-                onTap: () {
-                  setState(() {
-                    _isgraphFullScreen = !_isgraphFullScreen;
-                  });
-                },
-                child: Container(
-                    margin: EdgeInsets.only(left: 10),
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white),
-                    child: Icon(
-                        _isgraphFullScreen == false
-                            ? Icons.keyboard_arrow_right
-                            : Icons.keyboard_arrow_left,
-                        size: 40,
-                        color: Colors.black.withOpacity(0.9))),
-              )
+              // InkWell(
+              //   onTap: () {
+              //     setState(() {
+              //       _isgraphFullScreen = !_isgraphFullScreen;
+              //     });
+              //   },
+              //   child: Container(
+              //       margin: EdgeInsets.only(left: 10),
+              //       decoration: BoxDecoration(
+              //           borderRadius: BorderRadius.circular(5),
+              //           color: Colors.white),
+              //       child: Icon(
+              //           _isgraphFullScreen == false
+              //               ? Icons.keyboard_arrow_right
+              //               : Icons.keyboard_arrow_left,
+              //           size: 40,
+              //           color: Colors.black.withOpacity(0.9))),
+              // )
             ],
           ),
         ],
@@ -33836,15 +33555,17 @@ class _CheckPageState extends State<Dashboard> {
   }
 
   Future serializeEventData(Uint8List event) async {
+    Fluttertoast.showToast(msg: event.toString());
     if (event != null) {
       // _writeStringToTextFile(event.toString());
       setState(() {
-        var first = preferences.getBool("first");
-        if (first == true) {
-          playOnEnabled = true;
-          first = false;
-          preferences.setBool('first', false);
-        }
+        // var first = preferences.getBool("first");
+        // if (first == true) {
+        //   playOnEnabled = true;
+        //   playOnEnabled = true;
+        //   first = false;
+        //   preferences.setBool('first', false);
+        // }
         // totalCounter = totalCounter + 1;
         // turnOnScreen();
         respiratoryEnable = true;
@@ -33882,10 +33603,10 @@ class _CheckPageState extends State<Dashboard> {
   }
 
   Future serialiseReceivedPacket(List<int> finalList) async {
-    if (finalList.isNotEmpty && finalList.length == 170) {
-      //114
+    if (finalList.length == 14) {
+      await checkCrcGraphPoint(finalList, finalList.length);
+    } else if (finalList.isNotEmpty && finalList.length == 170) {
       var now = new DateTime.now();
-
       lastRecordTime = DateFormat("yyyy-MM-dd HH:mm:ss").format(now).toString();
       preferences = await SharedPreferences.getInstance();
       preferences.setString("lastRecordTime", lastRecordTime);
@@ -33904,26 +33625,45 @@ class _CheckPageState extends State<Dashboard> {
     } else {
       // print(finalList);
       if (_isLoopGraph == true) {
-        checkCrc(finalList, finalList.length, 2);
+        // checkCrc(finalList, finalList.length, 2);
       }
     }
   }
 
-  Future extractingData(List<int> finalList) async {
-    // pressure graph
-    double temp, temp1, temp3;
+  Future checkCrcGraphPoint(List<int> obj, length) async {
+    int index = length - 2;
+    int i = 0;
+    int crcData = 0;
+    int uiCrc = 0, r = 0;
+    int temp = 0;
 
-    var dataOperatingMode = ((finalList[104] << 8) + finalList[105]);
+    while (index-- > 0) {
+      r = ulCrc16Table[uiCrc & 0xF];
+      uiCrc = ((uiCrc >> 4) & 0x0FFF);
+      temp = obj[i];
+      uiCrc = (uiCrc ^ r ^ ulCrc16Table[temp & 0xF]);
+      r = ulCrc16Table[uiCrc & 0xF];
+      uiCrc = ((uiCrc >> 4) & 0x0FFF);
+      uiCrc = (uiCrc ^ r ^ ulCrc16Table[(temp >> 4) & 0xF]);
+      i++;
+    }
+
+    crcData = obj[length - 1] * 256 + obj[length - 2];
+    if (crcData == uiCrc) {
+      await extractingGraphData(obj);
+    } else if (crcData != uiCrc) {
+      obj.clear();
+    }
+  }
+
+  Future extractingGraphData(List<int> fList) async {
+    // pressure graph
+
+    var dataOperatingMode = fList[1];
     if (dataOperatingMode >= 1 && dataOperatingMode <= 21) {
       setState(() {
-        operatinModeR = ((finalList[104] << 8) + finalList[105]);
+        operatinModeR = fList[1];
         getOpertingMode = true;
-        var first = preferences.getBool("first");
-        if (first == true) {
-          playOnEnabled = true;
-          first = false;
-          preferences.setBool('first', false);
-        }
       });
     } else {
       setState(() {
@@ -33995,8 +33735,7 @@ class _CheckPageState extends State<Dashboard> {
 
     // if (_startRecordData == true) {
     // pressure graph
-    temp = (((finalList[34] << 8) + finalList[35]))
-        .toDouble(); // pressure points 35,36
+    temp = (((fList[4] << 8) + fList[5])).toDouble(); // pressure points 35,36
 
     if (temp > 40000) {
       setState(() {
@@ -34007,83 +33746,159 @@ class _CheckPageState extends State<Dashboard> {
         temp = temp / 100;
       });
     }
-    pPoints.add(GraphPoint(x: 0.0, y: random.nextInt(5).toDouble()));
-    temp1 = ((finalList[58] << 8) + finalList[59])
-        .toDouble(); // volume points 59,60
-    temp3 = ((((finalList[46] << 8) + finalList[47])) -
-            (((finalList[48] << 8) + finalList[49])))
+    // pPoints.add(GraphPoint(x: 0.0, y: random.nextInt(5).toDouble()));
+    temp1 = ((fList[10] << 8) + fList[11]).toDouble(); // volume points 59,60
+    temp3 = ((((fList[6] << 8) + fList[7])) - (((fList[8] << 8) + fList[9])))
         .toDouble();
     temp3 = temp3 * 0.06;
 
-    double temp3I = ((finalList[46] << 8) + finalList[47]).toDouble() * 0.06;
-    double temp3E = ((finalList[48] << 8) + finalList[49]).toDouble() * 0.06;
+    double temp3I = ((fList[6] << 8) + fList[7]).toDouble() * 0.06;
+    double temp3E = ((fList[8] << 8) + fList[9]).toDouble() * 0.06;
 
     if (getOpertingMode == true) {
-      if (pressurePoints.length >= 60) {
+      if (pressurePoints.length >= 250) {
         setState(() {
-          if (temp > pressureMax) {
-            pressureMax = temp.toInt() + 5;
-          }
+          // if (temp > pressureMax) {
+          //   // pressureMax = temp.toInt() + 5;
+          //   pressureMax = 100;
+          // }
           pressurePoints.removeAt(0);
           pressurePoints.add(temp);
           // Fluttertoast.showToast(msg: temp.toString());
         });
       } else {
-        if (temp > pressureMax) {
-          pressureMax = temp.toInt() + 5;
-        }
+        // if (temp > pressureMax) {
+        //   pressureMax = 100;
+        // }
         pressurePoints.add(temp);
       }
 
-      if (volumePoints.length >= 60) {
+      if (volumePoints.length >= 250) {
         setState(() {
-          if (temp1 > volumeMax) {
-            volumeMax = temp1.toInt() + 5;
-          }
+          // if (temp1 > volumeMax) {
+          //   // volumeMax = temp1.toInt() + 5;
+          //   volumeMax = 3000;
+          // }
           volumePoints.removeAt(0);
           volumePoints.add(temp1);
         });
       } else {
-        if (temp1 > volumeMax) {
-          volumeMax = temp1.toInt() + 5;
-        }
+        // if (temp1 > volumeMax) {
+        //   volumeMax = 3000;
+        // }
         volumePoints.add(temp1);
       }
 
-      // if (flowPoints.length >= 48) {
+      // if (flowiPoints.length >= 300) {
       //   setState(() {
-      //     flowPoints.removeAt(0);
-      //     flowPoints.add(temp3);
+      //     if (temp3I > flowIMax) {
+      //       flowIMax = temp3I.toInt() + 5;
+      //     }
+      //     if (temp3E > flowEMax) {
+      //       flowEMax = temp3E.toInt() + 5;
+      //     }
+      //     flowiPoints.removeAt(0);
+      //     flowePoints.removeAt(0);
+      //     flowiPoints.add(temp3I);
+      //     flowePoints.add(temp3E);
       //   });
       // } else {
-      //   flowPoints.add(temp3);
+      //   if (temp3I > flowIMax) {
+      //     flowIMax = temp3I.toInt() + 5;
+      //   }
+      //   if (temp3E > flowEMax) {
+      //     flowEMax = temp3E.toInt() + 5;
+      //   }
+      //   flowiPoints.add(temp3I);
+      //   flowePoints.add(temp3E);
       // }
 
-      if (flowiPoints.length >= 60) {
+      if (flowPoints.length >= 250) {
         setState(() {
-          if (temp3I > flowIMax) {
-            flowIMax = temp.toInt() + 5;
-          }
-          if (temp3E > flowEMax) {
-            flowEMax = temp.toInt() + 5;
-          }
-          flowiPoints.removeAt(0);
-          flowePoints.removeAt(0);
-          flowiPoints.add(temp3I);
-          flowePoints.add(temp3E);
+          // if (temp3 > volumeMax) {
+          //   // flowIMax = temp3I.toInt() + 5;
+          //   flowIMax =200;
+          // }
+          flowPoints.removeAt(0);
+          flowPoints.add(temp3);
         });
       } else {
-        if (temp3I > flowIMax) {
-          flowIMax = temp.toInt() + 5;
-        }
-        if (temp3E > flowEMax) {
-          flowEMax = temp.toInt() + 5;
-        }
-        flowiPoints.add(temp3I);
-        flowePoints.add(temp3E);
+        // if (temp3 > volumeMax) {
+        //   // flowEMax = temp3E.toInt() + 5;
+        //   flowEMax = 90;
+        // }
+        flowPoints.add(temp3);
       }
     }
 
+    if (fList[3] == 1) {
+      ioreDisplayParamter = "I";
+    } else if (fList[3] == 2) {
+      ioreDisplayParamter = "E";
+    }
+
+    if (fList[3] == 1 && _isLoopGraph == true && getOpertingMode == true) {
+      //temp p temp1 v temp3 f
+      setState(() {
+        if (inhalationFlag == true) {
+          datapv.clear();
+          datapf.clear();
+          datavf.clear();
+          inhalationFlag = false;
+          preferences.setBool('inhalationFlag', false);
+        }
+        datapv.add(Point(temp, temp1));
+        datapf.add(Point(temp3, temp));
+        datavf.add(Point(temp1, temp3));
+        breathCycle = true;
+      });
+    } else if (fList[3] == 2 &&
+        _isLoopGraph == true &&
+        getOpertingMode == true) {
+      setState(() {
+        if (breathCycle == true) {
+          if (datapv.length > 16 && datapv.length != 0) {
+            // re-insti
+            _plotDataPv.clear();
+            _plotDataPv.addAll(datapv);
+            _plotDataPv.add(datapv[0]);
+          } else {
+            datapv.clear();
+          }
+
+          // pressure flow
+          if (datapf.length > 16 && datapf.length != 0) {
+            _plotDataPf.clear();
+            _plotDataPf.addAll(datapf);
+            _plotDataPf.add(datapf[0]);
+          } else {
+            datapf.clear();
+          }
+
+          // volume flow
+          if (datavf.length > 16 && datavf.length != 0) {
+            _plotDataVf.clear();
+            _plotDataVf.addAll(datavf);
+            _plotDataVf.add(datavf[0]);
+          } else {
+            datavf.clear();
+          }
+
+          datavf.clear();
+          datapv.clear();
+          datapf.clear();
+          breathCycle = false;
+        }
+        datapv.add(Point(temp, temp1));
+        datapf.add(Point(temp3, temp));
+        datavf.add(Point(temp1, temp3));
+      });
+    }
+
+    //================================
+  }
+
+  Future extractingData(List<int> finalList) async {
     if (((finalList[60] << 8) + finalList[61]).toInt() >= 0 &&
         ((finalList[60] << 8) + finalList[61]).toInt() <= 150) {
       setState(() {
@@ -34096,106 +33911,170 @@ class _CheckPageState extends State<Dashboard> {
       });
     }
 
-    setState(()  {
-      
-        var now = new DateTime.now();
+    setState(() {
+      var now = new DateTime.now();
 
-        int vteValueCheck = ((finalList[4] << 8) + finalList[5]); //5 6
+      int vteValueCheck = ((finalList[4] << 8) + finalList[5]); //5 6
 
-        if ((vteValueCheck != "" || vteValueCheck != null) &&
-            vteValueCheck.round() >= 0 &&
-            vteValueCheck.round() <= 3500) {
-          setState(() {
-            vteMinValue = vteValue - vtValue;
-            vteValue = ((finalList[4] << 8) + finalList[5]);
-          });
-        }
-        int mvValueCheck = (((finalList[8] << 8) + finalList[9])).toInt();
-
+      if ((vteValueCheck != "" || vteValueCheck != null) &&
+          vteValueCheck.round() >= 0 &&
+          vteValueCheck.round() <= 3500) {
         setState(() {
-          mvValue = mvValueCheck;
+          vteMinValue = vteValue - vtValue;
+          vteValue = ((finalList[4] << 8) + finalList[5]);
         });
+      }
+      int mvValueCheck = (((finalList[8] << 8) + finalList[9])).toInt();
 
-        leakVolumeDisplay = ((finalList[102] << 8) + finalList[103]); //103 104
-        peakFlowDisplay = ((finalList[70] << 8) + finalList[71]); //71 72
-        spontaneousDisplay = ((finalList[82] << 8) + finalList[83]); //83 84
+      setState(() {
+        mvValue = mvValueCheck;
+      });
 
-        int rrtotalCheck =
-            ((finalList[10] << 8) + finalList[11]).toInt(); //11,12
+      leakVolumeDisplay = ((finalList[102] << 8) + finalList[103]); //103 104
+      peakFlowDisplay = ((finalList[70] << 8) + finalList[71]); //71 72
+      spontaneousDisplay = ((finalList[82] << 8) + finalList[83]); //83 84
 
-        if (rrtotalCheck != "" &&
-            rrtotalCheck.round() >= 0 &&
-            rrtotalCheck.round() <= 100) {
-          setState(() {
-            rrDisplayValue = rrtotalCheck;
-          });
-        }
-        int pipValueCheck = (((finalList[14] << 8) + finalList[15]) / 100)
+      int rrtotalCheck = ((finalList[10] << 8) + finalList[11]).toInt(); //11,12
+
+      if (rrtotalCheck != "" &&
+          rrtotalCheck.round() >= 0 &&
+          rrtotalCheck.round() <= 100) {
+        setState(() {
+          rrDisplayValue = rrtotalCheck;
+        });
+      }
+      int pipValueCheck = (((finalList[14] << 8) + finalList[15]) / 100)
+          .round()
+          .toInt(); //15 16
+
+      if ((((finalList[16] << 8) + finalList[17]) / 100).round().toInt() >= 0 &&
+          (((finalList[16] << 8) + finalList[17]) / 100).round().toInt() <=
+              150) {
+        peepDisplayValue = (((finalList[16] << 8) + finalList[17]) / 100)
             .round()
-            .toInt(); //15 16
+            .toInt(); //17 18
+      }
 
-        if ((((finalList[16] << 8) + finalList[17]) / 100).round().toInt() >=
-                0 &&
-            (((finalList[16] << 8) + finalList[17]) / 100).round().toInt() <=
-                150) {
-          peepDisplayValue = (((finalList[16] << 8) + finalList[17]) / 100)
-              .round()
-              .toInt(); //17 18
-        }
-
-        if (pipValueCheck != 0 &&
-            pipValueCheck.round() >= 0 &&
-            pipValueCheck.round() <= 150) {
-          setState(() {
-            pipValue = pipValueCheck;
-          });
-        }
-        paw = (((finalList[34] << 8) + finalList[35]) ~/ 100).toInt();
-
-        if (paw > 200) {
-          setState(() {
-            paw = 0;
-          });
-        }
-
-        faultBatteryStatus = finalList[89];
-
-        expiratoryPressureR =
-            (((finalList[36] << 8) + finalList[37]) ~/ 100).toInt(); //37 38
-
-        if (((finalList[38] << 8) + finalList[39]).round() >= 20 &&
-            ((finalList[38] << 8) + finalList[39]).round() <= 100) {
-          fio2DisplayParameter =
-              ((finalList[38] << 8) + finalList[39]); // 39,40
-        }
-
-        // checkTempData = finalList[31].toString();
+      if (pipValueCheck != 0 &&
+          pipValueCheck.round() >= 0 &&
+          pipValueCheck.round() <= 150) {
         setState(() {
-          check1 = finalList[32];
-          check2 = finalList[33];
+          pipValue = pipValueCheck;
         });
+      }
+      paw = (((finalList[34] << 8) + finalList[35]) ~/ 100).toInt();
 
-        var highPriorityAlarm = 0;
-        var mediumPriorityAlarm = 0;
-        var lowPriorityAlarm = 0;
+      if (paw > 200) {
+        setState(() {
+          paw = 0;
+        });
+      }
 
-        if (finalList[108] == 1) {
-          presentCode = ((finalList[106] << 8) + finalList[107]);
-          alarmCounter = finalList[90];
+      faultBatteryStatus = finalList[89];
 
-          if (presentCode != previousCode) {
-            previousCode = presentCode;
+      expiratoryPressureR =
+          (((finalList[36] << 8) + finalList[37]) ~/ 100).toInt(); //37 38
+
+      if (((finalList[38] << 8) + finalList[39]).round() >= 20 &&
+          ((finalList[38] << 8) + finalList[39]).round() <= 100) {
+        fio2DisplayParameter = ((finalList[38] << 8) + finalList[39]); // 39,40
+      }
+
+      // checkTempData = finalList[31].toString();
+      setState(() {
+        check1 = finalList[32];
+        check2 = finalList[33];
+      });
+
+      var highPriorityAlarm = 0;
+      var mediumPriorityAlarm = 0;
+      var lowPriorityAlarm = 0;
+
+      if (finalList[108] == 1) {
+        presentCode = ((finalList[106] << 8) + finalList[107]);
+        alarmCounter = finalList[90];
+
+        if (presentCode != previousCode) {
+          previousCode = presentCode;
+          sendSoundOn();
+          _stopMusic();
+          var data = AlarmsList(
+              presentCode.toString(), this.globalCounterNo.toString());
+          dbHelpera.saveAlarm(data);
+          // alarmPrevCounter = alarmCounter;
+          if ((presentCode == 24 ||
+                  presentCode == 17 ||
+                  presentCode == 5 ||
+                  presentCode == 10 ||
+                  presentCode == 11) &&
+              highPriorityAlarm == 0) {
+            setState(() {
+              highPriorityAlarm = 1;
+              mediumPriorityAlarm = 0;
+              lowPriorityAlarm = 0;
+            });
+            _stopMusic();
+            _playMusicHigh();
             sendSoundOn();
+            audioEnable = true;
+          } else if ((presentCode == 1 ||
+                  presentCode == 2 ||
+                  presentCode == 3 ||
+                  presentCode == 4 ||
+                  presentCode == 6 ||
+                  presentCode == 8 ||
+                  presentCode == 9 ||
+                  presentCode == 12 ||
+                  presentCode == 13 ||
+                  presentCode == 14 ||
+                  presentCode == 15 ||
+                  presentCode == 16 ||
+                  presentCode == 18 ||
+                  presentCode == 19 ||
+                  presentCode == 20 ||
+                  presentCode == 21 ||
+                  presentCode == 22 ||
+                  presentCode == 25 ||
+                  presentCode == 26 ||
+                  presentCode == 27) &&
+              mediumPriorityAlarm == 0) {
+            setState(() {
+              highPriorityAlarm = 0;
+              mediumPriorityAlarm = 1;
+              lowPriorityAlarm = 0;
+            });
+            _stopMusic();
+            _playMusicMedium();
+            sendSoundOn();
+            audioEnable = true;
+          } else if ((presentCode == 23 ||
+                  presentCode == 28 ||
+                  presentCode == 29 ||
+                  presentCode == 7) &&
+              lowPriorityAlarm == 0) {
+            setState(() {
+              highPriorityAlarm = 0;
+              mediumPriorityAlarm = 0;
+              lowPriorityAlarm = 1;
+            });
+            _stopMusic();
+            _playMusicLower();
+            sendSoundOn();
+            audioEnable = true;
+          }
+        } else {
+          if (alarmCounter != alarmPrevCounter) {
+            alarmPrevCounter = alarmCounter;
             _stopMusic();
             var data = AlarmsList(
                 presentCode.toString(), this.globalCounterNo.toString());
             dbHelpera.saveAlarm(data);
-            // alarmPrevCounter = alarmCounter;
-            if ((presentCode == 24 ||
-                    presentCode == 17 ||
-                    presentCode == 5 ||
+
+            if ((presentCode == 5 ||
                     presentCode == 10 ||
-                    presentCode == 11) &&
+                    presentCode == 11 ||
+                    presentCode == 24 ||
+                    presentCode == 17) &&
                 highPriorityAlarm == 0) {
               setState(() {
                 highPriorityAlarm = 1;
@@ -34251,317 +34130,245 @@ class _CheckPageState extends State<Dashboard> {
               sendSoundOn();
               audioEnable = true;
             }
-          } else {
-            if (alarmCounter != alarmPrevCounter) {
-              alarmPrevCounter = alarmCounter;
-              _stopMusic();
-              var data = AlarmsList(
-                  presentCode.toString(), this.globalCounterNo.toString());
-              dbHelpera.saveAlarm(data);
-
-              if ((presentCode == 5 ||
-                      presentCode == 10 ||
-                      presentCode == 11 ||
-                      presentCode == 24 ||
-                      presentCode == 17) &&
-                  highPriorityAlarm == 0) {
-                setState(() {
-                  highPriorityAlarm = 1;
-                  mediumPriorityAlarm = 0;
-                  lowPriorityAlarm = 0;
-                });
-                _stopMusic();
-                _playMusicHigh();
-                sendSoundOn();
-                audioEnable = true;
-              } else if ((presentCode == 1 ||
-                      presentCode == 2 ||
-                      presentCode == 3 ||
-                      presentCode == 4 ||
-                      presentCode == 6 ||
-                      presentCode == 8 ||
-                      presentCode == 9 ||
-                      presentCode == 12 ||
-                      presentCode == 13 ||
-                      presentCode == 14 ||
-                      presentCode == 15 ||
-                      presentCode == 16 ||
-                      presentCode == 18 ||
-                      presentCode == 19 ||
-                      presentCode == 20 ||
-                      presentCode == 21 ||
-                      presentCode == 22 ||
-                      presentCode == 25 ||
-                      presentCode == 26 ||
-                      presentCode == 27) &&
-                  mediumPriorityAlarm == 0) {
-                setState(() {
-                  highPriorityAlarm = 0;
-                  mediumPriorityAlarm = 1;
-                  lowPriorityAlarm = 0;
-                });
-                _stopMusic();
-                _playMusicMedium();
-                sendSoundOn();
-                audioEnable = true;
-              } else if ((presentCode == 23 ||
-                      presentCode == 28 ||
-                      presentCode == 29 ||
-                      presentCode == 7) &&
-                  lowPriorityAlarm == 0) {
-                setState(() {
-                  highPriorityAlarm = 0;
-                  mediumPriorityAlarm = 0;
-                  lowPriorityAlarm = 1;
-                });
-                _stopMusic();
-                _playMusicLower();
-                sendSoundOn();
-                audioEnable = true;
-              }
-            }
           }
-        } else if (finalList[108] == 0) {
-          setState(() {
-            highPriorityAlarm = 0;
-            mediumPriorityAlarm = 0;
-            lowPriorityAlarm = 0;
-          });
-          sendSoundOff();
-          _stopMusic();
         }
+      } else if (finalList[108] == 0) {
+        setState(() {
+          highPriorityAlarm = 0;
+          mediumPriorityAlarm = 0;
+          lowPriorityAlarm = 0;
+        });
+        sendSoundOff();
+        _stopMusic();
+      }
 
-        var selfRun = finalList[92];
+      var selfRun = finalList[92];
 
-        if (selfRun == 1) {
-          //  preferences.setBool("_isFlagTest", true);
-          preferences.setBool("calli", false);
-          //  _isFlagTest = true;
-          // textText = "";
+      if (selfRun == 1) {
+        //  preferences.setBool("_isFlagTest", true);
+        preferences.setBool("calli", false);
+        //  _isFlagTest = true;
+        // textText = "";
+        selftestRun(1);
+        preferences.setBool('first', false);
+      } else if (selfRun == 2) {
+        setState(() {
           selftestRun(1);
-          preferences.setBool('first', false);
-        } else if (selfRun == 2) {
-          setState(() {
-            selftestRun(1);
-            selfTestingEnabled = true;
-          });
-        }
+          selfTestingEnabled = true;
+        });
+      }
 
-        if (vteValue != null &&
-            vteValue != 0 &&
-            pplateauDisplay != null &&
-            pplateauDisplay != 0) {
-          try {
-            var dataC =
-                (vteValue ~/ (pplateauDisplay.toInt() - peepDisplayValue))
-                    .toInt();
-            if (dataC < 0) {
-            } else {
-              cdisplayParameter = dataC;
-            }
-          } catch (e) {}
-        }
+      if (vteValue != null &&
+          vteValue != 0 &&
+          pplateauDisplay != null &&
+          pplateauDisplay != 0) {
+        try {
+          var dataC = (vteValue ~/ (pplateauDisplay.toInt() - peepDisplayValue))
+              .toInt();
+          if (dataC < 0) {
+          } else {
+            cdisplayParameter = dataC;
+          }
+        } catch (e) {}
+      }
 
-        var apneaCheckvalue = finalList[66];
+      var apneaCheckvalue = finalList[66];
 
-        if (apneaCheckvalue == 1) {
-          setState(() {
-            displayApneaTime = "Apnea";
-          });
-        } else {
-          setState(() {
-            displayApneaTime = "";
-          });
-        }
+      if (apneaCheckvalue == 1) {
+        setState(() {
+          displayApneaTime = "Apnea";
+        });
+      } else {
+        setState(() {
+          displayApneaTime = "";
+        });
+      }
 
-        if (finalList[108] == 1) {
-          setState(() {
-            if (finalList[109] == 0) {
-              ((finalList[106] << 8) + finalList[107]) == 29
-                  ? alarmMessage = "Critical Battery."
-                  : ((finalList[106] << 8) + finalList[107]) == 24
-                      ? alarmMessage =
-                          "Blender Malfunction. \nOxygen blending not possible."
-                      : ((finalList[106] << 8) + finalList[107]) == 17
-                          ? alarmMessage = "PATIENT DISCONNECTED"
-                          : "";
-            } else if (finalList[109] == 1) {
-              ((finalList[106] << 8) + finalList[107]) == 5
-                  ? alarmMessage = "SYSTEM FAULT"
-                  : ((finalList[106] << 8) + finalList[107]) == 10
-                      ? alarmMessage = "HIGH LEAKAGE"
-                      : ((finalList[106] << 8) + finalList[107]) == 11
-                          ? alarmMessage = "HIGH PRESSURE"
-                          : alarmMessage = "";
-            } else if (finalList[109] == 2) {
-              ((finalList[106] << 8) + finalList[107]) == 1
-                  ? alarmMessage = "POWER SUPPLY DISCONNECTED"
-                  : ((finalList[106] << 8) + finalList[107]) == 2
-                      ? alarmMessage = " LOW BATTERY"
-                      : ((finalList[106] << 8) + finalList[107]) == 3
-                          ? alarmMessage = "CALIBRATE FiO2"
-                          : ((finalList[106] << 8) + finalList[107]) == 4
-                              ? alarmMessage = "CALIBRATION FiO2 FAIL"
-                              : ((finalList[106] << 8) + finalList[107]) == 6
-                                  ? alarmMessage = "SELF TEST FAIL"
-                                  : ((finalList[106] << 8) + finalList[107]) == 8
-                                      ? alarmMessage = "HIGH FiO2"
-                                      : ((finalList[106] << 8) + finalList[107]) == 9
-                                          ? alarmMessage = "LOW FiO2"
-                                          : ((finalList[106] << 8) + finalList[107]) == 12
-                                              ? alarmMessage = "LOW PRESSURE"
-                                              : ((finalList[106] << 8) +
-                                                          finalList[107]) ==
-                                                      13
-                                                  ? alarmMessage = "LOW VTE"
-                                                  : ((finalList[106] << 8) +
-                                                              finalList[107]) ==
-                                                          14
-                                                      ? alarmMessage =
-                                                          "HIGH VTE"
-                                                      : ((finalList[106] << 8) + finalList[107]) == 15
-                                                          ? alarmMessage =
-                                                              "LOW VTI"
-                                                          : ((finalList[106] << 8) + finalList[107]) == 16
-                                                              ? alarmMessage =
-                                                                  "HIGH VTI"
-                                                              : ((finalList[106] << 8) + finalList[107]) == 18
-                                                                  ? alarmMessage =
-                                                                      "LOW O2  Supply"
-                                                                  : ((finalList[106] << 8) + finalList[107]) == 19
-                                                                      ? alarmMessage =
-                                                                          "LOW RR"
-                                                                      : ((finalList[106] << 8) + finalList[107]) == 20
-                                                                          ? alarmMessage =
-                                                                              "HIGH RR"
-                                                                          : ((finalList[106] << 8) + finalList[107]) == 21 ? alarmMessage = "HIGH PEEP" : ((finalList[106] << 8) + finalList[107]) == 22 ? alarmMessage = "LOW PEEP" : ((finalList[106] << 8) + finalList[107]) == 25 ? alarmMessage = "Low Minute Volume" : ((finalList[106] << 8) + finalList[107]) == 26 ? alarmMessage = "High Minute Volume" : ((finalList[106] << 8) + finalList[107]) == 27 ? alarmMessage = "High Leak Volume" : alarmMessage = "";
-            } else if (finalList[109] == 3) {
-              ((finalList[106] << 8) + finalList[107]) == 23
-                  ? alarmMessage = "Apnea backup"
-                  : ((finalList[106] << 8) + finalList[107]) == 29
-                      ? alarmMessage = "Replace FiO\u2082 Sensor"
-                      : ((finalList[106] << 8) + finalList[107]) == 7
-                          ? alarmMessage =
-                              "FiO\u2082 Sensor Missing Blending Not Possible"
-                          : ((finalList[106] << 8) + finalList[107]) == 28
-                              ? alarmMessage =
-                                  "Set volume can't be reached. due to low PC Max"
-                              : alarmMessage = "";
-            }
-          });
-        }
+      if (finalList[108] == 1) {
+        setState(() {
+          if (finalList[109] == 0) {
+            ((finalList[106] << 8) + finalList[107]) == 30
+                ? alarmMessage = "Critical Battery."
+                : ((finalList[106] << 8) + finalList[107]) == 31
+                    ? alarmMessage = "Critical battery. Ventilation Stopped"
+                    : ((finalList[106] << 8) + finalList[107]) == 24
+                        ? alarmMessage =
+                            "Blender Malfunction. \nOxygen blending not possible."
+                        : ((finalList[106] << 8) + finalList[107]) == 17
+                            ? alarmMessage = "PATIENT DISCONNECTED"
+                            : "";
+          } else if (finalList[109] == 1) {
+            ((finalList[106] << 8) + finalList[107]) == 5
+                ? alarmMessage = "SYSTEM FAULT"
+                : ((finalList[106] << 8) + finalList[107]) == 10
+                    ? alarmMessage = "HIGH LEAKAGE"
+                    : ((finalList[106] << 8) + finalList[107]) == 11
+                        ? alarmMessage = "HIGH PRESSURE"
+                        : alarmMessage = "";
+          } else if (finalList[109] == 2) {
+            ((finalList[106] << 8) + finalList[107]) == 1
+                ? alarmMessage = "POWER SUPPLY DISCONNECTED"
+                : ((finalList[106] << 8) + finalList[107]) == 2
+                    ? alarmMessage = " LOW BATTERY"
+                    : ((finalList[106] << 8) + finalList[107]) == 3
+                        ? alarmMessage = "CALIBRATE FiO2"
+                        : ((finalList[106] << 8) + finalList[107]) == 4
+                            ? alarmMessage = "CALIBRATION FiO2 FAIL"
+                            : ((finalList[106] << 8) + finalList[107]) == 6
+                                ? alarmMessage = "SELF TEST FAIL"
+                                : ((finalList[106] << 8) + finalList[107]) == 8
+                                    ? alarmMessage = "HIGH FiO2"
+                                    : ((finalList[106] << 8) + finalList[107]) == 9
+                                        ? alarmMessage = "LOW FiO2"
+                                        : ((finalList[106] << 8) + finalList[107]) == 12
+                                            ? alarmMessage = "LOW PRESSURE"
+                                            : ((finalList[106] << 8) +
+                                                        finalList[107]) ==
+                                                    13
+                                                ? alarmMessage = "LOW VTE"
+                                                : ((finalList[106] << 8) +
+                                                            finalList[107]) ==
+                                                        14
+                                                    ? alarmMessage = "HIGH VTE"
+                                                    : ((finalList[106] << 8) + finalList[107]) == 15
+                                                        ? alarmMessage =
+                                                            "LOW VTI"
+                                                        : ((finalList[106] << 8) + finalList[107]) == 16
+                                                            ? alarmMessage =
+                                                                "HIGH VTI"
+                                                            : ((finalList[106] << 8) + finalList[107]) == 18
+                                                                ? alarmMessage =
+                                                                    "LOW O2  Supply"
+                                                                : ((finalList[106] << 8) + finalList[107]) == 19
+                                                                    ? alarmMessage =
+                                                                        "LOW RR"
+                                                                    : ((finalList[106] << 8) + finalList[107]) ==
+                                                                            20
+                                                                        ? alarmMessage =
+                                                                            "HIGH RR"
+                                                                        : ((finalList[106] << 8) + finalList[107]) == 21
+                                                                            ? alarmMessage = "HIGH PEEP"
+                                                                            : ((finalList[106] << 8) + finalList[107]) == 22 ? alarmMessage = "LOW PEEP" : ((finalList[106] << 8) + finalList[107]) == 25 ? alarmMessage = "Low Minute Volume" : ((finalList[106] << 8) + finalList[107]) == 26 ? alarmMessage = "High Minute Volume" : ((finalList[106] << 8) + finalList[107]) == 27 ? alarmMessage = "High Leak Volume" : alarmMessage = "";
+          } else if (finalList[109] == 3) {
+            ((finalList[106] << 8) + finalList[107]) == 23
+                ? alarmMessage = "Apnea backup"
+                : ((finalList[106] << 8) + finalList[107]) == 29
+                    ? alarmMessage = "Replace FiO\u2082 Sensor"
+                    : ((finalList[106] << 8) + finalList[107]) == 7
+                        ? alarmMessage =
+                            "FiO\u2082 Sensor Missing Blending Not Possible"
+                        : ((finalList[106] << 8) + finalList[107]) == 28
+                            ? alarmMessage =
+                                "Set volume can't be reached. due to low PC Max"
+                            : alarmMessage = "";
+          }
+        });
+      }
 
-        if (paw <= 10) {
-          setState(() {
-            lungImage = 1;
-          });
-        } else if (paw <= 20 && paw >= 11) {
-          setState(() {
-            lungImage = 2;
-          });
-        } else if (paw <= 30 && paw >= 21) {
-          setState(() {
-            lungImage = 3;
-          });
-        } else if (paw <= 40 && paw >= 31) {
-          setState(() {
-            lungImage = 4;
-          });
-        } else if (paw <= 100 && paw >= 41) {
-          setState(() {
-            lungImage = 5;
-          });
-        }
+      if (paw <= 10) {
+        setState(() {
+          lungImage = 1;
+        });
+      } else if (paw <= 20 && paw >= 11) {
+        setState(() {
+          lungImage = 2;
+        });
+      } else if (paw <= 30 && paw >= 21) {
+        setState(() {
+          lungImage = 3;
+        });
+      } else if (paw <= 40 && paw >= 31) {
+        setState(() {
+          lungImage = 4;
+        });
+      } else if (paw <= 100 && paw >= 41) {
+        setState(() {
+          lungImage = 5;
+        });
+      }
 
-        String i = "", e = "", tempIe = "";
-        i = finalList[12].toString();
-        e = finalList[13].toString();
-        tempIe = i + ":" + e;
+      String i = "", e = "", tempIe = "";
+      i = finalList[12].toString();
+      e = finalList[13].toString();
+      tempIe = i + ":" + e;
 
-        o2pressuresensor = ((list[26] & 0x3) >> 0);
-        mtpressuresensor = ((list[26] & 0xC) >> 2);
-        exhalationflowsensor = ((list[26] & 0x30) >> 4);
-        inhalationflowsensor = ((list[26] & 0xC0) >> 6);
+      o2pressuresensor = ((list[26] & 0x3) >> 0);
+      mtpressuresensor = ((list[26] & 0xC) >> 2);
+      exhalationflowsensor = ((list[26] & 0x30) >> 4);
+      inhalationflowsensor = ((list[26] & 0xC0) >> 6);
 
-        exhalationpressure = ((list[27] & 0x3) >> 0);
-        inhalationpressure = ((list[27] & 0xC) >> 2);
-        o2sensor = ((list[27] & 0x30) >> 4);
-        inhalationvalve = ((list[27] & 0xC0) >> 6);
+      exhalationpressure = ((list[27] & 0x3) >> 0);
+      inhalationpressure = ((list[27] & 0xC) >> 2);
+      o2sensor = ((list[27] & 0x30) >> 4);
+      inhalationvalve = ((list[27] & 0xC0) >> 6);
 
-        exhalationvalve = ((list[28] & 0x3) >> 0);
-        ventvalue = ((list[28] & 0xC) >> 2);
-        mainpower = ((list[28] & 0x30) >> 4);
-        battery = ((list[28] & 0xC0) >> 6);
+      exhalationvalve = ((list[28] & 0x3) >> 0);
+      ventvalue = ((list[28] & 0xC) >> 2);
+      mainpower = ((list[28] & 0x30) >> 4);
+      battery = ((list[28] & 0xC0) >> 6);
 
-        communication = ((list[29] & 0x3) >> 0);
-        compressor = ((list[29] & 0xC) >> 2);
-        blender = ((list[29] & 0x30) >> 4);
+      communication = ((list[29] & 0x3) >> 0);
+      compressor = ((list[29] & 0xC) >> 2);
+      blender = ((list[29] & 0x30) >> 4);
 
-        safetyvalue1 = (finalList[63] & 0x3);
-        safetyvalue2 = ((finalList[63] & 0xC) >> 2);
-        checkOfffset = ((list[29] & 0xC0) >> 6);
+      safetyvalue1 = (finalList[63] & 0x3);
+      safetyvalue2 = ((finalList[63] & 0xC) >> 2);
+      checkOfffset = ((list[29] & 0xC0) >> 6);
 
-        checkO2CalibrationValue = finalList[30];
+      checkO2CalibrationValue = finalList[30];
 
-        // Fluttertoast.showToast(msg:checkO2CalibrationValue.toString());
-        if (checkO2CalibrationValue == 1) {
-          setState(() {
-            textText = "Lung Disconnected";
-          });
-        } else if (checkO2CalibrationValue == 2) {
-          setState(() {
-            textText = "Calibrating 0\u2082..";
-          });
-        } else if (checkO2CalibrationValue == 3) {
-          setState(() {
-            var now = new DateTime.now();
-            var o2Time = DateFormat("dd/MM/yyyy").format(now);
-            preferences.setString("o2time", o2Time.toString());
-            getData();
-            textText = "0\u2082 Calibration Completed.";
-          });
-        } else if (checkO2CalibrationValue == 4) {
-          setState(() {
-            textText = "Low 0\u2082 Supply";
-          });
-        } else if (checkO2CalibrationValue == 0) {
-          setState(() {
-            checkO2CalibrationValue = "";
-          });
-        }
+      // Fluttertoast.showToast(msg:checkO2CalibrationValue.toString());
+      if (checkO2CalibrationValue == 1) {
+        setState(() {
+          textText = "Lung Disconnected";
+        });
+      } else if (checkO2CalibrationValue == 2) {
+        setState(() {
+          textText = "Calibrating 0\u2082..";
+        });
+      } else if (checkO2CalibrationValue == 3) {
+        setState(() {
+          var now = new DateTime.now();
+          var o2Time = DateFormat("dd/MM/yyyy").format(now);
+          preferences.setString("o2time", o2Time.toString());
+          getData();
+          textText = "0\u2082 Calibration Completed.";
+        });
+      } else if (checkO2CalibrationValue == 4) {
+        setState(() {
+          textText = "Low 0\u2082 Supply";
+        });
+      } else if (checkO2CalibrationValue == 0) {
+        setState(() {
+          checkO2CalibrationValue = "";
+        });
+      }
 
-        if ((((finalList[68] << 8) + finalList[69]) / 100).round().toInt() >=
-                0 &&
-            (((finalList[68] << 8) + finalList[69]) / 100).round().toInt() <=
-                150) {
-          mapDisplayValue =
-              (((finalList[68] << 8) + finalList[69]) ~/ 100).toInt();
-        }
-        if (finalList[84] == 1) {
-          ioreDisplayParamter = "I";
-        } else if (finalList[84] == 2) {
-          ioreDisplayParamter = "E";
-        }
+      if ((((finalList[68] << 8) + finalList[69]) / 100).round().toInt() >= 0 &&
+          (((finalList[68] << 8) + finalList[69]) / 100).round().toInt() <=
+              150) {
+        mapDisplayValue =
+            (((finalList[68] << 8) + finalList[69]) ~/ 100).toInt();
+      }
 
-        if (finalList[91] == 1) {
-          amsDisplayParamter = "A";
-        } else if (finalList[91] == 2) {
-          amsDisplayParamter = "M";
-        } else if (finalList[91] == 3) {
-          amsDisplayParamter = "S";
-        }
+      if (finalList[91] == 1) {
+        amsDisplayParamter = "A";
+      } else if (finalList[91] == 2) {
+        amsDisplayParamter = "M";
+      } else if (finalList[91] == 3) {
+        amsDisplayParamter = "S";
+      }
 
-        displayTemperature = finalList[88];
+      displayTemperature = finalList[88];
 
-        if (finalList[108] != 0 &&
-            ((finalList[106] << 8) + finalList[107]) != null &&
-            ((finalList[106] << 8) + finalList[107]) >= 1 &&
-            ((finalList[106] << 8) + finalList[107]) <= 29) {
-          alarmActive = finalList[108].toString();
-        } else {
-          alarmActive = 0.toString();
-        }
-    
+      if (finalList[108] != 0 &&
+          ((finalList[106] << 8) + finalList[107]) != null &&
+          ((finalList[106] << 8) + finalList[107]) >= 1 &&
+          ((finalList[106] << 8) + finalList[107]) <= 29) {
+        alarmActive = finalList[108].toString();
+      } else {
+        alarmActive = 0.toString();
+      }
 
       if (_setValuesonClick == true &&
           operatinModeR != 0 &&
@@ -35022,67 +34829,7 @@ class _CheckPageState extends State<Dashboard> {
         batteryStatus = finalList[78];
       });
 
-      // if (finalList[84] == 1 &&
-      //     _isLoopGraph == true &&
-      //     getOpertingMode == true) {
-      //   //temp p temp1 v temp3 f
-      //   setState(() {
-      //     if (inhalationFlag == true) {
-      //       datapv.clear();
-      //       datapf.clear();
-      //       datavf.clear();
-      //       inhalationFlag = false;
-      //       preferences.setBool('inhalationFlag', false);
-      //     }
-      //     datapv.add(Point(temp, temp1));
-      //     datapf.add(Point(temp3, temp));
-      //     datavf.add(Point(temp1, temp3));
-      //     breathCycle = true;
-      //   });
-      // } else if (finalList[84] == 2 &&
-      //     _isLoopGraph == true &&
-      //     getOpertingMode == true) {
-      //   setState(() {
-      //     if (breathCycle == true) {
-      //       if (datapv.length > 16 && datapv.length != 0) {
-      //         // re-insti
-      //         _plotDataPv.clear();
-      //         _plotDataPv.addAll(datapv);
-      //         _plotDataPv.add(datapv[0]);
-      //       } else {
-      //         datapv.clear();
-      //       }
-
-      //       // pressure flow
-      //       if (datapf.length > 16 && datapf.length != 0) {
-      //         _plotDataPf.clear();
-      //         _plotDataPf.addAll(datapf);
-      //         _plotDataPf.add(datapf[0]);
-      //       } else {
-      //         datapf.clear();
-      //       }
-
-      //       // volume flow
-      //       if (datavf.length > 16 && datavf.length != 0) {
-      //         _plotDataVf.clear();
-      //         _plotDataVf.addAll(datavf);
-      //         _plotDataVf.add(datavf[0]);
-      //       } else {
-      //         datavf.clear();
-      //       }
-
-      //       datavf.clear();
-      //       datapv.clear();
-      //       datapf.clear();
-      //       breathCycle = false;
-      //     }
-      //     datapv.add(Point(temp, temp1));
-      //     datapf.add(Point(temp3, temp));
-      //     datavf.add(Point(temp1, temp3));
-      //   });
-      // }
-
-      if (getOpertingMode != false)  {
+      if (getOpertingMode != false) {
         if (patientId != "") {
           var data = VentilatorOMode(
               patientId,
@@ -35259,6 +35006,7 @@ class _CheckPageState extends State<Dashboard> {
     cfinalListSend.add(127);
 
     await _port.write(Uint8List.fromList(cfinalListSend));
+    Fluttertoast.showToast(msg: cfinalListSend.toString());
 
     sleep(Duration(milliseconds: 200));
 
@@ -35301,9 +35049,9 @@ class _CheckPageState extends State<Dashboard> {
         _osensorRange.text = "";
       });
     }
-    if (_isdatasendSuccess == false) {
-      sendData(listCrcDataC, 2);
-    }
+    // if (_isdatasendSuccess == false) {
+    //   sendData(listCrcDataC, 2);
+    // }
     setState(() {
       _setValuesonClick = true;
     });
@@ -35327,7 +35075,7 @@ class _CheckPageState extends State<Dashboard> {
 
   clearData() {
     setState(() {
-      _isdatasendSuccess = true;
+      // _isdatasendSuccess = true;
       _setValuesonClick = true;
       modesEnabled = false;
       playOnEnabled = false;
@@ -35367,4 +35115,3 @@ class _CheckPageState extends State<Dashboard> {
     });
   }
 }
-

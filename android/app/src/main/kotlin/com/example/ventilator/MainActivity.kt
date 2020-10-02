@@ -7,10 +7,7 @@ import android.app.admin.SystemUpdatePolicy
 import android.content.*
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.os.BatteryManager
-import android.os.Build
-import android.os.PowerManager
-import android.os.UserManager
+import android.os.*
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -28,7 +25,7 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 
 
-class MainActivity: FlutterActivity() {
+class MainActivity() : FlutterActivity() {
 
     private lateinit var mAdminComponentName: ComponentName
     private lateinit var mDevicePolicyManager: DevicePolicyManager
@@ -42,7 +39,12 @@ class MainActivity: FlutterActivity() {
         const val CHANNEL = "shutdown"
         const val PERMISSION_REQUEST_STORAGE = 0
     }
+
     lateinit var downloadController: DownloadController
+
+    constructor(parcel: Parcel) : this() {
+        mAdminComponentName = parcel.readParcelable(ComponentName::class.java.classLoader)!!
+    }
 
     @SuppressLint("InvalidWakeLockTag")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -404,6 +406,4 @@ class MainActivity: FlutterActivity() {
             window.decorView.systemUiVisibility = flags
         }
     }
-
-
 }

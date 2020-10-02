@@ -24,7 +24,6 @@ import 'package:flutter/material.dart';
 /// The [padding] argument allows space to be set around the display (this defaults to 10.0 if not specified)
 ///
 /// NB: This is not a Time Domain trace, the update frequency of the supplied [dataSet] determines the trace speed.
-// ignore: must_be_immutable
 class Oscilloscope extends StatefulWidget {
   List<double> dataSet;
   double yAxisMin;
@@ -97,14 +96,13 @@ class _TracePainter extends CustomPainter {
       this.yRange,
       this.yMin,
       this.dataSet,
-      this.xScale = 16,
+      this.xScale = 3.0,
       this.traceColor = Colors.white});
 
   @override
   void paint(Canvas canvas, Size size) {
     final tracePaint = Paint()
       ..strokeJoin = StrokeJoin.round
-      
       ..strokeWidth = 3.0
       ..color = traceColor
       ..style = PaintingStyle.stroke;
@@ -119,7 +117,7 @@ class _TracePainter extends CustomPainter {
     int length = dataSet.length;
     if (length > 0) {
       // transform data set to just what we need if bigger than the width(otherwise this would be a memory hog)
-      if (length > 48) {
+      if (length > 150) {
         dataSet.removeAt(0);
         length = dataSet.length;
       }
