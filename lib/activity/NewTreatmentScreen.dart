@@ -33,6 +33,12 @@ class _NewTreatmentScreenState extends State<NewTreatmentScreen> {
   String calculatingIn = "cm";
   SharedPreferences preferences;
   var dbHelper = DatabaseHelper();
+
+  @override
+  void initState() {
+    // patientId = TextEditingController(text: preferences.getString("key"));
+    super.initState();
+  }
   @override
   Widget build(BuildContext context) {
     SystemChrome.setPreferredOrientations(
