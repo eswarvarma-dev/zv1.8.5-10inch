@@ -808,6 +808,7 @@ class _CheckPageState extends State<Dashboard> {
     _getPorts();
 
     _timer2 = Timer.periodic(Duration(seconds: 1), (timer) async {
+      checkPortAvail();
       if (_status != "Connected") {
         var now = new DateTime.now();
         setState(() {
@@ -942,6 +943,16 @@ class _CheckPageState extends State<Dashboard> {
   //   return file.writeAsString('$dateTimeWrite => $dataList \n',
   //       mode: FileMode.append);
   // }
+
+  checkPortAvail() async {
+    List<UsbDevice> devices = await UsbSerial.listDevices();
+    if (devices.isEmpty) {
+      setState(() {
+        _status = "Disconnected";
+        usbConnected = false;
+      });
+    }
+  }
 
   selftestRun(int res) {
     List<int> objSelfTestData = [];
@@ -6100,7 +6111,7 @@ class _CheckPageState extends State<Dashboard> {
                   onTap: () async {
                     lockEnabled ? await getData() : "";
                     setState(() {
-                      lockEnabled ? _setValuesonClick = false:"";
+                      lockEnabled ? _setValuesonClick = false : "";
                       lockEnabled ? modesEnabled = true : "";
                     });
                   },
@@ -15403,7 +15414,8 @@ class _CheckPageState extends State<Dashboard> {
                                 valueColor: AlwaysStoppedAnimation<Color>(
                                   psvIe ? Color(0xFF213855) : Color(0xFFE0E0E0),
                                 ),
-                                value: psvIeValue != null ? psvIeValue / 101 : 0,
+                                value:
+                                    psvIeValue != null ? psvIeValue / 101 : 0,
                               ),
                             ),
                           )
@@ -29853,49 +29865,7 @@ class _CheckPageState extends State<Dashboard> {
                                                                             ? 18
                                                                             : ieDataValue == "2.2:1.0"
                                                                                 ? 19
-                                                                                : ieDataValue == "2.1:1.0" ? 20 : ieDataValue == "2.0:1.0" ? 21 : ieDataValue == "1.9:1.0" ? 22 : ieDataValue == "1.8:1.0" ? 23 : ieDataValue == "1.7:1.0" ? 24 : ieDataValue == "1.6:1.0" ? 25 : ieDataValue == "1.5:1.0" ? 26 : ieDataValue == "1.4:1.0" ? 27 : ieDataValue == "1.3:1.0" ? 28 : ieDataValue == "1.2:1.0" ? 29 : ieDataValue == "1.1:1.0" ? 30 : ieDataValue == "1.0:1.0" ? 31 : ieDataValue == "1.0:1.1" ? 32 : ieDataValue == "1.0:1.2" ? 33 : ieDataValue == "1.0:1.3" ? 34 : ieDataValue == "1.0:1.4" ? 35 : ieDataValue == "1.0:1.5" ? 36 : ieDataValue == "1.0:1.6" ? 37 : ieDataValue == "1.0:1.7" ? 38 : ieDataValue == "1.0:1.8" ? 39 : ieDataValue == "1.0:1.9" ? 40 : ieDataValue == "1.0:2.0" ? 41 : ieDataValue == "1.0:2.1" ? 42 : ieDataValue == "1.0:2.2" ? 43 : ieDataValue == "1.0:2.3" ? 44 : ieDataValue == "1.0:2.4" ? 45 : ieDataValue == "1.0:2.5" ? 46 : ieDataValue == "1.0:2.6" ? 47 : ieDataValue == "1.0:2.7" ? 48 : ieDataValue == "1.0:2.8" ? 49 : ieDataValue == "1.0:2.9" ? 50 : ieDataValue == "1.0:3.0" ? 51 : ieDataValue == "1.0:3.1" ? 52 : ieDataValue == "1.0:3.2" ? 53 : ieDataValue == "1.0:3.3" ? 54 : ieDataValue == "1.0:3.4" ? 55 : ieDataValue == "1.0:3.5" ? 56 : ieDataValue == "1.0:3.6" ? 57 : ieDataValue == "1.0:3.7" ? 58 : ieDataValue == "1.0:3.8" ? 59 : ieDataValue == "1.0:3.9" ? 60 
-                                                                                : ieDataValue == "1.0:4.0" ? 61 
-                                                                                : ieDataValue == "1.0:4.1" ? 62 
-                                                                                : ieDataValue == "1.0:4.2" ? 63 
-                                                                                : ieDataValue == "1.0:4.3" ? 64 
-                                                                                : ieDataValue == "1.0:4.4" ? 65 
-                                                                                : ieDataValue == "1.0:4.5" ? 66 
-                                                                                : ieDataValue == "1.0:4.6" ? 67 
-                                                                                : ieDataValue == "1.0:4.7" ? 68 
-                                                                                : ieDataValue == "1.0:4.8" ? 69 
-                                                                                : ieDataValue == "1.0:4.9" ? 70 
-                                                                                : ieDataValue == "1.0:5.0" ? 71 
-                                                                                : ieDataValue == "1.0:5.1" ? 72 
-                                                                                : ieDataValue == "1.0:5.2" ? 73 
-                                                                                : ieDataValue == "1.0:5.3" ? 74 
-                                                                                : ieDataValue == "1.0:5.4" ? 75 
-                                                                                : ieDataValue == "1.0:5.5" ? 76 
-                                                                                : ieDataValue == "1.0:5.6" ? 77 
-                                                                                : ieDataValue == "1.0:5.7" ? 78 
-                                                                                : ieDataValue == "1.0:5.8" ? 79 
-                                                                                : ieDataValue == "1.0:5.9" ? 80 
-                                                                                : ieDataValue == "1.0:6.0" ? 81 
-                                                                                : ieDataValue == "1.0:6.1" ? 82 
-                                                                                : ieDataValue == "1.0:6.2" ? 83 
-                                                                                : ieDataValue == "1.0:6.3" ? 84 
-                                                                                : ieDataValue == "1.0:6.4" ? 85 
-                                                                                : ieDataValue == "1.0:6.5" ? 86 
-                                                                                : ieDataValue == "1.0:6.6" ? 87 
-                                                                                : ieDataValue == "1.0:6.7" ? 88
-                                                                                : ieDataValue == "1.0:6.8" ? 89
-                                                                                : ieDataValue == "1.0:6.9" ? 90
-                                                                                : ieDataValue == "1.0:7.0" ? 91
-                                                                                : ieDataValue == "1.0:7.1" ? 92
-                                                                                : ieDataValue == "1.0:7.2" ? 93
-                                                                                : ieDataValue == "1.0:7.3" ? 94
-                                                                                : ieDataValue == "1.0:7.4" ? 95
-                                                                                : ieDataValue == "1.0:7.5" ? 96
-                                                                                : ieDataValue == "1.0:7.6" ? 97
-                                                                                : ieDataValue == "1.0:7.7" ? 98
-                                                                                : ieDataValue == "1.0:7.8" ? 99
-                                                                                : ieDataValue == "1.0:7.9" ? 100
-                                                                                : ieDataValue == "1.0:8.0" ? 101
-                                                                                : 0;
+                                                                                : ieDataValue == "2.1:1.0" ? 20 : ieDataValue == "2.0:1.0" ? 21 : ieDataValue == "1.9:1.0" ? 22 : ieDataValue == "1.8:1.0" ? 23 : ieDataValue == "1.7:1.0" ? 24 : ieDataValue == "1.6:1.0" ? 25 : ieDataValue == "1.5:1.0" ? 26 : ieDataValue == "1.4:1.0" ? 27 : ieDataValue == "1.3:1.0" ? 28 : ieDataValue == "1.2:1.0" ? 29 : ieDataValue == "1.1:1.0" ? 30 : ieDataValue == "1.0:1.0" ? 31 : ieDataValue == "1.0:1.1" ? 32 : ieDataValue == "1.0:1.2" ? 33 : ieDataValue == "1.0:1.3" ? 34 : ieDataValue == "1.0:1.4" ? 35 : ieDataValue == "1.0:1.5" ? 36 : ieDataValue == "1.0:1.6" ? 37 : ieDataValue == "1.0:1.7" ? 38 : ieDataValue == "1.0:1.8" ? 39 : ieDataValue == "1.0:1.9" ? 40 : ieDataValue == "1.0:2.0" ? 41 : ieDataValue == "1.0:2.1" ? 42 : ieDataValue == "1.0:2.2" ? 43 : ieDataValue == "1.0:2.3" ? 44 : ieDataValue == "1.0:2.4" ? 45 : ieDataValue == "1.0:2.5" ? 46 : ieDataValue == "1.0:2.6" ? 47 : ieDataValue == "1.0:2.7" ? 48 : ieDataValue == "1.0:2.8" ? 49 : ieDataValue == "1.0:2.9" ? 50 : ieDataValue == "1.0:3.0" ? 51 : ieDataValue == "1.0:3.1" ? 52 : ieDataValue == "1.0:3.2" ? 53 : ieDataValue == "1.0:3.3" ? 54 : ieDataValue == "1.0:3.4" ? 55 : ieDataValue == "1.0:3.5" ? 56 : ieDataValue == "1.0:3.6" ? 57 : ieDataValue == "1.0:3.7" ? 58 : ieDataValue == "1.0:3.8" ? 59 : ieDataValue == "1.0:3.9" ? 60 : ieDataValue == "1.0:4.0" ? 61 : ieDataValue == "1.0:4.1" ? 62 : ieDataValue == "1.0:4.2" ? 63 : ieDataValue == "1.0:4.3" ? 64 : ieDataValue == "1.0:4.4" ? 65 : ieDataValue == "1.0:4.5" ? 66 : ieDataValue == "1.0:4.6" ? 67 : ieDataValue == "1.0:4.7" ? 68 : ieDataValue == "1.0:4.8" ? 69 : ieDataValue == "1.0:4.9" ? 70 : ieDataValue == "1.0:5.0" ? 71 : ieDataValue == "1.0:5.1" ? 72 : ieDataValue == "1.0:5.2" ? 73 : ieDataValue == "1.0:5.3" ? 74 : ieDataValue == "1.0:5.4" ? 75 : ieDataValue == "1.0:5.5" ? 76 : ieDataValue == "1.0:5.6" ? 77 : ieDataValue == "1.0:5.7" ? 78 : ieDataValue == "1.0:5.8" ? 79 : ieDataValue == "1.0:5.9" ? 80 : ieDataValue == "1.0:6.0" ? 81 : ieDataValue == "1.0:6.1" ? 82 : ieDataValue == "1.0:6.2" ? 83 : ieDataValue == "1.0:6.3" ? 84 : ieDataValue == "1.0:6.4" ? 85 : ieDataValue == "1.0:6.5" ? 86 : ieDataValue == "1.0:6.6" ? 87 : ieDataValue == "1.0:6.7" ? 88 : ieDataValue == "1.0:6.8" ? 89 : ieDataValue == "1.0:6.9" ? 90 : ieDataValue == "1.0:7.0" ? 91 : ieDataValue == "1.0:7.1" ? 92 : ieDataValue == "1.0:7.2" ? 93 : ieDataValue == "1.0:7.3" ? 94 : ieDataValue == "1.0:7.4" ? 95 : ieDataValue == "1.0:7.5" ? 96 : ieDataValue == "1.0:7.6" ? 97 : ieDataValue == "1.0:7.7" ? 98 : ieDataValue == "1.0:7.8" ? 99 : ieDataValue == "1.0:7.9" ? 100 : ieDataValue == "1.0:8.0" ? 101 : 0;
 
     return adata;
   }
@@ -29942,49 +29912,7 @@ class _CheckPageState extends State<Dashboard> {
                                                                             ? "2.3:1"
                                                                             : pccmvIeValue == 19
                                                                                 ? "2.2:1"
-                                                                                : pccmvIeValue == 20 ? "2.1:1" : pccmvIeValue == 21 ? "2.0:1" : pccmvIeValue == 22 ? "1.9:1" : pccmvIeValue == 23 ? "1.8:1" : pccmvIeValue == 24 ? "1.7:1" : pccmvIeValue == 25 ? "1.6:1" : pccmvIeValue == 26 ? "1.5:1" : pccmvIeValue == 27 ? "1.4:1" : pccmvIeValue == 28 ? "1.3:1" : pccmvIeValue == 29 ? "1.2:1" : pccmvIeValue == 30 ? "1.1:1" : pccmvIeValue == 31 ? "1:1" : pccmvIeValue == 32 ? "1:1.1" : pccmvIeValue == 33 ? "1:1.2" : pccmvIeValue == 34 ? "1:1.3" : pccmvIeValue == 35 ? "1:1.4" : pccmvIeValue == 36 ? "1:1.5" : pccmvIeValue == 37 ? "1:1.6" : pccmvIeValue == 38 ? "1:1.7" : pccmvIeValue == 39 ? "1:1.8" : pccmvIeValue == 40 ? "1:1.9" : pccmvIeValue == 41 ? "1:2.0" : pccmvIeValue == 42 ? "1:2.1" : pccmvIeValue == 43 ? "1:2.2" : pccmvIeValue == 44 ? "1:2.3" : pccmvIeValue == 45 ? "1:2.4" : pccmvIeValue == 46 ? "1:2.5" : pccmvIeValue == 47 ? "1:2.6" : pccmvIeValue == 48 ? "1:2.7" : pccmvIeValue == 49 ? "1:2.8" : pccmvIeValue == 50 ? "1:2.9" : pccmvIeValue == 51 ? "1:3.0" : pccmvIeValue == 52 ? "1:3.1" : pccmvIeValue == 53 ? "1:3.2" : pccmvIeValue == 54 ? "1:3.3" : pccmvIeValue == 55 ? "1:3.4" : pccmvIeValue == 56 ? "1:3.5" : pccmvIeValue == 57 ? "1:3.6" : pccmvIeValue == 58 ? "1:3.7" : pccmvIeValue == 59 ? "1:3.8" : pccmvIeValue == 60 ? "1:3.9" 
-                                                                                : pccmvIeValue == 61 ? "1:4.0" 
-                                                                                : pccmvIeValue == 62 ? "1:4.1"
-                                                                                : pccmvIeValue == 63 ? "1:4.2"
-                                                                                : pccmvIeValue == 64 ? "1:4.3"
-                                                                                : pccmvIeValue == 65 ? "1:4.4"
-                                                                                : pccmvIeValue == 66 ? "1:4.5"
-                                                                                : pccmvIeValue == 67 ? "1:4.6"
-                                                                                : pccmvIeValue == 68 ? "1:4.7"
-                                                                                : pccmvIeValue == 69 ? "1:4.8"
-                                                                                : pccmvIeValue == 70 ? "1:4.9"
-                                                                                : pccmvIeValue == 71 ? "1:5.0"
-                                                                                : pccmvIeValue == 72 ? "1:5.1"
-                                                                                : pccmvIeValue == 73 ? "1:5.2"
-                                                                                : pccmvIeValue == 74 ? "1:5.3"
-                                                                                : pccmvIeValue == 75 ? "1:5.4"
-                                                                                : pccmvIeValue == 76 ? "1:5.5"
-                                                                                : pccmvIeValue == 77 ? "1:5.6"
-                                                                                : pccmvIeValue == 78 ? "1:5.7"
-                                                                                : pccmvIeValue == 79 ? "1:5.8"
-                                                                                : pccmvIeValue == 80 ? "1:5.9"
-                                                                                : pccmvIeValue == 81 ? "1:6.0"
-                                                                                : pccmvIeValue == 82 ? "1:6.1"
-                                                                                : pccmvIeValue == 83 ? "1:6.2"
-                                                                                : pccmvIeValue == 84 ? "1:6.3"
-                                                                                : pccmvIeValue == 85 ? "1:6.4"
-                                                                                : pccmvIeValue == 86 ? "1:6.5"
-                                                                                : pccmvIeValue == 87 ? "1:6.6"
-                                                                                : pccmvIeValue == 88 ? "1:6.7"
-                                                                                : pccmvIeValue == 89 ? "1:6.8"
-                                                                                : pccmvIeValue == 90 ? "1:6.9"
-                                                                                : pccmvIeValue == 91 ? "1:7.0"
-                                                                                : pccmvIeValue == 92 ? "1:7.1"
-                                                                                : pccmvIeValue == 93 ? "1:7.2"
-                                                                                : pccmvIeValue == 94 ? "1:7.3"
-                                                                                : pccmvIeValue == 95 ? "1:7.4"
-                                                                                : pccmvIeValue == 96 ? "1:7.5"
-                                                                                : pccmvIeValue == 97 ? "1:7.6"
-                                                                                : pccmvIeValue == 98 ? "1:7.7"
-                                                                                : pccmvIeValue == 99 ? "1:7.8"
-                                                                                : pccmvIeValue == 100 ? "1:7.9"
-                                                                                : pccmvIeValue == 101 ? "1:8.0"
-                                                                                : "0".toString();
+                                                                                : pccmvIeValue == 20 ? "2.1:1" : pccmvIeValue == 21 ? "2.0:1" : pccmvIeValue == 22 ? "1.9:1" : pccmvIeValue == 23 ? "1.8:1" : pccmvIeValue == 24 ? "1.7:1" : pccmvIeValue == 25 ? "1.6:1" : pccmvIeValue == 26 ? "1.5:1" : pccmvIeValue == 27 ? "1.4:1" : pccmvIeValue == 28 ? "1.3:1" : pccmvIeValue == 29 ? "1.2:1" : pccmvIeValue == 30 ? "1.1:1" : pccmvIeValue == 31 ? "1:1" : pccmvIeValue == 32 ? "1:1.1" : pccmvIeValue == 33 ? "1:1.2" : pccmvIeValue == 34 ? "1:1.3" : pccmvIeValue == 35 ? "1:1.4" : pccmvIeValue == 36 ? "1:1.5" : pccmvIeValue == 37 ? "1:1.6" : pccmvIeValue == 38 ? "1:1.7" : pccmvIeValue == 39 ? "1:1.8" : pccmvIeValue == 40 ? "1:1.9" : pccmvIeValue == 41 ? "1:2.0" : pccmvIeValue == 42 ? "1:2.1" : pccmvIeValue == 43 ? "1:2.2" : pccmvIeValue == 44 ? "1:2.3" : pccmvIeValue == 45 ? "1:2.4" : pccmvIeValue == 46 ? "1:2.5" : pccmvIeValue == 47 ? "1:2.6" : pccmvIeValue == 48 ? "1:2.7" : pccmvIeValue == 49 ? "1:2.8" : pccmvIeValue == 50 ? "1:2.9" : pccmvIeValue == 51 ? "1:3.0" : pccmvIeValue == 52 ? "1:3.1" : pccmvIeValue == 53 ? "1:3.2" : pccmvIeValue == 54 ? "1:3.3" : pccmvIeValue == 55 ? "1:3.4" : pccmvIeValue == 56 ? "1:3.5" : pccmvIeValue == 57 ? "1:3.6" : pccmvIeValue == 58 ? "1:3.7" : pccmvIeValue == 59 ? "1:3.8" : pccmvIeValue == 60 ? "1:3.9" : pccmvIeValue == 61 ? "1:4.0" : pccmvIeValue == 62 ? "1:4.1" : pccmvIeValue == 63 ? "1:4.2" : pccmvIeValue == 64 ? "1:4.3" : pccmvIeValue == 65 ? "1:4.4" : pccmvIeValue == 66 ? "1:4.5" : pccmvIeValue == 67 ? "1:4.6" : pccmvIeValue == 68 ? "1:4.7" : pccmvIeValue == 69 ? "1:4.8" : pccmvIeValue == 70 ? "1:4.9" : pccmvIeValue == 71 ? "1:5.0" : pccmvIeValue == 72 ? "1:5.1" : pccmvIeValue == 73 ? "1:5.2" : pccmvIeValue == 74 ? "1:5.3" : pccmvIeValue == 75 ? "1:5.4" : pccmvIeValue == 76 ? "1:5.5" : pccmvIeValue == 77 ? "1:5.6" : pccmvIeValue == 78 ? "1:5.7" : pccmvIeValue == 79 ? "1:5.8" : pccmvIeValue == 80 ? "1:5.9" : pccmvIeValue == 81 ? "1:6.0" : pccmvIeValue == 82 ? "1:6.1" : pccmvIeValue == 83 ? "1:6.2" : pccmvIeValue == 84 ? "1:6.3" : pccmvIeValue == 85 ? "1:6.4" : pccmvIeValue == 86 ? "1:6.5" : pccmvIeValue == 87 ? "1:6.6" : pccmvIeValue == 88 ? "1:6.7" : pccmvIeValue == 89 ? "1:6.8" : pccmvIeValue == 90 ? "1:6.9" : pccmvIeValue == 91 ? "1:7.0" : pccmvIeValue == 92 ? "1:7.1" : pccmvIeValue == 93 ? "1:7.2" : pccmvIeValue == 94 ? "1:7.3" : pccmvIeValue == 95 ? "1:7.4" : pccmvIeValue == 96 ? "1:7.5" : pccmvIeValue == 97 ? "1:7.6" : pccmvIeValue == 98 ? "1:7.7" : pccmvIeValue == 99 ? "1:7.8" : pccmvIeValue == 100 ? "1:7.9" : pccmvIeValue == 101 ? "1:8.0" : "0".toString();
 
     var dataI = data.split(":")[0];
     var dataE = data.split(":")[1];
@@ -31309,7 +31237,7 @@ class _CheckPageState extends State<Dashboard> {
       preferences.setInt('autodefaultValue', autodefaultValue);
       preferences.setInt('autoPcMaxValue', autoPcMaxValue);
 
-      sendDataUsbConnection(modeWriteList, 2);
+      // sendDataUsbConnection(modeWriteList, 2);
       if (_status == "Connected") {
         preferences.setBool("play", false);
         sendDataUsbConnection(modeWriteList, 2);
@@ -35130,7 +35058,9 @@ class _CheckPageState extends State<Dashboard> {
       sendData(listCrcDataC, 2);
     }
     setState(() {
-      _setValuesonClick = true;
+      if (modesEnabled == false) {
+        _setValuesonClick = true;
+      }
     });
   }
 
