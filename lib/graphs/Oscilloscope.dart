@@ -96,7 +96,7 @@ class _TracePainter extends CustomPainter {
       this.yRange,
       this.yMin,
       this.dataSet,
-      this.xScale = 3.0,
+      this.xScale = 16.0,
       this.traceColor = Colors.white});
 
   @override
@@ -117,7 +117,7 @@ class _TracePainter extends CustomPainter {
     int length = dataSet.length;
     if (length > 0) {
       // transform data set to just what we need if bigger than the width(otherwise this would be a memory hog)
-      if (length > 250) {
+      if (length > 48) {
         dataSet.removeAt(0);
         length = dataSet.length;
       }

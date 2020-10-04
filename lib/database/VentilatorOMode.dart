@@ -28,7 +28,15 @@ class VentilatorOMode {
       vtValue;
   double pressureValues, flowValues, volumeValues;
   String dateTime;
-  String patientName, patientId, alarmC, alarmP, alarmActive;
+  String patientName,
+      patientId,
+      alarmC,
+      alarmP,
+      alarmActive,
+      amsParamter,
+      leakVolume,
+      peakFlow,
+      spontaneous;
 
   VentilatorOMode(
       this.patientId,
@@ -64,7 +72,11 @@ class VentilatorOMode {
       this.globalCounterNo,
       this.alarmC,
       this.alarmP,
-      this.alarmActive);
+      this.alarmActive,
+      this.amsParamter,
+      this.leakVolume,
+      this.peakFlow,
+      this.spontaneous);
 
   // Map<String, dynamic> toMap() {
   //   var map = <String, dynamic>{
@@ -134,6 +146,11 @@ class VentilatorOMode {
     alarmC = map['alarmCodes'];
     alarmP = map['alarmPriority'];
     alarmActive = map['alarmActive'];
+
+    amsParamter = map['amsDisplayParamter'];
+    leakVolume = map['leakVolumeDisplay'];
+    peakFlow = map['peakFlowDisplay'];
+    spontaneous = map['spontaneousDisplay'];
   }
 
   VentilatorOMode.fromJson(Map<String, dynamic> json)
@@ -168,7 +185,11 @@ class VentilatorOMode {
         globalCounterNo = json['globalCounterNo'],
         alarmC = json['alarmCodes'],
         alarmP = json['alarmPriority'],
-        alarmActive = json['alarmActive'];
+        alarmActive = json['alarmActive'],
+        amsParamter = json['amsDisplayParamter'],
+        peakFlow = json['peakFlowDisplay'],
+        leakVolume = json['leakVolumeDisplay'],
+        spontaneous = json['spontaneousDisplay'];
 
   VentilatorOMode.map(dynamic obj) {
     this.id = obj['id'];
@@ -201,6 +222,10 @@ class VentilatorOMode {
     this.alarmC = obj['alarmCodes'];
     this.alarmP = obj['alarmPriority'];
     this.alarmActive = obj['alarmActive'];
+    this.amsParamter = obj['amsDisplayParamter'];
+    this.leakVolume = obj['leakVolumeDisplay'];
+    this.peakFlow = obj['peakFlowDisplay'];
+    this.spontaneous = obj['spontaneousDisplay'];
   }
 }
 

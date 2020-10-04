@@ -64,7 +64,10 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
       itrigValue = "0",
       pplateauDisplay = "0",
       atime = "0",
-      tipsv = "0", leakVolumeDisplay="0", peakFlowDisplay="0", spontaneousDisplay="0",
+      tipsv = "0",
+      leakVolumeDisplay = "0",
+      peakFlowDisplay = "0",
+      spontaneousDisplay = "0",
       vtValue = "0";
 
   int minRrtotal = 1,
@@ -79,9 +82,8 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
       maxpeep = 40,
       minfio2 = 21,
       maxfio2 = 100;
-  
+
   final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
-  
 
   @override
   void initState() {
@@ -171,6 +173,20 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
       alarmMessage = vomL[currentValue].alarmC;
       alarmPriority = vomL[currentValue].alarmP;
 
+      spontaneousDisplay = vomL[currentValue].spontaneous;
+      leakVolumeDisplay = vomL[currentValue].leakVolume;
+      peakFlowDisplay = vomL[currentValue].peakFlow;
+      var amsData = vomL[currentValue].amsParamter;
+
+
+        if (amsData == "1") {
+        amsDisplayParamter = "A";
+      } else if (amsData == "2") {
+        amsDisplayParamter = "M";
+      } else if (amsData == "3") {
+        amsDisplayParamter = "S";
+      }
+
       if (operatinModeR == "1") {
         setState(() {
           modeName = "VACV";
@@ -234,6 +250,8 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
           lungImage = "5";
         });
       }
+
+    
 
       if (alarmActive == '1') {
         setState(() {
@@ -448,8 +466,8 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
     //     dataSet: vtPoints);
 
     return Scaffold(
-       key: _scaffoldKey,
-       drawer: Container(
+        key: _scaffoldKey,
+        drawer: Container(
           // width: 190,
           child: Theme(
             data: Theme.of(context).copyWith(
@@ -629,10 +647,9 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                   child: Padding(
                                     padding: const EdgeInsets.only(right: 5.0),
                                     child: Text(
-                                      leakVolumeDisplay  == null
+                                      leakVolumeDisplay == null
                                           ? "0"
-                                          : (leakVolumeDisplay)
-                                              .toString(),
+                                          : (leakVolumeDisplay).toString(),
                                       // "0000",
                                       style: TextStyle(
                                           color: Colors.yellow, fontSize: 35),
@@ -763,7 +780,9 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                     child: Text(
                                       peakFlowDisplay == null
                                           ? "0"
-                                          : ((int.tryParse(peakFlowDisplay) * 60) / 1000)
+                                          : ((int.tryParse(peakFlowDisplay) *
+                                                      60) /
+                                                  1000)
                                               .toStringAsFixed(3),
                                       // "00",
                                       style: TextStyle(
@@ -899,7 +918,9 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
                                           child: Text(
                                             spontaneousDisplay == null
                                                 ? "0"
-                                                : (int.tryParse(spontaneousDisplay)/ 1000)
+                                                : (int.tryParse(
+                                                            spontaneousDisplay) /
+                                                        1000)
                                                     .toStringAsFixed(3),
                                             style: TextStyle(
                                                 color: Colors.blue,
@@ -3340,16 +3361,16 @@ class StateViewLogPage extends State<ViewLogDataDisplayPage> {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
           InkWell(
-                onTap: () {
-                  _scaffoldKey.currentState.openDrawer();
-                },
-                child: Container(
-                    decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(5),
-                        color: Colors.white),
-                    child: Icon(Icons.keyboard_arrow_right,
-                        size: 40, color: Colors.black.withOpacity(0.9))),
-              ),
+            onTap: () {
+              _scaffoldKey.currentState.openDrawer();
+            },
+            child: Container(
+                decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5),
+                    color: Colors.white),
+                child: Icon(Icons.keyboard_arrow_right,
+                    size: 40, color: Colors.black.withOpacity(0.9))),
+          ),
           Row(
             children: [
               Container(

@@ -130,7 +130,8 @@ class _CheckPageState extends State<Dashboard> {
       vteMeanValue,
       pawMeanValue,
       rateMeanValue;
-  double temp, temp1, temp3;
+  double tempPressure, temp1Volume, temp3Flow;
+  double tempfPressure, temp1fVolume, temp3fFlow;
   int ieValue;
   double peepHeight = 280, psHeight = 280;
   String modeName = "", dateandTime;
@@ -790,6 +791,7 @@ class _CheckPageState extends State<Dashboard> {
   bool _isFlagTest = false;
   bool getportsData = false;
   TabController _controller;
+  var varia = 0;
   @override
   initState() {
     super.initState();
@@ -807,9 +809,37 @@ class _CheckPageState extends State<Dashboard> {
     });
     _getPorts();
 
+    _timer1 = Timer.periodic(Duration(milliseconds: 150), (timer) async {
+      if (_status == "Connected" && getOpertingMode == true) {
+        setState(() {
+          if (pressurePoints.length >= 48) {
+            pressurePoints.removeAt(0);
+            pressurePoints.add(tempfPressure);
+          } else {
+            pressurePoints.add(tempfPressure);
+          }
+
+          if (volumePoints.length >= 48) {
+            volumePoints.removeAt(0);
+            volumePoints.add(temp1fVolume);
+          } else {
+            volumePoints.add(temp1fVolume);
+          }
+
+          if (flowPoints.length >= 48) {
+            flowPoints.removeAt(0);
+            flowPoints.add(temp3fFlow);
+          } else {
+            flowPoints.add(temp3fFlow);
+          }
+        });
+      }
+    });
+
     _timer2 = Timer.periodic(Duration(seconds: 1), (timer) async {
-      checkPortAvail();
+      // checkPortAvail();
       if (_status != "Connected") {
+        // Fluttertoast.showToast(msg: "Dis");
         var now = new DateTime.now();
         setState(() {
           presentTime = DateFormat("yyyy-MM-dd HH:mm:ss").format(now);
@@ -828,6 +858,8 @@ class _CheckPageState extends State<Dashboard> {
               previousCode = 106;
               exitSelfTest = 1;
               textText = "";
+              check1 = 1;
+              check2 = 1;
               // pipValue = 0;
               // cc = 0;
               // mvValue = 0;
@@ -1311,6 +1343,8 @@ class _CheckPageState extends State<Dashboard> {
     _transaction.dispose();
     _timer.cancel();
     _timer1.cancel();
+    _timer2.cancel();
+    _timer3.cancel();
     super.dispose();
   }
 
@@ -1346,6 +1380,8 @@ class _CheckPageState extends State<Dashboard> {
         }
         preferences.setBool('zeros', false);
       }
+      check1 = preferences.getInt('check1');
+      check2 = preferences.getInt('check2');
       var checkData = preferences.getString('checkMode');
       // if (_status == "Connected") {
       callibrationEnabled = preferences.getBool("calli");
@@ -2344,6 +2380,7 @@ class _CheckPageState extends State<Dashboard> {
                                           child: Text(
                                             spontaneousDisplay == null
                                                 ? "0"
+                                              
                                                 : (spontaneousDisplay / 1000)
                                                     .toStringAsFixed(3),
                                             style: TextStyle(
@@ -2510,25 +2547,27 @@ class _CheckPageState extends State<Dashboard> {
               //       )
               //
               //  : Container(),
-              alarmEnabled
-                  ? alarmClick()
-                  : modesEnabled
-                      ? modesClick()
+              check1 == 0 && check2 == 0
+                  ? selfTestStartScreen()
+                  : alarmEnabled
+                      ? alarmClick()
+                      : modesEnabled
+                          ? modesClick()
 
-                      //     ? Navigator.push(
-                      //   context,
-                      //   MaterialPageRoute(builder: (context) => NewTreatmentScreen()),)
-                      : monitorEnabled
-                          ? monitorClick()
-                          : selfTestingEnabled
-                              ? selfTestingData()
-                              : callibrationEnabled
-                                  ? callibrationData()
-                                  : batterChargingScreen
-                                      ? batteryCharginScreen()
-                                      : oxygenSettingsEnabled
-                                          ? oxygenSettingScreen()
-                                          : Container(),
+                          //     ? Navigator.push(
+                          //   context,
+                          //   MaterialPageRoute(builder: (context) => NewTreatmentScreen()),)
+                          : monitorEnabled
+                              ? monitorClick()
+                              : selfTestingEnabled
+                                  ? selfTestingData()
+                                  : callibrationEnabled
+                                      ? callibrationData()
+                                      : batterChargingScreen
+                                          ? batteryCharginScreen()
+                                          : oxygenSettingsEnabled
+                                              ? oxygenSettingScreen()
+                                              : Container(),
 
               // _buttonPressed
               //     ? Center(
@@ -2559,6 +2598,19 @@ class _CheckPageState extends State<Dashboard> {
   //     await _port.write(Uint8List.fromList(objSelfTestData));
   //   }
   // }
+
+  selfTestStartScreen() {
+    return Container(
+        color: Color(0xFF171e27),
+        child: Column(
+          children: <Widget>[
+            Image.asset('assets/images/logo.png', width: 420),
+            Center(
+                child: Text("System Initializing..",
+                    style: TextStyle(color: Colors.white, fontSize: 48))),
+          ],
+        ));
+  }
 
   endDrawerMethod() {
     return Container(
@@ -5929,7 +5981,7 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                 ),
                 Text(
-                  "v1.8.5x",
+                  "v1.8.5y",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: _isTab10 ? 18 : 10,
@@ -6082,9 +6134,10 @@ class _CheckPageState extends State<Dashboard> {
                 InkWell(
                   onTap: () {
                     setState(() {
-                      lockEnabled ? alarmEnabled = true : "";
-
-                      lockEnabled ? alarmEnabled = true : "";
+                      if (check1 == 1 && check2 == 1) {
+                        lockEnabled ? alarmEnabled = true : "";
+                        lockEnabled ? alarmEnabled = true : "";
+                      }
                     });
                   },
                   child: Center(
@@ -6110,10 +6163,12 @@ class _CheckPageState extends State<Dashboard> {
                 InkWell(
                   onTap: () async {
                     lockEnabled ? await getData() : "";
-                    setState(() {
-                      lockEnabled ? _setValuesonClick = false : "";
-                      lockEnabled ? modesEnabled = true : "";
-                    });
+                    if (check1 == 1 && check2 == 1) {
+                      setState(() {
+                        lockEnabled ? _setValuesonClick = false : "";
+                        lockEnabled ? modesEnabled = true : "";
+                      });
+                    }
                   },
                   child: Center(
                     child: Container(
@@ -9334,6 +9389,7 @@ class _CheckPageState extends State<Dashboard> {
                   _scaffoldKey.currentState.openDrawer();
                 },
                 child: Container(
+                    margin: EdgeInsets.only(left: 10),
                     decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(5),
                         color: Colors.white),
@@ -9567,13 +9623,15 @@ class _CheckPageState extends State<Dashboard> {
               InkWell(
                 onTap: () {
                   setState(() {
-                    preferences.setBool('_isFlagTest', true);
-                    lockEnabled
-                        ? Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => ViewLogPatientList()))
-                        : "";
+                    if (check1 == 1 && check2 == 1) {
+                      preferences.setBool('_isFlagTest', true);
+                      lockEnabled
+                          ? Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) => ViewLogPatientList()))
+                          : "";
+                    }
                   });
                 },
                 child: Center(
@@ -33556,7 +33614,7 @@ class _CheckPageState extends State<Dashboard> {
             ));
   }
 
-  Future serializeEventData(Uint8List event) async {
+  serializeEventData(Uint8List event) async {
     // Fluttertoast.showToast(msg: event.toString());
     if (event != null) {
       // _writeStringToTextFile(event.toString());
@@ -33595,7 +33653,7 @@ class _CheckPageState extends State<Dashboard> {
       } else {
         list = [];
       }
-      event.clear();
+      // event.clear();
     } else {
       setState(() {
         respiratoryEnable = false;
@@ -33737,101 +33795,110 @@ class _CheckPageState extends State<Dashboard> {
 
     // if (_startRecordData == true) {
     // pressure graph
-    temp = (((fList[4] << 8) + fList[5])).toDouble(); // pressure points 35,36
+    tempPressure =
+        (((fList[4] << 8) + fList[5])).toDouble(); // pressure points 35,36
 
-    if (temp > 40000) {
+    if (tempPressure > 40000) {
       setState(() {
-        temp = -((65535 - temp) / 100);
+        tempPressure = -((65535 - tempPressure) / 100);
       });
     } else {
       setState(() {
-        temp = temp / 100;
+        tempPressure = tempPressure / 100;
       });
     }
     // pPoints.add(GraphPoint(x: 0.0, y: random.nextInt(5).toDouble()));
-    temp1 = ((fList[10] << 8) + fList[11]).toDouble(); // volume points 59,60
-    temp3 = ((((fList[6] << 8) + fList[7])) - (((fList[8] << 8) + fList[9])))
-        .toDouble();
-    temp3 = temp3 * 0.06;
+    temp1Volume =
+        ((fList[10] << 8) + fList[11]).toDouble(); // volume points 59,60
+    temp3Flow =
+        ((((fList[6] << 8) + fList[7])) - (((fList[8] << 8) + fList[9])))
+            .toDouble();
+    temp3Flow = temp3Flow * 0.06;
 
     double temp3I = ((fList[6] << 8) + fList[7]).toDouble() * 0.06;
     double temp3E = ((fList[8] << 8) + fList[9]).toDouble() * 0.06;
 
-    if (getOpertingMode == true) {
-      if (pressurePoints.length >= 250) {
-        setState(() {
-          // if (temp > pressureMax) {
-          //   // pressureMax = temp.toInt() + 5;
-          //   pressureMax = 100;
-          // }
-          pressurePoints.removeAt(0);
-          pressurePoints.add(temp);
-          // Fluttertoast.showToast(msg: temp.toString());
-        });
-      } else {
-        // if (temp > pressureMax) {
-        //   pressureMax = 100;
-        // }
-        pressurePoints.add(temp);
-      }
+    setState(() {
+      tempfPressure = tempPressure;
+      temp1fVolume = temp1Volume;
+      temp3fFlow = temp3Flow;
+    });
 
-      if (volumePoints.length >= 250) {
-        setState(() {
-          // if (temp1 > volumeMax) {
-          //   // volumeMax = temp1.toInt() + 5;
-          //   volumeMax = 3000;
-          // }
-          volumePoints.removeAt(0);
-          volumePoints.add(temp1);
-        });
-      } else {
-        // if (temp1 > volumeMax) {
-        //   volumeMax = 3000;
-        // }
-        volumePoints.add(temp1);
-      }
+    // if (getOpertingMode == true) {
+    //   if (pressurePoints.length >= 250) {
+    //     setState(() {
+    //       // if (temp > pressureMax) {
+    //       //   // pressureMax = temp.toInt() + 5;
+    //       //   pressureMax = 100;
+    //       // }
+    //       pressurePoints.removeAt(0);
+    //       pressurePoints.add(temp);
+    //       // Fluttertoast.showToast(msg: temp.toString());
+    //     });
+    //   } else {
+    //     // if (temp > pressureMax) {
+    //     //   pressureMax = 100;
+    //     // }
+    //     pressurePoints.add(temp);
+    //   }
 
-      // if (flowiPoints.length >= 300) {
-      //   setState(() {
-      //     if (temp3I > flowIMax) {
-      //       flowIMax = temp3I.toInt() + 5;
-      //     }
-      //     if (temp3E > flowEMax) {
-      //       flowEMax = temp3E.toInt() + 5;
-      //     }
-      //     flowiPoints.removeAt(0);
-      //     flowePoints.removeAt(0);
-      //     flowiPoints.add(temp3I);
-      //     flowePoints.add(temp3E);
-      //   });
-      // } else {
-      //   if (temp3I > flowIMax) {
-      //     flowIMax = temp3I.toInt() + 5;
-      //   }
-      //   if (temp3E > flowEMax) {
-      //     flowEMax = temp3E.toInt() + 5;
-      //   }
-      //   flowiPoints.add(temp3I);
-      //   flowePoints.add(temp3E);
-      // }
+    //   if (volumePoints.length >= 250) {
+    //     setState(() {
+    //       // if (temp1 > volumeMax) {
+    //       //   // volumeMax = temp1.toInt() + 5;
+    //       //   volumeMax = 3000;
+    //       // }
+    //       volumePoints.removeAt(0);
+    //       volumePoints.add(temp1);
+    //     });
+    //   } else {
+    //     // if (temp1 > volumeMax) {
+    //     //   volumeMax = 3000;
+    //     // }
+    //     volumePoints.add(temp1);
+    //   }
 
-      if (flowPoints.length >= 250) {
-        setState(() {
-          // if (temp3 > volumeMax) {
-          //   // flowIMax = temp3I.toInt() + 5;
-          //   flowIMax =200;
-          // }
-          flowPoints.removeAt(0);
-          flowPoints.add(temp3);
-        });
-      } else {
-        // if (temp3 > volumeMax) {
-        //   // flowEMax = temp3E.toInt() + 5;
-        //   flowEMax = 90;
-        // }
-        flowPoints.add(temp3);
-      }
-    }
+    //   // if (flowiPoints.length >= 300) {
+    //   //   setState(() {
+    //   //     if (temp3I > flowIMax) {
+    //   //       flowIMax = temp3I.toInt() + 5;
+    //   //     }
+    //   //     if (temp3E > flowEMax) {
+    //   //       flowEMax = temp3E.toInt() + 5;
+    //   //     }
+    //   //     flowiPoints.removeAt(0);
+    //   //     flowePoints.removeAt(0);
+    //   //     flowiPoints.add(temp3I);
+    //   //     flowePoints.add(temp3E);
+    //   //   });
+    //   // } else {
+    //   //   if (temp3I > flowIMax) {
+    //   //     flowIMax = temp3I.toInt() + 5;
+    //   //   }
+    //   //   if (temp3E > flowEMax) {
+    //   //     flowEMax = temp3E.toInt() + 5;
+    //   //   }
+    //   //   flowiPoints.add(temp3I);
+    //   //   flowePoints.add(temp3E);
+    //   // }
+
+    //   if (flowPoints.length >= 250) {
+    //     setState(() {
+    //       // if (temp3 > volumeMax) {
+    //       //   // flowIMax = temp3I.toInt() + 5;
+    //       //   flowIMax =200;
+    //       // }
+    //       flowPoints.removeAt(0);
+    //       flowPoints.add(temp3);
+    //     });
+    //   } else {
+    //     // if (temp3 > volumeMax) {
+    //     //   // flowEMax = temp3E.toInt() + 5;
+    //     //   flowEMax = 90;
+    //     // }
+    //     flowPoints.add(temp3);
+    //   }
+    // }
 
     if (fList[3] == 1) {
       ioreDisplayParamter = "I";
@@ -33849,9 +33916,9 @@ class _CheckPageState extends State<Dashboard> {
           inhalationFlag = false;
           preferences.setBool('inhalationFlag', false);
         }
-        datapv.add(Point(temp, temp1));
-        datapf.add(Point(temp3, temp));
-        datavf.add(Point(temp1, temp3));
+        datapv.add(Point(tempPressure, temp1Volume));
+        datapf.add(Point(temp3Flow, tempPressure));
+        datavf.add(Point(temp1Volume, temp3Flow));
         breathCycle = true;
       });
     } else if (fList[3] == 2 &&
@@ -33891,9 +33958,9 @@ class _CheckPageState extends State<Dashboard> {
           datapf.clear();
           breathCycle = false;
         }
-        datapv.add(Point(temp, temp1));
-        datapf.add(Point(temp3, temp));
-        datavf.add(Point(temp1, temp3));
+        datapv.add(Point(tempPressure, temp1Volume));
+        datapf.add(Point(temp3Flow, tempPressure));
+        datavf.add(Point(temp1Volume, temp3Flow));
       });
     }
 
@@ -33918,12 +33985,30 @@ class _CheckPageState extends State<Dashboard> {
 
       int vteValueCheck = ((finalList[4] << 8) + finalList[5]); //5 6
 
+      // ignore: unrelated_type_equality_checks
       if ((vteValueCheck != "" || vteValueCheck != null) &&
           vteValueCheck.round() >= 0 &&
           vteValueCheck.round() <= 3500) {
         setState(() {
-          vteMinValue = vteValue - vtValue;
-          vteValue = ((finalList[4] << 8) + finalList[5]);
+          var checkvteValue = (finalList[85] << 8) + finalList[86];
+          var checkmvValue = (finalList[87] << 8) + finalList[88];
+          
+          // if ((finalList[84] == 1) && (varia == 0)) {
+          //   Fluttertoast.showToast(
+          //       msg: "vte" +
+          //           checkvteValue.toString() +
+          //           " mv" +
+          //           (checkmvValue / 1000).toString());
+          //   varia = 1;
+          // } else {
+          //   varia = 0;
+          // }
+          // if(vteValue==checkvteValue){
+
+          vteValue = vteValueCheck;
+          // }else{
+          //   vteValue = checkvteValue;
+          // }
         });
       }
       int mvValueCheck = (((finalList[8] << 8) + finalList[9])).toInt();
@@ -33938,6 +34023,7 @@ class _CheckPageState extends State<Dashboard> {
 
       int rrtotalCheck = ((finalList[10] << 8) + finalList[11]).toInt(); //11,12
 
+      // ignore: unrelated_type_equality_checks
       if (rrtotalCheck != "" &&
           rrtotalCheck.round() >= 0 &&
           rrtotalCheck.round() <= 100) {
@@ -33986,6 +34072,8 @@ class _CheckPageState extends State<Dashboard> {
       setState(() {
         check1 = finalList[32];
         check2 = finalList[33];
+        preferences.setInt('check1', check1);
+        preferences.setInt('check2', check2);
       });
 
       var highPriorityAlarm = 0;
@@ -34858,16 +34946,16 @@ class _CheckPageState extends State<Dashboard> {
               atimeValue.toString(),
               tipsvValue.toString(),
               pplateauDisplay.toStringAsFixed(0),
-              temp,
-              temp3,
-              temp1,
+              tempPressure,
+              temp3Flow,
+              temp1Volume,
               operatinModeR.toString(),
               lungImage.toString(),
               paw.toString(),
               globalCounterNo.toString(),
               ((finalList[106] << 8) + finalList[107]).toString(),
               finalList[109].toString(),
-              alarmActive);
+              alarmActive,amsDisplayParamter,leakVolumeDisplay.toString(),peakFlowDisplay.toString(),spontaneousDisplay.toString());
           saveData(data, patientId);
         } else {
           var data = VentilatorOMode(
@@ -34895,16 +34983,16 @@ class _CheckPageState extends State<Dashboard> {
             atimeValue.toString(),
             tipsvValue.toString(),
             pplateauDisplay.toStringAsFixed(0),
-            temp,
-            temp3,
-            temp1,
+            tempPressure,
+            temp3Flow,
+            temp1Volume,
             operatinModeR.toString(),
             lungImage.toString(),
             paw.toString(),
             globalCounterNo.toString(),
             ((finalList[106] << 8) + finalList[107]).toString(),
             finalList[109].toString(),
-            alarmActive,
+            alarmActive,amsDisplayParamter,leakVolumeDisplay.toString(),peakFlowDisplay.toString(),spontaneousDisplay.toString()
           );
           saveData(data, patientId);
         }
@@ -34915,90 +35003,90 @@ class _CheckPageState extends State<Dashboard> {
     });
   }
 
-  extractingBreathData(List<int> breathList) {
-    var index = 0;
+  // extractingBreathData(List<int> breathList) {
+  //   var index = 0;
 
-    if (breathList[index++] == 2) {
-      List<int> pressureB = [];
-      List<int> flowB = [];
-      List<int> volumeB = [];
-      var lengthPacket = breathList[index++];
-      var pressurePostiveLength = breathList[index++];
+  //   if (breathList[index++] == 2) {
+  //     List<int> pressureB = [];
+  //     List<int> flowB = [];
+  //     List<int> volumeB = [];
+  //     var lengthPacket = breathList[index++];
+  //     var pressurePostiveLength = breathList[index++];
 
-      var pressureNegativeLength;
-      var flowPostiveLength;
-      var flowNegativeLength;
-      var volumePostiveLength;
-      var volumeNegativeLength;
+  //     var pressureNegativeLength;
+  //     var flowPostiveLength;
+  //     var flowNegativeLength;
+  //     var volumePostiveLength;
+  //     var volumeNegativeLength;
 
-      for (int i = 0; i < pressurePostiveLength; i++) {
-        pressureB.add(breathList[3 + i]);
-      }
+  //     for (int i = 0; i < pressurePostiveLength; i++) {
+  //       pressureB.add(breathList[3 + i]);
+  //     }
 
-      index = index + pressurePostiveLength;
-      pressureNegativeLength = breathList[index];
-      // print(breathList);
+  //     index = index + pressurePostiveLength;
+  //     pressureNegativeLength = breathList[index];
+  //     // print(breathList);
 
-      for (int i = index + 1; i < pressureNegativeLength + (index + 1); i++) {
-        pressureB.add(breathList[i]);
-      }
+  //     for (int i = index + 1; i < pressureNegativeLength + (index + 1); i++) {
+  //       pressureB.add(breathList[i]);
+  //     }
 
-      index = index + pressureNegativeLength + 1;
-      flowPostiveLength = breathList[index];
-      // print(breathList);
+  //     index = index + pressureNegativeLength + 1;
+  //     flowPostiveLength = breathList[index];
+  //     // print(breathList);
 
-      for (int i = index + 1; i < flowPostiveLength + (index + 1); i++) {
-        flowB.add(breathList[i]);
-      }
+  //     for (int i = index + 1; i < flowPostiveLength + (index + 1); i++) {
+  //       flowB.add(breathList[i]);
+  //     }
 
-      index = index + flowPostiveLength + 1;
-      flowNegativeLength = breathList[index];
+  //     index = index + flowPostiveLength + 1;
+  //     flowNegativeLength = breathList[index];
 
-      for (int i = index + 1; i < flowNegativeLength + (index + 1); i++) {
-        flowB.add(-(breathList[i]));
-      }
+  //     for (int i = index + 1; i < flowNegativeLength + (index + 1); i++) {
+  //       flowB.add(-(breathList[i]));
+  //     }
 
-      index = index + flowNegativeLength + 1;
-      volumePostiveLength = breathList[index];
-      // print(breathList);
+  //     index = index + flowNegativeLength + 1;
+  //     volumePostiveLength = breathList[index];
+  //     // print(breathList);
 
-      for (int i = index + 1; i < volumePostiveLength + (index + 1); i++) {
-        volumeB.add(breathList[i]);
-      }
+  //     for (int i = index + 1; i < volumePostiveLength + (index + 1); i++) {
+  //       volumeB.add(breathList[i]);
+  //     }
 
-      index = index + volumePostiveLength + 1;
-      volumeNegativeLength = breathList[index];
+  //     index = index + volumePostiveLength + 1;
+  //     volumeNegativeLength = breathList[index];
 
-      for (int i = index + 1; i < volumeNegativeLength + (index + 1); i++) {
-        volumeB.add(breathList[i]);
-      }
+  //     for (int i = index + 1; i < volumeNegativeLength + (index + 1); i++) {
+  //       volumeB.add(breathList[i]);
+  //     }
 
-      // print(pressureB.toString() + flowB.toString() + volumeB.toString());
+  //     // print(pressureB.toString() + flowB.toString() + volumeB.toString());
 
-      _plotDataPv = [Point(peepDisplayValue.toDouble(), 2.0)];
+  //     _plotDataPv = [Point(peepDisplayValue.toDouble(), 2.0)];
 
-      ///pip,vti
-      _plotDataPf = [Point(0.0, peepDisplayValue.toDouble())];
-      _plotDataVf = [Point(0.0, 0.0)];
+  //     ///pip,vti
+  //     _plotDataPf = [Point(0.0, peepDisplayValue.toDouble())];
+  //     _plotDataVf = [Point(0.0, 0.0)];
 
-      for (int i = 0; i < pressureB.length; i++) {
-        // datapv.add(Point(temp, temp1));
-        //     datapf.add(Point(temp3, temp));
-        //     datavf.add(Point(temp1, temp3));
+  //     for (int i = 0; i < pressureB.length; i++) {
+  //       // datapv.add(Point(temp, temp1));
+  //       //     datapf.add(Point(temp3, temp));
+  //       //     datavf.add(Point(temp1, temp3));
 
-        _plotDataPv.add(Point(
-            ((((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()),
-            (volumeB[i] << 8) + volumeB[i + 1].toDouble()));
-        _plotDataPf.add(Point(
-            ((((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()),
-            (((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()));
-        _plotDataVf.add(Point((volumeB[i] << 8) + volumeB[i + 1].toDouble(),
-            (((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()));
+  //       _plotDataPv.add(Point(
+  //           ((((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()),
+  //           (volumeB[i] << 8) + volumeB[i + 1].toDouble()));
+  //       _plotDataPf.add(Point(
+  //           ((((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()),
+  //           (((pressureB[i] << 8) + pressureB[i + 1]) / 100).toDouble()));
+  //       _plotDataVf.add(Point((volumeB[i] << 8) + volumeB[i + 1].toDouble(),
+  //           (((flowB[i] << 8) + flowB[i + 1]) * 0.06).toDouble()));
 
-        i = i + 1;
-      }
-    }
-  }
+  //       i = i + 1;
+  //     }
+  //   }
+  // }
 
   Future sendData(List<int> listCrcDataC, checkValue) async {
     List<int> cfinalListSend = [];
