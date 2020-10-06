@@ -7,7 +7,10 @@ import android.app.admin.SystemUpdatePolicy
 import android.content.*
 import android.media.AudioManager
 import android.media.MediaPlayer
-import android.os.*
+import android.os.BatteryManager
+import android.os.Build
+import android.os.PowerManager
+import android.os.UserManager
 import android.provider.Settings
 import android.util.Log
 import android.view.View
@@ -25,7 +28,8 @@ import io.flutter.plugin.common.MethodChannel
 import io.flutter.plugins.GeneratedPluginRegistrant
 
 
-class MainActivity() : FlutterActivity() {
+import android.view.ViewTreeObserver
+class MainActivity: FlutterActivity() {
 
     private lateinit var mAdminComponentName: ComponentName
     private lateinit var mDevicePolicyManager: DevicePolicyManager
@@ -39,12 +43,7 @@ class MainActivity() : FlutterActivity() {
         const val CHANNEL = "shutdown"
         const val PERMISSION_REQUEST_STORAGE = 0
     }
-
     lateinit var downloadController: DownloadController
-
-    constructor(parcel: Parcel) : this() {
-        mAdminComponentName = parcel.readParcelable(ComponentName::class.java.classLoader)!!
-    }
 
     @SuppressLint("InvalidWakeLockTag")
     @RequiresApi(Build.VERSION_CODES.LOLLIPOP)
@@ -196,7 +195,9 @@ class MainActivity() : FlutterActivity() {
                             downloadController.enqueueDownload()
                         }
                     })
+                    Log.d("esko_checkData","true");
                 } catch (ex: Exception) {
+                    Log.d("esko_checkData","false");
                     ex.printStackTrace()
                 }
                 result.success(true)
@@ -317,7 +318,7 @@ class MainActivity() : FlutterActivity() {
             setAsHomeApp(enable)
             setKeyGuardEnabled(enable)
         }
-//        setLockTask(enable, isAdmin)
+//        setLockTask(true, isAdmin)
         setImmersiveMode(enable)
     }
 
@@ -406,4 +407,6 @@ class MainActivity() : FlutterActivity() {
             window.decorView.systemUiVisibility = flags
         }
     }
+
+
 }

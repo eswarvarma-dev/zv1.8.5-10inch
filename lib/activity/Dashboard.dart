@@ -90,10 +90,11 @@ class _CheckPageState extends State<Dashboard> {
   double batteryPercentageValue = 0.0;
   double _progress = 50;
   Timer _timer, _timer1, _timer2, _timer3;
+  Timer _timera1, _timera2, _timera3, _timera4;
   List<int> list = [];
 
   double radians = 0, radians1 = 0;
-  int paw, mvValue = 0, rrtotalValue = 0, lastmvValue = 0;
+  int paw, mvValuea = 0, rrtotalValue = 0, lastmvValue = 0;
   int progressValuePressure = 6;
   int lencheck = 0;
   TextEditingController _textController = TextEditingController();
@@ -124,7 +125,7 @@ class _CheckPageState extends State<Dashboard> {
       atimeValue,
       tipsvValue,
       ibytValue,
-      vteValue,
+      vteValuea,
       leakMeanValue,
       vtiMeanValue,
       vteMeanValue,
@@ -515,6 +516,7 @@ class _CheckPageState extends State<Dashboard> {
   int faultBatteryStatus = 0;
 
   bool inhalationFlag = true;
+  bool inhalationFlagP = true;
 
   double prePressureValue = 0.0;
   double currentPressureValue = 0.0;
@@ -654,6 +656,7 @@ class _CheckPageState extends State<Dashboard> {
   List<double> _volumeList = [];
   List<double> _flowList = [];
   bool breathCycle = false;
+  bool breathCycle1 = false;
 
   List<double> tempList = [];
   List<double> temp1List = [];
@@ -792,6 +795,7 @@ class _CheckPageState extends State<Dashboard> {
   bool getportsData = false;
   TabController _controller;
   var varia = 0;
+  var brethI;
   @override
   initState() {
     super.initState();
@@ -1387,6 +1391,7 @@ class _CheckPageState extends State<Dashboard> {
       callibrationEnabled = preferences.getBool("calli");
       // }v
       inhalationFlag = preferences.getBool('inhalationFlag');
+      inhalationFlagP = preferences.getBool('inhalationFlagP');
 
       // if (first == true) {
       //   countDownTimer1();
@@ -1403,7 +1408,7 @@ class _CheckPageState extends State<Dashboard> {
       pcValue = preferences.getInt("pc");
       // Fluttertoast.showToast(msg: pcValue.toString());
       vtValue = preferences.getInt("vt");
-      vteValue = preferences.getInt("vte");
+      // vteValue = preferences.getInt("vte");
       fio2Value = preferences.getInt("fio2");
       itrigValue = preferences.getInt("itrig");
       atimeValue = preferences.getInt("atime");
@@ -1420,7 +1425,7 @@ class _CheckPageState extends State<Dashboard> {
 
       // // // print(teValue.toString());
       paw = preferences.getInt("paw");
-      mvValue = 0;
+      // mvValuea = 0;
       rrtotalValue = preferences.getInt("rrtotal");
       patientId = preferences.getString("pid");
       patientName = preferences.getString("pname");
@@ -1446,8 +1451,8 @@ class _CheckPageState extends State<Dashboard> {
       if (e == null) {
         e = "0.0";
       }
-      if (vteValue == null) {
-        vteValue = 0;
+      if (vteValuea == null) {
+        vteValuea = 0;
       }
 
       minRrtotal = preferences.getInt('minrr');
@@ -2380,7 +2385,6 @@ class _CheckPageState extends State<Dashboard> {
                                           child: Text(
                                             spontaneousDisplay == null
                                                 ? "0"
-                                              
                                                 : (spontaneousDisplay / 1000)
                                                     .toStringAsFixed(3),
                                             style: TextStyle(
@@ -5981,7 +5985,7 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                 ),
                 Text(
-                  "v1.8.5y",
+                  "v1.8.5z",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: _isTab10 ? 18 : 10,
@@ -6162,7 +6166,7 @@ class _CheckPageState extends State<Dashboard> {
                 ),
                 InkWell(
                   onTap: () async {
-                    lockEnabled ? await getData() : "";
+                    lockEnabled ? getData() : "";
                     if (check1 == 1 && check2 == 1) {
                       setState(() {
                         lockEnabled ? _setValuesonClick = false : "";
@@ -6413,8 +6417,10 @@ class _CheckPageState extends State<Dashboard> {
                                                       const EdgeInsets.only(
                                                           right: 8.0),
                                                   child: Text(
-                                                    (mvValue / 1000)
-                                                        .toStringAsFixed(3),
+                                                    mvValuea != null
+                                                        ? (mvValuea / 1000)
+                                                            .toStringAsFixed(3)
+                                                        : "0",
                                                     // "0000",
                                                     style: TextStyle(
                                                         color: Colors.green,
@@ -8082,15 +8088,31 @@ class _CheckPageState extends State<Dashboard> {
                         Align(
                           alignment: Alignment.topLeft,
                           child: Padding(
-                            padding:
-                                const EdgeInsets.only(left: 0.0, bottom: 65),
-                            child: Text(
-                              "PIP",
-                              style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: _isTab10 ? 20 : 12),
-                            ),
-                          ),
+                              padding:
+                                  const EdgeInsets.only(left: 0.0, bottom: 65),
+                              child: Row(
+                                children: <Widget>[
+                                  Text(
+                                    "PIP",
+                                    style: TextStyle(
+                                        color: Colors.white,
+                                        fontSize: _isTab10 ? 20 : 12),
+                                  ),
+                                  Text(" "),
+                                  Text(
+                                    "(PC+Peep",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 9),
+                                  ),
+                                  Text(" / ",
+                                      style: TextStyle(color: Colors.white)),
+                                  Text(
+                                    "PS+Peep)",
+                                    style: TextStyle(
+                                        color: Colors.white, fontSize: 9),
+                                  ),
+                                ],
+                              )),
                         ),
                         Padding(
                           padding: const EdgeInsets.only(bottom: 5),
@@ -8196,8 +8218,7 @@ class _CheckPageState extends State<Dashboard> {
                           child: Padding(
                             padding: const EdgeInsets.only(right: 5.0),
                             child: Text(
-                              vteValue.toString(),
-// "0000",
+                              vteValuea != null ? vteValuea.toString() : "0",
                               style: TextStyle(
                                   color: Colors.green,
                                   fontSize: _isTab10 ? 40 : 35),
@@ -27853,7 +27874,7 @@ class _CheckPageState extends State<Dashboard> {
             child: new Plot(
               height: 320.0,
               data: _plotDataPv,
-              gridSize: new Offset(50.0, 1000.0),
+              gridSize: new Offset(10.0, 500.0),
               style: new PlotStyle(
                 axisStrokeWidth: 1.0,
                 pointRadius: 1.0,
@@ -28721,6 +28742,9 @@ class _CheckPageState extends State<Dashboard> {
     }
 
     if (result != null) {
+      setState(() {
+        _setValuesonClick = true;
+      });
       int rrData = preferences.getInt("rr");
       int ieData = preferences.getInt("ie");
 
@@ -30116,7 +30140,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool('playpauseButtonEnabled', true);
       });
 
-      getData();
+      // getData();
       newTreatEnabled = false;
       monitorEnabled = false;
     } else if (vccmvEnabled == true) {
@@ -30243,7 +30267,7 @@ class _CheckPageState extends State<Dashboard> {
         playpauseButtonEnabled = true;
         preferences.setBool('playpauseButtonEnabled', true);
       });
-      getData();
+      // getData();
       newTreatEnabled = false;
 
       monitorEnabled = false;
@@ -30375,7 +30399,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool('playpauseButtonEnabled', true);
       });
 
-      getData();
+      // getData();
       newTreatEnabled = false;
       monitorEnabled = false;
     } else if (vacvEnabled == true) {
@@ -30504,7 +30528,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool('playpauseButtonEnabled', true);
       });
 
-      getData();
+      // getData();
       newTreatEnabled = false;
       monitorEnabled = false;
     } else if (psimvEnabled == true) {
@@ -30632,7 +30656,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool('playpauseButtonEnabled', true);
       });
 
-      getData();
+      // getData();
       newTreatEnabled = false;
       monitorEnabled = false;
     } else if (vsimvEnabled == true) {
@@ -30761,7 +30785,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool('playpauseButtonEnabled', true);
       });
 
-      getData();
+      // getData();
       newTreatEnabled = false;
       monitorEnabled = false;
     } else if (psvEnabled == true) {
@@ -30927,7 +30951,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool('playpauseButtonEnabled', true);
       });
 
-      getData();
+      // getData();
       newTreatEnabled = false;
       monitorEnabled = false;
     } else if (prvcEnabled == true) {
@@ -31058,7 +31082,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool('playpauseButtonEnabled', true);
       });
 
-      getData();
+      // getData();
       newTreatEnabled = false;
       monitorEnabled = false;
     } else if (cpapEnabled == true) {
@@ -31165,7 +31189,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool('playpauseButtonEnabled', true);
       });
 
-      getData();
+      // getData();
       newTreatEnabled = false;
       monitorEnabled = false;
     } else if (autoEnabled == true) {
@@ -31311,7 +31335,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool('playpauseButtonEnabled', true);
       });
 
-      getData();
+      // getData();
       newTreatEnabled = false;
       monitorEnabled = false;
     } else if (hfnoEnabled == true) {
@@ -31410,7 +31434,7 @@ class _CheckPageState extends State<Dashboard> {
         preferences.setBool('playpauseButtonEnabled', true);
       });
 
-      getData();
+      // getData();
       newTreatEnabled = false;
       monitorEnabled = false;
     }
@@ -32651,14 +32675,14 @@ class _CheckPageState extends State<Dashboard> {
         //         children: [],
         //       )
         //     : Container(),
-        SizedBox(width: _isTab10 ? 200 : 0),
+        SizedBox(width: _isTab10 ? 100 : 0),
         alarmConfirmed == false
             ? Container(
                 decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Color(0xFFE0E0E0)),
-                width: 500,
-                height: 320,
+                width: 550,
+                height: 380,
                 child: Center(
                   child: Column(
                     children: [
@@ -32681,13 +32705,67 @@ class _CheckPageState extends State<Dashboard> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_up,
-                                    color: Colors.black,
-                                    size: 55,
+                                GestureDetector(
+                                  child: Container(
+                                    width: 80.0,
+                                    height: 80.0,
+                                    child: Icon(Icons.keyboard_arrow_up,
+                                        color: Colors.black, size: 105),
                                   ),
-                                  onPressed: () {
+                                  onTapDown: (TapDownDetails details) {
+                                    _timera1 = Timer.periodic(
+                                        Duration(milliseconds: 100), (t) {
+                                      setState(() {
+                                        alarmConfirmed = false;
+                                        if (alarmRR == true &&
+                                            minRrtotal <= maxRrtotal - 1) {
+                                          setState(() {
+                                            minRrtotal = minRrtotal + 1;
+                                          });
+                                        } else if (alarmVte == true &&
+                                            minvte <= maxvte - 1) {
+                                          setState(() {
+                                            minvte = minvte + 1;
+                                          });
+                                        } else if (alarmPpeak == true &&
+                                            minppeak <= maxppeak - 1) {
+                                          setState(() {
+                                            minppeak = minppeak + 1;
+                                          });
+                                        } else if (alarmpeep == true &&
+                                            minpeep <= maxpeep - 1) {
+                                          setState(() {
+                                            minpeep = minpeep + 1;
+                                          });
+                                        } else if (alarmFio2 == true &&
+                                            minfio2 <= maxfio2 - 1) {
+                                          setState(() {
+                                            minfio2 = minfio2 + 1;
+                                          });
+                                        } else if (alarmlv == true &&
+                                            minlv <= maxlv - 1) {
+                                          setState(() {
+                                            minlv = minlv + 1;
+                                          });
+                                        } else if (alarmmv == true &&
+                                            minmv <= maxmv - 1) {
+                                          setState(() {
+                                            minmv = minmv + 1;
+                                          });
+                                        }
+                                      });
+                                      checkData();
+                                    });
+                                  },
+                                  onTapUp: (TapUpDetails details) {
+                                    setState(() {
+                                      _timera1.cancel();
+                                    });
+                                  },
+                                  onTapCancel: () {
+                                    _timera1.cancel();
+                                  },
+                                  onTap: () {
                                     setState(() {
                                       alarmConfirmed = false;
                                       if (alarmRR == true &&
@@ -32732,13 +32810,67 @@ class _CheckPageState extends State<Dashboard> {
                                 ),
                                 SizedBox(height: 20),
                                 SizedBox(height: 100),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: Colors.black,
-                                    size: 55,
+                                GestureDetector(
+                                  child: Container(
+                                    width: 80.0,
+                                    height: 80.0,
+                                    child: Icon(Icons.keyboard_arrow_down,
+                                        color: Colors.black, size: 105),
                                   ),
-                                  onPressed: () {
+                                  onTapDown: (TapDownDetails details) {
+                                    _timera2 = Timer.periodic(
+                                        Duration(milliseconds: 100), (t) {
+                                      setState(() {
+                                        alarmConfirmed = false;
+                                        if (alarmRR == true &&
+                                            minRrtotal != 1) {
+                                          setState(() {
+                                            minRrtotal = minRrtotal - 1;
+                                          });
+                                        } else if (alarmVte == true &&
+                                            minvte != 0) {
+                                          setState(() {
+                                            minvte = minvte - 1;
+                                          });
+                                        } else if (alarmPpeak == true &&
+                                            minppeak != 0) {
+                                          setState(() {
+                                            minppeak = minppeak - 1;
+                                          });
+                                        } else if (alarmFio2 == true &&
+                                            minfio2 != 21) {
+                                          setState(() {
+                                            minfio2 = minfio2 - 1;
+                                          });
+                                        } else if (alarmpeep == true &&
+                                            minpeep != 0) {
+                                          setState(() {
+                                            minpeep = minpeep - 1;
+                                          });
+                                        } else if (alarmlv == true &&
+                                            minlv != 0) {
+                                          setState(() {
+                                            minlv = minlv - 1;
+                                          });
+                                        } else if (alarmmv == true &&
+                                            minmv != 0) {
+                                          setState(() {
+                                            minmv = minmv - 1;
+                                          });
+                                        }
+                                      });
+                                      checkData();
+                                    });
+                                  },
+                                  onTapUp: (TapUpDetails details) {
+                                    setState(() {
+                                      _timera2.cancel();
+                                    });
+                                  },
+                                  onTapCancel: () {
+                                    _timera2.cancel();
+                                  },
+                                  onTap: () {
                                     setState(() {
                                       alarmConfirmed = false;
                                       if (alarmRR == true && minRrtotal != 1) {
@@ -32957,13 +33089,68 @@ class _CheckPageState extends State<Dashboard> {
                               crossAxisAlignment: CrossAxisAlignment.center,
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: <Widget>[
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_up,
-                                    color: Colors.black,
-                                    size: 55,
+                                GestureDetector(
+                                  child: Container(
+                                    width: 80.0,
+                                    height: 80.0,
+                                    child: Icon(Icons.keyboard_arrow_up,
+                                        color: Colors.black, size: 105),
                                   ),
-                                  onPressed: () {
+                                  onTapDown: (TapDownDetails details) {
+                                    _timera3 = Timer.periodic(
+                                        Duration(milliseconds: 100), (t) {
+                                      setState(() {
+                                        alarmConfirmed = false;
+                                        int data = _isTab10 ? 3000 : 2400;
+                                        if (alarmRR == true &&
+                                            maxRrtotal != 70) {
+                                          setState(() {
+                                            maxRrtotal = maxRrtotal + 1;
+                                          });
+                                        } else if (alarmVte == true &&
+                                            maxvte != data) {
+                                          setState(() {
+                                            maxvte = maxvte + 1;
+                                          });
+                                        } else if (alarmPpeak == true &&
+                                            maxppeak != 100) {
+                                          setState(() {
+                                            maxppeak = maxppeak + 1;
+                                          });
+                                        } else if (alarmFio2 == true &&
+                                            maxfio2 != 100) {
+                                          setState(() {
+                                            maxfio2 = maxfio2 + 1;
+                                          });
+                                        } else if (alarmpeep == true &&
+                                            maxpeep != 40) {
+                                          setState(() {
+                                            maxpeep = maxpeep + 1;
+                                          });
+                                        } else if (alarmmv == true &&
+                                            maxmv != 25) {
+                                          setState(() {
+                                            maxmv = maxmv + 1;
+                                          });
+                                        } else if (alarmlv == true &&
+                                            maxlv != 100) {
+                                          setState(() {
+                                            maxlv = maxlv + 1;
+                                          });
+                                        }
+                                      });
+                                      checkData();
+                                    });
+                                  },
+                                  onTapUp: (TapUpDetails details) {
+                                    setState(() {
+                                      _timera3.cancel();
+                                    });
+                                  },
+                                  onTapCancel: () {
+                                    _timera3.cancel();
+                                  },
+                                  onTap: () {
                                     setState(() {
                                       alarmConfirmed = false;
                                       int data = _isTab10 ? 3000 : 2400;
@@ -33008,13 +33195,67 @@ class _CheckPageState extends State<Dashboard> {
                                 ),
                                 SizedBox(height: 100),
                                 SizedBox(height: 20),
-                                IconButton(
-                                  icon: Icon(
-                                    Icons.keyboard_arrow_down,
-                                    color: Colors.black,
-                                    size: 55,
+                                GestureDetector(
+                                  child: Container(
+                                    width: 80.0,
+                                    height: 80.0,
+                                    child: Icon(Icons.keyboard_arrow_down,
+                                        color: Colors.black, size: 105),
                                   ),
-                                  onPressed: () {
+                                  onTapDown: (TapDownDetails details) {
+                                    _timera4 = Timer.periodic(
+                                        Duration(milliseconds: 100), (t) {
+                                      setState(() {
+                                        alarmConfirmed = false;
+                                        if (alarmRR == true &&
+                                            maxRrtotal >= minRrtotal + 1) {
+                                          setState(() {
+                                            maxRrtotal = maxRrtotal - 1;
+                                          });
+                                        } else if (alarmVte == true &&
+                                            maxvte >= minvte + 1) {
+                                          setState(() {
+                                            maxvte = maxvte - 1;
+                                          });
+                                        } else if (alarmPpeak == true &&
+                                            maxppeak >= minppeak + 1) {
+                                          setState(() {
+                                            maxppeak = maxppeak - 1;
+                                          });
+                                        } else if (alarmpeep == true &&
+                                            maxpeep >= minpeep + 1) {
+                                          setState(() {
+                                            maxpeep = maxpeep - 1;
+                                          });
+                                        } else if (alarmFio2 == true &&
+                                            maxfio2 >= minfio2 + 1) {
+                                          setState(() {
+                                            maxfio2 = maxfio2 - 1;
+                                          });
+                                        } else if (alarmlv == true &&
+                                            maxlv >= minlv + 1) {
+                                          setState(() {
+                                            maxlv = maxlv - 1;
+                                          });
+                                        } else if (alarmmv == true &&
+                                            maxmv >= minmv + 1) {
+                                          setState(() {
+                                            maxmv = maxmv - 1;
+                                          });
+                                        }
+                                      });
+                                      checkData();
+                                    });
+                                  },
+                                  onTapUp: (TapUpDetails details) {
+                                    setState(() {
+                                      _timera4.cancel();
+                                    });
+                                  },
+                                  onTapCancel: () {
+                                    _timera4.cancel();
+                                  },
+                                  onTap: () {
                                     setState(() {
                                       alarmConfirmed = false;
                                       if (alarmRR == true &&
@@ -33717,6 +33958,7 @@ class _CheckPageState extends State<Dashboard> {
   }
 
   Future extractingGraphData(List<int> fList) async {
+    // Fluttertoast.showToast(msg:fList.toString());
     // pressure graph
 
     var dataOperatingMode = fList[1];
@@ -33818,6 +34060,8 @@ class _CheckPageState extends State<Dashboard> {
     double temp3I = ((fList[6] << 8) + fList[7]).toDouble() * 0.06;
     double temp3E = ((fList[8] << 8) + fList[9]).toDouble() * 0.06;
 
+    var brethI = fList[3];
+
     setState(() {
       tempfPressure = tempPressure;
       temp1fVolume = temp1Volume;
@@ -33906,34 +34150,34 @@ class _CheckPageState extends State<Dashboard> {
       ioreDisplayParamter = "E";
     }
 
-    if (fList[3] == 1 && _isLoopGraph == true && getOpertingMode == true) {
+    if (fList[3] == 1 && getOpertingMode == true) {
       //temp p temp1 v temp3 f
       setState(() {
         if (inhalationFlag == true) {
-          datapv.clear();
+          // datapv.clear();
           datapf.clear();
           datavf.clear();
           inhalationFlag = false;
           preferences.setBool('inhalationFlag', false);
         }
-        datapv.add(Point(tempPressure, temp1Volume));
+        // datapv.add(Point(tempPressure, temp1Volume));
         datapf.add(Point(temp3Flow, tempPressure));
         datavf.add(Point(temp1Volume, temp3Flow));
         breathCycle = true;
       });
     } else if (fList[3] == 2 &&
-        _isLoopGraph == true &&
+        // _isLoopGraph == true &&
         getOpertingMode == true) {
       setState(() {
         if (breathCycle == true) {
-          if (datapv.length > 16 && datapv.length != 0) {
-            // re-insti
-            _plotDataPv.clear();
-            _plotDataPv.addAll(datapv);
-            _plotDataPv.add(datapv[0]);
-          } else {
-            datapv.clear();
-          }
+          // if (datapv.length > 16 && datapv.length != 0) {
+          //   // re-insti
+          //   _plotDataPv.clear();
+          //   _plotDataPv.addAll(datapv);
+          //   _plotDataPv.add(datapv[0]);
+          // } else {
+          //   datapv.clear();
+          // }
 
           // pressure flow
           if (datapf.length > 16 && datapf.length != 0) {
@@ -33954,11 +34198,11 @@ class _CheckPageState extends State<Dashboard> {
           }
 
           datavf.clear();
-          datapv.clear();
+          // datapv.clear();
           datapf.clear();
           breathCycle = false;
         }
-        datapv.add(Point(tempPressure, temp1Volume));
+        // datapv.add(Point(tempPressure, temp1Volume));
         datapf.add(Point(temp3Flow, tempPressure));
         datavf.add(Point(temp1Volume, temp3Flow));
       });
@@ -33967,55 +34211,59 @@ class _CheckPageState extends State<Dashboard> {
     //================================
   }
 
-  Future extractingData(List<int> finalList) async {
-    if (((finalList[60] << 8) + finalList[61]).toInt() >= 0 &&
-        ((finalList[60] << 8) + finalList[61]).toInt() <= 150) {
-      setState(() {
-        double dataPlatea = ((finalList[60] << 8) + finalList[61]).toDouble();
-        if (dataPlatea > pipValue.toDouble()) {
-          pplateauDisplay = pipValue.toDouble() - 1.0;
-        } else {
-          pplateauDisplay = dataPlatea;
-        }
-      });
-    }
 
+    getDateo2Time(){
+      var otime = preferences.getString('o2time');
+      if (otime == null) {
+        o2Time = "--" + "/" + "--" + "/" + "----";
+      } else {
+        o2Time = otime;
+      }}
+
+  Future extractingData(List<int> finalList) async {
     setState(() {
       var now = new DateTime.now();
 
-      int vteValueCheck = ((finalList[4] << 8) + finalList[5]); //5 6
+      vteValuea = ((finalList[4] << 8) + finalList[5]).toInt(); //5 6
+      mvValuea = (((finalList[8] << 8) + finalList[9])).toInt();
 
-      // ignore: unrelated_type_equality_checks
-      if ((vteValueCheck != "" || vteValueCheck != null) &&
-          vteValueCheck.round() >= 0 &&
-          vteValueCheck.round() <= 3500) {
+      double pressurePLotData =
+          (((finalList[44] << 8) + finalList[45]) / 100).toDouble();
+      double volumePlotData =
+          (((finalList[58] << 8) + finalList[59])).toDouble();
+
+      if (finalList[84] == 1 && getOpertingMode == true) {
+        //temp p temp1 v temp3 f
         setState(() {
-          var checkvteValue = (finalList[85] << 8) + finalList[86];
-          var checkmvValue = (finalList[87] << 8) + finalList[88];
-          
-          // if ((finalList[84] == 1) && (varia == 0)) {
-          //   Fluttertoast.showToast(
-          //       msg: "vte" +
-          //           checkvteValue.toString() +
-          //           " mv" +
-          //           (checkmvValue / 1000).toString());
-          //   varia = 1;
-          // } else {
-          //   varia = 0;
-          // }
-          // if(vteValue==checkvteValue){
+          if (inhalationFlagP == true) {
+            datapv.clear();
+            inhalationFlagP = false;
+            preferences.setBool('inhalationFlagP', false);
+          }
+          datapv.add(Point(pressurePLotData, volumePlotData));
+          breathCycle1 = true;
+        });
+      } else if (finalList[84] == 2 &&
+          // _isLoopGraph == true &&
+          getOpertingMode == true) {
+        setState(() {
+          if (breathCycle1 == true) {
+            if (datapv.length > 16 && datapv.length != 0) {
+              // re-insti
+              _plotDataPv = [];
+              _plotDataPv.clear();
+              _plotDataPv.addAll(datapv);
+              _plotDataPv.add(datapv[0]);
+            } else {
+              datapv.clear();
+            }
 
-          vteValue = vteValueCheck;
-          // }else{
-          //   vteValue = checkvteValue;
-          // }
+            datapv.clear();
+            breathCycle1 = false;
+          }
+          datapv.add(Point(pressurePLotData, volumePlotData));
         });
       }
-      int mvValueCheck = (((finalList[8] << 8) + finalList[9])).toInt();
-
-      setState(() {
-        mvValue = mvValueCheck;
-      });
 
       leakVolumeDisplay = ((finalList[102] << 8) + finalList[103]); //103 104
       peakFlowDisplay = ((finalList[70] << 8) + finalList[71]); //71 72
@@ -34248,13 +34496,14 @@ class _CheckPageState extends State<Dashboard> {
         });
       }
 
-      if (vteValue != null &&
-          vteValue != 0 &&
+      if (vteValuea != null &&
+          vteValuea != 0 &&
           pplateauDisplay != null &&
           pplateauDisplay != 0) {
         try {
-          var dataC = (vteValue ~/ (pplateauDisplay.toInt() - peepDisplayValue))
-              .toInt();
+          var dataC =
+              (vteValuea ~/ (pplateauDisplay.toInt() - peepDisplayValue))
+                  .toInt();
           if (dataC < 0) {
           } else {
             cdisplayParameter = dataC;
@@ -34407,31 +34656,32 @@ class _CheckPageState extends State<Dashboard> {
 
       checkO2CalibrationValue = finalList[30];
 
-      // Fluttertoast.showToast(msg:checkO2CalibrationValue.toString());
-      if (checkO2CalibrationValue == 1) {
-        setState(() {
-          textText = "Lung Disconnected";
-        });
-      } else if (checkO2CalibrationValue == 2) {
-        setState(() {
-          textText = "Calibrating 0\u2082..";
-        });
-      } else if (checkO2CalibrationValue == 3) {
-        setState(() {
-          var now = new DateTime.now();
-          var o2Time = DateFormat("dd/MM/yyyy").format(now);
-          preferences.setString("o2time", o2Time.toString());
-          getData();
-          textText = "0\u2082 Calibration Completed.";
-        });
-      } else if (checkO2CalibrationValue == 4) {
-        setState(() {
-          textText = "Low 0\u2082 Supply";
-        });
-      } else if (checkO2CalibrationValue == 0) {
-        setState(() {
-          checkO2CalibrationValue = "";
-        });
+      if (callibrationEnabled == true) {
+        if (checkO2CalibrationValue == 1) {
+          setState(() {
+            textText = "Lung Disconnected";
+          });
+        } else if (checkO2CalibrationValue == 2) {
+          setState(() {
+            textText = "Calibrating 0\u2082..";
+          });
+        } else if (checkO2CalibrationValue == 3) {
+          setState(() {
+            var now = new DateTime.now();
+            var o2Time = DateFormat("dd/MM/yyyy").format(now);
+            preferences.setString("o2time", o2Time.toString());
+            getDateo2Time();
+            textText = "0\u2082 Calibration Completed.";
+          });
+        } else if (checkO2CalibrationValue == 4) {
+          setState(() {
+            textText = "Low 0\u2082 Supply";
+          });
+        } else if (checkO2CalibrationValue == 0) {
+          setState(() {
+            checkO2CalibrationValue = "";
+          });
+        }
       }
 
       if ((((finalList[68] << 8) + finalList[69]) / 100).round().toInt() >= 0 &&
@@ -34919,18 +35169,30 @@ class _CheckPageState extends State<Dashboard> {
         batteryStatus = finalList[78];
       });
 
+      if (((finalList[60] << 8) + finalList[61]).toInt() >= 0 &&
+          ((finalList[60] << 8) + finalList[61]).toInt() <= 150) {
+        setState(() {
+          double dataPlatea = ((finalList[60] << 8) + finalList[61]).toDouble();
+          if (dataPlatea > pipValue.toDouble()) {
+            pplateauDisplay = pipValue.toDouble() - 1.0;
+          } else {
+            pplateauDisplay = dataPlatea;
+          }
+        });
+      }
+
       if (getOpertingMode != false) {
         if (patientId != "") {
           var data = VentilatorOMode(
               patientId,
               patientName.toString(),
               pipValue.toString(),
-              vteValue.toString(),
+              vteValuea.toString(),
               peepDisplayValue.toString(),
               rrDisplayValue.toString(),
               fio2DisplayParameter.toString(),
               mapDisplayValue.toString(),
-              mvValue.toString(),
+              mvValuea.toString(),
               cdisplayParameter.toString(),
               ieDisplayValue.toString(),
               rrValue.toString(),
@@ -34955,45 +35217,52 @@ class _CheckPageState extends State<Dashboard> {
               globalCounterNo.toString(),
               ((finalList[106] << 8) + finalList[107]).toString(),
               finalList[109].toString(),
-              alarmActive,amsDisplayParamter,leakVolumeDisplay.toString(),peakFlowDisplay.toString(),spontaneousDisplay.toString());
+              alarmActive,
+              amsDisplayParamter,
+              leakVolumeDisplay.toString(),
+              peakFlowDisplay.toString(),
+              spontaneousDisplay.toString());
           saveData(data, patientId);
         } else {
           var data = VentilatorOMode(
-            "SWASIT " + globalCounterNo.toString(),
-            patientName,
-            pipValue.toString(),
-            vteValue.toString(),
-            peepDisplayValue.toString(),
-            rrDisplayValue.toString(),
-            fio2DisplayParameter.toString(),
-            mapDisplayValue.toString(),
-            mvValue.toString(),
-            cdisplayParameter.toString(),
-            ieDisplayValue.toString(),
-            rrValue.toString(),
-            checkI(i) + ":" + checkE(e).toString(),
-            peepValue.toString(),
-            pcValue.toString(),
-            psValue.toString(),
-            itrigValue.toString(),
-            fio2Value.toString(),
-            vtValue.toString(),
-            tiValue.toString(),
-            teValue.toString(),
-            atimeValue.toString(),
-            tipsvValue.toString(),
-            pplateauDisplay.toStringAsFixed(0),
-            tempPressure,
-            temp3Flow,
-            temp1Volume,
-            operatinModeR.toString(),
-            lungImage.toString(),
-            paw.toString(),
-            globalCounterNo.toString(),
-            ((finalList[106] << 8) + finalList[107]).toString(),
-            finalList[109].toString(),
-            alarmActive,amsDisplayParamter,leakVolumeDisplay.toString(),peakFlowDisplay.toString(),spontaneousDisplay.toString()
-          );
+              "SWASIT " + globalCounterNo.toString(),
+              patientName,
+              pipValue.toString(),
+              vteValuea.toString(),
+              peepDisplayValue.toString(),
+              rrDisplayValue.toString(),
+              fio2DisplayParameter.toString(),
+              mapDisplayValue.toString(),
+              mvValuea.toString(),
+              cdisplayParameter.toString(),
+              ieDisplayValue.toString(),
+              rrValue.toString(),
+              checkI(i) + ":" + checkE(e).toString(),
+              peepValue.toString(),
+              pcValue.toString(),
+              psValue.toString(),
+              itrigValue.toString(),
+              fio2Value.toString(),
+              vtValue.toString(),
+              tiValue.toString(),
+              teValue.toString(),
+              atimeValue.toString(),
+              tipsvValue.toString(),
+              pplateauDisplay.toStringAsFixed(0),
+              tempPressure,
+              temp3Flow,
+              temp1Volume,
+              operatinModeR.toString(),
+              lungImage.toString(),
+              paw.toString(),
+              globalCounterNo.toString(),
+              ((finalList[106] << 8) + finalList[107]).toString(),
+              finalList[109].toString(),
+              alarmActive,
+              amsDisplayParamter,
+              leakVolumeDisplay.toString(),
+              peakFlowDisplay.toString(),
+              spontaneousDisplay.toString());
           saveData(data, patientId);
         }
       }
@@ -35116,7 +35385,11 @@ class _CheckPageState extends State<Dashboard> {
         clearData();
       }
       setState(() {
-        _setValuesonClick = true;
+        if (modesEnabled == true) {
+          _setValuesonClick = false;
+        } else {
+          _setValuesonClick = true;
+        }
       });
     } else if (acknowReceivedValue == 1 && ackPacket == 10) {
       clearAlarmData();
@@ -35145,11 +35418,11 @@ class _CheckPageState extends State<Dashboard> {
     if (_isdatasendSuccess == false) {
       sendData(listCrcDataC, 2);
     }
-    setState(() {
-      if (modesEnabled == false) {
-        _setValuesonClick = true;
-      }
-    });
+    // setState(() {
+    //   if (modesEnabled == false) {
+    //     _setValuesonClick = true;
+    //   }
+    // });
   }
 
   clearPause() {
@@ -35171,8 +35444,12 @@ class _CheckPageState extends State<Dashboard> {
   clearData() {
     setState(() {
       _isdatasendSuccess = true;
-      _setValuesonClick = true;
       modesEnabled = false;
+      if (modesEnabled == true) {
+        _setValuesonClick = false;
+      } else {
+        _setValuesonClick = true;
+      }
       playOnEnabled = false;
       acknowReceivedValue = 0;
       ackPacket = 0;

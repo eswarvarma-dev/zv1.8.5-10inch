@@ -8,6 +8,7 @@ import android.content.IntentFilter
 import android.net.Uri
 import android.os.Build
 import android.os.Environment
+import android.util.Log
 import android.widget.Toast
 import androidx.core.content.FileProvider
 import com.example.ventilator.BuildConfig
@@ -32,11 +33,15 @@ class DownloadController(private val context: Context, private val url: String) 
 
         val uri = Uri.parse("$FILE_BASE_PATH$destination")
 
+        Log.d("esko_Destination",destination.toString())
+
         val file = File(destination)
         if (file.exists()) file.delete()
 
         val downloadManager = context.getSystemService(Context.DOWNLOAD_SERVICE) as DownloadManager
+        Log.d("esko_URI", url)
         val downloadUri = Uri.parse(url)
+        Log.d("esko_DOWNLOAD_URI", downloadUri.toString())
         val request = DownloadManager.Request(downloadUri)
         request.setMimeType(MIME_TYPE)
         request.setTitle(context.getString(R.string.title_file_download))
@@ -66,6 +71,7 @@ class DownloadController(private val context: Context, private val url: String) 
                 context: Context,
                 intent: Intent
             ) {
+                Log.d("esko_COMPLETE", "true")
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                     val contentUri = FileProvider.getUriForFile(
                         context,
@@ -79,8 +85,10 @@ class DownloadController(private val context: Context, private val url: String) 
                     install.data = contentUri
                     context.startActivity(install)
                     context.unregisterReceiver(this)
+                    Log.d("esko_COMPLETE", "true1")
                     // finish()
                 } else {
+                    Log.d("esko_COMPLETE", "true2")
                     val install = Intent(Intent.ACTION_VIEW)
                     install.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
                     install.setDataAndType(
@@ -89,10 +97,14 @@ class DownloadController(private val context: Context, private val url: String) 
                     )
                     context.startActivity(install)
                     context.unregisterReceiver(this)
+                    Log.d("esko_COMPLETE", "true3")
                     // finish()
                 }
             }
         }
+
+
+        Log.d("esko_COMPLETE", "true5")
         context.registerReceiver(onComplete, IntentFilter(DownloadManager.ACTION_DOWNLOAD_COMPLETE))
     }
 }

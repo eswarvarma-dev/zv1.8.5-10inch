@@ -75,7 +75,7 @@ class ADatabaseHelper {
     // var now = new DateTime.now();
     var now = DateFormat("yyyy-MM-dd HH:mm:ss").format(DateTime.parse(dateS));
     var dbClient = await db;
-    String sql = "DELETE FROM $TABLE_ALARM WHERE $DATE_TIME <= date(\'$now\', '-1 day')";
+    String sql = "DELETE FROM $TABLE_ALARM WHERE $DATE_TIME <= date(\'$now\', '-29 day')";
     // DELETE FROM graphPoints WHERE datetimeP <= date('2020-06-19 20:20:12.00', '-1 day')
     var res = await dbClient.rawDelete(sql);
     return res;

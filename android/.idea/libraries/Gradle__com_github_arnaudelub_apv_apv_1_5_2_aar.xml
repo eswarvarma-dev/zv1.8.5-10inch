@@ -1,0 +1,15 @@
+<component name="libraryTable">
+  <library name="Gradle: com.github.arnaudelub.apv:apv:1.5.2@aar">
+    <CLASSES>
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9c460200f378ca0d03133af092178dc0/apv-1.5.2/AndroidManifest.xml" />
+      <root url="jar://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9c460200f378ca0d03133af092178dc0/apv-1.5.2/jars/classes.jar!/" />
+      <root url="file://$USER_HOME$/.gradle/caches/transforms-2/files-2.1/9c460200f378ca0d03133af092178dc0/apv-1.5.2/res" />
+    </CLASSES>
+    <JAVADOC>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.arnaudelub.apv/apv/1.5.2/980f152530c33b441b68a84b578384fdd9c9cb1f/apv-1.5.2-javadoc.jar!/" />
+    </JAVADOC>
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.arnaudelub.apv/apv/1.5.2/bf236a528fd9fa2bae7cfae5fff2e2ee04acd4f1/apv-1.5.2-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>
