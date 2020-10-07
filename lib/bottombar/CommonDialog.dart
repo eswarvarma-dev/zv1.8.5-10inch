@@ -662,6 +662,8 @@ class _CommonDialogState extends State<CommonDialog> {
                             children: <Widget>[
                               Text(widget.value.toString() == "I:E"
                                   ? "Min " + getIeData(min.toInt(), 1)
+                                  : widget.value.toString() == "Backup I:E"
+                                  ? "Min " + getIeData(min.toInt(), 1)
                                   : widget.value.toString() == "ITRI"
                                       ? "Min " + "-" + min.toInt().toString()
                                       : widget.value.toString() == "Ti"
@@ -688,7 +690,9 @@ class _CommonDialogState extends State<CommonDialog> {
                                                       .toInt()
                                                       .toString()
                                               : ""),
-                              Text(widget.value.toString() == "I:E"
+                              Text(widget.value.toString() == "Backup I:E"
+                                  ? "Max " + getIeData(max.toInt(), 1)
+                                  :widget.value.toString() == "I:E"
                                   ? "Max " + getIeData(max.toInt(), 1)
                                   : widget.value.toString() == "ITRI"
                                       ? "Max " + "-" + max.toInt().toString()

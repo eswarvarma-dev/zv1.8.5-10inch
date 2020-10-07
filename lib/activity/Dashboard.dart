@@ -5985,7 +5985,7 @@ class _CheckPageState extends State<Dashboard> {
                         ),
                 ),
                 Text(
-                  "v1.8.5z",
+                  "v1.8.6a",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: _isTab10 ? 18 : 10,
@@ -19808,7 +19808,7 @@ class _CheckPageState extends State<Dashboard> {
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 Text(prvcIe
-                                    ? getIeData(prvcminValue, 1)
+                                    ? getIeData(prvcmaxValue, 1)
                                     : prvcItrig
                                         ? pItrig
                                             ? "-$prvcmaxValue"
@@ -26104,7 +26104,7 @@ class _CheckPageState extends State<Dashboard> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
-                                Text(vsimvItrig
+                                Text(vsimvIe ? getIeData(vsimvminValue,1):vsimvItrig
                                     ? pItrig
                                         ? "-$vsimvminValue"
                                         : "$vsimvminValue"
@@ -26115,7 +26115,7 @@ class _CheckPageState extends State<Dashboard> {
                                       : vsimvparameterUnits,
                                   style: TextStyle(fontSize: 16),
                                 ),
-                                Text(vsimvItrig
+                                Text(vsimvIe ? getIeData(vsimvmaxValue,1): vsimvItrig
                                     ? pItrig
                                         ? "-$vsimvmaxValue"
                                         : "$vsimvmaxValue"
@@ -27804,7 +27804,7 @@ class _CheckPageState extends State<Dashboard> {
                                   style: TextStyle(fontSize: 16),
                                 ),
                                 Text(vacvIe
-                                    ? getIeData(vacvminValue, 1)
+                                    ? getIeData(vacvmaxValue, 1)
                                     : vacvItrig
                                         ? pItrig
                                             ? "-$vacvmaxValue"
@@ -34502,7 +34502,7 @@ class _CheckPageState extends State<Dashboard> {
           pplateauDisplay != 0) {
         try {
           var dataC =
-              (vteValuea ~/ (pplateauDisplay.toInt() - peepDisplayValue))
+              (vteValuea ~/ (pipValue.toInt() - peepDisplayValue))
                   .toInt();
           if (dataC < 0) {
           } else {
